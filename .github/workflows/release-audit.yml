@@ -1,0 +1,16 @@
+name: release-audit
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  github-release-file-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Audit GitHub file boundary
+        run: python scripts/audit/github_release_file_audit.py

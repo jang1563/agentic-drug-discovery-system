@@ -1,0 +1,79 @@
+# Python / local caches
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local-only project layers
+SOURCE_MAP.md
+research/
+notes/
+registries/
+envs/
+case_banks/
+docs/08_collection_roadmap_v0.md
+docs/09_goal_mode_long_term_execution_anchor.md
+docs/10_external_control_lane_plan_2026_06_30.md
+docs/10_github_repo_preparation_plan.md
+scripts/launch/
+scripts/sync/
+verifiers/deterministic/
+
+# Large or generated run artifacts
+experiments/**/runs/
+experiments/**/logs/
+experiments/
+experiments/cayuga/*
+!experiments/cayuga/.gitkeep
+experiments/expanse/*
+!experiments/expanse/.gitkeep
+experiments/smoke/*
+!experiments/smoke/.gitkeep
+rl_env/trajectories/generated/
+rl_env/tasks/generated/
+rl_env/baselines/
+rl_env/tasks/
+rl_env/trajectories/
+rl_env/**/*.yaml
+rl_env/**/*_20*.md
+rl_env/rewards/*.py
+!rl_env/README.md
+!rl_env/specs/*.md
+!rl_env/rewards/*.md
+*.sqlite
+*.db-wal
+*.db-shm
+
+# Root-level scheduler logs
+*.out
+*.err
+/slurm-*.out
+/slurm-*.err
+
+# Verifier implementation and generated outputs stay local until release audit
+verifiers/deterministic/*.py
+verifiers/soft/*.py
+verifiers/deterministic/results/
+verifiers/**/__pycache__/
+
+# Local secrets or credentials
+.env
+.env.*
+*.key
+*.pem
+*api_key*
+*secret*
+*.credentials
+
+# OS/editor noise
+.DS_Store
+.vscode/
+.idea/
