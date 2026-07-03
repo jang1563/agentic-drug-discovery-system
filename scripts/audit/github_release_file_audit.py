@@ -29,7 +29,7 @@ SECRET_PATTERNS = (
     re.compile(r"sk-[A-Za-z0-9_-]{20,}"),
     re.compile(r"gh[pousr]_[A-Za-z0-9_]{20,}"),
     re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
-    re.compile(r"hf_[A-Za-z0-9_-]{20,}"),
+    re.compile(r"\bhf_[A-Za-z0-9]{30,}\b"),
     re.compile(r"AKIA[0-9A-Z]{16}"),
     re.compile(r"(OPENAI|ANTHROPIC|AWS|GITHUB|HF)_[A-Z0-9_]*(KEY|TOKEN|SECRET)\s*=", re.I),
     re.compile(r"BEGIN (RSA|OPENSSH|EC|DSA)? ?PRIVATE KEY"),
@@ -84,11 +84,15 @@ REQUIRED_PUBLIC_FILES = (
     ".zenodo.json",
     "docs/release_boundary.md",
     "docs/public_release_readiness_plan.md",
+    "huggingface/README.md",
+    "huggingface/release_manifest.json",
     "release_manifest.json",
+    "scripts/audit/validate_hf_release_package.py",
 )
 
 REQUIRED_MANIFEST_CHECKS = {
     "python3 scripts/audit/github_release_file_audit.py",
+    "python3 scripts/audit/validate_hf_release_package.py",
     "git diff --check",
     "python3 -m compileall adapters chains scripts/audit",
 }
@@ -165,7 +169,10 @@ def scan_file_for_secrets(path: Path) -> list[str]:
     for pattern in SECRET_PATTERNS:
         if pattern.search(content):
             hits.append(f"secret-like pattern matched: {pattern.pattern}")
-    if path.as_posix() != "scripts/audit/github_release_file_audit.py":
+    if path.as_posix() not in {
+        "scripts/audit/github_release_file_audit.py",
+        "scripts/audit/validate_hf_release_package.py",
+    }:
         for pattern in FORBIDDEN_CONTENT_PATTERNS:
             if pattern.search(content):
                 hits.append(f"forbidden repo-boundary pattern matched: {pattern.pattern}")

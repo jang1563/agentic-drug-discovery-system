@@ -32,11 +32,13 @@ Public-release readiness is tracked in:
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
 - `release_manifest.json` — machine-readable release boundary and required checks.
 - `codemeta.json` and `.zenodo.json` — machine-readable citation and archive metadata.
+- `huggingface/` — local Hugging Face Dataset-card package, not uploaded yet.
 
 Before pushing or changing visibility, run:
 
 ```bash
 python3 scripts/audit/github_release_file_audit.py
+python3 scripts/audit/validate_hf_release_package.py
 git diff --check
 python3 -m compileall adapters chains scripts/audit
 ```

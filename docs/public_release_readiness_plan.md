@@ -2,11 +2,11 @@
 
 Status: active pre-publication plan
 Release posture: keep private until all blocking gates pass
-Target surface: public GitHub repository
+Target surface: public GitHub repository with optional Hugging Face Dataset mirror
 
 ## Objective
 
-Prepare this repository as a premium public research artifact: readable by humans, inspectable by machines, and conservative about sensitive or nonessential internal material. The public release should communicate the system architecture, safety boundary, schemas, verifier contracts, adapter interfaces, and audit path without exposing raw source snapshots, evaluator-only labels, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
+Prepare this repository as a premium public research artifact: readable by humans, inspectable by machines, and conservative about sensitive or nonessential internal material. The public release should communicate the system architecture, safety boundary, schemas, verifier contracts, adapter interfaces, and audit path without exposing raw source snapshots, evaluator-only labels, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes. A Hugging Face mirror, if created, should be a Dataset-card artifact mirror rather than a model release.
 
 ## Public Surface
 
@@ -15,6 +15,7 @@ The public GitHub surface includes:
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design and boundary docs: `docs/00_*` through `docs/07_*`, `docs/11_*`, `docs/release_boundary.md`, and this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
+- Hugging Face local package: `huggingface/README.md` and `huggingface/release_manifest.json`.
 - Scaffold code: `adapters/`, `chains/`, `rl_env/specs/`, `rl_env/rewards/`, `verifiers/soft/README.md`, and audit scripts.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
@@ -36,6 +37,7 @@ Before changing repository visibility:
 
    ```bash
    python3 scripts/audit/github_release_file_audit.py
+   python3 scripts/audit/validate_hf_release_package.py
    ```
 
 2. Whitespace and scaffold sanity checks pass:
@@ -54,7 +56,7 @@ Before changing repository visibility:
 
 4. Release metadata is complete:
 
-   - `release_manifest.json`, `codemeta.json`, and `.zenodo.json` reflect the intended public scope.
+   - `release_manifest.json`, `codemeta.json`, `.zenodo.json`, and `huggingface/release_manifest.json` reflect the intended public scope.
    - `CITATION.cff` has correct public citation metadata.
    - `SECURITY.md` gives safe reporting guidance without publishing direct sensitive-contact details.
    - `LICENSE` is present and the license id is consistent across metadata.
@@ -67,7 +69,7 @@ Before changing repository visibility:
 - Branch protection requires the release audit workflow before merging.
 - First public tag is cut only after the blocking gates pass from a clean worktree.
 - README links users to the release boundary, manifest, and audit command within the first screen.
-- Any future Hugging Face mirror is created only after the GitHub surface is clean, with a dataset/model/space card that repeats the same boundary.
+- Any future Hugging Face mirror is created only after the GitHub surface is clean, with a Dataset card that repeats the same boundary.
 
 ## Current Work Plan
 

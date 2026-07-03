@@ -37,7 +37,8 @@ The GitHub repo should be treated as a sanitized scaffold and protocol layer. Fu
 Before changing repository visibility, the tracked release surface must satisfy all of the following:
 
 - `python3 scripts/audit/github_release_file_audit.py` passes on tracked and unignored candidate files.
+- `python3 scripts/audit/validate_hf_release_package.py` passes before any Hugging Face upload.
 - `git diff --check` reports no whitespace errors.
 - Python scaffold files compile with `python3 -m compileall adapters chains scripts/audit`.
-- `docs/public_release_readiness_plan.md`, `release_manifest.json`, `codemeta.json`, and `.zenodo.json` match the intended release scope.
+- `docs/public_release_readiness_plan.md`, `release_manifest.json`, `codemeta.json`, `.zenodo.json`, and `huggingface/release_manifest.json` match the intended release scope.
 - License, citation metadata, contributor guidance, pull request boundary checks, issue templates, and security reporting instructions are present.

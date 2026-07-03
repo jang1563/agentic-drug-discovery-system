@@ -1,7 +1,7 @@
 {
   "artifact": "agentic-drug-discovery-system",
   "release_stage": "pre_public_github_readiness",
-  "target_surface": "github",
+  "target_surface": "github_and_huggingface_dataset",
   "public_boundary": {
     "include": [
       "README.md",
@@ -15,6 +15,8 @@
       ".zenodo.json",
       "docs/release_boundary.md",
       "docs/public_release_readiness_plan.md",
+      "huggingface/README.md",
+      "huggingface/release_manifest.json",
       "docs/00_problem_framing.md",
       "docs/01_long_horizon_chain_design.md",
       "docs/02_success_failure_case_design.md",
@@ -30,6 +32,7 @@
       "rl_env/rewards/",
       "verifiers/",
       "scripts/audit/",
+      "scripts/audit/validate_hf_release_package.py",
       ".github/workflows/release-audit.yml",
       ".github/pull_request_template.md",
       ".github/ISSUE_TEMPLATE/config.yml",
@@ -61,6 +64,11 @@
       "blocking": true
     },
     {
+      "name": "hf_release_package_validation",
+      "command": "python3 scripts/audit/validate_hf_release_package.py",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true
@@ -79,7 +87,9 @@
     "Release audit workflow green on GitHub"
   ],
   "hugging_face": {
-    "status": "not_created",
-    "rule": "Create a Hugging Face mirror only after the GitHub release surface passes the same boundary audit."
+    "status": "local_package_prepared_not_uploaded",
+    "repo_type": "dataset",
+    "proposed_repo_id": "jang1563/agentic-drug-discovery-system",
+    "rule": "Create a private Hugging Face Dataset mirror only after the GitHub release surface and local Hugging Face package pass the same boundary audit."
   }
 }
