@@ -87,9 +87,11 @@
     "Release audit workflow green on GitHub"
   ],
   "hugging_face": {
-    "status": "local_package_prepared_not_uploaded",
+    "status": "private_repo_created_uploaded",
     "repo_type": "dataset",
     "proposed_repo_id": "jang1563/agentic-drug-discovery-system",
-    "rule": "Create a private Hugging Face Dataset mirror only after the GitHub release surface and local Hugging Face package pass the same boundary audit."
+    "repo_url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
+    "visibility": "private",
+    "rule": "Keep the Hugging Face Dataset mirror private until final human boundary review approves public visibility."
   }
 }

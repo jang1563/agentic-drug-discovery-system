@@ -16,7 +16,7 @@ size_categories:
 
 # Agentic Drug Discovery System
 
-This is the Hugging Face Dataset-card package for the Agentic Drug Discovery System public artifact. It is prepared as an artifact mirror for schemas, release metadata, and safety-boundary documentation. It is not a model release and does not contain raw clinical/regulatory snapshots, hidden labels, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
+This is the Hugging Face Dataset-card package for the Agentic Drug Discovery System public artifact. It is prepared as a private artifact mirror for schemas, release metadata, and safety-boundary documentation. It is not a model release and does not contain raw clinical/regulatory snapshots, hidden labels, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
 
 ## Intended Use
 
@@ -47,8 +47,8 @@ python3 -m compileall adapters chains scripts/audit
 ## Proposed Hub Placement
 
 - Repository type: Dataset
-- Proposed repo id: `jang1563/agentic-drug-discovery-system`
-- Initial visibility: private
+- Repo id: `jang1563/agentic-drug-discovery-system`
+- Current visibility: private
 - Public visibility: only after final boundary review
 
 ## Source

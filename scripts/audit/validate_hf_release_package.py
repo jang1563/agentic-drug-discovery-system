@@ -21,8 +21,12 @@ REQUIRED_CARD_FIELDS = {
 REQUIRED_MANIFEST_VALUES = {
     "target_surface": "huggingface_dataset",
     "repo_type": "dataset",
-    "status": "local_package_prepared_not_uploaded",
     "initial_visibility": "private",
+}
+
+ALLOWED_MANIFEST_STATUSES = {
+    "local_package_prepared_not_uploaded",
+    "private_repo_created_uploaded",
 }
 
 FORBIDDEN_CARD_PATTERNS = (
@@ -86,8 +90,13 @@ def main() -> int:
 
     if manifest.get("repo_type") == "model":
         errors.append("Hugging Face repo_type must not be model for this artifact")
-    if manifest.get("status") != "local_package_prepared_not_uploaded":
-        errors.append("Hugging Face package must remain not-uploaded until explicit approval")
+    if manifest.get("status") not in ALLOWED_MANIFEST_STATUSES:
+        errors.append("Hugging Face package status is not recognized")
+    if manifest.get("status") == "private_repo_created_uploaded":
+        if manifest.get("current_visibility") != "private":
+            errors.append("uploaded Hugging Face package must remain private")
+        if not str(manifest.get("repo_url", "")).startswith("https://huggingface.co/datasets/"):
+            errors.append("uploaded Hugging Face package must declare a Dataset repo URL")
 
     include = set(manifest.get("include") or [])
     for required in ("huggingface/README.md", "docs/release_boundary.md", "release_manifest.json"):
