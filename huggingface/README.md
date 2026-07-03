@@ -18,12 +18,33 @@ size_categories:
 
 This is the Hugging Face Dataset-card package for the Agentic Drug Discovery System public artifact. It is prepared as a private artifact mirror for schemas, release metadata, and safety-boundary documentation. It is not a model release and does not contain raw clinical/regulatory snapshots, hidden labels, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
 
+## At A Glance
+
+| Field | Value |
+| --- | --- |
+| Repository type | Dataset |
+| Current visibility | Private |
+| Contents | Documentation, schemas, manifests, and release-boundary metadata. |
+| Not included | Raw source data, hidden labels, generated trajectories, logs, credentials, local paths, or model weights. |
+| Source commit | See `upload_manifest.json`. |
+
 ## Intended Use
 
 - Review the public system architecture and release boundary.
 - Inspect schema and verifier-contract documentation.
 - Track provenance for the public artifact surface.
 - Mirror the GitHub release once the GitHub review and Hugging Face package validation pass.
+
+## Artifact Map
+
+| Path | Purpose |
+| --- | --- |
+| `README.md` | This Hugging Face Dataset card. |
+| `github/README.md` | GitHub README preserved inside the Hub mirror. |
+| `release_manifest.json` | Cross-surface release manifest. |
+| `huggingface/release_manifest.json` | Hugging Face-specific include/exclude manifest. |
+| `upload_manifest.json` | Exact uploaded file list and source commit. |
+| `docs/release_boundary.md` | Public-release boundary and exclusion rules. |
 
 ## Not Included
 

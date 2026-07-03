@@ -1,8 +1,18 @@
 # Agentic Drug Discovery System
 
-Workspace for designing a long-horizon drug discovery agentic system that combines databases, tools, scientific foundation models, LLM agents, deterministic verifiers, soft verifiers, and RL-style feedback.
+Release-gated research scaffold for long-horizon drug-discovery decision environments. The project combines tool/database adapters, scientific foundation-model interfaces, LLM policy seams, deterministic verifiers, soft scientific verifiers, and RL-style feedback design.
 
 Scaffold date: 2026-06-27
+
+## At A Glance
+
+| Field | Value |
+| --- | --- |
+| Purpose | Build a verified, auditable decision environment for drug-discovery agents. |
+| Release status | Private pre-publication review on GitHub; private Hugging Face Dataset mirror. |
+| Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
+| Not included | Raw source snapshots, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
+| License | Apache-2.0. |
 
 ## Core Question
 
@@ -22,6 +32,17 @@ Can a long-horizon discovery process be represented as an agentic environment wh
 - `rl_env/rewards/`: reward component sketches.
 - `adapters/`, `chains/`, and `verifiers/`: scaffold directories for implementation.
 
+## Artifact Map
+
+| Path | Audience | Purpose |
+| --- | --- | --- |
+| `docs/public_release_readiness_plan.md` | Humans | Public-readiness plan, gates, and boundary checklist. |
+| `docs/release_boundary.md` | Humans + reviewers | What can and cannot enter Git/HF release surfaces. |
+| `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |
+| `huggingface/README.md` | Humans + HF Hub | Dataset card for the private Hugging Face mirror. |
+| `huggingface/release_manifest.json` | Machines + reviewers | Hugging Face-specific include/exclude manifest. |
+| `scripts/audit/` | CI + maintainers | Fail-closed release-boundary validators. |
+
 ## GitHub Boundary
 
 The GitHub repo is a sanitized scaffold. Full case banks, raw source snapshots, evaluator-only labels, generated verifier results, run logs, machine-specific paths, and working research notes stay outside Git unless a separate release packaging step explicitly promotes an audited artifact.
@@ -32,7 +53,7 @@ Public-release readiness is tracked in:
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
 - `release_manifest.json` — machine-readable release boundary and required checks.
 - `codemeta.json` and `.zenodo.json` — machine-readable citation and archive metadata.
-- `huggingface/` — local Hugging Face Dataset-card package, not uploaded yet.
+- `huggingface/` — Hugging Face Dataset-card package mirrored privately on the Hub.
 
 Before pushing or changing visibility, run:
 
