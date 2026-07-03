@@ -1,0 +1,85 @@
+{
+  "artifact": "agentic-drug-discovery-system",
+  "release_stage": "pre_public_github_readiness",
+  "target_surface": "github",
+  "public_boundary": {
+    "include": [
+      "README.md",
+      "PROJECT_BRIEF.md",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      "SECURITY.md",
+      "CITATION.cff",
+      "CHANGELOG.md",
+      "codemeta.json",
+      ".zenodo.json",
+      "docs/release_boundary.md",
+      "docs/public_release_readiness_plan.md",
+      "docs/00_problem_framing.md",
+      "docs/01_long_horizon_chain_design.md",
+      "docs/02_success_failure_case_design.md",
+      "docs/03_deterministic_soft_verifier.md",
+      "docs/04_rl_environment_design.md",
+      "docs/05_model_tool_stack.md",
+      "docs/06_episode_label_ontology_v0.md",
+      "docs/07_self_review_checkpoints_v0.md",
+      "docs/11_full_flow_retrospective_and_prospective_plan.md",
+      "adapters/",
+      "chains/",
+      "rl_env/specs/",
+      "rl_env/rewards/",
+      "verifiers/",
+      "scripts/audit/",
+      ".github/workflows/release-audit.yml",
+      ".github/pull_request_template.md",
+      ".github/ISSUE_TEMPLATE/config.yml",
+      ".github/ISSUE_TEMPLATE/release_boundary_review.yml"
+    ],
+    "exclude": [
+      "case_banks/",
+      "research/",
+      "notes/",
+      "registries/",
+      "envs/",
+      "experiments/",
+      "scripts/launch/",
+      "scripts/sync/",
+      "verifiers/deterministic/",
+      "raw source snapshots",
+      "locked episodes",
+      "hidden/evaluator labels",
+      "generated reward or verifier outputs",
+      "scheduler logs",
+      "local paths",
+      "credentials and key material"
+    ]
+  },
+  "required_checks": [
+    {
+      "name": "github_release_file_audit",
+      "command": "python3 scripts/audit/github_release_file_audit.py",
+      "blocking": true
+    },
+    {
+      "name": "diff_check",
+      "command": "git diff --check",
+      "blocking": true
+    },
+    {
+      "name": "python_compile",
+      "command": "python3 -m compileall adapters chains scripts/audit",
+      "blocking": true
+    }
+  ],
+  "publication_gates": [
+    "Apache-2.0 license present and consistent across metadata",
+    "No sensitive content in tracked or unignored candidate files",
+    "No raw source snapshots or evaluator-only labels",
+    "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
+    "Release audit workflow green on GitHub"
+  ],
+  "hugging_face": {
+    "status": "not_created",
+    "rule": "Create a Hugging Face mirror only after the GitHub release surface passes the same boundary audit."
+  }
+}

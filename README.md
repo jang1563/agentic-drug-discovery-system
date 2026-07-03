@@ -26,10 +26,19 @@ Can a long-horizon discovery process be represented as an agentic environment wh
 
 The GitHub repo is a sanitized scaffold. Full case banks, raw source snapshots, evaluator-only labels, generated verifier results, run logs, machine-specific paths, and working research notes stay outside Git unless a separate release packaging step explicitly promotes an audited artifact.
 
-Before pushing, run:
+Public-release readiness is tracked in:
+
+- `docs/release_boundary.md` — what can and cannot enter Git history.
+- `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
+- `release_manifest.json` — machine-readable release boundary and required checks.
+- `codemeta.json` and `.zenodo.json` — machine-readable citation and archive metadata.
+
+Before pushing or changing visibility, run:
 
 ```bash
-python scripts/audit/github_release_file_audit.py
+python3 scripts/audit/github_release_file_audit.py
+git diff --check
+python3 -m compileall adapters chains scripts/audit
 ```
 
 ## Immediate Use
@@ -54,3 +63,11 @@ This project should stay implementation-facing. Research notes are useful only i
 - trajectory records,
 - reward signals,
 - compute-specific experiment plans.
+
+## Release Posture
+
+The public artifact should present a protocol and benchmark-control layer, not a capability release. The release surface should favor schemas, audit scripts, adapters, governance notes, and reproducible smoke paths. Raw clinical/regulatory snapshots, hidden labels, generated trajectories, scheduler logs, machine paths, credentials, and unpublished working notes remain outside the repository.
+
+## License
+
+Apache License 2.0. See `LICENSE`.

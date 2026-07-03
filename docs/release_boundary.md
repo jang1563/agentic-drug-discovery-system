@@ -31,3 +31,13 @@ These may become release assets after a separate audit:
 ## Current Policy
 
 The GitHub repo should be treated as a sanitized scaffold and protocol layer. Full episode banks, evaluator references, raw snapshots, working notes, and run outputs stay outside Git until an explicit release packaging step creates a separate audited artifact.
+
+## Public-Readiness Gate
+
+Before changing repository visibility, the tracked release surface must satisfy all of the following:
+
+- `python3 scripts/audit/github_release_file_audit.py` passes on tracked and unignored candidate files.
+- `git diff --check` reports no whitespace errors.
+- Python scaffold files compile with `python3 -m compileall adapters chains scripts/audit`.
+- `docs/public_release_readiness_plan.md`, `release_manifest.json`, `codemeta.json`, and `.zenodo.json` match the intended release scope.
+- License, citation metadata, contributor guidance, pull request boundary checks, issue templates, and security reporting instructions are present.

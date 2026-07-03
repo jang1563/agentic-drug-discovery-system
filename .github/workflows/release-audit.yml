@@ -13,4 +13,8 @@ jobs:
         with:
           python-version: "3.11"
       - name: Audit GitHub file boundary
-        run: python scripts/audit/github_release_file_audit.py
+        run: python3 scripts/audit/github_release_file_audit.py
+      - name: Compile public scaffold
+        run: python3 -m compileall adapters chains scripts/audit
+      - name: Validate release manifest
+        run: python3 -m json.tool release_manifest.json >/tmp/release_manifest.json
