@@ -84,15 +84,19 @@ REQUIRED_PUBLIC_FILES = (
     ".zenodo.json",
     "docs/release_boundary.md",
     "docs/public_release_readiness_plan.md",
+    "docs/public_launch_checklist.md",
     "huggingface/README.md",
     "huggingface/release_manifest.json",
     "release_manifest.json",
+    "release_decision_packet.json",
     "scripts/audit/validate_hf_release_package.py",
+    "scripts/audit/validate_public_launch_packet.py",
 )
 
 REQUIRED_MANIFEST_CHECKS = {
     "python3 scripts/audit/github_release_file_audit.py",
     "python3 scripts/audit/validate_hf_release_package.py",
+    "python3 scripts/audit/validate_public_launch_packet.py",
     "git diff --check",
     "python3 -m compileall adapters chains scripts/audit",
 }

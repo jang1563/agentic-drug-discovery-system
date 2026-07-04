@@ -15,6 +15,8 @@
       ".zenodo.json",
       "docs/release_boundary.md",
       "docs/public_release_readiness_plan.md",
+      "docs/public_launch_checklist.md",
+      "release_decision_packet.json",
       "huggingface/README.md",
       "huggingface/release_manifest.json",
       "docs/00_problem_framing.md",
@@ -33,6 +35,7 @@
       "verifiers/",
       "scripts/audit/",
       "scripts/audit/validate_hf_release_package.py",
+      "scripts/audit/validate_public_launch_packet.py",
       ".github/workflows/release-audit.yml",
       ".github/pull_request_template.md",
       ".github/ISSUE_TEMPLATE/config.yml",
@@ -69,6 +72,11 @@
       "blocking": true
     },
     {
+      "name": "public_launch_packet_validation",
+      "command": "python3 scripts/audit/validate_public_launch_packet.py",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true
@@ -84,6 +92,7 @@
     "No sensitive content in tracked or unignored candidate files",
     "No raw source snapshots or evaluator-only labels",
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
+    "Public launch decision packet stays private-ready until explicit approval",
     "Release audit workflow green on GitHub"
   ],
   "hugging_face": {

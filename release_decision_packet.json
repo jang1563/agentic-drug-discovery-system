@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "artifact": "agentic-drug-discovery-system",
+  "decision_status": "private_ready_for_human_publication_review",
+  "as_of_date": "2026-07-04",
+  "human_readable_checklist": "docs/public_launch_checklist.md",
+  "surfaces": {
+    "github": {
+      "url": "https://github.com/jang1563/agentic-drug-discovery-system",
+      "current_visibility": "private",
+      "active_branch": "codex/public-release-readiness",
+      "active_pr": "https://github.com/jang1563/agentic-drug-discovery-system/pull/1",
+      "publication_target": "public_after_explicit_human_approval"
+    },
+    "hugging_face": {
+      "url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
+      "repo_type": "dataset",
+      "current_visibility": "private",
+      "publication_target": "public_after_explicit_human_approval"
+    }
+  },
+  "launch_decision": {
+    "default": "do_not_publish",
+    "human_approval_required": true,
+    "no_public_visibility_change_without_explicit_approval": true,
+    "approval_record": "GitHub release-boundary review issue, PR review, or equivalent explicit owner instruction"
+  },
+  "release_scope": {
+    "include": [
+      "reader-facing README and project brief",
+      "release boundary and launch checklist",
+      "machine-readable release manifests",
+      "citation and archive metadata",
+      "schemas, verifier contracts, adapters, and flow scaffolds",
+      "audit scripts and GitHub Actions release audit"
+    ],
+    "exclude": [
+      "raw source snapshots",
+      "hidden or evaluator-only labels",
+      "locked episode records",
+      "generated reward or verifier outputs",
+      "run logs",
+      "credentials and key material",
+      "machine-local paths",
+      "model weights"
+    ]
+  },
+  "required_checks": [
+    {
+      "name": "github_release_file_audit",
+      "command": "python3 scripts/audit/github_release_file_audit.py",
+      "blocking": true
+    },
+    {
+      "name": "hf_release_package_validation",
+      "command": "python3 scripts/audit/validate_hf_release_package.py",
+      "blocking": true
+    },
+    {
+      "name": "public_launch_packet_validation",
+      "command": "python3 scripts/audit/validate_public_launch_packet.py",
+      "blocking": true
+    },
+    {
+      "name": "diff_check",
+      "command": "git diff --check",
+      "blocking": true
+    },
+    {
+      "name": "python_compile",
+      "command": "python3 -m compileall adapters chains scripts/audit",
+      "blocking": true
+    }
+  ],
+  "read_order": [
+    "README.md",
+    "docs/public_launch_checklist.md",
+    "docs/release_boundary.md",
+    "release_manifest.json",
+    "huggingface/README.md",
+    "huggingface/release_manifest.json"
+  ],
+  "hard_stop_if": [
+    "any required check fails",
+    "any release-surface file has unreviewed sensitive content",
+    "GitHub or Hugging Face visibility is changed before explicit approval",
+    "the README overstates built functionality beyond the validated slice",
+    "the Hugging Face mirror is stale relative to the reviewed source commit"
+  ]
+}

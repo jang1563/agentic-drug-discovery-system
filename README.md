@@ -25,20 +25,39 @@ Can a long-horizon discovery process be represented as an agentic environment wh
 - success and failure trajectories become training/evaluation data,
 - reward design can support RL or RLVR-style optimization?
 
+## Current State (honest scope)
+
+This is, concretely, a **retrospective clinical/regulatory decision benchmark with source-derived
+(no-human) labels plus one validated end-to-end vertical slice** — not yet the full 8-stage
+trajectory atlas the roadmap describes. Honest status:
+
+- **Built & validated:** source-derived label authority + enforced construct validity (a masked
+  agent surface kills a no-reasoning structural-tell shortcut); callable tool/DB adapters
+  (ClinicalTrials.gov, openFDA, Open Targets, ChEMBL, EMA EPAR) and multi-stage flow orchestrators;
+  one disease/target slice (sickle cell) traversed end-to-end in both retrospective and a prospective
+  decision-support demo; a calibration card (conformal/RCPS) and a hash-pinned locked replay set.
+- **Roadmap (not yet built):** 7 of 8 atlases (compound/ADMET/target/structure/cell) hold no
+  standalone data; the multi-stage flow is demonstrated on one disease; SFM (Boltz-2) scoring needs
+  a GPU endpoint.
+- **Read the caveats first:** headline demo numbers are small-N and on one well-characterized disease;
+  autonomous tool-use is higher-variance than the curated pipeline. Do not read this as a finished
+  long-horizon agent platform.
+
 ## Current Anchors
 
-- `docs/`: high-level design notes.
+- `docs/`: design notes; `docs/11_full_flow_retrospective_and_prospective_plan.md` is the current plan.
 - `rl_env/specs/`: state, action, observation, and case-bank schema sketches.
-- `rl_env/rewards/`: reward component sketches.
-- `adapters/`, `chains/`, and `verifiers/`: scaffold directories for implementation.
+- `adapters/`, `chains/`, `verifiers/`: **implemented** — callable adapters + flow orchestrators + verifiers (not just scaffold).
 
 ## Artifact Map
 
 | Path | Audience | Purpose |
 | --- | --- | --- |
 | `docs/public_release_readiness_plan.md` | Humans | Public-readiness plan, gates, and boundary checklist. |
+| `docs/public_launch_checklist.md` | Humans | Final private-to-public launch checklist and approval gates. |
 | `docs/release_boundary.md` | Humans + reviewers | What can and cannot enter Git/HF release surfaces. |
 | `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |
+| `release_decision_packet.json` | Machines + reviewers | Machine-readable public launch decision packet. |
 | `huggingface/README.md` | Humans + HF Hub | Dataset card for the private Hugging Face mirror. |
 | `huggingface/release_manifest.json` | Machines + reviewers | Hugging Face-specific include/exclude manifest. |
 | `scripts/audit/` | CI + maintainers | Fail-closed release-boundary validators. |
@@ -51,7 +70,9 @@ Public-release readiness is tracked in:
 
 - `docs/release_boundary.md` — what can and cannot enter Git history.
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
+- `docs/public_launch_checklist.md` — final human launch checklist.
 - `release_manifest.json` — machine-readable release boundary and required checks.
+- `release_decision_packet.json` — machine-readable public launch decision packet.
 - `codemeta.json` and `.zenodo.json` — machine-readable citation and archive metadata.
 - `huggingface/` — Hugging Face Dataset-card package mirrored privately on the Hub.
 
@@ -60,6 +81,7 @@ Before pushing or changing visibility, run:
 ```bash
 python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
+python3 scripts/audit/validate_public_launch_packet.py
 git diff --check
 python3 -m compileall adapters chains scripts/audit
 ```

@@ -17,10 +17,12 @@
     "CITATION.cff",
     "CHANGELOG.md",
     "release_manifest.json",
+    "release_decision_packet.json",
     "codemeta.json",
     ".zenodo.json",
     "docs/release_boundary.md",
     "docs/public_release_readiness_plan.md",
+    "docs/public_launch_checklist.md",
     "docs/00_problem_framing.md",
     "docs/01_long_horizon_chain_design.md",
     "docs/02_success_failure_case_design.md",
@@ -56,6 +58,7 @@
   "required_checks": [
     "python3 scripts/audit/github_release_file_audit.py",
     "python3 scripts/audit/validate_hf_release_package.py",
+    "python3 scripts/audit/validate_public_launch_packet.py",
     "git diff --check",
     "python3 -m compileall adapters chains scripts/audit"
   ]

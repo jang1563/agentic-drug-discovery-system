@@ -42,9 +42,11 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 | `README.md` | This Hugging Face Dataset card. |
 | `github/README.md` | GitHub README preserved inside the Hub mirror. |
 | `release_manifest.json` | Cross-surface release manifest. |
+| `release_decision_packet.json` | Machine-readable launch decision packet. |
 | `huggingface/release_manifest.json` | Hugging Face-specific include/exclude manifest. |
 | `upload_manifest.json` | Exact uploaded file list and source commit. |
 | `docs/release_boundary.md` | Public-release boundary and exclusion rules. |
+| `docs/public_launch_checklist.md` | Human launch checklist before any visibility change. |
 
 ## Not Included
 
@@ -61,6 +63,7 @@ Run these checks from the GitHub repository root before creating or updating the
 ```bash
 python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
+python3 scripts/audit/validate_public_launch_packet.py
 git diff --check
 python3 -m compileall adapters chains scripts/audit
 ```
