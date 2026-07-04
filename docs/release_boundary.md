@@ -38,6 +38,7 @@ Before changing repository visibility, the tracked release surface must satisfy 
 
 - `python3 scripts/audit/github_release_file_audit.py` passes on tracked and unignored candidate files.
 - `python3 scripts/audit/validate_hf_release_package.py` passes before any Hugging Face upload.
+- `python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force` can reproduce the Hugging Face package locally.
 - `git diff --check` reports no whitespace errors.
 - Python scaffold files compile with `python3 -m compileall adapters chains scripts/audit`.
 - `docs/public_release_readiness_plan.md`, `release_manifest.json`, `codemeta.json`, `.zenodo.json`, and `huggingface/release_manifest.json` match the intended release scope.

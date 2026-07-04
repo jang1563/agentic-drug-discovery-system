@@ -47,9 +47,10 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 | `huggingface/release_manifest.json` | Hugging Face-specific include/exclude manifest. |
 | `upload_manifest.json` | Exact uploaded file list and source commit. |
 | `docs/release_boundary.md` | Public-release boundary and exclusion rules. |
+| `docs/release_trust_report.md` | Trust claims, machine anchors, and interpretation warnings. |
 | `docs/12_scd_vertical_slice.md` | Validated SCD vertical slice, with small-N caveats. |
 | `docs/public_launch_checklist.md` | Human launch checklist before any visibility change. |
-| `scripts/audit/validate_vertical_slice_doc.py` | Guardrail that keeps the vertical-slice doc caveats-first. |
+| `scripts/audit/*.py` | Local release audits and reproducible Hub package builder. |
 
 ## Not Included
 
@@ -68,6 +69,7 @@ python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
+python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force
 git diff --check
 python3 -m compileall adapters chains scripts/audit
 ```

@@ -119,7 +119,19 @@ def main() -> int:
                 errors.append(f"huggingface/README.md has stale public-release wording: {phrase}")
 
     include = set(manifest.get("include") or [])
-    for required in ("huggingface/README.md", "docs/release_boundary.md", "release_manifest.json"):
+    for required in (
+        "huggingface/README.md",
+        "docs/release_boundary.md",
+        "docs/release_trust_report.md",
+        "github/README.md",
+        "release_manifest.json",
+        "scripts/audit/build_hf_release_package.py",
+        "scripts/audit/github_release_file_audit.py",
+        "scripts/audit/validate_hf_release_package.py",
+        "scripts/audit/validate_public_launch_packet.py",
+        "scripts/audit/validate_vertical_slice_doc.py",
+        "huggingface/release_manifest.json",
+    ):
         if required not in include:
             errors.append(f"huggingface/release_manifest.json missing include: {required}")
 

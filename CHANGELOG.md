@@ -9,4 +9,5 @@ All notable public-surface changes to this repository will be documented here.
 - Added a local RDKit-based molecular-property adapter (QED, MW, logP, H-bond donors/acceptors, Lipinski) giving the compound-design stage a computable, no-GPU druglikeness signal.
 - Added `docs/12_scd_vertical_slice.md` documenting the validated end-to-end sickle cell disease (SCD) retrospective benchmark slice and prospective decision-support demo.
 - Added `scripts/audit/validate_vertical_slice_doc.py` to keep public benchmark numbers caveats-first and small-N scoped.
+- Added `docs/release_trust_report.md` and `scripts/audit/build_hf_release_package.py` to make the public trust surface and Hugging Face mirror build path easier to audit.
 - Strengthened local and CI release-audit gates for sensitive content, generated artifacts, machine-specific breadcrumbs, and public metadata completeness.
