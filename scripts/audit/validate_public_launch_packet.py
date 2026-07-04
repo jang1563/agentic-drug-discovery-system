@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PACKET = ROOT / "release_decision_packet.json"
 CHECKLIST = ROOT / "docs" / "public_launch_checklist.md"
+RELEASE_MANIFEST = ROOT / "release_manifest.json"
 
 REQUIRED_CHECKS = {
     "python3 scripts/audit/github_release_file_audit.py",
@@ -40,19 +41,35 @@ REQUIRED_CHECKLIST_PHRASES = (
     "validate_public_launch_packet.py",
 )
 
+REQUIRED_READ_ORDER = {
+    "README.md",
+    "docs/12_scd_vertical_slice.md",
+    "docs/public_launch_checklist.md",
+    "docs/release_boundary.md",
+    "release_manifest.json",
+    "huggingface/README.md",
+    "huggingface/release_manifest.json",
+}
 
-def load_packet(errors: list[str]) -> dict:
+STALE_PUBLIC_GITHUB_KEYS = {
+    "active_branch",
+    "active_pr",
+}
+
+
+def load_json(path: Path, label: str, errors: list[str]) -> dict:
     try:
-        return json.loads(PACKET.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
-        errors.append(f"release_decision_packet.json is not valid JSON: {exc}")
+        errors.append(f"{label} is not valid JSON: {exc}")
         return {}
 
 
 def main() -> int:
     errors: list[str] = []
 
-    packet = load_packet(errors)
+    packet = load_json(PACKET, "release_decision_packet.json", errors)
+    release_manifest = load_json(RELEASE_MANIFEST, "release_manifest.json", errors)
     if not CHECKLIST.exists():
         errors.append("missing docs/public_launch_checklist.md")
         checklist = ""
@@ -73,6 +90,16 @@ def main() -> int:
         errors.append("GitHub current_visibility must be public")
     if not str(github.get("url", "")).startswith("https://github.com/"):
         errors.append("GitHub URL must point to github.com")
+    if github.get("default_branch") != "main":
+        errors.append("GitHub default_branch must be main after public release")
+    if github.get("release_state") != "merged_to_default_branch":
+        errors.append("GitHub release_state must be merged_to_default_branch")
+    if not str(github.get("release_pull_request", "")).startswith(
+        "https://github.com/jang1563/agentic-drug-discovery-system/pull/"
+    ):
+        errors.append("GitHub release_pull_request must point to the release PR")
+    for key in sorted(STALE_PUBLIC_GITHUB_KEYS & set(github)):
+        errors.append(f"GitHub public release metadata must not keep stale key: {key}")
     if hf.get("current_visibility") != "public":
         errors.append("Hugging Face current_visibility must be public")
     if hf.get("repo_type") != "dataset":
@@ -99,6 +126,17 @@ def main() -> int:
     exclusions = set(((packet.get("release_scope") or {}).get("exclude")) or [])
     for exclusion in sorted(REQUIRED_EXCLUSIONS - exclusions):
         errors.append(f"release_decision_packet.json missing exclusion: {exclusion}")
+
+    read_order = set(packet.get("read_order") or [])
+    for required_path in sorted(REQUIRED_READ_ORDER - read_order):
+        errors.append(f"release_decision_packet.json missing read_order entry: {required_path}")
+
+    release_hf = release_manifest.get("hugging_face") or {}
+    if release_hf.get("visibility") == "public":
+        if release_hf.get("repo_id") != "jang1563/agentic-drug-discovery-system":
+            errors.append("release_manifest.json hugging_face.repo_id is missing or incorrect")
+        if "proposed_repo_id" in release_hf:
+            errors.append("release_manifest.json must not use proposed_repo_id after public release")
 
     for phrase in REQUIRED_CHECKLIST_PHRASES:
         if phrase not in checklist:

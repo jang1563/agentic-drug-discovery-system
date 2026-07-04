@@ -2,7 +2,7 @@
   "artifact": "agentic-drug-discovery-system",
   "target_surface": "huggingface_dataset",
   "repo_type": "dataset",
-  "proposed_repo_id": "jang1563/agentic-drug-discovery-system",
+  "repo_id": "jang1563/agentic-drug-discovery-system",
   "status": "public_repo_uploaded_after_approval",
   "initial_visibility": "private",
   "current_visibility": "public",

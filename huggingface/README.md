@@ -34,7 +34,7 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 - Read the caveats-first SCD vertical slice before citing benchmark numbers.
 - Inspect schema and verifier-contract documentation.
 - Track provenance for the public artifact surface.
-- Mirror the GitHub release once the GitHub review and Hugging Face package validation pass.
+- Inspect the mirrored GitHub release surface and source-commit provenance.
 
 ## Artifact Map
 
@@ -72,7 +72,7 @@ git diff --check
 python3 -m compileall adapters chains scripts/audit
 ```
 
-## Proposed Hub Placement
+## Hub Placement
 
 - Repository type: Dataset
 - Repo id: `jang1563/agentic-drug-discovery-system`
