@@ -88,14 +88,19 @@ agents* (epistemic control under delegation). Prospective mode must preserve:
 
 ## What must be built (gap from today)
 
-Today only the clinical/regulatory decision layer (M1) has data, no agent loop
-has run, and `adapters/` + `chains/` are empty. To reach full flow:
+For the clinical/regulatory decision layer (M1), the agent-loop half is now
+**built and validated end-to-end on one disease** — sickle cell disease — with 7
+tracked adapters and 2 flow orchestrators. See `docs/12_scd_vertical_slice.md`
+for the concrete validated instance of this plan. The remaining roadmap stages
+(M2–M6) are still unbuilt. To reach full flow:
 
-1. **Honest source-derived labels per stage** — Track A (in progress for M1);
+1. **Honest source-derived labels per stage** — Track A (validated for M1);
    replicate the labeling-function + authority-table pattern for M2–M6.
 2. **Live agent loop** — LLM planner (hosted model backend or API) + tool/DB
    adapters (CT.gov, openFDA, Open Targets, ChEMBL, PDB, …) + SFM scorers
-   (Boltz-2, ESM, State). This is currently empty and is the core missing half.
+   (GPU-gated Boltz-2/ESM plus a local no-GPU RDKit druglikeness signal). This
+   half is implemented for the SCD slice; extending it across M2–M6 is the
+   remaining work.
 3. **Flow orchestrator (`chains/`)** — given a disease/target seed, assemble the
    ordered episode chain across stages and let the agent traverse it, carrying
    state/evidence/uncertainty across handoffs.

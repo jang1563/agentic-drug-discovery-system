@@ -113,8 +113,8 @@ def run_flow(episode, policy):
 class Toolbox:
     """Binds the callable adapters. `call(tool, arg)` returns an observation string."""
 
-    def __init__(self, ot, chembl, ema, sfm=None):
-        self.ot, self.chembl, self.ema, self.sfm = ot, chembl, ema, sfm
+    def __init__(self, ot, chembl, ema, sfm=None, molprops=None):
+        self.ot, self.chembl, self.ema, self.sfm, self.molprops = ot, chembl, ema, sfm, molprops
 
     def call(self, tool, arg):
         tool = (tool or "").strip().lower()
@@ -138,6 +138,8 @@ class Toolbox:
                 return self._fda_label(arg)
             if tool in ("boltz2", "boltz_affinity", "sfm_binding"):
                 return self.sfm.predict_binding(arg) if getattr(self, "sfm", None) else "(SFM tool not wired)"
+            if tool in ("molprops", "druglikeness"):
+                return self.molprops.properties(arg) if getattr(self, "molprops", None) else "(molprops tool not wired)"
             return f"(unknown tool '{tool}')"
         except Exception as e:
             return f"(tool error: {e})"
@@ -189,7 +191,8 @@ Available tools (issue a call to gather evidence for THIS stage):
   CALL ctgov_trial <NCT>
   CALL fda_label <BRAND or GENERIC name>        (FDA approval + boxed warnings)
   CALL ema_epar <BRAND or INN>                  (EU status: Authorised/Revoked/Suspended/not-filed)
-  CALL boltz2 <TARGET|SMILES-or-ligand>         (SFM: predicted binding affinity / structure confidence)
+  CALL molprops <SMILES or drug name>           (RDKit druglikeness: QED / MW / logP / Lipinski — runs locally)
+  CALL boltz2 <TARGET|SMILES-or-ligand>         (SFM: predicted binding affinity / structure confidence — needs GPU)
 
 Observations so far:
 {observations}

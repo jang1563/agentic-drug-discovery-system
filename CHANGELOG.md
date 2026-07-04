@@ -5,5 +5,7 @@ All notable public-surface changes to this repository will be documented here.
 ## Unreleased
 
 - Added public release boundary documentation, release manifest, security policy, contribution guide, citation metadata, license, and archive metadata.
-- Added scaffold adapters and chain interfaces for the first public decision-environment prototype surface.
+- Added callable tool/database adapters (Open Targets, ChEMBL, ClinicalTrials.gov, openFDA, EMA EPAR) and multi-stage flow orchestrators (discovery_flow, episode_flow) for the first public decision-environment surface.
+- Added a local RDKit-based molecular-property adapter (QED, MW, logP, H-bond donors/acceptors, Lipinski) giving the compound-design stage a computable, no-GPU druglikeness signal.
+- Added `docs/12_scd_vertical_slice.md` documenting the validated end-to-end sickle cell disease (SCD) retrospective benchmark slice and prospective decision-support demo.
 - Strengthened local and CI release-audit gates for sensitive content, generated artifacts, machine-specific breadcrumbs, and public metadata completeness.
