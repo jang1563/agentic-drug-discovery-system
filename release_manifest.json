@@ -14,6 +14,7 @@
       "codemeta.json",
       ".zenodo.json",
       "docs/release_boundary.md",
+      "docs/release_trust_report.md",
       "docs/public_release_readiness_plan.md",
       "docs/public_launch_checklist.md",
       "release_decision_packet.json",
@@ -35,6 +36,7 @@
       "rl_env/rewards/",
       "verifiers/",
       "scripts/audit/",
+      "scripts/audit/build_hf_release_package.py",
       "scripts/audit/validate_hf_release_package.py",
       "scripts/audit/validate_public_launch_packet.py",
       "scripts/audit/validate_vertical_slice_doc.py",
@@ -84,6 +86,11 @@
       "blocking": true
     },
     {
+      "name": "hf_release_package_build",
+      "command": "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true
@@ -100,6 +107,7 @@
     "No raw source snapshots or evaluator-only labels",
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
     "Vertical-slice benchmark numbers remain caveats-first and small-N scoped",
+    "Hugging Face mirror package can be rebuilt from the checked-in manifest",
     "Public launch decision packet records explicit approval before public visibility",
     "Release audit workflow green on GitHub"
   ],

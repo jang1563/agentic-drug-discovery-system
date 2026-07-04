@@ -83,6 +83,7 @@ REQUIRED_PUBLIC_FILES = (
     "codemeta.json",
     ".zenodo.json",
     "docs/release_boundary.md",
+    "docs/release_trust_report.md",
     "docs/public_release_readiness_plan.md",
     "docs/public_launch_checklist.md",
     "docs/12_scd_vertical_slice.md",
@@ -90,6 +91,7 @@ REQUIRED_PUBLIC_FILES = (
     "huggingface/release_manifest.json",
     "release_manifest.json",
     "release_decision_packet.json",
+    "scripts/audit/build_hf_release_package.py",
     "scripts/audit/validate_hf_release_package.py",
     "scripts/audit/validate_public_launch_packet.py",
     "scripts/audit/validate_vertical_slice_doc.py",
@@ -100,6 +102,7 @@ REQUIRED_MANIFEST_CHECKS = {
     "python3 scripts/audit/validate_hf_release_package.py",
     "python3 scripts/audit/validate_public_launch_packet.py",
     "python3 scripts/audit/validate_vertical_slice_doc.py",
+    "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
     "git diff --check",
     "python3 -m compileall adapters chains scripts/audit",
 }
@@ -178,6 +181,7 @@ def scan_file_for_secrets(path: Path) -> list[str]:
             hits.append(f"secret-like pattern matched: {pattern.pattern}")
     if path.as_posix() not in {
         "scripts/audit/github_release_file_audit.py",
+        "scripts/audit/build_hf_release_package.py",
         "scripts/audit/validate_hf_release_package.py",
         "scripts/audit/validate_vertical_slice_doc.py",
     }:

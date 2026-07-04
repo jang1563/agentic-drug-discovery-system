@@ -21,6 +21,7 @@
     "codemeta.json",
     ".zenodo.json",
     "docs/release_boundary.md",
+    "docs/release_trust_report.md",
     "docs/public_release_readiness_plan.md",
     "docs/public_launch_checklist.md",
     "docs/00_problem_framing.md",
@@ -33,10 +34,16 @@
     "docs/07_self_review_checkpoints_v0.md",
     "docs/11_full_flow_retrospective_and_prospective_plan.md",
     "docs/12_scd_vertical_slice.md",
+    "github/README.md",
     "rl_env/specs/",
     "rl_env/rewards/",
+    "scripts/audit/build_hf_release_package.py",
+    "scripts/audit/github_release_file_audit.py",
+    "scripts/audit/validate_hf_release_package.py",
+    "scripts/audit/validate_public_launch_packet.py",
     "scripts/audit/validate_vertical_slice_doc.py",
-    "huggingface/README.md"
+    "huggingface/README.md",
+    "huggingface/release_manifest.json"
   ],
   "exclude": [
     "case_banks/",
@@ -62,6 +69,7 @@
     "python3 scripts/audit/validate_hf_release_package.py",
     "python3 scripts/audit/validate_public_launch_packet.py",
     "python3 scripts/audit/validate_vertical_slice_doc.py",
+    "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
     "git diff --check",
     "python3 -m compileall adapters chains scripts/audit"
   ]

@@ -18,6 +18,7 @@ REQUIRED_CHECKS = {
     "python3 scripts/audit/validate_hf_release_package.py",
     "python3 scripts/audit/validate_public_launch_packet.py",
     "python3 scripts/audit/validate_vertical_slice_doc.py",
+    "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
     "git diff --check",
     "python3 -m compileall adapters chains scripts/audit",
 }
@@ -43,6 +44,7 @@ REQUIRED_CHECKLIST_PHRASES = (
 
 REQUIRED_READ_ORDER = {
     "README.md",
+    "docs/release_trust_report.md",
     "docs/12_scd_vertical_slice.md",
     "docs/public_launch_checklist.md",
     "docs/release_boundary.md",

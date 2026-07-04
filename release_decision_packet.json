@@ -68,6 +68,11 @@
       "blocking": true
     },
     {
+      "name": "hf_release_package_build",
+      "command": "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true
@@ -80,6 +85,7 @@
   ],
   "read_order": [
     "README.md",
+    "docs/release_trust_report.md",
     "docs/12_scd_vertical_slice.md",
     "docs/public_launch_checklist.md",
     "docs/release_boundary.md",
