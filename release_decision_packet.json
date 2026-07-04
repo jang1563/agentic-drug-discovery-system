@@ -62,6 +62,11 @@
       "blocking": true
     },
     {
+      "name": "vertical_slice_doc_validation",
+      "command": "python3 scripts/audit/validate_vertical_slice_doc.py",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true

@@ -31,6 +31,7 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 ## Intended Use
 
 - Review the public system architecture and release boundary.
+- Read the caveats-first SCD vertical slice before citing benchmark numbers.
 - Inspect schema and verifier-contract documentation.
 - Track provenance for the public artifact surface.
 - Mirror the GitHub release once the GitHub review and Hugging Face package validation pass.
@@ -46,7 +47,9 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 | `huggingface/release_manifest.json` | Hugging Face-specific include/exclude manifest. |
 | `upload_manifest.json` | Exact uploaded file list and source commit. |
 | `docs/release_boundary.md` | Public-release boundary and exclusion rules. |
+| `docs/12_scd_vertical_slice.md` | Validated SCD vertical slice, with small-N caveats. |
 | `docs/public_launch_checklist.md` | Human launch checklist before any visibility change. |
+| `scripts/audit/validate_vertical_slice_doc.py` | Guardrail that keeps the vertical-slice doc caveats-first. |
 
 ## Not Included
 
@@ -64,6 +67,7 @@ Run these checks from the GitHub repository root before creating or updating the
 python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
+python3 scripts/audit/validate_vertical_slice_doc.py
 git diff --check
 python3 -m compileall adapters chains scripts/audit
 ```

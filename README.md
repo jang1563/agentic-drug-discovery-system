@@ -35,17 +35,18 @@ trajectory atlas the roadmap describes. Honest status:
   agent surface kills a no-reasoning structural-tell shortcut); callable tool/DB adapters
   (ClinicalTrials.gov, openFDA, Open Targets, ChEMBL, EMA EPAR) and multi-stage flow orchestrators;
   one disease/target slice (sickle cell) traversed end-to-end in both retrospective and a prospective
-  decision-support demo; a calibration card (conformal/RCPS) and a hash-pinned locked replay set.
+  decision-support demo; local RDKit druglikeness screening; a calibration card
+  (conformal/RCPS) and a hash-pinned locked replay set.
 - **Roadmap (not yet built):** 7 of 8 atlases (compound/ADMET/target/structure/cell) hold no
   standalone data; the multi-stage flow is demonstrated on one disease; SFM (Boltz-2) scoring needs
-  a GPU endpoint.
+  a GPU endpoint, while RDKit molprops runs locally.
 - **Read the caveats first:** headline demo numbers are small-N and on one well-characterized disease;
   autonomous tool-use is higher-variance than the curated pipeline. Do not read this as a finished
   long-horizon agent platform.
 
 ## Current Anchors
 
-- `docs/`: design notes; `docs/11_full_flow_retrospective_and_prospective_plan.md` is the current plan.
+- `docs/`: design notes; `docs/12_scd_vertical_slice.md` is the validated slice and `docs/11_full_flow_retrospective_and_prospective_plan.md` is the current plan.
 - `rl_env/specs/`: state, action, observation, and case-bank schema sketches.
 - `adapters/`, `chains/`, `verifiers/`: **implemented** — callable adapters + flow orchestrators + verifiers (not just scaffold).
 
@@ -56,6 +57,7 @@ trajectory atlas the roadmap describes. Honest status:
 | `docs/public_release_readiness_plan.md` | Humans | Public-readiness plan, gates, and boundary checklist. |
 | `docs/public_launch_checklist.md` | Humans | Final private-to-public launch checklist and approval gates. |
 | `docs/release_boundary.md` | Humans + reviewers | What can and cannot enter Git/HF release surfaces. |
+| `docs/12_scd_vertical_slice.md` | Humans + reviewers | Caveats-first description of the validated SCD vertical slice. |
 | `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |
 | `release_decision_packet.json` | Machines + reviewers | Machine-readable public launch decision packet. |
 | `huggingface/README.md` | Humans + HF Hub | Dataset card for the public Hugging Face mirror. |
@@ -69,6 +71,7 @@ The GitHub repo is a sanitized scaffold. Full case banks, raw source snapshots, 
 Public-release readiness is tracked in:
 
 - `docs/release_boundary.md` — what can and cannot enter Git history.
+- `docs/12_scd_vertical_slice.md` — caveats-first validated SCD vertical slice.
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
 - `docs/public_launch_checklist.md` — final human launch checklist.
 - `release_manifest.json` — machine-readable release boundary and required checks.
@@ -82,6 +85,7 @@ Before release-surface changes, run:
 python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
+python3 scripts/audit/validate_vertical_slice_doc.py
 git diff --check
 python3 -m compileall adapters chains scripts/audit
 ```
@@ -91,12 +95,13 @@ python3 -m compileall adapters chains scripts/audit
 Start with:
 
 1. `PROJECT_BRIEF.md`
-2. `docs/00_problem_framing.md`
-3. `docs/01_long_horizon_chain_design.md`
-4. `docs/03_deterministic_soft_verifier.md`
-5. `docs/04_rl_environment_design.md`
-6. `docs/06_episode_label_ontology_v0.md`
-7. `rl_env/specs/case_bank_schema_v0.md`
+2. `docs/12_scd_vertical_slice.md`
+3. `docs/00_problem_framing.md`
+4. `docs/01_long_horizon_chain_design.md`
+5. `docs/03_deterministic_soft_verifier.md`
+6. `docs/04_rl_environment_design.md`
+7. `docs/06_episode_label_ontology_v0.md`
+8. `rl_env/specs/case_bank_schema_v0.md`
 
 ## Design Bias
 
