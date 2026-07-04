@@ -12,10 +12,11 @@
 ## Local
 
 - use for registry, schema, verifier, and toy environment work.
+- local RDKit druglikeness (QED / MW / logP / Lipinski via `adapters/molprops_adapter.py`) runs here on CPU — no GPU required.
 
 ## Cluster GPU
 
-- use for SFM embedding, Boltz/RDKit/ProteinMPNN validation, Qwen/BGE bridge, smaller training/eval.
+- use for SFM embedding, Boltz-2 / ProteinMPNN structural validation, Qwen/BGE bridge, smaller training/eval. (Only structural prediction is GPU-gated; RDKit druglikeness runs locally — see Local.)
 
 ## Large GPU
 

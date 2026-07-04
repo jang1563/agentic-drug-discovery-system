@@ -28,6 +28,7 @@
       "docs/06_episode_label_ontology_v0.md",
       "docs/07_self_review_checkpoints_v0.md",
       "docs/11_full_flow_retrospective_and_prospective_plan.md",
+      "docs/12_scd_vertical_slice.md",
       "adapters/",
       "chains/",
       "rl_env/specs/",
@@ -36,6 +37,7 @@
       "scripts/audit/",
       "scripts/audit/validate_hf_release_package.py",
       "scripts/audit/validate_public_launch_packet.py",
+      "scripts/audit/validate_vertical_slice_doc.py",
       ".github/workflows/release-audit.yml",
       ".github/pull_request_template.md",
       ".github/ISSUE_TEMPLATE/config.yml",
@@ -77,6 +79,11 @@
       "blocking": true
     },
     {
+      "name": "vertical_slice_doc_validation",
+      "command": "python3 scripts/audit/validate_vertical_slice_doc.py",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true
@@ -92,6 +99,7 @@
     "No sensitive content in tracked or unignored candidate files",
     "No raw source snapshots or evaluator-only labels",
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
+    "Vertical-slice benchmark numbers remain caveats-first and small-N scoped",
     "Public launch decision packet records explicit approval before public visibility",
     "Release audit workflow green on GitHub"
   ],

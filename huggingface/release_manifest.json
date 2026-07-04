@@ -32,8 +32,10 @@
     "docs/06_episode_label_ontology_v0.md",
     "docs/07_self_review_checkpoints_v0.md",
     "docs/11_full_flow_retrospective_and_prospective_plan.md",
+    "docs/12_scd_vertical_slice.md",
     "rl_env/specs/",
     "rl_env/rewards/",
+    "scripts/audit/validate_vertical_slice_doc.py",
     "huggingface/README.md"
   ],
   "exclude": [
@@ -59,6 +61,7 @@
     "python3 scripts/audit/github_release_file_audit.py",
     "python3 scripts/audit/validate_hf_release_package.py",
     "python3 scripts/audit/validate_public_launch_packet.py",
+    "python3 scripts/audit/validate_vertical_slice_doc.py",
     "git diff --check",
     "python3 -m compileall adapters chains scripts/audit"
   ]

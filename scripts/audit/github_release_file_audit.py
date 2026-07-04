@@ -85,18 +85,21 @@ REQUIRED_PUBLIC_FILES = (
     "docs/release_boundary.md",
     "docs/public_release_readiness_plan.md",
     "docs/public_launch_checklist.md",
+    "docs/12_scd_vertical_slice.md",
     "huggingface/README.md",
     "huggingface/release_manifest.json",
     "release_manifest.json",
     "release_decision_packet.json",
     "scripts/audit/validate_hf_release_package.py",
     "scripts/audit/validate_public_launch_packet.py",
+    "scripts/audit/validate_vertical_slice_doc.py",
 )
 
 REQUIRED_MANIFEST_CHECKS = {
     "python3 scripts/audit/github_release_file_audit.py",
     "python3 scripts/audit/validate_hf_release_package.py",
     "python3 scripts/audit/validate_public_launch_packet.py",
+    "python3 scripts/audit/validate_vertical_slice_doc.py",
     "git diff --check",
     "python3 -m compileall adapters chains scripts/audit",
 }
@@ -176,6 +179,7 @@ def scan_file_for_secrets(path: Path) -> list[str]:
     if path.as_posix() not in {
         "scripts/audit/github_release_file_audit.py",
         "scripts/audit/validate_hf_release_package.py",
+        "scripts/audit/validate_vertical_slice_doc.py",
     }:
         for pattern in FORBIDDEN_CONTENT_PATTERNS:
             if pattern.search(content):

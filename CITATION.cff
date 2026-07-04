@@ -3,6 +3,6 @@ message: "If you use this research scaffold, please cite it as below."
 title: "Agentic Drug Discovery System"
 authors:
   - family-names: "Kim"
-    given-names: "Jihoon"
+    given-names: "JangKeun"
 type: software
 license: "Apache-2.0"

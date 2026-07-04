@@ -35,6 +35,7 @@ owner and passing release-boundary checks.
 python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
+python3 scripts/audit/validate_vertical_slice_doc.py
 git diff --check
 python3 -m compileall adapters chains scripts/audit
 ```
