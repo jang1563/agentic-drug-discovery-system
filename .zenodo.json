@@ -3,7 +3,7 @@
   "description": "Research scaffold for long-horizon drug-discovery decision environments with deterministic verifiers, soft scientific verifiers, adapter interfaces, and conservative public-release boundaries.",
   "creators": [
     {
-      "name": "Kim, Jihoon"
+      "name": "Kim, JangKeun"
     }
   ],
   "license": "Apache-2.0",
