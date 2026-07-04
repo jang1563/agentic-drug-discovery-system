@@ -1,36 +1,33 @@
 # Public Launch Checklist
 
 This checklist is the human-readable companion to `release_decision_packet.json`.
-It is written for the final review immediately before changing GitHub or
-Hugging Face visibility.
+It records the final review state for the GitHub and Hugging Face public release.
 
 ## Current Launch State
 
 | Surface | Current state | Public action allowed now? |
 | --- | --- | --- |
-| GitHub | Private repository with draft public-readiness PR | No |
-| Hugging Face | Private Dataset mirror | No |
+| GitHub | Public repository after explicit owner approval | Completed |
+| Hugging Face | Public Dataset mirror after explicit owner approval | Completed |
 
-No visibility change is authorized by this file. Public visibility requires an
-explicit human approval after the checks below pass.
+Public visibility was authorized only after explicit human approval from the
+owner and passing release-boundary checks.
 
 ## Human Review Gates
 
-- [ ] GitHub remains private until the final boundary review is approved.
-- [ ] Hugging Face remains private until the final boundary review is approved.
-- [ ] Draft PR review confirms that the README describes the actual built scope,
+- [x] GitHub remained private until the final boundary review was approved.
+- [x] Hugging Face remained private until the final boundary review was approved.
+- [x] Draft PR review confirmed that the README describes the actual built scope,
   not only the roadmap.
-- [ ] `docs/release_boundary.md` still excludes raw source snapshots, hidden
+- [x] `docs/release_boundary.md` still excludes raw source snapshots, hidden
   labels, locked episodes, generated trajectories, run logs, credentials,
   machine-local paths, and model weights.
-- [ ] `release_manifest.json` and `huggingface/release_manifest.json` match the
+- [x] `release_manifest.json` and `huggingface/release_manifest.json` match the
   intended release surface.
-- [ ] `release_decision_packet.json` says `private_ready_for_human_publication_review`.
-- [ ] GitHub Actions `release-audit` is green on the public-readiness branch.
-- [ ] The private Hugging Face mirror has been refreshed from the reviewed source
-  commit and remains private.
-- [ ] Anonymous browser review shows private access behavior before launch, and
-  authenticated review shows readable first-screen content.
+- [x] `release_decision_packet.json` says `public_released_after_human_approval`.
+- [x] GitHub Actions `release-audit` is green on the public-readiness branch.
+- [x] The Hugging Face mirror has been refreshed from the reviewed source commit.
+- [x] Browser review shows readable first-screen content on desktop and mobile.
 
 ## Required Local Commands
 
@@ -44,8 +41,9 @@ python3 -m compileall adapters chains scripts/audit
 
 ## Launch Decision Rule
 
-Publish only when every human review gate is checked, every required command is
-green, the GitHub Actions release audit is green, and a reviewer explicitly
-approves the visibility change.
+The public release is valid only when every human review gate is checked, every
+required command is green, the GitHub Actions release audit is green, and a
+reviewer explicitly approves the visibility change.
 
-Until then, the correct state is private-ready, not public.
+If any release-boundary check regresses, return the affected surface to private
+until the issue is fixed.

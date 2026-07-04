@@ -1,6 +1,6 @@
 {
   "artifact": "agentic-drug-discovery-system",
-  "release_stage": "pre_public_github_readiness",
+  "release_stage": "public_release",
   "target_surface": "github_and_huggingface_dataset",
   "public_boundary": {
     "include": [
@@ -92,15 +92,15 @@
     "No sensitive content in tracked or unignored candidate files",
     "No raw source snapshots or evaluator-only labels",
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
-    "Public launch decision packet stays private-ready until explicit approval",
+    "Public launch decision packet records explicit approval before public visibility",
     "Release audit workflow green on GitHub"
   ],
   "hugging_face": {
-    "status": "private_repo_created_uploaded",
+    "status": "public_repo_uploaded_after_approval",
     "repo_type": "dataset",
     "proposed_repo_id": "jang1563/agentic-drug-discovery-system",
     "repo_url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
-    "visibility": "private",
-    "rule": "Keep the Hugging Face Dataset mirror private until final human boundary review approves public visibility."
+    "visibility": "public",
+    "rule": "Public visibility is allowed only after final human boundary review approves the release."
   }
 }

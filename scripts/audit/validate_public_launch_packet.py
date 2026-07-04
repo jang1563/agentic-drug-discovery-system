@@ -32,8 +32,8 @@ REQUIRED_EXCLUSIONS = {
 }
 
 REQUIRED_CHECKLIST_PHRASES = (
-    "GitHub remains private",
-    "Hugging Face remains private",
+    "GitHub remained private",
+    "Hugging Face remained private",
     "explicit human approval",
     "release_decision_packet.json",
     "validate_public_launch_packet.py",
@@ -60,28 +60,28 @@ def main() -> int:
 
     if packet.get("artifact") != "agentic-drug-discovery-system":
         errors.append("release_decision_packet.json artifact is incorrect")
-    if packet.get("decision_status") != "private_ready_for_human_publication_review":
-        errors.append("release_decision_packet.json must stay in private review status")
+    if packet.get("decision_status") != "public_released_after_human_approval":
+        errors.append("release_decision_packet.json must record public release after approval")
     if packet.get("human_readable_checklist") != "docs/public_launch_checklist.md":
         errors.append("release_decision_packet.json must point to docs/public_launch_checklist.md")
 
     surfaces = packet.get("surfaces") or {}
     github = surfaces.get("github") or {}
     hf = surfaces.get("hugging_face") or {}
-    if github.get("current_visibility") != "private":
-        errors.append("GitHub current_visibility must be private")
+    if github.get("current_visibility") != "public":
+        errors.append("GitHub current_visibility must be public")
     if not str(github.get("url", "")).startswith("https://github.com/"):
         errors.append("GitHub URL must point to github.com")
-    if hf.get("current_visibility") != "private":
-        errors.append("Hugging Face current_visibility must be private")
+    if hf.get("current_visibility") != "public":
+        errors.append("Hugging Face current_visibility must be public")
     if hf.get("repo_type") != "dataset":
         errors.append("Hugging Face repo_type must be dataset")
     if not str(hf.get("url", "")).startswith("https://huggingface.co/datasets/"):
         errors.append("Hugging Face URL must point to a Dataset repo")
 
     launch = packet.get("launch_decision") or {}
-    if launch.get("default") != "do_not_publish":
-        errors.append("launch_decision.default must be do_not_publish")
+    if launch.get("default") != "published_after_approval":
+        errors.append("launch_decision.default must be published_after_approval")
     if launch.get("human_approval_required") is not True:
         errors.append("launch_decision.human_approval_required must be true")
     if launch.get("no_public_visibility_change_without_explicit_approval") is not True:

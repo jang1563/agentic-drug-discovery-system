@@ -1,29 +1,29 @@
 {
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
-  "decision_status": "private_ready_for_human_publication_review",
+  "decision_status": "public_released_after_human_approval",
   "as_of_date": "2026-07-04",
   "human_readable_checklist": "docs/public_launch_checklist.md",
   "surfaces": {
     "github": {
       "url": "https://github.com/jang1563/agentic-drug-discovery-system",
-      "current_visibility": "private",
+      "current_visibility": "public",
       "active_branch": "codex/public-release-readiness",
       "active_pr": "https://github.com/jang1563/agentic-drug-discovery-system/pull/1",
-      "publication_target": "public_after_explicit_human_approval"
+      "publication_target": "public"
     },
     "hugging_face": {
       "url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
       "repo_type": "dataset",
-      "current_visibility": "private",
-      "publication_target": "public_after_explicit_human_approval"
+      "current_visibility": "public",
+      "publication_target": "public"
     }
   },
   "launch_decision": {
-    "default": "do_not_publish",
+    "default": "published_after_approval",
     "human_approval_required": true,
     "no_public_visibility_change_without_explicit_approval": true,
-    "approval_record": "GitHub release-boundary review issue, PR review, or equivalent explicit owner instruction"
+    "approval_record": "Explicit owner approval received on 2026-07-04 before public visibility change"
   },
   "release_scope": {
     "include": [
@@ -83,7 +83,7 @@
   "hard_stop_if": [
     "any required check fails",
     "any release-surface file has unreviewed sensitive content",
-    "GitHub or Hugging Face visibility is changed before explicit approval",
+    "GitHub or Hugging Face visibility changes without explicit approval",
     "the README overstates built functionality beyond the validated slice",
     "the Hugging Face mirror is stale relative to the reviewed source commit"
   ]

@@ -27,6 +27,7 @@ REQUIRED_MANIFEST_VALUES = {
 ALLOWED_MANIFEST_STATUSES = {
     "local_package_prepared_not_uploaded",
     "private_repo_created_uploaded",
+    "public_repo_uploaded_after_approval",
 }
 
 FORBIDDEN_CARD_PATTERNS = (
@@ -97,6 +98,13 @@ def main() -> int:
             errors.append("uploaded Hugging Face package must remain private")
         if not str(manifest.get("repo_url", "")).startswith("https://huggingface.co/datasets/"):
             errors.append("uploaded Hugging Face package must declare a Dataset repo URL")
+    if manifest.get("status") == "public_repo_uploaded_after_approval":
+        if manifest.get("current_visibility") != "public":
+            errors.append("public Hugging Face package must declare current_visibility public")
+        if not str(manifest.get("public_visibility_gate", "")).startswith("explicit human boundary review"):
+            errors.append("public Hugging Face package must record explicit boundary review")
+        if not str(manifest.get("repo_url", "")).startswith("https://huggingface.co/datasets/"):
+            errors.append("public Hugging Face package must declare a Dataset repo URL")
 
     include = set(manifest.get("include") or [])
     for required in ("huggingface/README.md", "docs/release_boundary.md", "release_manifest.json"):

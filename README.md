@@ -9,7 +9,7 @@ Scaffold date: 2026-06-27
 | Field | Value |
 | --- | --- |
 | Purpose | Build a verified, auditable decision environment for drug-discovery agents. |
-| Release status | Private pre-publication review on GitHub; private Hugging Face Dataset mirror. |
+| Release status | Public GitHub repository with a public Hugging Face Dataset mirror. |
 | Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
 | Not included | Raw source snapshots, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
@@ -58,7 +58,7 @@ trajectory atlas the roadmap describes. Honest status:
 | `docs/release_boundary.md` | Humans + reviewers | What can and cannot enter Git/HF release surfaces. |
 | `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |
 | `release_decision_packet.json` | Machines + reviewers | Machine-readable public launch decision packet. |
-| `huggingface/README.md` | Humans + HF Hub | Dataset card for the private Hugging Face mirror. |
+| `huggingface/README.md` | Humans + HF Hub | Dataset card for the public Hugging Face mirror. |
 | `huggingface/release_manifest.json` | Machines + reviewers | Hugging Face-specific include/exclude manifest. |
 | `scripts/audit/` | CI + maintainers | Fail-closed release-boundary validators. |
 
@@ -74,9 +74,9 @@ Public-release readiness is tracked in:
 - `release_manifest.json` — machine-readable release boundary and required checks.
 - `release_decision_packet.json` — machine-readable public launch decision packet.
 - `codemeta.json` and `.zenodo.json` — machine-readable citation and archive metadata.
-- `huggingface/` — Hugging Face Dataset-card package mirrored privately on the Hub.
+- `huggingface/` — Hugging Face Dataset-card package mirrored on the Hub.
 
-Before pushing or changing visibility, run:
+Before release-surface changes, run:
 
 ```bash
 python3 scripts/audit/github_release_file_audit.py
