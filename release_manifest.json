@@ -106,7 +106,7 @@
   "hugging_face": {
     "status": "public_repo_uploaded_after_approval",
     "repo_type": "dataset",
-    "proposed_repo_id": "jang1563/agentic-drug-discovery-system",
+    "repo_id": "jang1563/agentic-drug-discovery-system",
     "repo_url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
     "visibility": "public",
     "rule": "Public visibility is allowed only after final human boundary review approves the release."

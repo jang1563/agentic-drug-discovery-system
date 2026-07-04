@@ -43,6 +43,11 @@ FORBIDDEN_CARD_PATTERNS = (
     re.compile(r"BEGIN (RSA|OPENSSH|EC|DSA)? ?PRIVATE KEY"),
 )
 
+STALE_PUBLIC_CARD_PHRASES = (
+    "Mirror the GitHub release once",
+    "Proposed Hub Placement",
+)
+
 
 def parse_simple_frontmatter(text: str) -> dict[str, str]:
     if not text.startswith("---\n"):
@@ -105,6 +110,13 @@ def main() -> int:
             errors.append("public Hugging Face package must record explicit boundary review")
         if not str(manifest.get("repo_url", "")).startswith("https://huggingface.co/datasets/"):
             errors.append("public Hugging Face package must declare a Dataset repo URL")
+        if manifest.get("repo_id") != "jang1563/agentic-drug-discovery-system":
+            errors.append("public Hugging Face package must declare the repo_id")
+        if "proposed_repo_id" in manifest:
+            errors.append("public Hugging Face package must not use proposed_repo_id")
+        for phrase in STALE_PUBLIC_CARD_PHRASES:
+            if phrase in card_text:
+                errors.append(f"huggingface/README.md has stale public-release wording: {phrase}")
 
     include = set(manifest.get("include") or [])
     for required in ("huggingface/README.md", "docs/release_boundary.md", "release_manifest.json"):
