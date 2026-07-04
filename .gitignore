@@ -28,6 +28,7 @@ scripts/sync/
 verifiers/deterministic/
 
 # Large or generated run artifacts
+output/
 experiments/**/runs/
 experiments/**/logs/
 experiments/

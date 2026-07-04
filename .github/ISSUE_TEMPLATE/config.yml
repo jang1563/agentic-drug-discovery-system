@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security or private-data issue
+    url: https://github.com/jang1563/agentic-drug-discovery-system/security/advisories/new
+    about: Report sensitive issues privately after the repository is public.

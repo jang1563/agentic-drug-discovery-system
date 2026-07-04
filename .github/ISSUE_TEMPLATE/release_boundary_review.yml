@@ -1,0 +1,35 @@
+name: Release boundary review
+description: Check whether a proposed public-surface change stays inside the release boundary.
+title: "[Release boundary]: "
+labels:
+  - release-boundary
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for public-readiness, documentation, metadata, or release-boundary issues. Do not paste sensitive content into the issue.
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What public surface or release artifact should be reviewed?
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Boundary checks
+      options:
+        - label: No raw source snapshots, hidden labels, locked episodes, or evaluator-only material.
+          required: true
+        - label: No credentials, tokens, local paths, scheduler logs, or generated run artifacts.
+          required: true
+        - label: Release metadata and documentation are updated if the public surface changes.
+          required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Link to files, commands, or checks that support the review.
+    validations:
+      required: true

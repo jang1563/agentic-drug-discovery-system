@@ -1,0 +1,31 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "Agentic Drug Discovery System",
+  "description": "Research scaffold for long-horizon drug-discovery decision environments with deterministic verifiers, soft scientific verifiers, adapter interfaces, and conservative public-release boundaries.",
+  "codeRepository": "https://github.com/jang1563/agentic-drug-discovery-system",
+  "license": "https://spdx.org/licenses/Apache-2.0.html",
+  "programmingLanguage": [
+    "Python",
+    "Markdown",
+    "YAML"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Jihoon",
+      "familyName": "Kim"
+    }
+  ],
+  "keywords": [
+    "agentic drug discovery",
+    "scientific verification",
+    "bioinformatics",
+    "benchmarking",
+    "decision support",
+    "AI safety"
+  ],
+  "applicationCategory": "Computational biology research software",
+  "developmentStatus": "wip",
+  "isPartOf": "Agentic Drug Discovery System"
+}

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import subprocess
@@ -27,14 +28,19 @@ FORBIDDEN_ROOT_PATTERNS = (
 SECRET_PATTERNS = (
     re.compile(r"sk-[A-Za-z0-9_-]{20,}"),
     re.compile(r"gh[pousr]_[A-Za-z0-9_]{20,}"),
+    re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
+    re.compile(r"\bhf_[A-Za-z0-9]{30,}\b"),
+    re.compile(r"AKIA[0-9A-Z]{16}"),
     re.compile(r"(OPENAI|ANTHROPIC|AWS|GITHUB|HF)_[A-Z0-9_]*(KEY|TOKEN|SECRET)\s*=", re.I),
-    re.compile(r"BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY"),
+    re.compile(r"BEGIN (RSA|OPENSSH|EC|DSA)? ?PRIVATE KEY"),
 )
 
 FORBIDDEN_CONTENT_PATTERNS = (
     re.compile("/" + "Users" + r"/[^\\s`'\"]+"),
     re.compile("/" + "home" + r"/fs\d+/[^\\s`'\"]+"),
     re.compile("/" + "expanse" + "/" + "lustre" + r"/[^\\s`'\"]+"),
+    re.compile(r"\b(Cayuga|Expanse)\b"),
+    re.compile(r"\bSlurm job\s+\d{6,}\b", re.I),
     re.compile(r"\b(?:" + "|".join(("j" + "kim", "ja" + "k", "cr" + "l")) + r")\d{2,}\b", re.I),
     re.compile(r"\b" + "Sch" + "midt" + r"\b", re.I),
     re.compile("Oppor" + "tunity" + "_Record"),
@@ -44,6 +50,7 @@ FORBIDDEN_CONTENT_PATTERNS = (
 
 TEXT_SUFFIXES = {
     ".cfg",
+    ".cff",
     ".csv",
     ".env",
     ".gitignore",
@@ -57,6 +64,41 @@ TEXT_SUFFIXES = {
     ".yaml",
     ".yml",
     ".sbatch",
+}
+
+TEXT_NAMES = {".gitignore", "Dockerfile", "LICENSE"}
+
+REQUIRED_PUBLIC_FILES = (
+    ".github/workflows/release-audit.yml",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/config.yml",
+    ".github/ISSUE_TEMPLATE/release_boundary_review.yml",
+    "README.md",
+    "PROJECT_BRIEF.md",
+    "LICENSE",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CITATION.cff",
+    "CHANGELOG.md",
+    "codemeta.json",
+    ".zenodo.json",
+    "docs/release_boundary.md",
+    "docs/public_release_readiness_plan.md",
+    "docs/public_launch_checklist.md",
+    "huggingface/README.md",
+    "huggingface/release_manifest.json",
+    "release_manifest.json",
+    "release_decision_packet.json",
+    "scripts/audit/validate_hf_release_package.py",
+    "scripts/audit/validate_public_launch_packet.py",
+)
+
+REQUIRED_MANIFEST_CHECKS = {
+    "python3 scripts/audit/github_release_file_audit.py",
+    "python3 scripts/audit/validate_hf_release_package.py",
+    "python3 scripts/audit/validate_public_launch_packet.py",
+    "git diff --check",
+    "python3 -m compileall adapters chains scripts/audit",
 }
 
 
@@ -77,7 +119,46 @@ def candidate_files() -> list[Path]:
 
 
 def is_text_candidate(path: Path) -> bool:
-    return path.suffix in TEXT_SUFFIXES or path.name in {".gitignore", "Dockerfile"}
+    return path.suffix in TEXT_SUFFIXES or path.name in TEXT_NAMES
+
+
+def audit_release_metadata(files: list[Path]) -> list[str]:
+    errors: list[str] = []
+    candidate_set = {path.as_posix() for path in files}
+    for required in REQUIRED_PUBLIC_FILES:
+        if required not in candidate_set:
+            errors.append(f"required public-release file missing from candidate set: {required}")
+
+    try:
+        manifest = json.loads(Path("release_manifest.json").read_text(encoding="utf-8"))
+    except Exception as exc:
+        return errors + [f"release_manifest.json is not valid JSON: {exc}"]
+
+    include = set((manifest.get("public_boundary") or {}).get("include") or [])
+    for required in REQUIRED_PUBLIC_FILES:
+        if required not in include and required != "release_manifest.json":
+            errors.append(f"release_manifest.json does not include required public file: {required}")
+
+    checks = {c.get("command") for c in (manifest.get("required_checks") or []) if isinstance(c, dict)}
+    missing_checks = REQUIRED_MANIFEST_CHECKS - checks
+    for command in sorted(missing_checks):
+        errors.append(f"release_manifest.json missing required check command: {command}")
+
+    def read_required_text(rel: str) -> str:
+        path = Path(rel)
+        if not path.exists():
+            return ""
+        return path.read_text(encoding="utf-8", errors="ignore")
+
+    cff = read_required_text("CITATION.cff")
+    if 'license: "Apache-2.0"' not in cff and "license: Apache-2.0" not in cff:
+        errors.append("CITATION.cff does not declare Apache-2.0")
+    if "Apache-2.0" not in read_required_text("codemeta.json"):
+        errors.append("codemeta.json does not declare Apache-2.0")
+    if "Apache-2.0" not in read_required_text(".zenodo.json"):
+        errors.append(".zenodo.json does not declare Apache-2.0")
+
+    return errors
 
 
 def scan_file_for_secrets(path: Path) -> list[str]:
@@ -92,7 +173,10 @@ def scan_file_for_secrets(path: Path) -> list[str]:
     for pattern in SECRET_PATTERNS:
         if pattern.search(content):
             hits.append(f"secret-like pattern matched: {pattern.pattern}")
-    if path.as_posix() != "scripts/audit/github_release_file_audit.py":
+    if path.as_posix() not in {
+        "scripts/audit/github_release_file_audit.py",
+        "scripts/audit/validate_hf_release_package.py",
+    }:
         for pattern in FORBIDDEN_CONTENT_PATTERNS:
             if pattern.search(content):
                 hits.append(f"forbidden repo-boundary pattern matched: {pattern.pattern}")
@@ -105,6 +189,7 @@ def audit(max_file_mb: float) -> tuple[list[str], list[str]]:
     max_bytes = int(max_file_mb * 1024 * 1024)
 
     files = candidate_files()
+    errors.extend(audit_release_metadata(files))
     for path in files:
         rel = path.as_posix()
         for fragment in FORBIDDEN_PATH_FRAGMENTS:

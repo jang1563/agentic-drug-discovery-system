@@ -1,0 +1,106 @@
+{
+  "artifact": "agentic-drug-discovery-system",
+  "release_stage": "public_release",
+  "target_surface": "github_and_huggingface_dataset",
+  "public_boundary": {
+    "include": [
+      "README.md",
+      "PROJECT_BRIEF.md",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      "SECURITY.md",
+      "CITATION.cff",
+      "CHANGELOG.md",
+      "codemeta.json",
+      ".zenodo.json",
+      "docs/release_boundary.md",
+      "docs/public_release_readiness_plan.md",
+      "docs/public_launch_checklist.md",
+      "release_decision_packet.json",
+      "huggingface/README.md",
+      "huggingface/release_manifest.json",
+      "docs/00_problem_framing.md",
+      "docs/01_long_horizon_chain_design.md",
+      "docs/02_success_failure_case_design.md",
+      "docs/03_deterministic_soft_verifier.md",
+      "docs/04_rl_environment_design.md",
+      "docs/05_model_tool_stack.md",
+      "docs/06_episode_label_ontology_v0.md",
+      "docs/07_self_review_checkpoints_v0.md",
+      "docs/11_full_flow_retrospective_and_prospective_plan.md",
+      "adapters/",
+      "chains/",
+      "rl_env/specs/",
+      "rl_env/rewards/",
+      "verifiers/",
+      "scripts/audit/",
+      "scripts/audit/validate_hf_release_package.py",
+      "scripts/audit/validate_public_launch_packet.py",
+      ".github/workflows/release-audit.yml",
+      ".github/pull_request_template.md",
+      ".github/ISSUE_TEMPLATE/config.yml",
+      ".github/ISSUE_TEMPLATE/release_boundary_review.yml"
+    ],
+    "exclude": [
+      "case_banks/",
+      "research/",
+      "notes/",
+      "registries/",
+      "envs/",
+      "experiments/",
+      "scripts/launch/",
+      "scripts/sync/",
+      "verifiers/deterministic/",
+      "raw source snapshots",
+      "locked episodes",
+      "hidden/evaluator labels",
+      "generated reward or verifier outputs",
+      "scheduler logs",
+      "local paths",
+      "credentials and key material"
+    ]
+  },
+  "required_checks": [
+    {
+      "name": "github_release_file_audit",
+      "command": "python3 scripts/audit/github_release_file_audit.py",
+      "blocking": true
+    },
+    {
+      "name": "hf_release_package_validation",
+      "command": "python3 scripts/audit/validate_hf_release_package.py",
+      "blocking": true
+    },
+    {
+      "name": "public_launch_packet_validation",
+      "command": "python3 scripts/audit/validate_public_launch_packet.py",
+      "blocking": true
+    },
+    {
+      "name": "diff_check",
+      "command": "git diff --check",
+      "blocking": true
+    },
+    {
+      "name": "python_compile",
+      "command": "python3 -m compileall adapters chains scripts/audit",
+      "blocking": true
+    }
+  ],
+  "publication_gates": [
+    "Apache-2.0 license present and consistent across metadata",
+    "No sensitive content in tracked or unignored candidate files",
+    "No raw source snapshots or evaluator-only labels",
+    "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
+    "Public launch decision packet records explicit approval before public visibility",
+    "Release audit workflow green on GitHub"
+  ],
+  "hugging_face": {
+    "status": "public_repo_uploaded_after_approval",
+    "repo_type": "dataset",
+    "proposed_repo_id": "jang1563/agentic-drug-discovery-system",
+    "repo_url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
+    "visibility": "public",
+    "rule": "Public visibility is allowed only after final human boundary review approves the release."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Agentic Drug Discovery System",
+  "description": "Research scaffold for long-horizon drug-discovery decision environments with deterministic verifiers, soft scientific verifiers, adapter interfaces, and conservative public-release boundaries.",
+  "creators": [
+    {
+      "name": "Kim, Jihoon"
+    }
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "agentic drug discovery",
+    "scientific verification",
+    "bioinformatics",
+    "benchmarking",
+    "AI safety"
+  ],
+  "upload_type": "software"
+}
