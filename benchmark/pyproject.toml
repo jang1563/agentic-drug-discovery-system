@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ctdbench"
+version = "0.1.0"
+description = "Runner + scorer for the clinical-trial decision benchmark (construct-valid, no-human, calibrated-abstention)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+authors = [{ name = "JangKeun Kim" }]
+keywords = ["clinical-trials", "decision-benchmark", "calibrated-abstention", "weak-supervision", "construct-validity"]
+dependencies = ["pyarrow>=12"]
+
+[project.optional-dependencies]
+hf = ["huggingface_hub>=0.20"]
+
+[project.urls]
+Dataset = "https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark"
+Source = "https://github.com/jang1563/agentic-drug-discovery-system"
+
+[project.scripts]
+ctdbench = "ctdbench.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ctdbench"]
