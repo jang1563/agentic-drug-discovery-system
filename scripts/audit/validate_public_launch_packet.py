@@ -19,8 +19,10 @@ REQUIRED_CHECKS = {
     "python3 scripts/audit/validate_public_launch_packet.py",
     "python3 scripts/audit/validate_vertical_slice_doc.py",
     "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
+    "python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package",
+    "python3 -m pytest -q benchmark/tests",
     "git diff --check",
-    "python3 -m compileall adapters chains scripts/audit",
+    "python3 -m compileall adapters chains benchmark/src scripts/audit",
 }
 
 REQUIRED_EXCLUSIONS = {
@@ -46,11 +48,14 @@ REQUIRED_READ_ORDER = {
     "README.md",
     "docs/release_trust_report.md",
     "docs/12_scd_vertical_slice.md",
+    "docs/13_target_id_governance_node.md",
+    "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
     "docs/release_boundary.md",
     "release_manifest.json",
     "huggingface/README.md",
     "huggingface/release_manifest.json",
+    "benchmark/",
 }
 
 STALE_PUBLIC_GITHUB_KEYS = {

@@ -1,5 +1,8 @@
 # Soft Verifiers
 
+This public file documents the intended/current local rubric behavior; the
+evaluator implementation and generated review artifacts are not released.
+
 Soft verifiers score judgment-heavy evidence dimensions that should shape reward
 or reviewer attention, but should not by themselves lock an episode.
 

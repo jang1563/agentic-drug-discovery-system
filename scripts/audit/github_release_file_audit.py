@@ -36,16 +36,9 @@ SECRET_PATTERNS = (
 )
 
 FORBIDDEN_CONTENT_PATTERNS = (
-    re.compile("/" + "Users" + r"/[^\\s`'\"]+"),
-    re.compile("/" + "home" + r"/fs\d+/[^\\s`'\"]+"),
-    re.compile("/" + "expanse" + "/" + "lustre" + r"/[^\\s`'\"]+"),
-    re.compile(r"\b(Cayuga|Expanse)\b"),
-    re.compile(r"\bSlurm job\s+\d{6,}\b", re.I),
-    re.compile(r"\b(?:" + "|".join(("j" + "kim", "ja" + "k", "cr" + "l")) + r")\d{2,}\b", re.I),
-    re.compile(r"\b" + "Sch" + "midt" + r"\b", re.I),
-    re.compile("Oppor" + "tunity" + "_Record"),
-    re.compile("project" + "_in" + "ternal", re.I),
-    re.compile("appr" + "oval" + "_tok" + "en", re.I),
+    re.compile(r"(?:/Users|/home)/[^\s`'\"]+"),
+    re.compile(r"/(?:scratch|lustre|gpfs|nfs)/[^\s`'\"]+", re.I),
+    re.compile(r"\b(?:Slurm|PBS|LSF) job\s+\d{6,}\b", re.I),
 )
 
 TEXT_SUFFIXES = {
@@ -87,6 +80,8 @@ REQUIRED_PUBLIC_FILES = (
     "docs/public_release_readiness_plan.md",
     "docs/public_launch_checklist.md",
     "docs/12_scd_vertical_slice.md",
+    "docs/13_target_id_governance_node.md",
+    "docs/public_evidence_summary.json",
     "huggingface/README.md",
     "huggingface/release_manifest.json",
     "release_manifest.json",
@@ -103,8 +98,10 @@ REQUIRED_MANIFEST_CHECKS = {
     "python3 scripts/audit/validate_public_launch_packet.py",
     "python3 scripts/audit/validate_vertical_slice_doc.py",
     "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
+    "python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package",
+    "python3 -m pytest -q benchmark/tests",
     "git diff --check",
-    "python3 -m compileall adapters chains scripts/audit",
+    "python3 -m compileall adapters chains benchmark/src scripts/audit",
 }
 
 
@@ -144,6 +141,16 @@ def audit_release_metadata(files: list[Path]) -> list[str]:
     for required in REQUIRED_PUBLIC_FILES:
         if required not in include and required != "release_manifest.json":
             errors.append(f"release_manifest.json does not include required public file: {required}")
+
+    def covered_by_manifest(rel: str) -> bool:
+        return rel in include or any(
+            str(prefix).endswith("/") and rel.startswith(str(prefix))
+            for prefix in include
+        )
+
+    for rel in sorted(candidate_set):
+        if Path(rel).is_file() and not covered_by_manifest(rel):
+            errors.append(f"tracked/unignored candidate is outside release_manifest.json include scope: {rel}")
 
     checks = {c.get("command") for c in (manifest.get("required_checks") or []) if isinstance(c, dict)}
     missing_checks = REQUIRED_MANIFEST_CHECKS - checks

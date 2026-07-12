@@ -70,10 +70,15 @@ Evidence available at this stage (time-gated to {time_gate} — do NOT assume la
 
 Choose EXACTLY ONE terminal action for THIS stage:
 - advance: evidence supports proceeding to the next stage.
-- stop: evidence indicates the program has failed / should halt.
+- stop: the program has failed, been HALTED, WITHDRAWN, or REVOKED — the program
+  has ENDED (an efficacy failure OR a safety-driven market withdrawal / regulatory
+  revocation both count as stop).
 - request_more_evidence: evidence is mixed, contradictory, or surrogate-only — verify before committing.
 - defer: evidence is insufficient to decide.
-- flag: the evidence is invalid/implausible/corrupt, OR there is a SERIOUS SAFETY SIGNAL (e.g. a boxed warning, malignancy/mortality signal) that warrants caution even if the drug is approved.
+- flag: the evidence is invalid/implausible/corrupt, OR the drug is STILL
+  APPROVED / on the market but carries a serious or novel safety signal (e.g. a
+  boxed warning, malignancy/mortality signal) warranting caution. A drug that was
+  WITHDRAWN or REVOKED is stop, not flag.
 
 Reply with EXACTLY ONE token: advance, stop, defer, request_more_evidence, or flag. No other text."""
 
@@ -107,7 +112,7 @@ def run_flow(episode, policy):
 
 # ======================================================================================
 # Agentic TOOL-USE variant — the LLM CALLS adapters mid-stage (ReAct loop) instead of
-# consuming pre-gathered evidence. This is the interface a production agent uses.
+# consuming pre-gathered evidence. This is the prototype tool-use interface.
 # ======================================================================================
 
 class Toolbox:
@@ -197,7 +202,12 @@ Available tools (issue a call to gather evidence for THIS stage):
 Observations so far:
 {observations}
 
-Action meanings: advance=proceed; stop=failed/halt; defer=insufficient; request_more_evidence=mixed/contradictory; flag=invalid evidence OR a serious safety signal (boxed warning/malignancy/mortality) despite approval.
+Action meanings: advance=proceed; stop=failed OR HALTED/WITHDRAWN/REVOKED (the
+program has ended — includes a safety-driven market withdrawal or regulatory
+revocation); defer=insufficient; request_more_evidence=mixed/contradictory;
+flag=invalid evidence OR a STILL-APPROVED drug carrying a serious/novel safety
+signal (boxed warning/malignancy/mortality). A withdrawn or revoked drug is stop,
+not flag.
 
 {instr} Respond with EXACTLY ONE line, no other text:
   CALL <tool> <arg>     (gather more evidence)

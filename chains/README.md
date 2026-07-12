@@ -13,9 +13,9 @@ Each chain should define:
 
 ## Implemented orchestrators
 
-- `discovery_flow.py` — the validated 4-stage sickle cell disease decision flow:
+- `discovery_flow.py` — the audited 4-stage sickle cell disease decision flow:
   the action space (advance / stop / defer / request_more_evidence / flag), the
-  five-tool `Toolbox`, and both curated and autonomous ReAct tool-use modes.
+  five-source `Toolbox`, and both curated and autonomous ReAct tool-use modes.
   See `docs/12_scd_vertical_slice.md`.
 - `episode_flow.py` — per-episode flow orchestration and the policy seam an
   LLM policy slots into.
@@ -31,4 +31,3 @@ content lives there yet:
 - `admet_tox/`
 - `protein_design/`
 - `cell_perturbation/`
-

@@ -10,10 +10,13 @@ Callable adapters used by the sickle cell disease vertical slice
 - `opentargets_adapter.py` — Open Targets target–disease association.
 - `chembl_adapter.py` — ChEMBL molecule / mechanism / target-activity lookup.
 - `ctgov_adapter.py` — ClinicalTrials.gov trials (status, results, whyStopped, primary-endpoint significance).
-- `ema_epar_adapter.py` — EMA EPAR EU regulatory status (Authorised / Suspended / Revoked / not-filed).
+- `ema_epar_adapter.py` — EMA EPAR matched-row regulatory status; a no-match is
+  reported as unresolved rather than proof of no filing.
 - `ema_ledger.py` — curated EMA reversal ledger.
-- `boltz_adapter.py` — Boltz-2 structural SFM tool (binding affinity / structure), GPU-gated with an honest fallback.
-- `molprops_adapter.py` — local (CPU) RDKit druglikeness signal: QED, MW, logP, H-bond donors/acceptors, Lipinski violations. No GPU required.
+- `boltz_adapter.py` — GPU-gated endpoint adapter that preserves service-defined
+  affinity units, with an explicitly non-predictive ChEMBL metadata fallback.
+- `molprops_adapter.py` — local (CPU) RDKit druglikeness signal: QED, MW, logP,
+  H-bond donors/acceptors, Lipinski violations. RDKit is required; no GPU is.
 
 **Data boundary:** adapter *code* ships, but the cached data snapshots and case
 banks it reads do not (see `docs/release_boundary.md`). On a clean public clone
@@ -35,4 +38,3 @@ Every adapter should eventually expose:
 - error format
 - deterministic verifier hooks
 - cost/runtime hints
-

@@ -34,6 +34,19 @@ def test_risk_coverage_monotone_ids():
     assert curve[0]["risk"] == 0.0
 
 
+def test_risk_coverage_all_abstain_is_empty():
+    gold = {"a": "advance", "b": "stop"}
+    assert risk_coverage({}, gold, {}) == []
+    assert risk_coverage({"a": "defer"}, gold, {"a": 0.9}) == []
+
+
+def test_risk_coverage_uses_all_gold_as_coverage_denominator():
+    gold = {"a": "advance", "b": "stop", "c": "stop", "d": "verify"}
+    curve = risk_coverage({"a": "advance"}, gold, {"a": 0.9})
+    assert curve[-1]["coverage"] == 0.25
+    assert curve[-1]["conditional_coverage"] == 1.0
+
+
 def test_abstain_labels_excluded_from_gold():
     gold = {"a": "advance", "x": None, "y": "abstain"}
     r = evaluate({"a": "advance"}, gold)

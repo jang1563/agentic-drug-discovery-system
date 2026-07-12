@@ -24,4 +24,7 @@
 
 ## Current Principle
 
-The first prototype should prefer cached outputs and deterministic replay over live expensive tools. Once the environment schema is stable, live tool adapters can be added stage by stage.
+The public SCD prototype includes live adapters for Open Targets, ChEMBL,
+ClinicalTrials.gov, openFDA, and EMA. Historical replay still requires
+cutoff-safe cached evidence; future stages should add live tools only after the
+schema and time-gating contract are explicit.

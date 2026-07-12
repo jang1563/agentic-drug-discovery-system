@@ -12,8 +12,14 @@ Run:
 
 ```bash
 python3 scripts/audit/github_release_file_audit.py
+python3 scripts/audit/validate_hf_release_package.py
+python3 scripts/audit/validate_public_launch_packet.py
+python3 scripts/audit/validate_vertical_slice_doc.py
+python3 -m pytest -q benchmark/tests
+python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force
+python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package
 git diff --check
-python3 -m compileall adapters chains scripts/audit
+python3 -m compileall adapters chains benchmark/src scripts/audit
 ```
 
 ## Scientific Claims

@@ -1,17 +1,29 @@
 # ctdbench
 
-A small, pip-installable runner and scorer for the **clinical-trial decision benchmark** — a construct-valid,
-no-human, calibrated-abstention benchmark that frames trial evaluation as a *decision* (`advance` / `stop` /
+A small, pip-installable runner and scorer for the **clinical-trial decision benchmark** — a construct-audited,
+source-derived-label benchmark with abstention analysis that frames trial evaluation as a *decision* (`advance` / `stop` /
 `verify`, or abstain) rather than an outcome probability.
 
 Dataset: https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark
 
 ## Install
 
+From a clone of this repository:
+
 ```bash
-pip install ctdbench            # scoring only, offline (needs pyarrow)
-pip install 'ctdbench[hf]'      # + load splits from the Hugging Face Hub
+python3 -m pip install ./benchmark
+python3 -m pip install './benchmark[hf]'  # adds Hugging Face Hub loading
 ```
+
+Or install the GitHub subdirectory directly:
+
+```bash
+python3 -m pip install \
+  'ctdbench[hf] @ git+https://github.com/jang1563/agentic-drug-discovery-system.git#subdirectory=benchmark'
+```
+
+`ctdbench` is not currently published on PyPI; a bare `pip install ctdbench`
+is therefore not a supported installation path.
 
 ## Use
 
@@ -46,4 +58,12 @@ ctdbench --local-dir ./data evaluate --predictions my_preds.json --split test
 
 The scorer is model-agnostic — it takes your decisions and the gold labels and reports the metrics. Labels are
 weak-supervision, source-derived (no human annotation at scale); see the dataset card for the construct-validity
-check, the calibrated-abstention analysis, and the honest limitations.
+check, retrospective abstention analysis, and honest limitations.
+
+## Test
+
+From the repository root after installation:
+
+```bash
+python3 -m pytest -q benchmark/tests
+```

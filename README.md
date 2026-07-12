@@ -8,8 +8,8 @@ Scaffold date: 2026-06-27
 
 | Field | Value |
 | --- | --- |
-| Purpose | Build a verified, auditable decision environment for drug-discovery agents. |
-| Release status | Public GitHub repository with a public Hugging Face Dataset mirror. |
+| Purpose | Build a verification-oriented, auditable decision environment for drug-discovery agents. |
+| Release status | Public GitHub repository; Hugging Face Dataset mirror built from an exact reviewed source commit. |
 | Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
 | Not included | Raw source snapshots, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
@@ -28,27 +28,31 @@ Can a long-horizon discovery process be represented as an agentic environment wh
 ## Current State (honest scope)
 
 This is, concretely, a **retrospective clinical/regulatory decision benchmark with source-derived
-(no-human) labels plus one validated end-to-end vertical slice** — not yet the full 8-stage
+(no-human) labels plus one audited end-to-end vertical slice** — not yet the full 8-stage
 trajectory atlas the roadmap describes. Honest status:
 
-- **Built & validated:** source-derived label authority + enforced construct validity (a masked
-  agent surface kills a no-reasoning structural-tell shortcut); callable tool/DB adapters
+- **Built & audited:** source-derived label authority plus scoped construct-validity controls;
+  callable tool/DB adapters
   (ClinicalTrials.gov, openFDA, Open Targets, ChEMBL, EMA EPAR) and multi-stage flow orchestrators;
-  one disease/target slice (sickle cell) traversed end-to-end in both retrospective and a prospective
-  decision-support demo; local RDKit druglikeness screening; a calibration card
-  (conformal/RCPS) and a hash-pinned locked replay set.
+  one disease/target slice (sickle cell) traversed retrospectively; an unscored
+  prospective scaffold whose stale example is invalidated pending source refresh;
+  conditional local RDKit druglikeness screening; and aggregate retrospective
+  risk analysis. Local calibration cards and locked replay artifacts are excluded.
 - **Roadmap (not yet built):** 7 of 8 atlases (compound/ADMET/target/structure/cell) hold no
   standalone data; the multi-stage flow is demonstrated on one disease; SFM (Boltz-2) scoring needs
-  a GPU endpoint, while RDKit molprops runs locally.
+  a GPU endpoint, while RDKit molprops runs locally when its dependency is installed.
 - **Read the caveats first:** headline demo numbers are small-N and on one well-characterized disease;
-  autonomous tool-use is higher-variance than the curated pipeline. Do not read this as a finished
-  long-horizon agent platform.
+  the 80/80 prompt result repeats the same eight assets and is a regression check, not independent
+  validation. Do not read this as a finished long-horizon agent platform.
 
 ## Current Anchors
 
-- `docs/`: design notes; `docs/12_scd_vertical_slice.md` is the validated slice and `docs/11_full_flow_retrospective_and_prospective_plan.md` is the current plan.
+- `docs/`: design notes; `docs/12_scd_vertical_slice.md` is the audited SCD slice,
+  `docs/13_target_id_governance_node.md` is the upstream target-node results card,
+  and `docs/public_evidence_summary.json` is the aggregate claim ledger.
 - `rl_env/specs/`: state, action, observation, and case-bank schema sketches.
-- `adapters/`, `chains/`, `verifiers/`: **implemented** — callable adapters + flow orchestrators + verifiers (not just scaffold).
+- `adapters/`, `chains/`: callable adapters and flow orchestrators are implemented.
+- `verifiers/`: public contracts and scaffold only; evaluator implementations remain outside the release boundary.
 
 ## Artifact Map
 
@@ -58,7 +62,10 @@ trajectory atlas the roadmap describes. Honest status:
 | `docs/public_launch_checklist.md` | Humans | Final private-to-public launch checklist and approval gates. |
 | `docs/release_boundary.md` | Humans + reviewers | What can and cannot enter Git/HF release surfaces. |
 | `docs/release_trust_report.md` | Humans + machines | Trust claims, evidence anchors, interpretation warnings, and HF package reproducibility path. |
-| `docs/12_scd_vertical_slice.md` | Humans + reviewers | Caveats-first description of the validated SCD vertical slice. |
+| `docs/12_scd_vertical_slice.md` | Humans + reviewers | Caveats-first description of the audited SCD vertical slice. |
+| `docs/13_target_id_governance_node.md` | Humans + reviewers | Small-N upstream target-identification results card. |
+| `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
+| `benchmark/` | Users + CI | Installable scorer and tests for the linked external clinical-trial decision dataset. |
 | `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |
 | `release_decision_packet.json` | Machines + reviewers | Machine-readable public launch decision packet. |
 | `huggingface/README.md` | Humans + HF Hub | Dataset card for the public Hugging Face mirror. |
@@ -73,7 +80,9 @@ Public-release readiness is tracked in:
 
 - `docs/release_boundary.md` — what can and cannot enter Git history.
 - `docs/release_trust_report.md` — trust claims, machine anchors, and interpretation warnings.
-- `docs/12_scd_vertical_slice.md` — caveats-first validated SCD vertical slice.
+- `docs/12_scd_vertical_slice.md` — caveats-first audited SCD vertical slice.
+- `docs/13_target_id_governance_node.md` — upstream target-node aggregate results.
+- `docs/public_evidence_summary.json` — machine-readable aggregate claim ledger.
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
 - `docs/public_launch_checklist.md` — final human launch checklist.
 - `release_manifest.json` — machine-readable release boundary and required checks.
@@ -88,9 +97,11 @@ python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
+python3 -m pytest -q benchmark/tests
 python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force
+python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package
 git diff --check
-python3 -m compileall adapters chains scripts/audit
+python3 -m compileall adapters chains benchmark/src scripts/audit
 ```
 
 ## Immediate Use
@@ -100,12 +111,14 @@ Start with:
 1. `PROJECT_BRIEF.md`
 2. `docs/release_trust_report.md`
 3. `docs/12_scd_vertical_slice.md`
-4. `docs/00_problem_framing.md`
-5. `docs/01_long_horizon_chain_design.md`
-6. `docs/03_deterministic_soft_verifier.md`
-7. `docs/04_rl_environment_design.md`
-8. `docs/06_episode_label_ontology_v0.md`
-9. `rl_env/specs/case_bank_schema_v0.md`
+4. `docs/13_target_id_governance_node.md`
+5. `docs/public_evidence_summary.json`
+6. `docs/00_problem_framing.md`
+7. `docs/01_long_horizon_chain_design.md`
+8. `docs/03_deterministic_soft_verifier.md`
+9. `docs/04_rl_environment_design.md`
+10. `docs/06_episode_label_ontology_v0.md`
+11. `rl_env/specs/case_bank_schema_v0.md`
 
 ## Design Bias
 
@@ -120,7 +133,12 @@ This project should stay implementation-facing. Research notes are useful only i
 
 ## Release Posture
 
-The public artifact should present a protocol and benchmark-control layer, not a capability release. The release surface should favor schemas, audit scripts, adapters, governance notes, and reproducible smoke paths. Raw clinical/regulatory snapshots, hidden labels, generated trajectories, scheduler logs, machine paths, credentials, and unpublished working notes remain outside the repository.
+The public artifact presents a protocol, benchmark-control layer, and limited
+decision-prototype surface—not a complete autonomous discovery or wet-lab
+capability. The release surface favors schemas, audit scripts, adapters,
+governance notes, and reproducible smoke paths. Raw clinical/regulatory
+snapshots, hidden labels, generated trajectories, scheduler logs, machine paths,
+credentials, and unpublished working notes remain outside the repository.
 
 ## License
 

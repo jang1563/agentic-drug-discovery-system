@@ -5,8 +5,9 @@
 Boltz-2 real inference needs a configured GPU service - it does NOT run in this local
 env. So this adapter is honest and tiered:
   1. If BOLTZ_ENDPOINT is set -> POST {target, ligand} to a real Boltz-2 service.
-  2. Else if the ligand is a KNOWN ChEMBL molecule (max_phase>=1) -> return the experimental
-     target-engagement proxy (clinically validated), noting it is NOT a Boltz prediction.
+  2. Else if the ligand is a KNOWN ChEMBL molecule (max_phase>=1) -> return a ChEMBL
+     development-stage/mechanism metadata proxy, noting it is NOT a Boltz prediction
+     and does not validate target engagement.
   3. Else (de-novo candidate) -> return unavailable with the GPU requirement, so the flow
      degrades gracefully and an agent knows to defer / route to compute.
 
@@ -38,8 +39,9 @@ class BoltzAdapter:
                     self.endpoint, headers={"content-type": "application/json"},
                     data=json.dumps({"target": target, "ligand": ligand}).encode())
                 r = json.loads(urllib.request.urlopen(req, timeout=120).read())
-                return (f"Boltz-2 [{target} + {ligand}]: predicted affinity "
-                        f"pIC50~{r.get('affinity')} (confidence {r.get('confidence')}); "
+                units = r.get("affinity_units") or r.get("units") or "service-defined units"
+                return (f"Boltz-2 [{target} + {ligand}]: service-defined affinity "
+                        f"{r.get('affinity')} {units} (confidence {r.get('confidence')}); "
                         f"ipTM {r.get('iptm')}. source=boltz2_live")
 
             except Exception as e:
@@ -51,9 +53,10 @@ class BoltzAdapter:
                                      name=None if ligand.upper().startswith("CHEMBL") else ligand)
             if m and m.get("found") and (m.get("max_phase") or 0):
                 mech = self.chembl.mechanism(m.get("chembl_id")) if m.get("chembl_id") else []
-                return (f"boltz2 UNAVAILABLE locally (needs GPU). PROXY: {m.get('name')} is a known drug "
-                        f"(max_phase {m.get('max_phase')}, MoA {[x['moa'] for x in mech][:1]}) -> target engagement "
-                        f"is CLINICALLY VALIDATED (experimental, not a Boltz prediction).")
+                return (f"boltz2 UNAVAILABLE locally (needs GPU). PROXY: {m.get('name')} has ChEMBL "
+                        f"development-stage/mechanism metadata (max_phase {m.get('max_phase')}, "
+                        f"MoA {[x['moa'] for x in mech][:1]}). This is not a Boltz prediction and does "
+                        f"not validate target engagement.")
 
         # 3) de-novo candidate -> route to compute
         return (f"boltz2 UNAVAILABLE: de-novo binding-affinity/structure for {target}+{ligand} requires "

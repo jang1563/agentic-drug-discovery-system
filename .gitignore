@@ -32,12 +32,6 @@ output/
 experiments/**/runs/
 experiments/**/logs/
 experiments/
-experiments/cayuga/*
-!experiments/cayuga/.gitkeep
-experiments/expanse/*
-!experiments/expanse/.gitkeep
-experiments/smoke/*
-!experiments/smoke/.gitkeep
 rl_env/trajectories/generated/
 rl_env/tasks/generated/
 rl_env/baselines/

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "artifact": "agentic-drug-discovery-system",
+  "as_of_date": "2026-07-12",
+  "purpose": "Aggregate-only claim ledger for the public research artifact",
+  "provenance": {
+    "source_commit": "See upload_manifest.json for each Hugging Face build",
+    "raw_runs_public": false,
+    "per_record_gold_public": false,
+    "reproducibility_note": "Values were cross-checked against excluded local pre-release aggregate outputs. The public package supports boundary and scorer checks, not reconstruction of withheld per-record evaluations."
+  },
+  "scd_terminal_slice": {
+    "disease_count": 1,
+    "unique_assets": 8,
+    "terminal_mix": {
+      "stop": 4,
+      "advance": 3,
+      "flag": 1
+    },
+    "constant_policy_terminal_correct": {
+      "always_advance": 3,
+      "always_stop": 4,
+      "denominator": 8
+    },
+    "curated_llm_terminal_correct": {
+      "numerator": 8,
+      "denominator": 8,
+      "post_reconciliation": true
+    },
+    "scope": "Small-N sanity and regression slice, not clinical validation or broad construct validity"
+  },
+  "fixed_slice_prompt_regression": {
+    "unique_assets": 8,
+    "repeats_per_policy": 10,
+    "observations_per_policy": 80,
+    "curated_terminal_correct": 80,
+    "autonomous_terminal_correct": 80,
+    "descriptive_wilson_95_interval": [
+      0.954,
+      1.0
+    ],
+    "prompt_rule": "halted, withdrawn, or revoked programs map to stop; invalid evidence or serious safety signals on still-approved/on-market assets map to flag",
+    "autonomous_lookup_mode": "present-day live source lookups",
+    "historical_time_gating_claim": false,
+    "independent_samples": false,
+    "generalization_claim": false
+  },
+  "track_a_packet_masking_diagnostic": {
+    "separate_from_scd_slice": true,
+    "separate_from_external_hf_benchmark": true,
+    "n_packets": 298,
+    "no_reasoning_raw_accuracy": 0.805,
+    "no_reasoning_masked_accuracy": 0.329,
+    "majority_class_floor": 0.329,
+    "deterministic_evidence_reader_accuracy": 0.628,
+    "local_llm_aggregate_accuracy": 0.654,
+    "scope": "Constructed packet-surface diagnostic; packet-level artifacts are not released"
+  },
+  "track_a_model_comparison": {
+    "hard_family_n": 153,
+    "four_model_accuracy_range": [
+      0.477,
+      0.542
+    ],
+    "paired_common_set_n": 186,
+    "significant_pairwise_difference_found": false,
+    "equivalence_margin": 0.05,
+    "all_pairs_equivalent_at_margin": false,
+    "cost_ratio_measured": false,
+    "conclusion": "No stable ordering was resolved; no equivalence or cost-ratio claim is made"
+  },
+  "track_a_label_uncertainty_proxy": {
+    "n_packets": 298,
+    "target": "disagreement between auto-assigned labels and an independent deterministic evidence reader",
+    "clinical_truth_target": false,
+    "risk_signal_auroc": 0.8,
+    "empirical_lowest_risk_30_percent": {
+      "n": 89,
+      "disagreement": 0.124
+    },
+    "rcps_delta_0_10": [
+      {
+        "alpha": 0.2,
+        "coverage": 0.128,
+        "observed_disagreement": 0.0
+      },
+      {
+        "alpha": 0.25,
+        "coverage": 0.456,
+        "observed_disagreement": 0.147
+      }
+    ],
+    "certificate_at_alpha_lte_0_15": false
+  },
+  "target_id_masked_node": {
+    "unique_pairs": 32,
+    "credible_pairs": 16,
+    "noncredible_pairs": 16,
+    "diseases": 23,
+    "masked_sonnet_repeated_calls": 5,
+    "masked_sonnet_pooled_selective_accuracy": 0.842,
+    "masked_sonnet_coverage": 0.713,
+    "masked_sonnet_overall_accuracy": 0.6,
+    "per_repeat_selective_accuracy_range": [
+      0.81,
+      0.917
+    ],
+    "masked_threshold": {
+      "selective_accuracy": 0.625,
+      "coverage": 0.75,
+      "overall_accuracy": 0.469
+    },
+    "always_advance_overall_accuracy": 0.5,
+    "drug_field_visible_diagnostic_overall_accuracy": 0.781
+  },
+  "target_id_cross_stage": {
+    "label_adjacent_signal": true,
+    "same_constructed_set": true,
+    "comparisons": {
+      "claude": {
+        "masked_selective_accuracy": 0.826,
+        "masked_coverage": 0.719,
+        "cross_stage_selective_accuracy": 0.942,
+        "cross_stage_coverage": 0.812,
+        "selective_accuracy_change": 0.116
+      },
+      "gpt_4o": {
+        "masked_selective_accuracy": 0.833,
+        "masked_coverage": 0.75,
+        "cross_stage_selective_accuracy": 0.968,
+        "cross_stage_coverage": 0.984,
+        "selective_accuracy_change": 0.135
+      },
+      "deepseek": {
+        "masked_selective_accuracy": 0.754,
+        "masked_coverage": 0.953,
+        "cross_stage_selective_accuracy": 0.935,
+        "cross_stage_coverage": 0.969,
+        "selective_accuracy_change": 0.181
+      }
+    },
+    "out_of_distribution_claim": false
+  },
+  "target_id_calibration": {
+    "genetics_only": {
+      "n_committed": 23,
+      "risk_auroc_vs_error": 0.939,
+      "rcps_certified": false
+    },
+    "cross_stage": {
+      "n_committed": 26,
+      "risk_auroc_vs_error": 0.62,
+      "rcps_only_alpha": 0.3,
+      "certified_delta_values": [
+        0.1,
+        0.2
+      ],
+      "committed_fraction": 0.8125,
+      "rcps_acceptance_within_committed": 1.0,
+      "observed_error": 0.038
+    }
+  },
+  "prospective_demo": {
+    "status": "invalidated_stale_time_context",
+    "terminal_gold": null,
+    "scored_validation_run": false,
+    "calibration_claim": false,
+    "historical_replay_claim": false,
+    "citable_result": false,
+    "example_time_context": "incoherent: stale no-readout assumption encoded after the official readout date",
+    "current_recommendation_claim": false,
+    "source_refresh_required": true
+  },
+  "limitations": [
+    "Aggregate results are not substitutes for released per-record evidence or independent replication",
+    "Repeated observations on a fixed slice are not independent samples",
+    "The SCD slice is one disease and eight assets after one gold reconciliation",
+    "Target-ID cross-stage evidence is label-adjacent and evaluated on the same constructed set",
+    "No result is clinical validation, an approval prediction, or autonomous discovery capability evidence"
+  ]
+}

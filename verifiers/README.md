@@ -1,5 +1,9 @@
 # Verifiers
 
+The public release contains verifier contracts and layout documentation only.
+Evaluator implementations, locked references, and generated results remain
+outside the release boundary.
+
 Verifier types:
 
 - `deterministic/`: exact checks and hard constraints.
@@ -8,4 +12,3 @@ Verifier types:
 - `human_review/`: escalation criteria and review packet format.
 
 The verifier layer should be logged separately from the LLM agent. The LLM may consume verifier outputs, but should not be the only source of verification.
-
