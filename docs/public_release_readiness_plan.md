@@ -1,8 +1,8 @@
 # Public Release Readiness Plan
 
-Status: active pre-publication plan
-Release posture: keep private until all blocking gates pass
-Target surface: public GitHub repository with optional Hugging Face Dataset mirror
+Status: active public-release refresh
+Release posture: GitHub public; stage Hugging Face privately until all blocking gates pass
+Target surface: public GitHub repository with a commit-pinned Hugging Face Dataset mirror
 
 ## Objective
 
@@ -13,10 +13,13 @@ Prepare this repository as a premium public research artifact: readable by human
 The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
-- Design and boundary docs: `docs/00_*` through `docs/07_*`, `docs/11_*`, `docs/release_boundary.md`, and this plan.
+- Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
+  `docs/11_*` through `docs/13_*`, `docs/public_evidence_summary.json`,
+  `docs/release_boundary.md`, and this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
 - Hugging Face local package: `huggingface/README.md` and `huggingface/release_manifest.json`.
-- Scaffold code: `adapters/`, `chains/`, `rl_env/specs/`, `rl_env/rewards/`, `verifiers/soft/README.md`, and audit scripts.
+- Scaffold code: `adapters/`, `chains/`, `rl_env/specs/`, `rl_env/rewards/`,
+  `verifiers/soft/README.md`, audit scripts, and the `benchmark/` scorer/tests.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 
@@ -38,13 +41,16 @@ Before changing repository visibility:
    ```bash
    python3 scripts/audit/github_release_file_audit.py
    python3 scripts/audit/validate_hf_release_package.py
+   python3 -m pytest -q benchmark/tests
+   python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force
+   python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package
    ```
 
 2. Whitespace and scaffold sanity checks pass:
 
    ```bash
    git diff --check
-   python3 -m compileall adapters chains scripts/audit
+   python3 -m compileall adapters chains benchmark/src scripts/audit
    ```
 
 3. Candidate file set is reviewed:
@@ -73,8 +79,8 @@ Before changing repository visibility:
 
 ## Current Work Plan
 
-1. Keep the GitHub repository private while hardening the public surface.
-2. Preserve the ignored local research and run artifacts without committing them.
-3. Add and maintain tracked public readiness metadata in this repository.
-4. Run the audit, compile, and diff checks after each public-surface change.
-5. Prepare the visibility-change commit or release tag only after a final human boundary review.
+1. Harden the already-public GitHub surface through a reviewed pull request.
+2. Preserve local research and run artifacts without committing them.
+3. Build the Hub mirror from the merged Git commit, not working-tree bytes.
+4. Upload and verify the refreshed mirror while it remains private.
+5. Change Hub visibility only after exact file/hash checks and explicit owner approval.

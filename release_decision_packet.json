@@ -2,7 +2,7 @@
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
   "decision_status": "public_released_after_human_approval",
-  "as_of_date": "2026-07-04",
+  "as_of_date": "2026-07-12",
   "human_readable_checklist": "docs/public_launch_checklist.md",
   "surfaces": {
     "github": {
@@ -24,7 +24,7 @@
     "default": "published_after_approval",
     "human_approval_required": true,
     "no_public_visibility_change_without_explicit_approval": true,
-    "approval_record": "Explicit owner approval received on 2026-07-04 before public visibility change"
+    "approval_record": "Explicit owner approval received on 2026-07-12 to remediate and publish the GitHub and Hugging Face surfaces"
   },
   "release_scope": {
     "include": [
@@ -33,6 +33,9 @@
       "machine-readable release manifests",
       "citation and archive metadata",
       "schemas, verifier contracts, adapters, and flow scaffolds",
+      "audited SCD and target-identification aggregate results cards",
+      "machine-readable aggregate evidence summary",
+      "benchmark/ scorer and tests for the separately hosted clinical-trial decision dataset",
       "audit scripts and GitHub Actions release audit"
     ],
     "exclude": [
@@ -73,13 +76,23 @@
       "blocking": true
     },
     {
+      "name": "hf_built_package_validation",
+      "command": "python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package",
+      "blocking": true
+    },
+    {
+      "name": "benchmark_tests",
+      "command": "python3 -m pytest -q benchmark/tests",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true
     },
     {
       "name": "python_compile",
-      "command": "python3 -m compileall adapters chains scripts/audit",
+      "command": "python3 -m compileall adapters chains benchmark/src scripts/audit",
       "blocking": true
     }
   ],
@@ -87,17 +100,21 @@
     "README.md",
     "docs/release_trust_report.md",
     "docs/12_scd_vertical_slice.md",
+    "docs/13_target_id_governance_node.md",
+    "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
     "docs/release_boundary.md",
     "release_manifest.json",
     "huggingface/README.md",
-    "huggingface/release_manifest.json"
+    "huggingface/release_manifest.json",
+    "benchmark/"
   ],
   "hard_stop_if": [
     "any required check fails",
     "any release-surface file has unreviewed sensitive content",
     "GitHub or Hugging Face visibility changes without explicit approval",
-    "the README overstates built functionality beyond the validated slice",
-    "the Hugging Face mirror is stale relative to the reviewed source commit"
+    "the README overstates built functionality beyond the audited slice",
+    "the Hugging Face mirror is stale relative to the reviewed source commit or fails exact file/hash validation",
+    "Croissant metadata for the separate clinical-trial-decision-benchmark enters this Hub package"
   ]
 }

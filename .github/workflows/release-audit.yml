@@ -8,10 +8,14 @@ jobs:
   github-release-file-audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.11"
+      - name: Install audit and benchmark dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -e ./benchmark pytest build
       - name: Audit GitHub file boundary
         run: python3 scripts/audit/github_release_file_audit.py
       - name: Validate Hugging Face package
@@ -20,12 +24,21 @@ jobs:
         run: python3 scripts/audit/validate_public_launch_packet.py
       - name: Validate vertical-slice documentation
         run: python3 scripts/audit/validate_vertical_slice_doc.py
+      - name: Test benchmark scorer
+        run: python3 -m pytest -q benchmark/tests
+      - name: Build benchmark wheel
+        run: python3 -m build --wheel benchmark --outdir /tmp/ctdbench-dist
       - name: Build Hugging Face mirror package
         run: python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force
+      - name: Validate built Hugging Face mirror package
+        run: python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package
+      - name: Check whitespace
+        run: git diff --check
       - name: Compile public scaffold
-        run: python3 -m compileall adapters chains scripts/audit
+        run: python3 -m compileall adapters chains benchmark/src scripts/audit
       - name: Validate release manifest
         run: |
           python3 -m json.tool release_manifest.json >/tmp/release_manifest.json
           python3 -m json.tool huggingface/release_manifest.json >/tmp/hf_release_manifest.json
           python3 -m json.tool release_decision_packet.json >/tmp/release_decision_packet.json
+          python3 -m json.tool docs/public_evidence_summary.json >/tmp/public_evidence_summary.json

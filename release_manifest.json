@@ -3,7 +3,9 @@
   "release_stage": "public_release",
   "target_surface": "github_and_huggingface_dataset",
   "public_boundary": {
+    "include_semantics": "Exhaustive tracked public file anchors and directory prefixes; every tracked or unignored candidate file must be covered and is scanned by github_release_file_audit.py.",
     "include": [
+      ".gitignore",
       "README.md",
       "PROJECT_BRIEF.md",
       "LICENSE",
@@ -17,10 +19,10 @@
       "docs/release_trust_report.md",
       "docs/public_release_readiness_plan.md",
       "docs/public_launch_checklist.md",
+      "release_manifest.json",
       "release_decision_packet.json",
       "huggingface/README.md",
       "huggingface/release_manifest.json",
-      "huggingface/croissant.json",
       "docs/00_problem_framing.md",
       "docs/01_long_horizon_chain_design.md",
       "docs/02_success_failure_case_design.md",
@@ -31,13 +33,17 @@
       "docs/07_self_review_checkpoints_v0.md",
       "docs/11_full_flow_retrospective_and_prospective_plan.md",
       "docs/12_scd_vertical_slice.md",
+      "docs/13_target_id_governance_node.md",
+      "docs/public_evidence_summary.json",
       "adapters/",
       "benchmark/",
       "chains/",
+      "rl_env/README.md",
       "rl_env/specs/",
       "rl_env/rewards/",
       "verifiers/",
       "scripts/audit/",
+      "scripts/README.md",
       "scripts/audit/build_hf_release_package.py",
       "scripts/audit/validate_hf_release_package.py",
       "scripts/audit/validate_public_launch_packet.py",
@@ -63,8 +69,22 @@
       "generated reward or verifier outputs",
       "scheduler logs",
       "local paths",
-      "credentials and key material"
+      "credentials and key material",
+      "huggingface/croissant.json (metadata for the separate external clinical-trial-decision-benchmark)"
     ]
+  },
+  "surface_scope": {
+    "github": "Full sanitized protocol, adapter, flow, verifier, benchmark-scorer, documentation, and audit surface.",
+    "hugging_face": "Commit-pinned subset containing documentation, schemas, aggregate evidence, audit code, and the scorer for the separately hosted clinical-trial decision dataset.",
+    "github_only": [
+      "CONTRIBUTING.md",
+      "SECURITY.md",
+      ".github/",
+      "adapters/",
+      "chains/",
+      "verifiers/"
+    ],
+    "external_dataset_metadata": "Croissant metadata belongs to jang1563/clinical-trial-decision-benchmark and is intentionally absent from this repository's Hugging Face package."
   },
   "required_checks": [
     {
@@ -93,13 +113,23 @@
       "blocking": true
     },
     {
+      "name": "hf_built_package_validation",
+      "command": "python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package",
+      "blocking": true
+    },
+    {
+      "name": "benchmark_tests",
+      "command": "python3 -m pytest -q benchmark/tests",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true
     },
     {
       "name": "python_compile",
-      "command": "python3 -m compileall adapters chains scripts/audit",
+      "command": "python3 -m compileall adapters chains benchmark/src scripts/audit",
       "blocking": true
     }
   ],
@@ -109,7 +139,7 @@
     "No raw source snapshots or evaluator-only labels",
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
     "Vertical-slice benchmark numbers remain caveats-first and small-N scoped",
-    "Hugging Face mirror package can be rebuilt from the checked-in manifest",
+    "Hugging Face mirror package is built from commit objects and validated by exact file hashes",
     "Public launch decision packet records explicit approval before public visibility",
     "Release audit workflow green on GitHub"
   ],

@@ -6,8 +6,8 @@ refused / suspended / revoked human medicines), parses it once (cached), and loo
 asset by brand / INN / active substance -> {status, ma_date, revocation/suspension, url}.
 
 There is NO per-asset EMA API: bulk-download-then-filter. `Medicine status` is authoritative
-(date cells can be blank). Assets with no EU filing (e.g. Lyfgenia, US-only) return not-found,
-which is itself correct information.
+for matched rows (date cells can be blank). A no-match is not proof that no EU filing exists;
+aliases, parser drift, or an unavailable/stale table can also cause it.
 """
 from __future__ import annotations
 import os, json, urllib.request
@@ -80,8 +80,12 @@ class EmaEparAdapter:
 
     def lookup(self, query):
         q = (query or "").lower().strip()
-        if not q or not self.rows:
-            return {"found": False, "query": query, "note": "no EMA/EPAR row (no EU filing, or dataset unavailable)"}
+        if not q:
+            return {"found": False, "query": query, "evidence_status": "invalid_query",
+                    "note": "empty EMA/EPAR lookup; filing status unresolved"}
+        if not self.rows:
+            return {"found": False, "query": query, "evidence_status": "dataset_unavailable",
+                    "note": "EMA table unavailable or empty; filing status unresolved"}
         for r in self.rows:
             hay = " ; ".join(str(r.get(k) or "") for k in ("name", "inn", "sub")).lower()
             if q in hay:
@@ -89,7 +93,8 @@ class EmaEparAdapter:
                         "status": r.get("status"), "ma_date": r.get("ma_date"),
                         "withdrawal_revocation_date": r.get("withdrawal_revocation_date"),
                         "suspension_date": r.get("suspension_date"), "url": r.get("url")}
-        return {"found": False, "query": query, "note": "no EMA/EPAR row — asset has no EU centralised filing"}
+        return {"found": False, "query": query, "evidence_status": "not_found_in_loaded_table",
+                "note": "no match in the loaded EMA table; filing status unresolved (check aliases and source freshness)"}
 
 
 if __name__ == "__main__":

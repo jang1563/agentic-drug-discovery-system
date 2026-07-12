@@ -10,13 +10,11 @@ tags:
   - ai-safety
   - benchmark
   - decision-support
-size_categories:
-  - n<1K
 ---
 
 # Agentic Drug Discovery System
 
-This is the Hugging Face Dataset-card package for the Agentic Drug Discovery System public artifact. It is a public artifact mirror for schemas, release metadata, and safety-boundary documentation. It is not a model release and does not contain raw clinical/regulatory snapshots, hidden labels, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
+This is the Hugging Face Dataset-card package for the Agentic Drug Discovery System public artifact. It is a commit-pinned artifact mirror for documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw clinical/regulatory snapshots, hidden labels, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
 
 ## At A Glance
 
@@ -24,7 +22,7 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 | --- | --- |
 | Repository type | Dataset |
 | Current visibility | Public |
-| Contents | Documentation, schemas, manifests, and release-boundary metadata. |
+| Contents | Documentation, schemas, aggregate evidence, manifests, audit code, and the `ctdbench` scorer. |
 | Not included | Raw source data, hidden labels, generated trajectories, logs, credentials, local paths, or model weights. |
 | Source commit | See `upload_manifest.json`. |
 
@@ -32,7 +30,9 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 
 - Review the public system architecture and release boundary.
 - Read the caveats-first SCD vertical slice before citing benchmark numbers.
+- Read the small-N target-identification results card and aggregate claim ledger.
 - Inspect schema and verifier-contract documentation.
+- Use `benchmark/` to score the separately hosted clinical-trial decision dataset.
 - Track provenance for the public artifact surface.
 - Inspect the mirrored GitHub release surface and source-commit provenance.
 
@@ -48,7 +48,10 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 | `upload_manifest.json` | Exact uploaded file list and source commit. |
 | `docs/release_boundary.md` | Public-release boundary and exclusion rules. |
 | `docs/release_trust_report.md` | Trust claims, machine anchors, and interpretation warnings. |
-| `docs/12_scd_vertical_slice.md` | Validated SCD vertical slice, with small-N caveats. |
+| `docs/12_scd_vertical_slice.md` | Audited SCD vertical slice, with small-N caveats. |
+| `docs/13_target_id_governance_node.md` | Upstream target-identification results card. |
+| `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
+| `benchmark/` | Installable `ctdbench` scorer and tests. |
 | `docs/public_launch_checklist.md` | Human launch checklist before any visibility change. |
 | `scripts/audit/*.py` | Local release audits and reproducible Hub package builder. |
 
@@ -59,6 +62,15 @@ This is the Hugging Face Dataset-card package for the Agentic Drug Discovery Sys
 - Generated reward/verifier outputs or run logs.
 - Credentials, local machine paths, or private infrastructure details.
 - Model weights or an executable autonomous discovery system.
+- Croissant metadata for `jang1563/clinical-trial-decision-benchmark`; that
+  metadata belongs to the separate external dataset, not this artifact mirror.
+
+## Linked External Dataset
+
+The scorer in `benchmark/` targets
+`https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark`.
+That dataset has its own card, rows, and Croissant metadata. This repository's
+Hub package intentionally does not duplicate those data or metadata.
 
 ## Validation Before Upload
 
@@ -69,9 +81,11 @@ python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
+python3 -m pytest -q benchmark/tests
 python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force
+python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package
 git diff --check
-python3 -m compileall adapters chains scripts/audit
+python3 -m compileall adapters chains benchmark/src scripts/audit
 ```
 
 ## Hub Placement

@@ -2,6 +2,10 @@
 
 This checklist is the human-readable companion to `release_decision_packet.json`.
 It records the final review state for the GitHub and Hugging Face public release.
+Scientific anchors: `docs/12_scd_vertical_slice.md`,
+`docs/13_target_id_governance_node.md`, and
+`docs/public_evidence_summary.json`. The external scorer is under `benchmark/`,
+and `scripts/audit/validate_vertical_slice_doc.py` checks claim drift.
 
 ## Current Launch State
 
@@ -27,7 +31,14 @@ owner and passing release-boundary checks.
 - [x] `release_decision_packet.json` says `public_released_after_human_approval`.
 - [x] GitHub Actions `release-audit` is green on the public-readiness branch.
 - [x] The Hugging Face mirror has been refreshed from the reviewed source commit.
-- [x] Browser review shows readable first-screen content on desktop and mobile.
+- [x] The Hub package was built from Git commit objects and its exact file set,
+  source tree, byte sizes, and SHA-256 values were validated before upload.
+- [x] `benchmark/` tests pass, and its linked external dataset's Croissant
+  metadata is absent from this artifact mirror.
+- [x] The SCD and target-node aggregate claims match
+  `docs/public_evidence_summary.json`; raw runs and per-record gold remain excluded.
+- [x] Anonymous Hub API/page reads expose the card, source commit, and upload
+  manifest after the visibility change.
 
 ## Required Local Commands
 
@@ -36,8 +47,11 @@ python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
+python3 -m pytest -q benchmark/tests
+python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force
+python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package
 git diff --check
-python3 -m compileall adapters chains scripts/audit
+python3 -m compileall adapters chains benchmark/src scripts/audit
 ```
 
 ## Launch Decision Rule

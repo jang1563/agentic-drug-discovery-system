@@ -7,6 +7,7 @@ only meaningful once it clears the trivial floor. Abstention is first-class: a m
 and ``coverage`` (fraction of gold-labelled trials it acted on) is reported so selective policies are visible.
 """
 from collections import Counter
+from math import ceil
 
 # labels that count as a real decision; anything else (None, "", "abstain", "null") is an abstention
 _ABSTAIN = {None, "", "abstain", "null", "none", "defer"}
@@ -71,17 +72,31 @@ def risk_coverage(predictions, gold, confidences):
         predictions, gold: as in :func:`evaluate`.
         confidences: ``{nct_id: float}``; higher = more confident. The curve accepts the most-confident
             fraction at each coverage level and reports the error rate (risk) among accepted trials.
-    Returns a list of ``{"coverage", "risk", "n"}`` points at 10% coverage steps.
+    Returns unique ``{"coverage", "conditional_coverage", "risk", "n"}``
+    points at 10% steps. ``coverage`` is relative to all scored gold rows;
+    ``conditional_coverage`` is relative only to non-abstaining predictions that
+    have confidence values. Returns an empty list when that ranked set is empty.
     """
     gold = {k: v for k, v in gold.items() if v not in _ABSTAIN}
     ranked = sorted((k for k in gold if k in confidences and predictions.get(k) not in _ABSTAIN),
                     key=lambda k: -confidences[k])
     m = len(ranked)
+    if m == 0:
+        return []
     out = []
+    last_take = 0
     for step in range(1, 11):
         cov = step / 10.0
-        take = max(1, int(round(cov * m)))
+        take = min(m, max(1, ceil(cov * m)))
+        if take == last_take:
+            continue
+        last_take = take
         acc = ranked[:take]
         wrong = sum(predictions[k] != gold[k] for k in acc)
-        out.append({"coverage": round(len(acc) / m, 3), "risk": round(wrong / len(acc), 3), "n": len(acc)})
+        out.append({
+            "coverage": round(len(acc) / len(gold), 3),
+            "conditional_coverage": round(len(acc) / m, 3),
+            "risk": round(wrong / len(acc), 3),
+            "n": len(acc),
+        })
     return out

@@ -5,12 +5,12 @@ build-backend = "hatchling.build"
 [project]
 name = "ctdbench"
 version = "0.1.0"
-description = "Runner + scorer for the clinical-trial decision benchmark (construct-valid, no-human, calibrated-abstention)."
+description = "Runner + scorer for the clinical-trial decision benchmark (construct-audited, source-derived labels, abstention analysis)."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "Apache-2.0"
 authors = [{ name = "JangKeun Kim" }]
-keywords = ["clinical-trials", "decision-benchmark", "calibrated-abstention", "weak-supervision", "construct-validity"]
+keywords = ["clinical-trials", "decision-benchmark", "calibrated-abstention", "weak-supervision", "construct-audit"]
 dependencies = ["pyarrow>=12"]
 
 [project.optional-dependencies]

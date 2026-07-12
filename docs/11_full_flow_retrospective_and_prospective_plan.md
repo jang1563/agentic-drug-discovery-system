@@ -1,7 +1,7 @@
 # Full-Flow Plan — Retrospective Benchmark + Prospective Decision-Support
 
-Date: 2026-07-02
-Status: active plan; extends scope to include a prospective mode
+Date: 2026-07-12
+Status: roadmap with one audited SCD slice; prospective mode remains unscored decision support
 
 ## Purpose
 
@@ -14,14 +14,14 @@ both.
 
 The system remains a **decision + prioritization environment**, NOT an
 autonomous drug designer and NOT wet-lab automation. Its outputs are grounded,
-verified, calibrated *decisions and prioritizations with an auditable evidence
+structured *decisions and prioritizations with an auditable evidence
 trail* — never a claim of a validated clinical candidate.
 
 ## The full-flow chain
 
 For a chosen disease and/or target, the agent traverses ordered stages, making a
 terminal decision (`advance` / `stop` / `defer` / `request_more_evidence` /
-`flag`) at each, carrying state, evidence, and calibrated uncertainty across
+`flag`) at each, carrying state, evidence, and an explicit uncertainty state across
 handoffs:
 
 ```
@@ -47,7 +47,7 @@ advance/stop/defer decisions given the evidence available at each stage. Labels
 come from the source-derived, no-human label authority (Track A). Safe,
 reproducible, offline.
 
-### 2. Prospective / decision-support mode (added scope, staged after retro is validated)
+### 2. Prospective / decision-support mode (added scope, staged after retrospective audit)
 
 Point the flow at a **current** disease/target with open questions. The agent:
 
@@ -55,8 +55,8 @@ Point the flow at a **current** disease/target with open questions. The agent:
 - calls SFMs as **fallible, low-weight soft scorers** (binding, structure,
   perturbation) — never as oracles,
 - runs deterministic + soft verifiers on every intermediate claim,
-- emits per-stage `advance / stop / defer / verify / flag` with **calibrated
-  uncertainty**, an explicit **evidence-status vs probativeness** distinction,
+- emits per-stage `advance / stop / defer / verify / flag` with an explicit
+  uncertainty state and **evidence-status vs probativeness** distinction,
   and a full **provenance trail**,
 - **abstains / defers under uncertainty** rather than asserting.
 
@@ -84,18 +84,21 @@ agents* (epistemic control under delegation). Prospective mode must preserve:
   hazardous design; it does not automate wet-lab execution. Fail-closed:
   unresolved / out-of-distribution -> defer or flag, never silent advance.
 - **Responsible release.** Publish schemas, benchmarks, controls, and failure
-  modes; do not ship a capability artifact.
+  modes; ship only the limited decision-prototype surface, not a complete
+  autonomous discovery or wet-lab capability.
 
 ## What must be built (gap from today)
 
 For the clinical/regulatory decision layer (M1), the agent-loop half is now
-**built and validated end-to-end on one disease** — sickle cell disease — with 7
+**built and audited end-to-end on one disease** — sickle cell disease — with 7
 tracked adapters and 2 flow orchestrators. See `docs/12_scd_vertical_slice.md`
-for the concrete validated instance of this plan. The remaining roadmap stages
-(M2–M6) are still unbuilt. To reach full flow:
+for the concrete audited instance of this plan. A small-N target-identification
+node prototype (M4) is documented in `docs/13_target_id_governance_node.md`, but
+standalone and integrated atlases across M2–M6 remain unbuilt. To reach full flow:
 
-1. **Honest source-derived labels per stage** — Track A (validated for M1);
-   replicate the labeling-function + authority-table pattern for M2–M6.
+1. **Honest source-derived labels per stage** — Track A is audited for M1 and a
+   small-N M4 node exists; replicate the labeling-function + authority-table
+   pattern for broader M2–M6 atlases.
 2. **Live agent loop** — LLM planner (hosted model backend or API) + tool/DB
    adapters (CT.gov, openFDA, Open Targets, ChEMBL, PDB, …) + SFM scorers
    (GPU-gated Boltz-2/ESM plus a local no-GPU RDKit druglikeness signal). This
@@ -107,10 +110,10 @@ for the concrete validated instance of this plan. The remaining roadmap stages
 4. **Calibration layer** — conformal / RCPS / calibration cards so per-stage
    confidence and false-accept are bounded (prerequisite for prospective mode).
 
-## First proof: thin vertical slice
+## Implemented first proof: thin vertical slice
 
-Before building all of M2–M6, prove the concept with **one disease/target × 3
-stages**:
+The current proof uses **one disease/target × 3 stages** and remains a thin
+slice rather than the full M2–M6 system:
 
 - target-disease evidence (Open Targets) -> compound-target activity (ChEMBL) ->
   clinical decision (CT.gov, already Track-A labeled),
@@ -123,13 +126,13 @@ stages**:
 ## Sequencing
 
 ```
-Track A (A1–A6): honest no-human source-derived labels + construct validity + calibration   [in progress]
-  -> Track B: live agent loop + thin vertical slice (retrospective)                           [next]
-  -> validate slice (Gate-7 + calibration) -> enable prospective toggle on the slice
+Track A (A1–A6): source-derived labels + scoped controls + retrospective risk analysis       [audited locally]
+  -> Track B: live agent loop + thin SCD vertical slice                                       [audited locally]
+  -> refresh cutoff-safe replay + calibration before any scored prospective use               [next]
   -> widen stages (M2–M6) and diseases/targets; refresh loop for live sources
 ```
 
-Retrospective must be validated (labels honest, trivial baselines fail,
-uncertainty calibrated) **before** the prospective mode is enabled for any
-disease/target. Honest labels (Track A) are the trust foundation for the entire
-flow.
+Retrospective evidence must be cutoff-safe and audited (labels honest, trivial
+baselines fail, uncertainty calibrated against the stated target) **before**
+prospective mode is treated as scored or operational for any disease/target.
+The currently shipped prospective example is unscored scaffolding.
