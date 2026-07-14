@@ -4,6 +4,12 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+## 0.2.0 - 2026-07-14
+
+- Hardened `ctdbench` 0.2.0 against class-selective abstention by separating
+  all-class, conditional, and coverage-adjusted balanced accuracy; added
+  per-class coverage, fail-closed label validation, and an immutable default
+  Hugging Face dataset revision.
 - Added public release boundary documentation, release manifest, security policy, contribution guide, citation metadata, license, and archive metadata.
 - Added callable tool/database adapters (Open Targets, ChEMBL, ClinicalTrials.gov, openFDA, EMA EPAR) and multi-stage flow orchestrators (discovery_flow, episode_flow) for the first public decision-environment surface.
 - Added a local RDKit-based molecular-property adapter (QED, MW, logP, H-bond donors/acceptors, Lipinski) giving the compound-design stage a computable, no-GPU druglikeness signal.

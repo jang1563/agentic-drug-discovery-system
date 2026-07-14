@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ctdbench"
-version = "0.1.0"
+version = "0.2.0"
 description = "Runner + scorer for the clinical-trial decision benchmark (construct-audited, source-derived labels, abstention analysis)."
 readme = "README.md"
 requires-python = ">=3.9"

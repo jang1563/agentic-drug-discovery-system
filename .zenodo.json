@@ -1,5 +1,6 @@
 {
   "title": "Agentic Drug Discovery System",
+  "version": "0.2.0",
   "description": "Research scaffold for long-horizon drug-discovery decision environments with deterministic verifiers, soft scientific verifiers, adapter interfaces, and conservative public-release boundaries.",
   "creators": [
     {

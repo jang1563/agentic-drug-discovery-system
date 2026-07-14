@@ -5,8 +5,17 @@
     preds = {nct: my_agent(nct) for nct in gold}   # your model's decisions (may abstain)
     print(evaluate(preds, gold))                    # balanced accuracy, macro-F1, coverage, ...
 """
-from .evaluate import evaluate, risk_coverage
-from .data import load_records, load_gold, REPO_ID, SPLITS
+from .evaluate import DECISION_LABELS, evaluate, risk_coverage
+from .data import DEFAULT_REVISION, REPO_ID, SPLITS, load_gold, load_records
 
-__version__ = "0.1.0"
-__all__ = ["evaluate", "risk_coverage", "load_records", "load_gold", "REPO_ID", "SPLITS"]
+__version__ = "0.2.0"
+__all__ = [
+    "DECISION_LABELS",
+    "DEFAULT_REVISION",
+    "REPO_ID",
+    "SPLITS",
+    "evaluate",
+    "risk_coverage",
+    "load_records",
+    "load_gold",
+]

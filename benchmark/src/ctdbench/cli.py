@@ -3,7 +3,7 @@ import argparse
 import json
 import sys
 
-from .data import load_gold, load_records, SPLITS
+from .data import DEFAULT_REVISION, SPLITS, load_gold, load_records
 from .evaluate import evaluate
 
 
@@ -12,13 +12,13 @@ def _cmd_evaluate(a):
         preds = json.load(f)
     if not isinstance(preds, dict):
         sys.exit("predictions file must be a JSON object {nct_id: decision}")
-    gold = load_gold(split=a.split, local_dir=a.local_dir)
+    gold = load_gold(split=a.split, local_dir=a.local_dir, revision=a.revision)
     result = evaluate(preds, gold)
     print(json.dumps(result, indent=2))
 
 
 def _cmd_info(a):
-    recs = load_records(split=a.split, local_dir=a.local_dir)
+    recs = load_records(split=a.split, local_dir=a.local_dir, revision=a.revision)
     from collections import Counter
     labels = Counter(r.get("label") for r in recs)
     abstained = sum(1 for r in recs if r.get("abstained") is True)
@@ -34,6 +34,11 @@ def _cmd_info(a):
 def main(argv=None):
     p = argparse.ArgumentParser(prog="ctdbench", description="Clinical-trial decision benchmark runner.")
     p.add_argument("--local-dir", default=None, help="load splits from a local Parquet dir instead of the Hub")
+    p.add_argument(
+        "--revision",
+        default=DEFAULT_REVISION,
+        help="Hub commit or tag; defaults to the package-pinned revision",
+    )
     sub = p.add_subparsers(dest="cmd", required=True)
 
     pe = sub.add_parser("evaluate", help="score a predictions file against a split")

@@ -8,6 +8,7 @@ import os
 import pyarrow.parquet as pq
 
 REPO_ID = "jang1563/clinical-trial-decision-benchmark"
+DEFAULT_REVISION = "bfc610ae643c7adbb01994115bce470222c25e8f"
 SPLITS = ("train", "test", "full")
 
 
@@ -19,8 +20,8 @@ def _rows_from_parquet(path):
     return [{c: data[c][i] for c in cols} for i in range(n)]
 
 
-def load_records(split="test", local_dir=None):
-    """Return the split as a list of record dicts (one per trial)."""
+def load_records(split="test", local_dir=None, revision=DEFAULT_REVISION):
+    """Return one record dict per trial from a pinned Hub revision or local directory."""
     if split not in SPLITS:
         raise ValueError(f"split must be one of {SPLITS}, got {split!r}")
     if local_dir:
@@ -30,14 +31,25 @@ def load_records(split="test", local_dir=None):
             from huggingface_hub import hf_hub_download
         except ImportError as e:
             raise ImportError("pip install 'ctdbench[hf]' to load from the Hub, or pass local_dir=") from e
-        path = hf_hub_download(repo_id=REPO_ID, filename=f"data/{split}.parquet", repo_type="dataset")
+        path = hf_hub_download(
+            repo_id=REPO_ID,
+            filename=f"data/{split}.parquet",
+            repo_type="dataset",
+            revision=revision,
+        )
     return _rows_from_parquet(path)
 
 
-def load_gold(split="test", local_dir=None, id_field="nct_id", label_field="label"):
+def load_gold(
+    split="test",
+    local_dir=None,
+    id_field="nct_id",
+    label_field="label",
+    revision=DEFAULT_REVISION,
+):
     """Return ``{nct_id: label}`` for the confidently-labelled trials only (abstained rows dropped)."""
     gold = {}
-    for r in load_records(split, local_dir=local_dir):
+    for r in load_records(split, local_dir=local_dir, revision=revision):
         lab = r.get(label_field)
         if r.get("abstained") is True or lab in (None, "", "null"):
             continue
