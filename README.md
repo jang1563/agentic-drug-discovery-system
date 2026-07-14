@@ -1,8 +1,18 @@
 # Agentic Drug Discovery System
 
-Release-gated research scaffold for long-horizon drug-discovery decision environments. The project combines tool/database adapters, scientific foundation-model interfaces, LLM policy seams, deterministic verifiers, soft scientific verifiers, and RL-style feedback design.
+[![release-audit](https://github.com/jang1563/agentic-drug-discovery-system/actions/workflows/release-audit.yml/badge.svg?branch=main)](https://github.com/jang1563/agentic-drug-discovery-system/actions/workflows/release-audit.yml)
+[![GitHub release](https://img.shields.io/github/v/release/jang1563/agentic-drug-discovery-system)](https://github.com/jang1563/agentic-drug-discovery-system/releases/latest)
+[![Hugging Face dataset](https://img.shields.io/badge/Hugging%20Face-Dataset-FFD21E?logo=huggingface&logoColor=000)](https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark)
 
-Scaffold date: 2026-06-27
+Version 0.2.0 ships `ctdbench`, a reproducible runner and scorer for the public
+[clinical-trial decision benchmark](https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark),
+alongside an audited end-to-end sickle-cell vertical slice. The repository also
+packages callable evidence adapters, verifier contracts, and release checks for
+building auditable drug-discovery agent workflows.
+
+The broader long-horizon platform remains a research scaffold: seven of eight
+planned atlases do not yet have standalone public data, and the demonstrated
+multi-stage flow currently covers one disease/target slice.
 
 ## At A Glance
 
