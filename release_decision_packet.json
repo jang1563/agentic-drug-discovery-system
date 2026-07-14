@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
+  "release_version": "0.2.0",
   "decision_status": "public_released_after_human_approval",
-  "as_of_date": "2026-07-12",
+  "as_of_date": "2026-07-14",
   "human_readable_checklist": "docs/public_launch_checklist.md",
   "surfaces": {
     "github": {

@@ -1,7 +1,7 @@
 # Public Release Readiness Plan
 
-Status: active public-release refresh
-Release posture: GitHub public; stage Hugging Face privately until all blocking gates pass
+Status: public release active; incremental refresh under review
+Release posture: GitHub and Hugging Face public; publish refreshes only from reviewed Git commits after all blocking gates pass
 Target surface: public GitHub repository with a commit-pinned Hugging Face Dataset mirror
 
 ## Objective
@@ -82,5 +82,6 @@ Before changing repository visibility:
 1. Harden the already-public GitHub surface through a reviewed pull request.
 2. Preserve local research and run artifacts without committing them.
 3. Build the Hub mirror from the merged Git commit, not working-tree bytes.
-4. Upload and verify the refreshed mirror while it remains private.
-5. Change Hub visibility only after exact file/hash checks and explicit owner approval.
+4. Upload the refreshed public mirror and verify its exact file/hash manifest.
+5. Cut a versioned GitHub/Hugging Face release only after clean-checkout checks
+   pass and the source and dataset revisions are immutable.

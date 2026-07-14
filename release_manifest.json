@@ -1,5 +1,6 @@
 {
   "artifact": "agentic-drug-discovery-system",
+  "release_version": "0.2.0",
   "release_stage": "public_release",
   "target_surface": "github_and_huggingface_dataset",
   "public_boundary": {

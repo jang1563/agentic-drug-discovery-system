@@ -1,5 +1,6 @@
 {
   "artifact": "agentic-drug-discovery-system",
+  "release_version": "0.2.0",
   "target_surface": "huggingface_dataset",
   "repo_type": "dataset",
   "repo_id": "jang1563/agentic-drug-discovery-system",

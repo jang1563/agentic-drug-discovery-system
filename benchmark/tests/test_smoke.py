@@ -1,4 +1,6 @@
 """Offline smoke tests for the scorer — no network, no Hub."""
+import pytest
+
 from ctdbench import evaluate, risk_coverage
 
 
@@ -20,8 +22,32 @@ def test_abstention_and_coverage():
     assert r["coverage"] == 0.5
     assert r["n_scored"] == 2
     assert r["accuracy"] == 1.0
+    assert r["balanced_accuracy"] == 0.6667
+    assert r["conditional_balanced_accuracy"] == 1.0
+    assert r["coverage_adjusted_balanced_accuracy"] == 0.5
     # abstaining on everything is reported, not a crash
-    assert evaluate({}, gold)["n_scored"] == 0
+    all_abstain = evaluate({}, gold)
+    assert all_abstain["n_scored"] == 0
+    assert all_abstain["balanced_accuracy"] == 0.0
+    assert all_abstain["conditional_balanced_accuracy"] is None
+
+
+def test_class_selective_abstention_is_not_a_perfect_balanced_score():
+    gold = {"a": "advance", "b": "stop", "c": "stop", "d": "verify"}
+    r = evaluate({"a": "advance"}, gold)
+    assert r["coverage"] == 0.25
+    assert r["balanced_accuracy"] == 0.3333
+    assert r["conditional_balanced_accuracy"] == 1.0
+    assert r["coverage_adjusted_balanced_accuracy"] == 0.3333
+    assert r["per_class_coverage"] == {"advance": 1.0, "stop": 0.0, "verify": 0.0}
+
+
+def test_invalid_decision_labels_fail_closed():
+    gold = {"a": "advance", "b": "stop"}
+    with pytest.raises(ValueError, match="unsupported decision labels"):
+        evaluate({"a": "banana"}, gold)
+    with pytest.raises(ValueError, match="unsupported decision labels"):
+        evaluate({"a": "advance"}, {"a": "success"})
 
 
 def test_risk_coverage_monotone_ids():
@@ -45,6 +71,11 @@ def test_risk_coverage_uses_all_gold_as_coverage_denominator():
     curve = risk_coverage({"a": "advance"}, gold, {"a": 0.9})
     assert curve[-1]["coverage"] == 0.25
     assert curve[-1]["conditional_coverage"] == 1.0
+
+
+def test_risk_coverage_rejects_nonfinite_confidence():
+    with pytest.raises(ValueError, match="finite numbers"):
+        risk_coverage({"a": "advance"}, {"a": "advance"}, {"a": float("nan")})
 
 
 def test_abstain_labels_excluded_from_gold():
