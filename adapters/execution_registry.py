@@ -561,6 +561,33 @@ def _register_pinned_evidence(registry: ToolRegistry, adapter: Any) -> None:
 
     registry.register(clinical_contract, clinical_handler)
 
+    disposition_contract = ToolContract(
+        tool_id="pinned_evidence",
+        operation="clinical_trial_disposition",
+        action_type=ActionType.QUERY_DATABASE,
+        description=(
+            "Retrieve one registry disposition and one publication outcome bound "
+            "to the same historical clinical trial lineage."
+        ),
+        allowed_stages=(Stage.CLINICAL_STRATEGY,),
+        required_arguments=("candidate_id", "disease_id", "trial_id"),
+        default_cost=0.1,
+    )
+
+    def disposition_handler(arguments):
+        return _pinned_profile_response(
+            adapter.clinical_trial_disposition(
+                arguments["candidate_id"],
+                arguments["disease_id"],
+                arguments["trial_id"],
+            ),
+            incomplete_code="pinned_clinical_trial_disposition_incomplete",
+            ambiguous_code="pinned_clinical_trial_disposition_ambiguous",
+            success_message="Pinned clinical trial disposition lookup completed.",
+        )
+
+    registry.register(disposition_contract, disposition_handler)
+
 
 def _register_clinical_synthesis(registry: ToolRegistry, adapter: Any) -> None:
     mapping_contract = ToolContract(

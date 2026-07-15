@@ -16,6 +16,8 @@ TREATMENT_GAP = "treatment_gap_supported"
 CANDIDATE_TARGET_FUNCTION = "candidate_target_functional_activity_supported"
 DISEASE_MODEL_EFFECT = "disease_model_effect_supported"
 CLINICAL_TRIAL_DESIGN = "clinical_trial_design_supported"
+CLINICAL_TRIAL_TERMINATION = "clinical_trial_terminated_for_lack_of_efficacy"
+CLINICAL_PRIMARY_ENDPOINT_NOT_MET = "clinical_primary_endpoint_not_met"
 PINNED_EVIDENCE_PREDICATES = frozenset(
     {
         DISEASE_BURDEN,
@@ -23,6 +25,8 @@ PINNED_EVIDENCE_PREDICATES = frozenset(
         CANDIDATE_TARGET_FUNCTION,
         DISEASE_MODEL_EFFECT,
         CLINICAL_TRIAL_DESIGN,
+        CLINICAL_TRIAL_TERMINATION,
+        CLINICAL_PRIMARY_ENDPOINT_NOT_MET,
     }
 )
 
@@ -335,6 +339,101 @@ def _clinical_trial_design_metadata(
         )
 
 
+def _clinical_disposition_metadata(
+    metadata: dict[str, Any],
+    *,
+    index: int,
+    predicate: str,
+) -> None:
+    label = f"records[{index}].metadata"
+    _require_text_values(
+        metadata,
+        ("provider_id", "protocol_id", "shared_trial_lineage_id"),
+        label,
+    )
+    metadata["candidate_aliases"] = _text_sequence(
+        metadata.get("candidate_aliases"), f"{label}.candidate_aliases"
+    )
+    metadata["source_lineage_ids"] = _lineage_ids(
+        metadata.get("source_lineage_ids"), f"{label}.source_lineage_ids"
+    )
+    if metadata["shared_trial_lineage_id"] not in metadata["source_lineage_ids"]:
+        raise ValueError(
+            f"{label}.shared_trial_lineage_id must occur in source_lineage_ids"
+        )
+
+    if predicate == CLINICAL_TRIAL_TERMINATION:
+        _require_text_values(
+            metadata,
+            (
+                "registry",
+                "registry_version",
+                "study_type",
+                "overall_status",
+                "phase",
+                "why_stopped",
+                "why_stopped_code",
+                "primary_endpoint",
+            ),
+            label,
+        )
+        if _normalized(str(metadata["provider_id"])) != "clinicaltrials_gov":
+            raise ValueError(f"{label}.provider_id must be clinicaltrials_gov")
+        if _normalized(str(metadata["registry"])) != "clinicaltrials.gov":
+            raise ValueError(f"{label}.registry must be ClinicalTrials.gov")
+        if _normalized(str(metadata["study_type"])) != "interventional":
+            raise ValueError(f"{label}.study_type must be INTERVENTIONAL")
+        if _normalized(str(metadata["overall_status"])) != "terminated":
+            raise ValueError(f"{label}.overall_status must be TERMINATED")
+        if _normalized(str(metadata["why_stopped_code"])) != "lack_of_efficacy":
+            raise ValueError(f"{label}.why_stopped_code must be lack_of_efficacy")
+        enrollment_count = metadata.get("enrollment_count")
+        if (
+            not isinstance(enrollment_count, int)
+            or isinstance(enrollment_count, bool)
+            or enrollment_count <= 0
+        ):
+            raise ValueError(f"{label}.enrollment_count must be positive")
+        metadata["source_interventions"] = _text_sequence(
+            metadata.get("source_interventions"), f"{label}.source_interventions"
+        )
+        metadata["source_conditions"] = _text_sequence(
+            metadata.get("source_conditions"), f"{label}.source_conditions"
+        )
+        return
+
+    _require_text_values(
+        metadata,
+        (
+            "pmid",
+            "doi",
+            "article_title",
+            "publication_date",
+            "source_candidate_name",
+            "effect_direction",
+            "endpoint_name",
+            "rate_unit",
+            "early_termination_reason",
+        ),
+        label,
+    )
+    if _normalized(str(metadata["provider_id"])) != "ncbi_pubmed":
+        raise ValueError(f"{label}.provider_id must be ncbi_pubmed")
+    if metadata.get("primary_endpoint_met") is not False:
+        raise ValueError(f"{label}.primary_endpoint_met must be false")
+    if _normalized(str(metadata["effect_direction"])) != "no_clinical_benefit":
+        raise ValueError(f"{label}.effect_direction must be no_clinical_benefit")
+    if _normalized(str(metadata["early_termination_reason"])) != "lack_of_efficacy":
+        raise ValueError(
+            f"{label}.early_termination_reason must be lack_of_efficacy"
+        )
+    _iso_date(metadata["publication_date"], f"{label}.publication_date")
+    for field_name in ("candidate_rate", "comparator_rate"):
+        _require_finite_number(metadata.get(field_name), f"{label}.{field_name}")
+        if float(metadata[field_name]) < 0:
+            raise ValueError(f"{label}.{field_name} must not be negative")
+
+
 def validate_pinned_public_summary(value: Any, *, label: str) -> None:
     """Reject raw-payload fields, machine paths, and oversized public summaries."""
 
@@ -531,13 +630,30 @@ def normalize_pinned_evidence_record(raw: Any, index: int = 0) -> dict[str, Any]
         metadata["source_lineage_ids"] = _lineage_ids(
             metadata.get("source_lineage_ids"), "metadata.source_lineage_ids"
         )
-    else:
+    elif predicate == CLINICAL_TRIAL_DESIGN:
         _require_text_values(
             biological_context,
             ("candidate_id", "intervention_id", "disease_id", "trial_id", "design_id"),
             "biological_context",
         )
         _clinical_trial_design_metadata(metadata, index=index)
+    else:
+        _require_text_values(
+            biological_context,
+            (
+                "candidate_id",
+                "intervention_id",
+                "disease_id",
+                "trial_id",
+                "protocol_id",
+            ),
+            "biological_context",
+        )
+        _clinical_disposition_metadata(
+            metadata,
+            index=index,
+            predicate=predicate,
+        )
 
     normalized = {
         "record_id": record_id,

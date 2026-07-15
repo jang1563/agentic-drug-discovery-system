@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 import re
+import urllib.parse
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from datetime import date
@@ -3342,6 +3343,529 @@ def _map_pinned_clinical_trial_design(
     )
 
 
+def _pubmed_locator_matches(locator: str, pmid: str) -> bool:
+    parsed = urllib.parse.urlsplit(locator)
+    query = urllib.parse.parse_qs(parsed.query, keep_blank_values=True)
+    return (
+        parsed.scheme.casefold() == "https"
+        and parsed.hostname == "eutils.ncbi.nlm.nih.gov"
+        and parsed.path == "/entrez/eutils/efetch.fcgi"
+        and query.get("db") == ["pubmed"]
+        and query.get("id") == [pmid]
+        and query.get("retmode") == ["xml"]
+    )
+
+
+def _map_pinned_clinical_trial_disposition(
+    state: ProgramState,
+    outcome: ToolOutcome,
+    context: PromotionContext,
+) -> PromotionResult:
+    mapper_id = "pinned_clinical_trial_disposition_v1"
+    if outcome.request.stage is not Stage.CLINICAL_STRATEGY:
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_stage_unsupported",
+            "Pinned clinical disposition promotion is limited to clinical strategy.",
+        )
+
+    candidate_id = _text(outcome.request.arguments.get("candidate_id"))
+    disease_id = _text(outcome.request.arguments.get("disease_id"))
+    trial_id = _text(outcome.request.arguments.get("trial_id"))
+    candidate = (
+        state.candidates_by_id.get(candidate_id) if candidate_id is not None else None
+    )
+    disease = state.diseases_by_id.get(disease_id) if disease_id is not None else None
+    candidate_interventions = tuple(
+        item
+        for item in state.interventions
+        if candidate is not None and item.candidate_id == candidate.candidate_id
+    )
+    if len(candidate_interventions) > 1:
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_intervention_ambiguous",
+            "More than one clinical intervention claims the accepted candidate.",
+        )
+    existing_intervention = (
+        candidate_interventions[0] if candidate_interventions else None
+    )
+    intervention_id = (
+        existing_intervention.intervention_id
+        if existing_intervention is not None
+        else candidate_id
+    )
+    if (
+        candidate_id is None
+        or disease_id is None
+        or trial_id is None
+        or re.fullmatch(r"NCT[0-9]{8}", trial_id) is None
+        or candidate is None
+        or disease is None
+        or intervention_id is None
+        or candidate.attributes.get("disease_id") != disease_id
+        or _normalized(disease.name) != _normalized(state.disease)
+        or context.candidate_id != candidate_id
+        or context.candidate_name is None
+        or _normalized(context.candidate_name) != _normalized(candidate.name)
+        or _normalized(context.subject) != _normalized(candidate.name)
+        or _normalized(context.object_value) != _normalized(disease.name)
+        or context.biological_context.get("disease_id") != disease_id
+        or (
+            context.biological_context.get("intervention_id") is not None
+            and context.biological_context.get("intervention_id") != intervention_id
+        )
+        or not _profile_query_matches(
+            outcome.payload,
+            candidate_id=candidate_id,
+            disease_id=disease_id,
+            trial_id=trial_id,
+        )
+    ):
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_context_mismatch",
+            "Candidate, disease, intervention, trial, and profile query must match.",
+        )
+
+    predicates = (
+        "clinical_trial_terminated_for_lack_of_efficacy",
+        "clinical_primary_endpoint_not_met",
+    )
+    try:
+        registry_record, publication_record = _parse_pinned_profile(
+            outcome, predicates
+        )
+    except ValueError as exc:
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_profile_invalid",
+            "Pinned clinical disposition profile failed source validation.",
+            details={"validation_error": str(exc)},
+        )
+
+    protocol_id = _text(registry_record.biological_context.get("protocol_id"))
+    publication_protocol_id = _text(
+        publication_record.biological_context.get("protocol_id")
+    )
+    records = (registry_record, publication_record)
+    if (
+        protocol_id is None
+        or publication_protocol_id != protocol_id
+        or any(
+            not _record_context_matches(
+                record,
+                candidate_id=candidate_id,
+                intervention_id=intervention_id,
+                disease_id=disease_id,
+                trial_id=trial_id,
+                protocol_id=protocol_id,
+            )
+            for record in records
+        )
+        or any(
+            _normalized(record.subject) != _normalized(candidate.name)
+            or _normalized(record.object_value) != _normalized(disease.name)
+            for record in records
+        )
+    ):
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_record_mismatch",
+            "Both records must bind the accepted candidate, disease, trial, and protocol.",
+        )
+    after_cutoff = [
+        record.record_id for record in records if record.available_at > state.as_of_date
+    ]
+    if after_cutoff:
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_after_cutoff",
+            "Clinical disposition evidence was unavailable at the program cutoff.",
+            details={
+                "record_ids": after_cutoff,
+                "as_of_date": state.as_of_date.isoformat(),
+            },
+        )
+    if (
+        registry_record.source_id == publication_record.source_id
+        or registry_record.content_hash == publication_record.content_hash
+    ):
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_source_collision",
+            "Registry and publication records must come from distinct captured bytes.",
+        )
+
+    registry = registry_record.metadata
+    publication = publication_record.metadata
+    registry_aliases = _metadata_text_values(registry_record, "candidate_aliases")
+    publication_aliases = _metadata_text_values(
+        publication_record, "candidate_aliases"
+    )
+    source_interventions = _metadata_text_values(
+        registry_record, "source_interventions"
+    )
+    source_conditions = _metadata_text_values(registry_record, "source_conditions")
+    registry_lineages = _metadata_text_values(
+        registry_record, "source_lineage_ids"
+    )
+    publication_lineages = _metadata_text_values(
+        publication_record, "source_lineage_ids"
+    )
+    shared_lineage = _text(registry.get("shared_trial_lineage_id"))
+    publication_shared_lineage = _text(
+        publication.get("shared_trial_lineage_id")
+    )
+    registry_version = _text(registry.get("registry_version"))
+    pmid = _text(publication.get("pmid"))
+    publication_date = _text(publication.get("publication_date"))
+    candidate_rate = _number(publication.get("candidate_rate"))
+    comparator_rate = _number(publication.get("comparator_rate"))
+    try:
+        if registry_version is None or publication_date is None:
+            raise ValueError("source dates are missing")
+        _iso_date(registry_version, "registry_version")
+        _iso_date(publication_date, "publication_date")
+    except ValueError as exc:
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_source_date_invalid",
+            "Clinical disposition source dates are invalid.",
+            details={"validation_error": str(exc)},
+        )
+
+    registry_alias_set = {_normalized(item) for item in registry_aliases or ()}
+    publication_alias_set = {
+        _normalized(item) for item in publication_aliases or ()
+    }
+    source_intervention_set = {
+        _normalized(item) for item in source_interventions or ()
+    }
+    expected_shared_lineage = f"sponsor-protocol:{protocol_id}"
+    if (
+        _normalized(str(registry.get("provider_id", "")))
+        != "clinicaltrials_gov"
+        or _normalized(str(registry.get("registry", "")))
+        != "clinicaltrials.gov"
+        or _normalized(str(registry.get("study_type", ""))) != "interventional"
+        or _normalized(str(registry.get("overall_status", ""))) != "terminated"
+        or _normalized(str(registry.get("why_stopped_code", "")))
+        != "lack_of_efficacy"
+        or _text(registry.get("why_stopped")) is None
+        or _text(registry.get("phase")) is None
+        or _text(registry.get("primary_endpoint")) is None
+        or not isinstance(registry.get("enrollment_count"), int)
+        or registry_aliases is None
+        or publication_aliases is None
+        or source_interventions is None
+        or source_conditions is None
+        or registry_lineages is None
+        or publication_lineages is None
+        or shared_lineage != expected_shared_lineage
+        or publication_shared_lineage != expected_shared_lineage
+        or expected_shared_lineage not in registry_lineages
+        or expected_shared_lineage not in publication_lineages
+        or f"clinicaltrials-gov:{trial_id}" not in registry_lineages
+        or registry_record.source_id != f"clinicaltrials-gov-{trial_id}"
+        or registry_record.source_version
+        != f"clinicaltrials-gov-{trial_id}-version-{registry_version}"
+        or registry_record.locator
+        != f"https://clinicaltrials.gov/api/v2/studies/{trial_id}"
+        or _normalized(candidate.name) not in registry_alias_set
+        or not (registry_alias_set & source_intervention_set)
+        or not any(
+            _source_text_matches(disease.name, item) for item in source_conditions
+        )
+        or _normalized(str(publication.get("provider_id", "")))
+        != "ncbi_pubmed"
+        or pmid is None
+        or re.fullmatch(r"[1-9][0-9]{0,15}", pmid) is None
+        or publication_record.source_id != f"ncbi-pubmed-{pmid}"
+        or re.fullmatch(
+            rf"pmid-{re.escape(pmid)}-pubmed-xml-[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}}",
+            publication_record.source_version,
+        )
+        is None
+        or not _pubmed_locator_matches(publication_record.locator, pmid)
+        or _text(publication.get("doi")) is None
+        or _text(publication.get("article_title")) is None
+        or _text(publication.get("source_candidate_name")) is None
+        or _normalized(str(publication.get("effect_direction", "")))
+        != "no_clinical_benefit"
+        or publication.get("primary_endpoint_met") is not False
+        or _normalized(str(publication.get("early_termination_reason", "")))
+        != "lack_of_efficacy"
+        or _text(publication.get("endpoint_name")) is None
+        or _text(publication.get("rate_unit")) is None
+        or candidate_rate is None
+        or comparator_rate is None
+        or candidate_rate < 0
+        or comparator_rate < 0
+        or _normalized(candidate.name) not in publication_alias_set
+        or _normalized(str(publication.get("source_candidate_name", "")))
+        not in publication_alias_set
+        or f"pubmed:{pmid}" not in publication_lineages
+    ):
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_metadata_invalid",
+            "Clinical disposition metadata lacks exact registry or publication identities.",
+        )
+
+    if existing_intervention is not None and (
+        existing_intervention.name != candidate.name
+        or existing_intervention.candidate_id != candidate_id
+        or existing_intervention.disease_id != disease_id
+        or _normalized(existing_intervention.modality)
+        != _normalized(candidate.modality)
+        or existing_intervention.identifiers.get("canonical") != intervention_id
+    ):
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_intervention_rebound",
+            "Existing intervention identity conflicts with the candidate ledger.",
+        )
+    existing_trial = state.trials_by_id.get(trial_id)
+    if existing_trial is not None and (
+        _normalized(existing_trial.registry) != "clinicaltrials.gov"
+        or existing_trial.intervention_id != intervention_id
+        or existing_trial.disease_id != disease_id
+    ):
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_disposition_trial_rebound",
+            "Existing trial identity conflicts with the accepted intervention.",
+        )
+
+    base_context = {
+        **dict(context.biological_context),
+        "candidate_id": candidate_id,
+        "intervention_id": intervention_id,
+        "disease_id": disease_id,
+        "trial_id": trial_id,
+        "protocol_id": protocol_id,
+        "registry": "ClinicalTrials.gov",
+    }
+    registry_confidence = min(context.confidence, registry_record.confidence)
+    publication_confidence = min(context.confidence, publication_record.confidence)
+    identity_draft = _draft(
+        outcome,
+        context,
+        evidence_id=_evidence_id(outcome, f"trial-identity-{trial_id}"),
+        predicate="clinical_trial_identity_resolved",
+        object_value=trial_id,
+        relation=EvidenceRelation.SUPPORTS,
+        confidence=registry_confidence,
+        source_id=registry_record.source_id,
+        observed_at=registry_record.observed_at,
+        available_at=registry_record.available_at,
+        biological_context=base_context,
+        metadata={
+            "registry_version": registry_version,
+            "protocol_id": protocol_id,
+            "overall_status": registry["overall_status"],
+        },
+    )
+    registry_draft = _draft(
+        outcome,
+        context,
+        evidence_id=_evidence_id(outcome, "registry-negative-disposition"),
+        predicate="clinical_evidence_assessed",
+        object_value=disease.name,
+        relation=EvidenceRelation.CONTRADICTS,
+        direction="no_clinical_benefit",
+        confidence=registry_confidence,
+        source_id=registry_record.source_id,
+        observed_at=registry_record.observed_at,
+        available_at=registry_record.available_at,
+        biological_context=base_context,
+        metadata={
+            "evidence_role": "registry_disposition",
+            "overall_status": registry["overall_status"],
+            "why_stopped": registry["why_stopped"],
+            "why_stopped_code": registry["why_stopped_code"],
+            "primary_endpoint": registry["primary_endpoint"],
+            "shared_trial_lineage_id": expected_shared_lineage,
+        },
+    )
+    publication_draft = _draft(
+        outcome,
+        context,
+        evidence_id=_evidence_id(outcome, "publication-primary-endpoint"),
+        predicate="clinical_evidence_assessed",
+        object_value=disease.name,
+        relation=EvidenceRelation.CONTRADICTS,
+        direction="no_clinical_benefit",
+        confidence=publication_confidence,
+        source_id=publication_record.source_id,
+        observed_at=publication_record.observed_at,
+        available_at=publication_record.available_at,
+        biological_context=base_context,
+        metadata={
+            "evidence_role": "publication_outcome",
+            "pmid": pmid,
+            "doi": publication["doi"],
+            "primary_endpoint_met": False,
+            "endpoint_name": publication["endpoint_name"],
+            "candidate_rate": candidate_rate,
+            "comparator_rate": comparator_rate,
+            "rate_unit": publication["rate_unit"],
+            "shared_trial_lineage_id": expected_shared_lineage,
+        },
+    )
+    clinical_evidence_ids = (
+        registry_draft.evidence_id,
+        publication_draft.evidence_id,
+    )
+    previous_intervention_support = (
+        existing_intervention.supporting_evidence
+        if existing_intervention is not None
+        else ()
+    )
+    intervention = InterventionRecord(
+        intervention_id=intervention_id,
+        name=candidate.name,
+        candidate_id=candidate_id,
+        disease_id=disease_id,
+        modality=candidate.modality,
+        stage=outcome.request.stage,
+        identifiers={
+            **(
+                dict(existing_intervention.identifiers)
+                if existing_intervention is not None
+                else {}
+            ),
+            "canonical": intervention_id,
+            **(
+                {"chembl_molecule": candidate_id}
+                if candidate_id.startswith("CHEMBL")
+                else {}
+            ),
+        },
+        supporting_evidence=tuple(
+            dict.fromkeys(
+                (
+                    *previous_intervention_support,
+                    identity_draft.evidence_id,
+                )
+            )
+        ),
+        attributes={
+            **(
+                dict(existing_intervention.attributes)
+                if existing_intervention is not None
+                else {}
+            ),
+            "clinical_trial_ids": sorted(
+                {
+                    *(
+                        existing_intervention.attributes.get("clinical_trial_ids", ())
+                        if existing_intervention is not None
+                        else ()
+                    ),
+                    trial_id,
+                }
+            ),
+            "clinical_evidence_assessed": True,
+            "historical_negative_disposition": True,
+        },
+    )
+    previous_trial_support = (
+        existing_trial.supporting_evidence if existing_trial is not None else ()
+    )
+    trial = TrialRecord(
+        trial_id=trial_id,
+        registry="ClinicalTrials.gov",
+        intervention_id=intervention_id,
+        disease_id=disease_id,
+        stage=outcome.request.stage,
+        identifiers={
+            **(dict(existing_trial.identifiers) if existing_trial is not None else {}),
+            "canonical": trial_id,
+            "clinicaltrials_gov": trial_id,
+            "sponsor_protocol": protocol_id,
+        },
+        supporting_evidence=tuple(
+            dict.fromkeys(
+                (
+                    *previous_trial_support,
+                    identity_draft.evidence_id,
+                )
+            )
+        ),
+        attributes={
+            **(dict(existing_trial.attributes) if existing_trial is not None else {}),
+            "registry_version": registry_version,
+            "overall_status": registry["overall_status"],
+            "study_type": registry["study_type"],
+            "phase": registry["phase"],
+            "protocol_id": protocol_id,
+            "primary_endpoint_met": False,
+            "disposition": "terminated_for_lack_of_efficacy",
+            "corroborating_source_count": 2,
+            "independent_trial_count": 1,
+            "shared_trial_lineage": True,
+        },
+    )
+    claim = ScientificClaim(
+        claim_id=_claim_id(outcome, "clinical-benefit"),
+        stage=outcome.request.stage,
+        subject=candidate.name,
+        predicate="clinical_benefit_demonstrated",
+        object_value=disease.name,
+        disposition=ClaimDisposition.REJECTED,
+        contradicting_evidence=clinical_evidence_ids,
+        confidence=min(registry_confidence, publication_confidence),
+        biological_context=base_context,
+    )
+    return PromotionResult(
+        mapper_id=mapper_id,
+        request_id=outcome.request_id,
+        status=PromotionStatus.PROMOTED,
+        code="pinned_clinical_lack_of_efficacy_promoted",
+        message=(
+            "Registry disposition and publication outcome were promoted as "
+            "corroborating records for one historical trial lineage."
+        ),
+        evidence_drafts=(identity_draft, registry_draft, publication_draft),
+        claim_updates=(claim,),
+        intervention_updates=(intervention,),
+        trial_updates=(trial,),
+        recommended_decision=Decision.KILL,
+        details={
+            "trial_id": trial_id,
+            "protocol_id": protocol_id,
+            "corroborating_source_count": 2,
+            "independent_trial_count": 1,
+            "shared_trial_lineage": True,
+            "scope": "historical_candidate_indication_pair",
+        },
+    )
+
+
 def _map_ctgov_trials(
     state: ProgramState,
     outcome: ToolOutcome,
@@ -4406,6 +4930,12 @@ def build_default_semantic_mapper_registry(
         operation="clinical_trial_design",
         mapper_id="pinned_clinical_trial_design_v1",
         mapper=_map_pinned_clinical_trial_design,
+    )
+    registry.register(
+        tool_id="pinned_evidence",
+        operation="clinical_trial_disposition",
+        mapper_id="pinned_clinical_trial_disposition_v1",
+        mapper=_map_pinned_clinical_trial_disposition,
     )
     registry.register(
         tool_id="clinical_synthesis",

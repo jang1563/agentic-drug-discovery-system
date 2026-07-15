@@ -15,7 +15,9 @@ from typing import Any
 
 from agentic_drug_discovery.pinned_evidence import (
     CANDIDATE_TARGET_FUNCTION,
+    CLINICAL_PRIMARY_ENDPOINT_NOT_MET,
     CLINICAL_TRIAL_DESIGN,
+    CLINICAL_TRIAL_TERMINATION,
     DISEASE_BURDEN,
     DISEASE_MODEL_EFFECT,
     PINNED_EVIDENCE_PREDICATES,
@@ -157,6 +159,28 @@ class PinnedEvidenceAdapter:
         return self._profile(
             query=query,
             required={CLINICAL_TRIAL_DESIGN: query},
+        )
+
+    def clinical_trial_disposition(
+        self,
+        candidate_id: str,
+        disease_id: str,
+        trial_id: str,
+    ) -> dict[str, Any]:
+        candidate_id = _text(candidate_id, "candidate_id")
+        disease_id = _text(disease_id, "disease_id")
+        trial_id = _text(trial_id, "trial_id")
+        query = {
+            "candidate_id": candidate_id,
+            "disease_id": disease_id,
+            "trial_id": trial_id,
+        }
+        return self._profile(
+            query=query,
+            required={
+                CLINICAL_TRIAL_TERMINATION: query,
+                CLINICAL_PRIMARY_ENDPOINT_NOT_MET: query,
+            },
         )
 
     def stats(self) -> dict[str, Any]:
