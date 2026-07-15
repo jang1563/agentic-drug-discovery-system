@@ -23,6 +23,12 @@ classifiers = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+test = [
+  "jsonschema>=4.23,<5",
+  "pytest>=8,<10",
+]
+
 [project.scripts]
 adds-control-plane-demo = "agentic_drug_discovery.demo:main"
 adds-bounded-agent-demo = "agentic_drug_discovery.bounded_demo:main"

@@ -43,7 +43,7 @@ Before merging or uploading a change to either public surface:
 1. Boundary audit passes:
 
    ```bash
-   python3 -m pip install -e . -e ./benchmark pytest build ruff
+   python3 -m pip install -e ".[test]" -e ./benchmark build ruff
    python3 scripts/audit/github_release_file_audit.py
    python3 scripts/audit/validate_hf_release_package.py
    python3 -m unittest discover -s tests -v

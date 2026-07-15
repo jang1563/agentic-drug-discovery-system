@@ -15,7 +15,7 @@ jobs:
       - name: Install core, audit, and benchmark dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install -e . -e ./benchmark pytest build ruff
+          python3 -m pip install -e ".[test]" -e ./benchmark build ruff
       - name: Audit GitHub file boundary
         run: python3 scripts/audit/github_release_file_audit.py
       - name: Validate Hugging Face package
