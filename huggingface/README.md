@@ -21,7 +21,7 @@ This is the candidate Hugging Face Dataset-card package for the Agentic Drug Dis
 - **Surface:** Hugging Face Dataset repository.
 - **Public state:** 0.2.0 baseline.
 - **Candidate:** 0.3.0.dev0 source prepared; not uploaded; approval pending.
-- **Contents:** Bounded planner, typed execution core, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched evaluator, tests, documentation, schemas, aggregate evidence, manifests, audit code, and the `ctdbench` scorer.
+- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched evaluator, tests, documentation, schemas, aggregate evidence, manifests, audit code, and the `ctdbench` scorer.
 - **Excludes:** Raw source data, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
 - **Source:** Exact commit and tree are recorded in `upload_manifest.json`.
 

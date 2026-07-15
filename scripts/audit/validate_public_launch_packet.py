@@ -69,6 +69,7 @@ REQUIRED_READ_ORDER = {
     "docs/clinical_provider_validation_snapshot.json",
     "docs/22_clinical_benefit_risk_synthesis.md",
     "docs/23_clinical_portfolio_endpoint_mapping.md",
+    "docs/24_policy_replanning_and_resume.md",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
     "docs/release_boundary.md",
@@ -90,6 +91,7 @@ REQUIRED_READ_ORDER = {
     "rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json",
     "rl_env/specs/clinical_endpoint_mapping.schema.json",
     "rl_env/specs/clinical_benefit_risk_synthesis.schema.json",
+    "rl_env/specs/policy_checkpoint.schema.json",
     "tests/",
     "benchmark/",
 }

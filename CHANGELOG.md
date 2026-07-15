@@ -33,6 +33,9 @@ All notable public-surface changes to this repository will be documented here.
 - Added a typed bounded program runner that chains ordered stage plans over one cumulative execution
   ledger, validates state and packet continuity, stops on non-advance or blocked outcomes, and
   requires exact accepted-packet replay of the recorded final state.
+- Added typed deterministic policy replanning over paused/blocked observations, predeclared
+  replacement steps, per-rule/global revision limits, append-only queue history, SHA-256-bound
+  checkpoints, duplicate-key/tamper/stale-token rejection, and exact checkpoint resume.
 - Added Open Targets disease-profile and ChEMBL molecule-mechanism profile bindings plus conservative
   disease-context, modality-mechanism, and preclinical activity-volume mappings. Disease identity
   cannot establish unmet need, and target activity volume cannot establish candidate functional

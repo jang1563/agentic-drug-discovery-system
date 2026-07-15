@@ -35,6 +35,8 @@ verifiers/deterministic/
 
 # Large or generated run artifacts
 output/
+policy_checkpoints/
+policy_runs/
 experiments/**/runs/
 experiments/**/logs/
 experiments/

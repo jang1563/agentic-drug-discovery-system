@@ -17,6 +17,7 @@ This repository uses a conservative boundary so that future public or collaborat
 - Evaluator-only labels and locked episode data.
 - Generated reward and verifier results.
 - Run logs and machine-specific execution outputs.
+- Real policy checkpoints and policy-run artifacts containing full state or tool ledgers.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -57,6 +58,11 @@ The portfolio and endpoint-mapping surface likewise contains only executable ver
 schemas, synthetic references, and tests. Real multi-trial source bundles, single-trial review jobs,
 portfolio review files, reviewer working identities, and ontology-resolution artifacts remain
 external until separate scientific and release-boundary approval.
+
+The typed replanning surface contains policy/checkpoint code, JSON Schema, documentation, and
+synthetic tests only. Real `PolicyCheckpoint` values contain the complete program state and
+cumulative tool ledger, so `policy_checkpoints/` and `policy_runs/` remain outside Git until a
+separate payload and provenance review approves a sanitized artifact.
 
 `adds-pinned-ingestion` enforces the raw-data boundary operationally: source bundles are immutable,
 contain exact bytes plus a receipt, and are refused inside any Git worktree. Compiled manifests and

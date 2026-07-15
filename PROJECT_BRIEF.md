@@ -38,6 +38,9 @@ Drug discovery can be modeled as a sequence of structured decision points rather
 - A bounded multi-stage program runner that carries one cumulative execution ledger across ordered
   stage plans, checks state and packet continuity, continues only after accepted advance decisions,
   and records completed, terminated, paused, blocked, or plan-exhausted outcomes.
+- A typed deterministic policy layer that converts exact paused/blocked observations into only
+  predeclared replacement plans, bounds rule/global revisions, and resumes from hash-bound state,
+  ledger, queue, and policy-history checkpoints.
 - Conservative built-in mappings for Open Targets disease identity and target association; ChEMBL
   modality-mechanism matching, molecule identity, and target activity volume; RDKit molecular
   properties; contextual ClinicalTrials.gov search results; source-pinned ClinicalTrials.gov trial
@@ -197,4 +200,5 @@ in `docs/clinical_provider_validation_snapshot.json`.
    and replay as one bounded end-to-end program run.
 4. Derive failure causes from verifier outputs and assemble real cutoff-safe matched episodes.
 5. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
-6. Add candidate ranking/edit loops, budget-aware action selection, and explicit resume/replan policies.
+6. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
+   operator reauthorization above the shipped deterministic resume/replan control layer.

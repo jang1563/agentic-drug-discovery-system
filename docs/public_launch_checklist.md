@@ -15,7 +15,8 @@ Scientific anchors: `docs/12_scd_vertical_slice.md`,
 `docs/20_preclinical_provider_ingestion.md`; the ClinicalTrials.gov trial-design contract is
 `docs/21_clinical_provider_ingestion.md`; the cross-trial synthesis contract is
 `docs/22_clinical_benefit_risk_synthesis.md`; portfolio ingestion and approved endpoint mapping
-are in `docs/23_clinical_portfolio_endpoint_mapping.md`. The external scorer is under `benchmark/`,
+are in `docs/23_clinical_portfolio_endpoint_mapping.md`; typed policy replanning and checkpoint
+resume are in `docs/24_policy_replanning_and_resume.md`. The external scorer is under `benchmark/`,
 and `scripts/audit/validate_vertical_slice_doc.py` checks claim drift.
 
 ## Current Launch State
@@ -79,6 +80,9 @@ of the exact committed package.
   records, source-disjoint recompilation, non-pooling guard, serialization, exact replay, and
   mismatch/overlap/forgery/removal controls are mirrored. No real review selection, pooled result,
   benefit-risk score, or clinical judgment is included.
+- [x] Typed replan observations/rules/directives, per-rule and global limits, checkpoint SHA-256
+  envelopes, stale-token/tamper controls, and deterministic resume tests are mirrored. Real
+  checkpoints and policy-run artifacts remain outside both release surfaces.
 - [x] The eight-stage provider-backed fixture carries one cumulative ledger from disease context
   through source-pinned clinical endpoint/safety design and EMA regulatory review, reaches
   `COMPLETED`, and replays
