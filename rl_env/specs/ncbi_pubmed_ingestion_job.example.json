@@ -1,0 +1,49 @@
+{
+  "schema_version": "adds.ncbi-pubmed-ingestion-job.v1",
+  "job_id": "example-ncbi-pubmed-treatment-gap-ingestion",
+  "source_receipt_id": "synthetic-pubmed-receipt",
+  "article": {
+    "title": "Synthetic PubMed SCD Access Study.",
+    "pmid": "12345678",
+    "pmcid": "PMC1234567",
+    "doi": "10.1000/synthetic.scd.1",
+    "publication_date": "2020-03-08",
+    "canonical_url": "https://pubmed.ncbi.nlm.nih.gov/12345678/"
+  },
+  "records": [
+    {
+      "record_id": "synthetic-pubmed-california-treatment-gap",
+      "predicate": "treatment_gap_supported",
+      "subject": "synthetic sickle cell disease context",
+      "object_value": "A synthetic hydroxyurea utilization gap is reported for contract testing.",
+      "observed_at": "2016-12-31",
+      "available_at": "2020-03-08",
+      "confidence": 0.8,
+      "biological_context": {
+        "disease_id": "MONDO_TEST",
+        "evidence_context_id": "california-medicaid-scd-2011-2016"
+      },
+      "metadata": {
+        "treatment_context": "hydroxyurea prescription filled",
+        "gap_summary": "Fewer than one fifth of the synthetic cohort filled a hydroxyurea prescription.",
+        "gap_measure_operator": "lt",
+        "gap_measure_value": 20,
+        "gap_measure_unit": "percent",
+        "population": "California Medicaid enrollees meeting the synthetic SCD cohort criteria",
+        "geography": "California",
+        "reference_period": "2011-2016"
+      },
+      "evidence": {
+        "result_label": "RESULTS",
+        "result_excerpt": "The cohort included 3,635 individuals. Although <20% of the cohort had a hydroxyurea prescription filled, utilization increased after 2014.",
+        "context_label": "METHODS",
+        "context_excerpt": "Individuals with synthetic SCD (<=65 years and enrolled in Medicaid for >=6 total calendar months any year between 2011 and 2016) were identified in a multisource database maintained by the California Sickle Cell Data Collection Program.",
+        "value_text": "<20%",
+        "population_anchor": "Individuals with synthetic SCD (<=65 years and enrolled in Medicaid for >=6 total calendar months any year between 2011 and 2016)",
+        "geography_anchor": "California",
+        "reference_period_anchor": "between 2011 and 2016",
+        "treatment_anchor": "hydroxyurea prescription filled"
+      }
+    }
+  ]
+}

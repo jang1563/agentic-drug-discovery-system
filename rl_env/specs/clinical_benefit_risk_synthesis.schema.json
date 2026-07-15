@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/agentic-drug-discovery/clinical_benefit_risk_synthesis.schema.json",
+  "title": "Clinical Benefit-Risk Synthesis Selection",
+  "description": "Explicit source-ledger selections for deterministic, non-pooled cross-trial synthesis.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "synthesis_id",
+    "candidate_id",
+    "intervention_id",
+    "disease_id",
+    "endpoint_mapping_id",
+    "endpoint_family",
+    "effect_measure",
+    "effect_measure_favorable_direction",
+    "safety_measure",
+    "harmonization_policy_id",
+    "selections",
+    "stage",
+    "metadata"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-benefit-risk-synthesis-spec.v1"
+    },
+    "synthesis_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 192
+    },
+    "intervention_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 192
+    },
+    "disease_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 192
+    },
+    "endpoint_mapping_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 192
+    },
+    "endpoint_family": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,127}$"
+    },
+    "effect_measure": {
+      "const": "hazard_ratio"
+    },
+    "effect_measure_favorable_direction": {
+      "const": "lower_is_better"
+    },
+    "safety_measure": {
+      "const": "serious_adverse_event_risk_difference"
+    },
+    "harmonization_policy_id": {
+      "const": "adds.descriptive-cross-trial-benefit-risk.v1"
+    },
+    "selections": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "trial_id",
+          "design_id",
+          "endpoint_id",
+          "safety_id"
+        ],
+        "properties": {
+          "trial_id": {
+            "type": "string",
+            "pattern": "^NCT[0-9]{8}$"
+          },
+          "design_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "endpoint_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "safety_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        }
+      }
+    },
+    "stage": {
+      "const": "regulatory_postmarket"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Review metadata only; source measurements are not accepted here."
+    }
+  }
+}

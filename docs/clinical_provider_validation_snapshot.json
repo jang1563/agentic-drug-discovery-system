@@ -1,0 +1,163 @@
+{
+  "schema_version": "adds.clinical-provider-validation-snapshot.v2",
+  "artifact": "agentic-drug-discovery-system",
+  "validation_date": "2026-07-15",
+  "execution_scope": "external_public_source_contract_validation",
+  "public_payload_policy": {
+    "contains_source_bytes": false,
+    "contains_reviewer_text": false,
+    "contains_review_jobs": false,
+    "contains_local_paths": false,
+    "external_artifacts_required_for_exact_replay": true
+  },
+  "provider": {
+    "provider_id": "clinicaltrials_gov",
+    "registry": "ClinicalTrials.gov",
+    "nct_id": "NCT01844505",
+    "registry_version": "2026-07-14",
+    "source_version": "clinicaltrials-gov-NCT01844505-version-2026-07-14",
+    "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT01844505",
+    "candidate_id": "NIVOLUMAB",
+    "candidate_name": "Nivolumab",
+    "candidate_aliases": [
+      "Nivolumab",
+      "BMS-936558",
+      "MDX-1106"
+    ],
+    "disease_id": "MONDO_0005105",
+    "condition": "Unresectable or Metastatic Melanoma",
+    "study_type": "INTERVENTIONAL",
+    "phase": "PHASE3",
+    "overall_status": "COMPLETED",
+    "primary_completion_date": "2016-08-01",
+    "results_first_post_date": "2017-09-26"
+  },
+  "selected_design": {
+    "design_id": "NCT01844505:design",
+    "arms": [
+      {
+        "arm_id": "NCT01844505:arm:OG000",
+        "source_group_id": "OG000",
+        "role": "candidate",
+        "label": "Nivolumab",
+        "measurement": 6.87,
+        "denominator": 316
+      },
+      {
+        "arm_id": "NCT01844505:arm:OG002",
+        "source_group_id": "OG002",
+        "role": "comparator",
+        "label": "Ipilimumab",
+        "measurement": 2.89,
+        "denominator": 315
+      }
+    ],
+    "population": {
+      "population_id": "NCT01844505:population:primary-0",
+      "description": "All randomized participants",
+      "enrollment_count": 945,
+      "enrollment_type": "ACTUAL",
+      "sex": "ALL",
+      "minimum_age": "18 Years",
+      "maximum_age": null,
+      "healthy_volunteers": false
+    },
+    "endpoint": {
+      "endpoint_id": "NCT01844505:endpoint:primary-0",
+      "name": "Progression Free Survival (PFS)",
+      "outcome_type": "PRIMARY",
+      "reporting_status": "POSTED",
+      "summary_parameter_type": "MEDIAN",
+      "unit": "months",
+      "favorable_direction": "higher_is_better",
+      "analysis_parameter_type": "Hazard Ratio (HR)",
+      "parameter_value": 0.57,
+      "confidence_interval_percent": 99.5,
+      "confidence_interval_lower": 0.43,
+      "confidence_interval_upper": 0.76,
+      "p_value_relation": "lt",
+      "p_value": 0.0001
+    },
+    "safety": {
+      "safety_id": "NCT01844505:safety:serious-adverse-events",
+      "event_category": "SERIOUS",
+      "reporting_status": "POSTED",
+      "event_term_count": 393,
+      "event_term_count_interpretation": "reported serious-adverse-event terms, not participants or event occurrences",
+      "arms": [
+        {
+          "arm_id": "NCT01844505:arm:OG000",
+          "source_group_id": "EG000",
+          "role": "candidate",
+          "label": "Nivolumab",
+          "serious_num_affected": 187,
+          "serious_num_at_risk": 313
+        },
+        {
+          "arm_id": "NCT01844505:arm:OG002",
+          "source_group_id": "EG002",
+          "role": "comparator",
+          "label": "Ipilimumab",
+          "serious_num_affected": 205,
+          "serious_num_at_risk": 311
+        }
+      ],
+      "bounded_interpretation": "posted aggregate serious-adverse-event counts were reconciled; safety acceptability was not inferred"
+    }
+  },
+  "artifact_hashes": {
+    "source_json_sha256": "6b5b6e01ae2997b22de529849a49fc10a22965a969d88f83cdb5256c634e3fb3",
+    "review_job_sha256": "829676f4d5c9a1cfe7c2cd63b9f5bd8d8ff20ed7246b5a7e509419a7d41d0db3",
+    "sanitized_output_sha256": "6c4b8c181fc6b89ccb9371e765f010f331c3b68dff174121aae272d52f834ba6",
+    "compiled_manifest_sha256": "11f5549b91cfe0fac6bcb9c7f545c0fb3c00711cd8d4680d9f1f276d8ceec89c",
+    "compile_review_sha256": "aae9722c6e2d494d3f407171b5c993b6d98845d0c3eb7f918a9850cc47268a7f"
+  },
+  "live_stage_validation": {
+    "decision": "advance",
+    "promotion_code": "pinned_clinical_trial_design_promoted",
+    "final_stage": "regulatory_postmarket",
+    "new_clinical_evidence_count": 8,
+    "trial_count": 1,
+    "trial_design_count": 1,
+    "arm_count": 2,
+    "population_count": 1,
+    "endpoint_count": 1,
+    "safety_record_count": 1,
+    "safety_arm_count": 2,
+    "committed_history_valid": true
+  },
+  "matched_pair": {
+    "pair_count": 1,
+    "success": {
+      "decision": "advance",
+      "promotion_code": "pinned_clinical_trial_design_promoted",
+      "final_stage": "regulatory_postmarket",
+      "new_clinical_evidence_count": 8
+    },
+    "failure": {
+      "controlled_change": "remove only metadata.safety from the otherwise exact live manifest",
+      "decision": "defer",
+      "promotion_code": "pinned_clinical_design_metadata_invalid",
+      "final_stage": "clinical_strategy",
+      "new_clinical_evidence_count": 0,
+      "new_intervention_count": 0,
+      "new_trial_count": 0,
+      "new_trial_design_count": 0
+    },
+    "balanced_accuracy": 1.0,
+    "metric_interpretation": "deterministic one-pair contract regression, not clinical prediction performance"
+  },
+  "official_sources": [
+    "https://clinicaltrials.gov/data-api/api",
+    "https://clinicaltrials.gov/api/v2/studies/NCT01844505"
+  ],
+  "limitations": [
+    "Source payloads and reviewer jobs are not included in the public repository.",
+    "Exact replay requires the external source bundle and reviewer job matching the listed hashes.",
+    "The v2 supportive path is limited to a posted primary time-to-event endpoint with higher-is-better measurements and a candidate-versus-comparator hazard ratio whose confidence interval is below one, plus posted serious-adverse-event arm summaries.",
+    "Registry-reported aggregate results are not independently reanalyzed or adjudicated.",
+    "Serious-adverse-event counts are registry-reported aggregates; the contract does not infer causality, comparative safety, acceptability, or a benefit-risk conclusion.",
+    "Advance means the configured evidence-governance gate passed; it is not a clinical, safety, efficacy, or regulatory recommendation.",
+    "The matched pair measures deterministic contract behavior only and is not a discovery benchmark."
+  ]
+}

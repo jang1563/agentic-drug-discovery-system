@@ -1,12 +1,14 @@
 {
   "artifact": "agentic-drug-discovery-system",
-  "release_version": "0.2.0",
-  "release_stage": "public_release",
+  "release_version": "0.3.0.dev0",
+  "last_public_release_version": "0.2.0",
+  "release_stage": "public_update_candidate",
   "target_surface": "github_and_huggingface_dataset",
   "public_boundary": {
     "include_semantics": "Exhaustive tracked public file anchors and directory prefixes; every tracked or unignored candidate file must be covered and is scanned by github_release_file_audit.py.",
     "include": [
       ".gitignore",
+      "pyproject.toml",
       "README.md",
       "PROJECT_BRIEF.md",
       "LICENSE",
@@ -35,7 +37,20 @@
       "docs/11_full_flow_retrospective_and_prospective_plan.md",
       "docs/12_scd_vertical_slice.md",
       "docs/13_target_id_governance_node.md",
+      "docs/14_target_identity_continuity.md",
+      "docs/15_discovery_context_identity.md",
+      "docs/16_clinical_intervention_identity.md",
+      "docs/17_pinned_source_ingestion.md",
+      "docs/18_cdc_mmwr_ingestion.md",
+      "docs/19_ncbi_pubmed_ingestion.md",
+      "docs/20_preclinical_provider_ingestion.md",
+      "docs/preclinical_provider_validation_snapshot.json",
+      "docs/21_clinical_provider_ingestion.md",
+      "docs/clinical_provider_validation_snapshot.json",
+      "docs/22_clinical_benefit_risk_synthesis.md",
+      "docs/23_clinical_portfolio_endpoint_mapping.md",
       "docs/public_evidence_summary.json",
+      "agentic_drug_discovery/",
       "adapters/",
       "benchmark/",
       "chains/",
@@ -49,6 +64,7 @@
       "scripts/audit/validate_hf_release_package.py",
       "scripts/audit/validate_public_launch_packet.py",
       "scripts/audit/validate_vertical_slice_doc.py",
+      "tests/",
       ".github/workflows/release-audit.yml",
       ".github/pull_request_template.md",
       ".github/ISSUE_TEMPLATE/config.yml",
@@ -65,6 +81,8 @@
       "scripts/sync/",
       "verifiers/deterministic/",
       "raw source snapshots",
+      "raw source bundles, real provider review jobs, and ingestion runs",
+      "real multi-trial portfolio reviews, reviewer working identities, and ontology-resolution artifacts",
       "locked episodes",
       "hidden/evaluator labels",
       "generated reward or verifier outputs",
@@ -75,13 +93,13 @@
     ]
   },
   "surface_scope": {
-    "github": "Full sanitized protocol, adapter, flow, verifier, benchmark-scorer, documentation, and audit surface.",
-    "hugging_face": "Commit-pinned subset containing documentation, schemas, aggregate evidence, audit code, and the scorer for the separately hosted clinical-trial decision dataset.",
+    "github": "Full sanitized bounded agent, execution core, source capture, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, payload-free manifest compiler, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, protocol, adapter, flow, verifier, benchmark-scorer, documentation, tests, and audit surface.",
+    "hugging_face": "Commit-pinned subset containing the dependency-free source capture/compiler, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, pinned-evidence and clinical-synthesis adapters and bindings, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, semantic mappings, stage and program runners, matched evaluator, executable core, tests, documentation, schemas, aggregate evidence, audit code, and the scorer for the separately hosted clinical-trial decision dataset.",
     "github_only": [
       "CONTRIBUTING.md",
       "SECURITY.md",
       ".github/",
-      "adapters/",
+      "live adapter implementations other than adapters/execution_registry.py, adapters/pinned_evidence_adapter.py, and adapters/clinical_synthesis_adapter.py",
       "chains/",
       "verifiers/"
     ],
@@ -124,13 +142,33 @@
       "blocking": true
     },
     {
+      "name": "core_tests",
+      "command": "python3 -m unittest discover -s tests -v",
+      "blocking": true
+    },
+    {
+      "name": "python_lint",
+      "command": "python3 -m ruff check agentic_drug_discovery tests adapters/boltz_adapter.py adapters/chembl_adapter.py adapters/opentargets_adapter.py adapters/execution_registry.py adapters/pinned_evidence_adapter.py adapters/clinical_synthesis_adapter.py scripts/audit",
+      "blocking": true
+    },
+    {
+      "name": "core_package_build",
+      "command": "python3 -m build --wheel . --outdir /tmp/agentic-core-dist",
+      "blocking": true
+    },
+    {
+      "name": "core_wheel_smoke_test",
+      "command": "python3 scripts/audit/smoke_test_core_wheel.py --wheel-dir /tmp/agentic-core-dist",
+      "blocking": true
+    },
+    {
       "name": "diff_check",
       "command": "git diff --check",
       "blocking": true
     },
     {
       "name": "python_compile",
-      "command": "python3 -m compileall adapters chains benchmark/src scripts/audit",
+      "command": "python3 -m compileall agentic_drug_discovery adapters chains benchmark/src scripts/audit tests",
       "blocking": true
     }
   ],
@@ -138,18 +176,22 @@
     "Apache-2.0 license present and consistent across metadata",
     "No sensitive content in tracked or unignored candidate files",
     "No raw source snapshots or evaluator-only labels",
+    "No raw source bundles, real provider review jobs, ingestion runs, or reviewer working files",
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
     "Vertical-slice benchmark numbers remain caveats-first and small-N scoped",
-    "Hugging Face mirror package is built from commit objects and validated by exact file hashes",
-    "Public launch decision packet records explicit approval before public visibility",
+    "Source capture/compiler, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and multi-trial portfolio verification, reviewer-approved endpoint mapping, and explicit mapping-gated source-disjoint non-pooled clinical synthesis, typed endpoint and lineage-independent preclinical promotion, atomic clinical endpoint/safety promotion, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, semantic mapper, eight-stage provider-backed program replay, matched evaluator, core tests, and wheel build pass without private research artifacts",
+    "Hugging Face candidate package is built from the exact committed candidate and validated by file hashes",
+    "Release decision packet remains pending until the exact candidate commit and package receive explicit approval",
     "Release audit workflow green on GitHub"
   ],
   "hugging_face": {
-    "status": "public_repo_uploaded_after_approval",
+    "status": "public_repo_update_candidate_not_uploaded",
     "repo_type": "dataset",
     "repo_id": "jang1563/agentic-drug-discovery-system",
     "repo_url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
     "visibility": "public",
-    "rule": "Public visibility is allowed only after final human boundary review approves the release."
+    "last_public_release_version": "0.2.0",
+    "candidate_version": "0.3.0.dev0",
+    "rule": "Do not merge or upload the candidate until final human boundary review approves the exact committed release package."
   }
 }

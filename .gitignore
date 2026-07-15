@@ -6,6 +6,9 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.egg-info/
+build/
+dist/
 
 # Virtual environments
 .venv/
@@ -19,6 +22,9 @@ notes/
 registries/
 envs/
 case_banks/
+source_bundles/
+ingestion_runs/
+provider_review_jobs/
 docs/08_collection_roadmap_v0.md
 docs/09_goal_mode_long_term_execution_anchor.md
 docs/10_external_control_lane_plan_2026_06_30.md

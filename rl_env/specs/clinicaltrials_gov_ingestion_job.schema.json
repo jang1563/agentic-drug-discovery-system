@@ -1,0 +1,483 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/clinicaltrials_gov_ingestion_job.schema.json",
+  "title": "ADDS ClinicalTrials.gov ingestion job",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "job_id",
+    "source_receipt_id",
+    "trial",
+    "record"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-ingestion-job.v2"
+    },
+    "job_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "source_receipt_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "trial": {
+      "$ref": "#/$defs/trial"
+    },
+    "record": {
+      "$ref": "#/$defs/record"
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$"
+    },
+    "nonEmptyText": {
+      "type": "string",
+      "minLength": 1
+    },
+    "textList": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/nonEmptyText"
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "denominator"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "denominator": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "arm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "arm_id",
+        "role",
+        "protocol_arm_label",
+        "protocol_arm_type",
+        "source_group_id",
+        "source_group_title",
+        "intervention_id",
+        "intervention_names",
+        "measurement"
+      ],
+      "properties": {
+        "arm_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "role": {
+          "enum": [
+            "candidate",
+            "comparator"
+          ]
+        },
+        "protocol_arm_label": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "protocol_arm_type": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "source_group_id": {
+          "type": "string",
+          "pattern": "^OG[0-9]{3,}$"
+        },
+        "source_group_title": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "intervention_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/safeId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "intervention_names": {
+          "$ref": "#/$defs/textList"
+        },
+        "measurement": {
+          "$ref": "#/$defs/measurement"
+        }
+      }
+    },
+    "population": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "population_id",
+        "description",
+        "enrollment_count",
+        "enrollment_type",
+        "sex",
+        "minimum_age",
+        "maximum_age",
+        "healthy_volunteers"
+      ],
+      "properties": {
+        "population_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "enrollment_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "enrollment_type": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "sex": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "minimum_age": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "maximum_age": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/nonEmptyText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "healthy_volunteers": {
+          "type": "boolean"
+        }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_group_ids",
+        "p_value_relation",
+        "p_value",
+        "statistical_method",
+        "parameter_type",
+        "parameter_value",
+        "confidence_interval_percent",
+        "confidence_interval_lower",
+        "confidence_interval_upper"
+      ],
+      "properties": {
+        "source_group_ids": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^OG[0-9]{3,}$"
+          }
+        },
+        "p_value_relation": {
+          "enum": [
+            "lt",
+            "le",
+            "eq",
+            "ge",
+            "gt"
+          ]
+        },
+        "p_value": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "statistical_method": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "parameter_type": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "parameter_value": {
+          "type": "number"
+        },
+        "confidence_interval_percent": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        },
+        "confidence_interval_lower": {
+          "type": "number"
+        },
+        "confidence_interval_upper": {
+          "type": "number"
+        }
+      }
+    },
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "endpoint_id",
+        "outcome_index",
+        "analysis_index",
+        "name",
+        "outcome_type",
+        "time_frame",
+        "parameter_type",
+        "unit",
+        "reporting_status",
+        "favorable_direction",
+        "analysis"
+      ],
+      "properties": {
+        "endpoint_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "outcome_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "analysis_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "outcome_type": {
+          "const": "PRIMARY"
+        },
+        "time_frame": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "parameter_type": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "unit": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "reporting_status": {
+          "const": "POSTED"
+        },
+        "favorable_direction": {
+          "const": "higher_is_better"
+        },
+        "analysis": {
+          "$ref": "#/$defs/analysis"
+        }
+      }
+    },
+    "safetyArm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "safety_arm_id",
+        "arm_id",
+        "role",
+        "source_group_id",
+        "source_group_title",
+        "serious_num_affected",
+        "serious_num_at_risk"
+      ],
+      "properties": {
+        "safety_arm_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "arm_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "role": {
+          "enum": [
+            "candidate",
+            "comparator"
+          ]
+        },
+        "source_group_id": {
+          "type": "string",
+          "pattern": "^EG[0-9]{3,}$"
+        },
+        "source_group_title": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "serious_num_affected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "serious_num_at_risk": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "safety_id",
+        "event_category",
+        "reporting_status",
+        "time_frame",
+        "description",
+        "event_term_count",
+        "arms"
+      ],
+      "properties": {
+        "safety_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "event_category": {
+          "const": "SERIOUS"
+        },
+        "reporting_status": {
+          "const": "POSTED"
+        },
+        "time_frame": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "description": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/nonEmptyText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "event_term_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "arms": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/safetyArm"
+          }
+        }
+      }
+    },
+    "trial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nct_id",
+        "registry_version",
+        "candidate_id",
+        "candidate_name",
+        "candidate_aliases",
+        "intervention_id",
+        "disease_id",
+        "disease_name",
+        "condition",
+        "study_type",
+        "phase",
+        "overall_status",
+        "arms",
+        "population",
+        "endpoint",
+        "safety"
+      ],
+      "properties": {
+        "nct_id": {
+          "type": "string",
+          "pattern": "^NCT[0-9]{8}$"
+        },
+        "registry_version": {
+          "type": "string",
+          "format": "date"
+        },
+        "candidate_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "candidate_name": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "candidate_aliases": {
+          "$ref": "#/$defs/textList"
+        },
+        "intervention_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "disease_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "disease_name": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "condition": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "study_type": {
+          "const": "INTERVENTIONAL"
+        },
+        "phase": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "overall_status": {
+          "const": "COMPLETED"
+        },
+        "arms": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/arm"
+          }
+        },
+        "population": {
+          "$ref": "#/$defs/population"
+        },
+        "endpoint": {
+          "$ref": "#/$defs/endpoint"
+        },
+        "safety": {
+          "$ref": "#/$defs/safety"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "observed_at",
+        "available_at",
+        "confidence"
+      ],
+      "properties": {
+        "record_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "available_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "intervention": {
+    "intervention_id": "CHEMBL_TEST",
+    "name": "Test Drug",
+    "candidate_id": "CHEMBL_TEST",
+    "disease_id": "MONDO_TEST",
+    "modality": "small molecule",
+    "stage": "clinical_strategy",
+    "identifiers": {
+      "canonical": "CHEMBL_TEST",
+      "chembl_molecule": "CHEMBL_TEST"
+    },
+    "supporting_evidence": [
+      "clinical-trial-identity-evidence"
+    ],
+    "attributes": {
+      "clinical_trial_ids": [
+        "NCT00000001"
+      ],
+      "fixture": true
+    }
+  },
+  "trial": {
+    "trial_id": "NCT00000001",
+    "registry": "ClinicalTrials.gov",
+    "intervention_id": "CHEMBL_TEST",
+    "disease_id": "MONDO_TEST",
+    "stage": "clinical_strategy",
+    "identifiers": {
+      "canonical": "NCT00000001",
+      "clinicaltrials_gov": "NCT00000001"
+    },
+    "supporting_evidence": [
+      "clinical-trial-identity-evidence"
+    ],
+    "attributes": {
+      "source_conditions": "test disease",
+      "source_interventions": "Test Drug",
+      "fixture": true
+    }
+  },
+  "trial_design": {
+    "design_id": "NCT00000001:design",
+    "trial_id": "NCT00000001",
+    "intervention_id": "CHEMBL_TEST",
+    "disease_id": "MONDO_TEST",
+    "stage": "clinical_strategy",
+    "arms": [
+      {
+        "arm_id": "NCT00000001:arm:OG000",
+        "trial_id": "NCT00000001",
+        "label": "Test Drug",
+        "arm_type": "EXPERIMENTAL",
+        "role": "candidate",
+        "stage": "clinical_strategy",
+        "intervention_id": "CHEMBL_TEST",
+        "intervention_names": [
+          "Drug: Test Drug"
+        ],
+        "identifiers": {
+          "canonical": "NCT00000001:arm:OG000",
+          "clinicaltrials_gov_group": "OG000"
+        },
+        "supporting_evidence": [
+          "clinical-trial-arm-candidate-evidence"
+        ],
+        "attributes": {
+          "measurement": {
+            "value": "12.0",
+            "denominator": 60
+          }
+        }
+      },
+      {
+        "arm_id": "NCT00000001:arm:OG001",
+        "trial_id": "NCT00000001",
+        "label": "Comparator Drug",
+        "arm_type": "ACTIVE_COMPARATOR",
+        "role": "comparator",
+        "stage": "clinical_strategy",
+        "intervention_id": null,
+        "intervention_names": [
+          "Drug: Comparator Drug"
+        ],
+        "identifiers": {
+          "canonical": "NCT00000001:arm:OG001",
+          "clinicaltrials_gov_group": "OG001"
+        },
+        "supporting_evidence": [
+          "clinical-trial-arm-comparator-evidence"
+        ],
+        "attributes": {
+          "measurement": {
+            "value": "8.0",
+            "denominator": 60
+          }
+        }
+      }
+    ],
+    "populations": [
+      {
+        "population_id": "NCT00000001:population:primary-0",
+        "trial_id": "NCT00000001",
+        "disease_id": "MONDO_TEST",
+        "description": "All randomized participants",
+        "enrollment_count": 120,
+        "enrollment_type": "ACTUAL",
+        "sex": "ALL",
+        "minimum_age": "18 Years",
+        "healthy_volunteers": false,
+        "stage": "clinical_strategy",
+        "maximum_age": "75 Years",
+        "identifiers": {
+          "canonical": "NCT00000001:population:primary-0"
+        },
+        "supporting_evidence": [
+          "clinical-trial-population-evidence"
+        ],
+        "attributes": {
+          "fixture": true
+        }
+      }
+    ],
+    "endpoints": [
+      {
+        "endpoint_id": "NCT00000001:endpoint:primary-0",
+        "trial_id": "NCT00000001",
+        "population_id": "NCT00000001:population:primary-0",
+        "name": "Progression-Free Survival",
+        "outcome_type": "PRIMARY",
+        "time_frame": "24 months",
+        "parameter_type": "MEDIAN",
+        "unit": "months",
+        "reporting_status": "POSTED",
+        "arm_ids": [
+          "NCT00000001:arm:OG000",
+          "NCT00000001:arm:OG001"
+        ],
+        "stage": "clinical_strategy",
+        "identifiers": {
+          "canonical": "NCT00000001:endpoint:primary-0",
+          "clinicaltrials_gov_outcome": "NCT00000001:outcome:0"
+        },
+        "supporting_evidence": [
+          "clinical-trial-endpoint-identity-evidence",
+          "clinical-trial-endpoint-benefit-evidence"
+        ],
+        "attributes": {
+          "favorable_direction": "higher_is_better",
+          "analysis": {
+            "parameter_type": "Hazard Ratio (HR)",
+            "parameter_value": 0.7,
+            "confidence_interval_percent": 95.0,
+            "confidence_interval_lower": 0.55,
+            "confidence_interval_upper": 0.89,
+            "p_value_relation": "lt",
+            "p_value": 0.01,
+            "source_group_ids": [
+              "OG000",
+              "OG001"
+            ]
+          }
+        }
+      }
+    ],
+    "safety_records": [
+      {
+        "safety_id": "NCT00000001:safety:serious-adverse-events",
+        "trial_id": "NCT00000001",
+        "event_category": "SERIOUS",
+        "reporting_status": "POSTED",
+        "time_frame": "From first dose through 30 days after last dose",
+        "event_term_count": 2,
+        "arm_summaries": [
+          {
+            "safety_arm_id": "NCT00000001:safety:serious-adverse-events:arm:EG000",
+            "safety_id": "NCT00000001:safety:serious-adverse-events",
+            "trial_id": "NCT00000001",
+            "arm_id": "NCT00000001:arm:OG000",
+            "role": "candidate",
+            "source_group_id": "EG000",
+            "source_group_title": "Test Drug",
+            "serious_num_affected": 12,
+            "serious_num_at_risk": 60,
+            "stage": "clinical_strategy",
+            "identifiers": {
+              "canonical": "NCT00000001:safety:serious-adverse-events:arm:EG000",
+              "clinicaltrials_gov_adverse_event_group": "EG000"
+            },
+            "supporting_evidence": [
+              "clinical-trial-safety-identity-evidence",
+              "clinical-trial-safety-assessment-evidence"
+            ],
+            "attributes": {
+              "fixture": true
+            }
+          },
+          {
+            "safety_arm_id": "NCT00000001:safety:serious-adverse-events:arm:EG001",
+            "safety_id": "NCT00000001:safety:serious-adverse-events",
+            "trial_id": "NCT00000001",
+            "arm_id": "NCT00000001:arm:OG001",
+            "role": "comparator",
+            "source_group_id": "EG001",
+            "source_group_title": "Comparator Drug",
+            "serious_num_affected": 18,
+            "serious_num_at_risk": 60,
+            "stage": "clinical_strategy",
+            "identifiers": {
+              "canonical": "NCT00000001:safety:serious-adverse-events:arm:EG001",
+              "clinicaltrials_gov_adverse_event_group": "EG001"
+            },
+            "supporting_evidence": [
+              "clinical-trial-safety-identity-evidence",
+              "clinical-trial-safety-assessment-evidence"
+            ],
+            "attributes": {
+              "fixture": true
+            }
+          }
+        ],
+        "stage": "clinical_strategy",
+        "description": "Posted aggregate serious adverse events for the safety population.",
+        "identifiers": {
+          "canonical": "NCT00000001:safety:serious-adverse-events",
+          "clinicaltrials_gov": "NCT00000001"
+        },
+        "supporting_evidence": [
+          "clinical-trial-safety-identity-evidence",
+          "clinical-trial-safety-assessment-evidence"
+        ],
+        "attributes": {
+          "safety_acceptability_inferred": false
+        }
+      }
+    ],
+    "identifiers": {
+      "canonical": "NCT00000001:design",
+      "clinicaltrials_gov": "NCT00000001"
+    },
+    "supporting_evidence": [
+      "clinical-trial-identity-evidence",
+      "clinical-trial-arm-candidate-evidence",
+      "clinical-trial-arm-comparator-evidence",
+      "clinical-trial-population-evidence",
+      "clinical-trial-endpoint-identity-evidence",
+      "clinical-trial-endpoint-benefit-evidence",
+      "clinical-trial-safety-identity-evidence",
+      "clinical-trial-safety-assessment-evidence"
+    ],
+    "attributes": {
+      "registry_version": "2025-01-01",
+      "fixture": true
+    }
+  }
+}

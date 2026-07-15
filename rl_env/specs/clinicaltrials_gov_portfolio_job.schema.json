@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json",
+  "title": "ADDS ClinicalTrials.gov Portfolio Job",
+  "description": "Exact references to independently reviewed single-trial jobs and external source bundles, paired with one approved endpoint mapping.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "portfolio_id",
+    "endpoint_mapping",
+    "trials"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-portfolio-job.v1"
+    },
+    "portfolio_id": {
+      "$ref": "#/$defs/jobId"
+    },
+    "endpoint_mapping": {
+      "$ref": "clinical_endpoint_mapping.schema.json"
+    },
+    "trials": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/trialReference"
+      }
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$"
+    },
+    "jobId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,191}$"
+    },
+    "trialReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "job_id",
+        "source_receipt_id",
+        "trial_id",
+        "design_id",
+        "endpoint_id",
+        "safety_id"
+      ],
+      "properties": {
+        "job_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "source_receipt_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "trial_id": {
+          "type": "string",
+          "pattern": "^NCT[0-9]{8}$"
+        },
+        "design_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "endpoint_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "safety_id": {
+          "$ref": "#/$defs/safeId"
+        }
+      }
+    }
+  }
+}

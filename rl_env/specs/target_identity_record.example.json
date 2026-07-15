@@ -1,0 +1,22 @@
+{
+  "target_id": "ENSG_TEST1",
+  "symbol": "TEST1",
+  "disease_id": "MONDO_TEST",
+  "organism": "Homo sapiens",
+  "stage": "modality_selection",
+  "identifiers": {
+    "ensembl_gene": "ENSG_TEST1",
+    "gene_symbol": "TEST1",
+    "chembl_target": "CHEMBL_TARGET",
+    "uniprot": "P00001"
+  },
+  "supporting_evidence": [
+    "synthetic-target-identity-evidence",
+    "synthetic-target-disease-evidence",
+    "synthetic-target-continuity-evidence"
+  ],
+  "attributes": {
+    "fixture": true,
+    "scientific_claim": false
+  }
+}

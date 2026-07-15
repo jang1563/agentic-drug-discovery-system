@@ -1,0 +1,51 @@
+{
+  "disease": {
+    "disease_id": "MONDO_TEST",
+    "name": "test disease",
+    "stage": "disease_context",
+    "identifiers": {
+      "canonical": "MONDO_TEST"
+    },
+    "supporting_evidence": [
+      "disease-evidence"
+    ],
+    "attributes": {
+      "fixture": true
+    }
+  },
+  "assay": {
+    "assay_id": "ASSAY_TEST1_FUNCTION",
+    "name": "Test target functional assay",
+    "assay_type": "functional",
+    "target_id": "ENSG_TEST1",
+    "disease_id": "MONDO_TEST",
+    "organism": "Homo sapiens",
+    "stage": "preclinical_validation",
+    "identifiers": {
+      "canonical": "ASSAY_TEST1_FUNCTION"
+    },
+    "supporting_evidence": [
+      "assay-evidence"
+    ],
+    "attributes": {
+      "fixture": true
+    }
+  },
+  "model_system": {
+    "model_system_id": "MODEL_TEST_DISEASE",
+    "name": "Illustrative disease model",
+    "model_type": "animal model",
+    "disease_id": "MONDO_TEST",
+    "organism": "Mus musculus",
+    "stage": "preclinical_validation",
+    "identifiers": {
+      "canonical": "MODEL_TEST_DISEASE"
+    },
+    "supporting_evidence": [
+      "model-system-evidence"
+    ],
+    "attributes": {
+      "fixture": true
+    }
+  }
+}

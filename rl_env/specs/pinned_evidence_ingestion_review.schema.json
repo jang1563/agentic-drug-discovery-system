@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/pinned_evidence_ingestion_review.schema.json",
+  "title": "ADDS pinned-evidence ingestion review report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "review_id",
+    "job_id",
+    "status",
+    "compiled_at",
+    "manifest_schema_version",
+    "manifest_sha256",
+    "record_count",
+    "receipt_count",
+    "independent_source_count",
+    "record_ids",
+    "source_receipts",
+    "receipt_record_ids",
+    "reused_source_ids",
+    "reused_content_hashes",
+    "checks",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.pinned-ingestion-review.v1"
+    },
+    "review_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "job_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "status": {
+      "const": "requires_human_review"
+    },
+    "compiled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "manifest_schema_version": {
+      "const": "adds.pinned-evidence.v1"
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "receipt_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "independent_source_count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Count of distinct verified source-content SHA-256 values; this is not a claim of scientific independence."
+    },
+    "record_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_receipts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "source_receipt.schema.json"
+      }
+    },
+    "receipt_record_ids": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "reused_source_ids": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 2,
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "reused_content_hashes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 2,
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "payload_hashes_verified",
+        "record_contract_valid",
+        "chronology_valid",
+        "forbidden_payload_keys_absent",
+        "public_summary_size_limits_passed",
+        "local_path_scan_passed"
+      ],
+      "properties": {
+        "payload_hashes_verified": {
+          "const": true
+        },
+        "record_contract_valid": {
+          "const": true
+        },
+        "chronology_valid": {
+          "const": true
+        },
+        "forbidden_payload_keys_absent": {
+          "const": true
+        },
+        "public_summary_size_limits_passed": {
+          "const": true
+        },
+        "local_path_scan_passed": {
+          "const": true
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

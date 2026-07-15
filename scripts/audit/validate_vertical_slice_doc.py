@@ -123,7 +123,9 @@ def main() -> int:
     normalized_target = normalize(target_doc)
     for phrase in REQUIRED_TARGET_DOC_PHRASES:
         if phrase.lower() not in normalized_target:
-            errors.append(f"docs/13_target_id_governance_node.md missing phrase: {phrase}")
+            errors.append(
+                f"docs/13_target_id_governance_node.md missing phrase: {phrase}"
+            )
 
     public_claim_texts = {
         "README.md": read(README),
@@ -146,7 +148,9 @@ def main() -> int:
         "withdrawn or revoked is stop, not flag",
     ):
         if phrase.lower() not in chain_text:
-            errors.append(f"chains/discovery_flow.py missing stop/flag disambiguation: {phrase}")
+            errors.append(
+                f"chains/discovery_flow.py missing stop/flag disambiguation: {phrase}"
+            )
 
     try:
         evidence = json.loads(EVIDENCE.read_text(encoding="utf-8"))
@@ -167,7 +171,10 @@ def main() -> int:
         ("target_id_masked_node", "unique_pairs"): 32,
         ("target_id_masked_node", "diseases"): 23,
         ("target_id_masked_node", "masked_sonnet_pooled_selective_accuracy"): 0.842,
-        ("target_id_masked_node", "drug_field_visible_diagnostic_overall_accuracy"): 0.781,
+        (
+            "target_id_masked_node",
+            "drug_field_visible_diagnostic_overall_accuracy",
+        ): 0.781,
         ("target_id_calibration", "genetics_only", "risk_auroc_vs_error"): 0.939,
         ("target_id_calibration", "genetics_only", "rcps_certified"): False,
         ("target_id_calibration", "cross_stage", "rcps_only_alpha"): 0.3,
@@ -180,20 +187,43 @@ def main() -> int:
             )
     if nested(evidence, "prospective_demo", "terminal_gold") is not None:
         errors.append("prospective demo terminal_gold must remain null")
-    if nested(evidence, "prospective_demo", "status") != "invalidated_stale_time_context":
-        errors.append("prospective demo must remain explicitly invalidated for stale time context")
-    if nested(evidence, "prospective_demo", "current_recommendation_claim") is not False:
+    if (
+        nested(evidence, "prospective_demo", "status")
+        != "invalidated_stale_time_context"
+    ):
+        errors.append(
+            "prospective demo must remain explicitly invalidated for stale time context"
+        )
+    if (
+        nested(evidence, "prospective_demo", "current_recommendation_claim")
+        is not False
+    ):
         errors.append("prospective demo must not claim a current recommendation")
     if nested(evidence, "prospective_demo", "citable_result") is not False:
         errors.append("prospective demo must not expose a citable result")
-    if nested(evidence, "fixed_slice_prompt_regression", "autonomous_lookup_mode") != "present-day live source lookups":
+    if (
+        nested(evidence, "fixed_slice_prompt_regression", "autonomous_lookup_mode")
+        != "present-day live source lookups"
+    ):
         errors.append("prompt regression must disclose present-day live source lookups")
-    if nested(evidence, "fixed_slice_prompt_regression", "historical_time_gating_claim") is not False:
+    if (
+        nested(
+            evidence, "fixed_slice_prompt_regression", "historical_time_gating_claim"
+        )
+        is not False
+    ):
         errors.append("prompt regression must not claim historical time-gating")
     if nested(evidence, "provenance", "raw_runs_public") is not False:
         errors.append("evidence summary must record that raw runs are not public")
 
-    for path in (README, HF_CARD, RELEASE_MANIFEST, HF_MANIFEST, TRUST_REPORT, DECISION_PACKET):
+    for path in (
+        README,
+        HF_CARD,
+        RELEASE_MANIFEST,
+        HF_MANIFEST,
+        TRUST_REPORT,
+        DECISION_PACKET,
+    ):
         text = read(path)
         for phrase in REQUIRED_POINTER_PHRASES:
             if phrase not in text:
@@ -202,7 +232,9 @@ def main() -> int:
     if errors:
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
-        print(f"FAILED: {len(errors)} scientific claim-boundary error(s)", file=sys.stderr)
+        print(
+            f"FAILED: {len(errors)} scientific claim-boundary error(s)", file=sys.stderr
+        )
         return 1
 
     print("PASS: scientific claim boundaries and aggregate evidence validated")

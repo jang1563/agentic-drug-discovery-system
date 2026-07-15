@@ -56,7 +56,9 @@ def read_git_blob(commit: str, path: str) -> bytes:
     try:
         return run_git_bytes(["show", f"{commit}:{path}"])
     except subprocess.CalledProcessError as exc:
-        raise SystemExit(f"ERROR: missing package source file at {commit[:12]}: {path}") from exc
+        raise SystemExit(
+            f"ERROR: missing package source file at {commit[:12]}: {path}"
+        ) from exc
 
 
 def load_manifest(commit: str) -> dict:
@@ -117,20 +119,28 @@ def build_package(output: Path, force: bool, source_ref: str) -> dict:
     repo_type = manifest.get("repo_type")
     visibility = manifest.get("current_visibility")
     if repo_id != "jang1563/agentic-drug-discovery-system":
-        raise SystemExit("ERROR: huggingface/release_manifest.json repo_id is incorrect")
+        raise SystemExit(
+            "ERROR: huggingface/release_manifest.json repo_id is incorrect"
+        )
     if repo_type != "dataset":
         raise SystemExit("ERROR: Hugging Face package must target a Dataset repo")
     if visibility != "public":
-        raise SystemExit("ERROR: Hugging Face package must declare current_visibility public")
+        raise SystemExit(
+            "ERROR: Hugging Face package must declare current_visibility public"
+        )
 
     if output.exists():
         if not force:
-            raise SystemExit(f"ERROR: output path already exists; pass --force to replace it: {output}")
+            raise SystemExit(
+                f"ERROR: output path already exists; pass --force to replace it: {output}"
+            )
         shutil.rmtree(output)
     output.mkdir(parents=True)
 
     (output / ".gitattributes").write_text(DEFAULT_GITATTRIBUTES, encoding="utf-8")
-    entries = list(dict.fromkeys(str(entry) for entry in (manifest.get("include") or [])))
+    entries = list(
+        dict.fromkeys(str(entry) for entry in (manifest.get("include") or []))
+    )
     for entry in entries:
         copy_manifest_entry(source_commit, entry, output)
 
@@ -160,8 +170,14 @@ def build_package(output: Path, force: bool, source_ref: str) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", required=True, help="Directory to create or replace.")
-    parser.add_argument("--force", action="store_true", help="Replace the output directory if it exists.")
+    parser.add_argument(
+        "--output", required=True, help="Directory to create or replace."
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Replace the output directory if it exists.",
+    )
     parser.add_argument(
         "--source-commit",
         default="HEAD",

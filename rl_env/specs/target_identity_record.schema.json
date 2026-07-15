@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/target_identity_record.schema.json",
+  "title": "Agentic Drug Discovery Target Identity Record",
+  "description": "Machine-readable shape for an evidence-backed cross-stage target identity record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "target_id",
+    "symbol",
+    "disease_id",
+    "organism",
+    "stage",
+    "identifiers",
+    "supporting_evidence",
+    "attributes"
+  ],
+  "properties": {
+    "target_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical target record id; the Open Targets path uses an Ensembl gene id."
+    },
+    "symbol": {
+      "type": "string",
+      "minLength": 1
+    },
+    "disease_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "organism": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "identifiers": {
+      "type": "object",
+      "description": "Immutable namespace bindings accumulated across accepted stage transitions.",
+      "required": ["ensembl_gene", "gene_symbol"],
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "supporting_evidence": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "attributes": {
+      "type": "object"
+    }
+  }
+}

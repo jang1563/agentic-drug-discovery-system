@@ -1,0 +1,39 @@
+{
+  "schema_version": "adds.cdc-mmwr-ingestion-job.v1",
+  "job_id": "example-cdc-mmwr-burden-ingestion",
+  "source_receipt_id": "synthetic-mmwr-receipt",
+  "article": {
+    "title": "Synthetic CDC MMWR SCD Report",
+    "doi": "10.15585/mmwr.synthetic",
+    "publication_date": "2022-10-07",
+    "canonical_url": "https://www.cdc.gov/mmwr/volumes/71/ss/synthetic.htm"
+  },
+  "records": [
+    {
+      "record_id": "synthetic-mmwr-california-burden",
+      "predicate": "disease_burden_supported",
+      "subject": "synthetic sickle cell disease context",
+      "object_value": "A synthetic annual prevalence count is reported for contract testing.",
+      "observed_at": "2018-12-31",
+      "available_at": "2022-10-07",
+      "confidence": 0.8,
+      "biological_context": {
+        "disease_id": "MONDO_TEST",
+        "evidence_context_id": "scd-california-2018"
+      },
+      "metadata": {
+        "measure_type": "annual prevalence count",
+        "measure_value": 6027,
+        "measure_unit": "cases",
+        "population": "synthetic California SCD surveillance population",
+        "geography": "California",
+        "reference_period": "2018"
+      },
+      "evidence": {
+        "location_id": "results",
+        "excerpt": "The 2018 annual prevalence count was 6,027 cases for California.",
+        "value_text": "6,027"
+      }
+    }
+  ]
+}

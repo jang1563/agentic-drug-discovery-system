@@ -13,7 +13,13 @@ No family labels or gold are consulted — this is real retrieval over cached
 study records, so an agent must reason from the returned evidence.
 """
 from __future__ import annotations
-import os, glob, json, re, urllib.request, urllib.parse
+
+import glob
+import json
+import os
+import re
+import urllib.parse
+import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CT_GLOB = os.path.join(ROOT, "case_banks/clinical_regulatory_v0/source_snapshots/raw/clinicaltrials_gov_api/**/*.json")
@@ -147,7 +153,20 @@ class CtgovAdapter:
         for r in self.index:
             if dts and any(t in r["interventions"] for t in dts) and \
                cts and any(t in r["conditions"] for t in cts):
-                hits.append({k: r[k] for k in ("nct", "significant", "direction", "has_results", "mixed_within")})
+                hits.append(
+                    {
+                        k: r[k]
+                        for k in (
+                            "nct",
+                            "interventions",
+                            "conditions",
+                            "significant",
+                            "direction",
+                            "has_results",
+                            "mixed_within",
+                        )
+                    }
+                )
         return hits
 
     def search_asset(self, drug):

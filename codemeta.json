@@ -4,7 +4,7 @@
   "name": "Agentic Drug Discovery System",
   "version": "0.2.0",
   "dateModified": "2026-07-14",
-  "description": "Research scaffold for long-horizon drug-discovery decision environments with deterministic verifiers, soft scientific verifiers, adapter interfaces, and conservative public-release boundaries.",
+  "description": "Evidence-governed execution backbone and benchmark-control surface for long-horizon drug-discovery agents, with typed state, verifier-gated transitions, adapter interfaces, and conservative public-release boundaries.",
   "codeRepository": "https://github.com/jang1563/agentic-drug-discovery-system",
   "license": "https://spdx.org/licenses/Apache-2.0.html",
   "programmingLanguage": [

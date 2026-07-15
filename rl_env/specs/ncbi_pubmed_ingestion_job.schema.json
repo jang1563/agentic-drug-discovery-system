@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/ncbi_pubmed_ingestion_job.schema.json",
+  "title": "ADDS NCBI PubMed ingestion job",
+  "description": "Reviewer-authored treatment-gap evidence that must be verified against one captured NCBI PubMed EFetch XML record before generic manifest compilation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "job_id",
+    "source_receipt_id",
+    "article",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.ncbi-pubmed-ingestion-job.v1"
+    },
+    "job_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "source_receipt_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "article": {
+      "$ref": "#/$defs/article"
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "nonEmptyText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "article": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "pmid",
+        "pmcid",
+        "doi",
+        "publication_date",
+        "canonical_url"
+      ],
+      "properties": {
+        "title": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "pmid": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,15}$"
+        },
+        "pmcid": {
+          "type": "string",
+          "pattern": "^PMC[1-9][0-9]{0,15}$"
+        },
+        "doi": {
+          "type": "string",
+          "maxLength": 255,
+          "pattern": "^10\\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$"
+        },
+        "publication_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://pubmed\\.ncbi\\.nlm\\.nih\\.gov/[1-9][0-9]*/$"
+        }
+      }
+    },
+    "publicSummaryValue": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4096
+        },
+        {
+          "type": [
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/publicSummaryValue"
+          }
+        },
+        {
+          "$ref": "#/$defs/publicSummaryObject"
+        }
+      ]
+    },
+    "publicSummaryObject": {
+      "type": "object",
+      "propertyNames": {
+        "not": {
+          "pattern": "^(?:[Bb][Oo][Dd][Yy]|[Dd][Oo][Cc][Uu][Mm][Ee][Nn][Tt][^A-Za-z0-9]+[Tt][Ee][Xx][Tt]|[Ff][Uu][Ll][Ll][^A-Za-z0-9]+[Tt][Ee][Xx][Tt]|[Hh][Tt][Mm][Ll]|[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Rr][Aa][Ww][^A-Za-z0-9]+[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Rr][Ee][Ss][Pp][Oo][Nn][Ss][Ee][^A-Za-z0-9]+[Bb][Oo][Dd][Yy]|[Ss][Oo][Uu][Rr][Cc][Ee][^A-Za-z0-9]+[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Xx][Mm][Ll])$"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/publicSummaryValue"
+      }
+    },
+    "metadata": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/publicSummaryObject"
+        },
+        {
+          "required": [
+            "treatment_context",
+            "gap_summary",
+            "gap_measure_operator",
+            "gap_measure_value",
+            "gap_measure_unit",
+            "population",
+            "geography",
+            "reference_period"
+          ],
+          "properties": {
+            "treatment_context": {
+              "$ref": "#/$defs/nonEmptyText"
+            },
+            "gap_summary": {
+              "$ref": "#/$defs/nonEmptyText"
+            },
+            "gap_measure_operator": {
+              "enum": [
+                "lt",
+                "le",
+                "eq",
+                "ge",
+                "gt"
+              ]
+            },
+            "gap_measure_value": {
+              "type": "number"
+            },
+            "gap_measure_unit": {
+              "$ref": "#/$defs/nonEmptyText"
+            },
+            "population": {
+              "$ref": "#/$defs/nonEmptyText"
+            },
+            "geography": {
+              "$ref": "#/$defs/nonEmptyText"
+            },
+            "reference_period": {
+              "type": "string",
+              "pattern": "^[12][0-9]{3}-[12][0-9]{3}$"
+            }
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result_label",
+        "result_excerpt",
+        "context_label",
+        "context_excerpt",
+        "value_text",
+        "population_anchor",
+        "geography_anchor",
+        "reference_period_anchor",
+        "treatment_anchor"
+      ],
+      "properties": {
+        "result_label": {
+          "const": "RESULTS"
+        },
+        "result_excerpt": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 4096
+        },
+        "context_label": {
+          "const": "METHODS"
+        },
+        "context_excerpt": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 4096
+        },
+        "value_text": {
+          "type": "string",
+          "pattern": "^(?:<=|>=|<|>)?[+-]?(?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\\.[0-9]+)?%?$"
+        },
+        "population_anchor": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 4096
+        },
+        "geography_anchor": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "reference_period_anchor": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "treatment_anchor": {
+          "$ref": "#/$defs/nonEmptyText"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "predicate",
+        "subject",
+        "object_value",
+        "observed_at",
+        "available_at",
+        "confidence",
+        "biological_context",
+        "metadata",
+        "evidence"
+      ],
+      "properties": {
+        "record_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "predicate": {
+          "const": "treatment_gap_supported"
+        },
+        "subject": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "object_value": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "available_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "biological_context": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/publicSummaryObject"
+            },
+            {
+              "required": [
+                "disease_id",
+                "evidence_context_id"
+              ],
+              "properties": {
+                "disease_id": {
+                  "$ref": "#/$defs/nonEmptyText"
+                },
+                "evidence_context_id": {
+                  "$ref": "#/$defs/nonEmptyText"
+                }
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/ncbi_pubmed_disease_model_ingestion_job.schema.json",
+  "title": "ADDS NCBI PubMed disease-model ingestion job",
+  "description": "Reviewer-authored, typed in-vivo disease-model evidence bound to one exact PubMed EFetch XML record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "job_id",
+    "source_receipt_id",
+    "article",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.ncbi-pubmed-disease-model-ingestion-job.v1"
+    },
+    "job_id": {"$ref": "#/$defs/safeId"},
+    "source_receipt_id": {"$ref": "#/$defs/safeId"},
+    "article": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "pmid",
+        "pmcid",
+        "doi",
+        "publication_date",
+        "canonical_url"
+      ],
+      "properties": {
+        "title": {"$ref": "#/$defs/text"},
+        "pmid": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,15}$"
+        },
+        "pmcid": {
+          "type": ["string", "null"],
+          "pattern": "^PMC[1-9][0-9]{0,15}$"
+        },
+        "doi": {
+          "type": "string",
+          "pattern": "^10\\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$"
+        },
+        "publication_date": {"type": "string", "format": "date"},
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://pubmed\\.ncbi\\.nlm\\.nih\\.gov/[1-9][0-9]{0,15}/$"
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record_id",
+          "predicate",
+          "subject",
+          "object_value",
+          "observed_at",
+          "available_at",
+          "confidence",
+          "biological_context",
+          "metadata",
+          "evidence"
+        ],
+        "properties": {
+          "record_id": {"$ref": "#/$defs/safeId"},
+          "predicate": {"const": "disease_model_effect_supported"},
+          "subject": {"$ref": "#/$defs/text"},
+          "object_value": {"$ref": "#/$defs/text"},
+          "observed_at": {"type": "string", "format": "date"},
+          "available_at": {"type": "string", "format": "date"},
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "biological_context": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "candidate_id",
+              "disease_id",
+              "organism",
+              "model_system_id"
+            ],
+            "properties": {
+              "candidate_id": {"$ref": "#/$defs/text"},
+              "disease_id": {"$ref": "#/$defs/text"},
+              "organism": {"$ref": "#/$defs/text"},
+              "model_system_id": {"$ref": "#/$defs/text"}
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "model_system",
+              "model_type",
+              "endpoint",
+              "endpoint_relation",
+              "endpoint_value",
+              "endpoint_unit",
+              "endpoint_variation_value",
+              "endpoint_variation_unit",
+              "effect_direction",
+              "disease_relevance",
+              "source_candidate_name",
+              "dose_value",
+              "dose_unit",
+              "route",
+              "frequency",
+              "duration_value",
+              "duration_unit",
+              "p_value_relation",
+              "p_value"
+            ],
+            "properties": {
+              "model_system": {"$ref": "#/$defs/text"},
+              "model_type": {"$ref": "#/$defs/text"},
+              "endpoint": {"$ref": "#/$defs/text"},
+              "endpoint_relation": {"$ref": "#/$defs/relation"},
+              "endpoint_value": {"type": "number"},
+              "endpoint_unit": {"const": "percent"},
+              "endpoint_variation_value": {"type": "number"},
+              "endpoint_variation_unit": {"const": "percent"},
+              "effect_direction": {"$ref": "#/$defs/text"},
+              "disease_relevance": {"$ref": "#/$defs/text"},
+              "source_candidate_name": {"$ref": "#/$defs/text"},
+              "dose_value": {"type": "number"},
+              "dose_unit": {"$ref": "#/$defs/text"},
+              "route": {"const": "oral"},
+              "frequency": {"$ref": "#/$defs/text"},
+              "duration_value": {"type": "number"},
+              "duration_unit": {"$ref": "#/$defs/text"},
+              "p_value_relation": {"$ref": "#/$defs/relation"},
+              "p_value": {"type": "number"}
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "result_excerpt",
+              "conclusion_excerpt",
+              "candidate_anchor",
+              "model_anchor",
+              "dose_text",
+              "route_anchor",
+              "frequency_anchor",
+              "duration_text",
+              "endpoint_value_text",
+              "endpoint_variation_text",
+              "p_value_text",
+              "conclusion_anchor"
+            ],
+            "properties": {
+              "result_excerpt": {"$ref": "#/$defs/text"},
+              "conclusion_excerpt": {"$ref": "#/$defs/text"},
+              "candidate_anchor": {"$ref": "#/$defs/text"},
+              "model_anchor": {"$ref": "#/$defs/text"},
+              "dose_text": {"$ref": "#/$defs/text"},
+              "route_anchor": {"$ref": "#/$defs/text"},
+              "frequency_anchor": {"$ref": "#/$defs/text"},
+              "duration_text": {"$ref": "#/$defs/text"},
+              "endpoint_value_text": {"$ref": "#/$defs/text"},
+              "endpoint_variation_text": {"$ref": "#/$defs/text"},
+              "p_value_text": {"$ref": "#/$defs/text"},
+              "conclusion_anchor": {"$ref": "#/$defs/text"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "relation": {
+      "type": "string",
+      "enum": ["lt", "le", "eq", "ge", "gt"]
+    }
+  }
+}
