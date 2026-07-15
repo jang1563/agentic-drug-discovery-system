@@ -145,6 +145,11 @@ from .clinical_portfolio import (
     extract_clinicaltrials_gov_portfolio_job,
     normalize_clinicaltrials_gov_portfolio_job,
 )
+from .clinical_disposition import (
+    CLINICAL_DISPOSITION_JOB_SCHEMA_VERSION,
+    extract_clinical_disposition_ingestion_job,
+    normalize_clinical_disposition_ingestion_job,
+)
 from .clinical_endpoint_mapping import (
     CLINICAL_ENDPOINT_MAPPING_SPEC_SCHEMA_VERSION,
     ClinicalEndpointMappingError,
@@ -268,6 +273,7 @@ __all__ = [
     "ClinicalSynthesisSpec",
     "ClaimDisposition",
     "COMPOSITE_STAGE_EVIDENCE_PREDICATES",
+    "CLINICAL_DISPOSITION_JOB_SCHEMA_VERSION",
     "Decision",
     "DecisionPacket",
     "DecisionRecord",
@@ -379,6 +385,7 @@ __all__ = [
     "extract_chembl_activity_ingestion_job",
     "extract_clinicaltrials_gov_ingestion_job",
     "extract_clinicaltrials_gov_portfolio_job",
+    "extract_clinical_disposition_ingestion_job",
     "extract_ncbi_pubmed_disease_model_ingestion_job",
     "extract_ncbi_pubmed_ingestion_job",
     "fetch_https_source",
@@ -395,6 +402,7 @@ __all__ = [
     "normalize_chembl_activity_ingestion_job",
     "normalize_clinicaltrials_gov_ingestion_job",
     "normalize_clinicaltrials_gov_portfolio_job",
+    "normalize_clinical_disposition_ingestion_job",
     "clinical_synthesis_spec_from_dict",
     "clinical_synthesis_spec_to_dict",
     "normalize_ncbi_pubmed_disease_model_ingestion_job",

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PubmedArticleSet>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">99999991</PMID>
+      <Article PubModel="Electronic">
+        <ArticleTitle>Test Drug did not improve the clinical event rate in a synthetic phase III trial.</ArticleTitle>
+        <Abstract>
+          <AbstractText>The data monitoring committee terminated TEST-P3-FAIL early for lack of efficacy. No significant improvement in the rate of test disease events was observed for Test Drug compared with placebo (0.40 vs. 0.30, respectively).</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <CollectiveName>TEST-P3-FAIL Study Investigators</CollectiveName>
+          </Author>
+        </AuthorList>
+        <PublicationTypeList>
+          <PublicationType UI="D017428">Clinical Trial, Phase III</PublicationType>
+          <PublicationType UI="D016448">Multicenter Study</PublicationType>
+        </PublicationTypeList>
+        <ArticleDate DateType="Electronic">
+          <Year>2024</Year>
+          <Month>08</Month>
+          <Day>01</Day>
+        </ArticleDate>
+      </Article>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>2024</Year>
+          <Month>08</Month>
+          <Day>02</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>2024</Year>
+          <Month>08</Month>
+          <Day>02</Day>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>epublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">99999991</ArticleId>
+        <ArticleId IdType="doi">10.1000/test.negative-trial</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+</PubmedArticleSet>

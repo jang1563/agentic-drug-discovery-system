@@ -1,0 +1,56 @@
+{
+  "protocolSection": {
+    "identificationModule": {
+      "nctId": "NCT00000002",
+      "orgStudyIdInfo": {
+        "id": "TEST-P3-FAIL"
+      },
+      "briefTitle": "Synthetic Phase III Trial"
+    },
+    "statusModule": {
+      "overallStatus": "TERMINATED",
+      "whyStopped": "Low probability of meeting the primary endpoint.",
+      "lastUpdateSubmitDate": "2024-06-01",
+      "lastUpdatePostDateStruct": {
+        "date": "2024-06-02",
+        "type": "ACTUAL"
+      }
+    },
+    "designModule": {
+      "studyType": "INTERVENTIONAL",
+      "phases": [
+        "PHASE3"
+      ],
+      "enrollmentInfo": {
+        "count": 200,
+        "type": "ACTUAL"
+      }
+    },
+    "armsInterventionsModule": {
+      "interventions": [
+        {
+          "type": "DRUG",
+          "name": "TestDrug-1"
+        }
+      ]
+    },
+    "conditionsModule": {
+      "conditions": [
+        "test disease"
+      ]
+    },
+    "outcomesModule": {
+      "primaryOutcomes": [
+        {
+          "measure": "Test event rate",
+          "timeFrame": "52 weeks"
+        }
+      ]
+    }
+  },
+  "derivedSection": {
+    "miscInfoModule": {
+      "versionHolder": "2025-01-01"
+    }
+  }
+}

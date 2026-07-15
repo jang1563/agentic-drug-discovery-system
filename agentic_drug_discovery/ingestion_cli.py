@@ -17,6 +17,7 @@ from .clinical_portfolio import (
     extract_clinicaltrials_gov_portfolio_job,
     normalize_clinicaltrials_gov_portfolio_job,
 )
+from .clinical_disposition import extract_clinical_disposition_ingestion_job
 from .clinicaltrials_gov import extract_clinicaltrials_gov_ingestion_job
 from .ncbi_pubmed import (
     extract_ncbi_pubmed_disease_model_ingestion_job,
@@ -244,6 +245,38 @@ def _extract_clinicaltrials_gov(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def _extract_clinical_trial_disposition(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    job = _load_json(args.job, "clinical trial disposition ingestion job")
+    bundles = {
+        "registry": read_source_bundle(
+            args.registry_bundle, max_bytes=args.max_bytes
+        ),
+        "publication": read_source_bundle(
+            args.publication_bundle, max_bytes=args.max_bytes
+        ),
+    }
+    extracted = extract_clinical_disposition_ingestion_job(job, bundles)
+    output = write_json_artifact(args.output, extracted, force=args.force)
+    return {
+        "status": "provider_job_extracted_requires_human_review",
+        "provider_ids": ["clinicaltrials_gov", "ncbi_pubmed"],
+        "job_id": extracted["job_id"],
+        "source_receipt_ids": {
+            role: bundle.receipt.receipt_id for role, bundle in bundles.items()
+        },
+        "source_content_hashes": {
+            role: bundle.receipt.content_hash for role, bundle in bundles.items()
+        },
+        "record_count": len(extracted["records"]),
+        "independent_trial_count": 1,
+        "shared_trial_lineage": True,
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(extracted)).hexdigest(),
+    }
+
+
 def _extract_clinicaltrials_gov_portfolio(
     args: argparse.Namespace,
 ) -> dict[str, Any]:
@@ -463,6 +496,29 @@ def _parser() -> argparse.ArgumentParser:
         help="Atomically replace an existing extracted job.",
     )
     clinical.set_defaults(handler=_extract_clinicaltrials_gov)
+
+    disposition = subparsers.add_parser(
+        "extract-clinical-trial-disposition",
+        help=(
+            "Verify one terminated ClinicalTrials.gov record and one PubMed "
+            "primary-endpoint result bound to the same trial lineage."
+        ),
+    )
+    disposition.add_argument("--job", required=True)
+    disposition.add_argument("--registry-bundle", required=True)
+    disposition.add_argument("--publication-bundle", required=True)
+    disposition.add_argument("--output", required=True)
+    disposition.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+    )
+    disposition.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing extracted job.",
+    )
+    disposition.set_defaults(handler=_extract_clinical_trial_disposition)
 
     portfolio = subparsers.add_parser(
         "extract-clinicaltrials-gov-portfolio",
