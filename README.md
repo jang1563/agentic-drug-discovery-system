@@ -1,18 +1,21 @@
-# Agentic Drug Discovery System
+# CTDBench v0.2 + Audited Sickle-Cell Discovery Slice
 
 [![release-audit](https://github.com/jang1563/agentic-drug-discovery-system/actions/workflows/release-audit.yml/badge.svg?branch=main)](https://github.com/jang1563/agentic-drug-discovery-system/actions/workflows/release-audit.yml)
 [![GitHub release](https://img.shields.io/github/v/release/jang1563/agentic-drug-discovery-system)](https://github.com/jang1563/agentic-drug-discovery-system/releases/latest)
 [![Hugging Face dataset](https://img.shields.io/badge/Hugging%20Face-Dataset-FFD21E?logo=huggingface&logoColor=000)](https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark)
 
-Version 0.2.0 ships `ctdbench`, a reproducible runner and scorer for the public
+The concrete public artifacts in version 0.2.0 are `ctdbench`, a reproducible
+runner and scorer for the public
 [clinical-trial decision benchmark](https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark),
-alongside an audited end-to-end sickle-cell vertical slice. The repository also
-packages callable evidence adapters, verifier contracts, and release checks for
-building auditable drug-discovery agent workflows.
+and an audited retrospective end-to-end sickle-cell disease (SCD) vertical
+slice. Callable evidence adapters, verifier contracts, and release checks make
+those artifacts inspectable and reproducible within their stated scope.
 
-The broader long-horizon platform remains a research scaffold: seven of eight
-planned atlases do not yet have standalone public data, and the demonstrated
-multi-stage flow currently covers one disease/target slice.
+The repository name reflects the longer-term research direction. The proposed
+eight-stage, long-horizon agentic drug-discovery system remains a
+**roadmap and research scaffold**, not a completed public platform: seven of
+eight planned atlases do not yet have standalone public data, and the
+demonstrated multi-stage flow currently covers one disease/target slice.
 
 ## At A Glance
 
