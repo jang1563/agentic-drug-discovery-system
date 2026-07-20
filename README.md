@@ -1,28 +1,29 @@
-# CTDBench v0.2 + Audited Sickle-Cell Discovery Slice
+# CTDBench v0.2 + Audited Sickle Cell Disease Vertical Slice
 
 [![release-audit](https://github.com/jang1563/agentic-drug-discovery-system/actions/workflows/release-audit.yml/badge.svg?branch=main)](https://github.com/jang1563/agentic-drug-discovery-system/actions/workflows/release-audit.yml)
 [![GitHub release](https://img.shields.io/github/v/release/jang1563/agentic-drug-discovery-system)](https://github.com/jang1563/agentic-drug-discovery-system/releases/latest)
 [![Hugging Face dataset](https://img.shields.io/badge/Hugging%20Face-Dataset-FFD21E?logo=huggingface&logoColor=000)](https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark)
 
-The concrete public artifacts in version 0.2.0 are `ctdbench`, a reproducible
+Version 0.2.0 provides two concrete public artifacts: `ctdbench`, a reproducible
 runner and scorer for the public
-[clinical-trial decision benchmark](https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark),
-and an audited retrospective end-to-end sickle-cell disease (SCD) vertical
-slice. Callable evidence adapters, verifier contracts, and release checks make
-those artifacts inspectable and reproducible within their stated scope.
+[clinical trial decision benchmark](https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark),
+and an audited, retrospective vertical slice spanning the end-to-end workflow
+for sickle cell disease (SCD). Callable evidence adapters, verifier contracts,
+and release checks make these artifacts inspectable and reproducible within
+their stated scope.
 
 The repository name reflects the longer-term research direction. The proposed
-eight-stage, long-horizon agentic drug-discovery system remains a
-**roadmap and research scaffold**, not a completed public platform: seven of
+eight-stage, long-horizon agentic drug discovery system remains a
+**roadmap and research scaffold**, not a completed public platform: seven of the
 eight planned atlases do not yet have standalone public data, and the
-demonstrated multi-stage flow currently covers one disease/target slice.
+demonstrated multi-stage flow currently covers only one disease–target slice.
 
-## At A Glance
+## At a Glance
 
 | Field | Value |
 | --- | --- |
 | Purpose | Build a verification-oriented, auditable decision environment for drug-discovery agents. |
-| Release status | Public GitHub repository; Hugging Face Dataset mirror built from an exact reviewed source commit. |
+| Release status | Public GitHub repository; Hugging Face dataset mirror built from an exact reviewed source commit. |
 | Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
 | Not included | Raw source snapshots, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
@@ -40,9 +41,9 @@ Can a long-horizon discovery process be represented as an agentic environment wh
 
 ## Current State (honest scope)
 
-This is, concretely, a **retrospective clinical/regulatory decision benchmark with source-derived
-(no-human) labels plus one audited end-to-end vertical slice** — not yet the full 8-stage
-trajectory atlas the roadmap describes. Honest status:
+Concretely, this repository provides a **retrospective clinical and regulatory decision benchmark
+with source-derived labels (generated without human curation), plus one audited end-to-end vertical
+slice**. It is not yet the full eight-stage trajectory atlas described in the roadmap. Honest status:
 
 - **Built & audited:** source-derived label authority plus scoped construct-validity controls;
   callable tool/DB adapters
