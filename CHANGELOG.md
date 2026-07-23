@@ -6,6 +6,7 @@ All notable public-surface changes to this repository will be documented here.
 
 ## 0.3.0.dev0 - 2026-07-23
 
+- Updated release CI to immutable Node 24-based checkout and Python setup actions.
 - Added an installable `agentic_drug_discovery` execution core with typed evidence, claims,
   candidates, accepted-packet/action/decision/verifier ledgers, decision packets, program state,
   configurable stage gates, and fail-closed transitions across the eight-stage discovery chain.
