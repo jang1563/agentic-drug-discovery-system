@@ -1,0 +1,65 @@
+{
+  "schema_version": "adds.clinicaltrials-gov-portfolio-job.v1",
+  "portfolio_id": "CHEMBL_TEST-MONDO_TEST-ctgov-portfolio-v1",
+  "endpoint_mapping": {
+    "schema_version": "adds.clinical-endpoint-mapping-spec.v1",
+    "mapping_id": "CHEMBL_TEST:MONDO_TEST:pfs-map:v1",
+    "portfolio_id": "CHEMBL_TEST-MONDO_TEST-ctgov-portfolio-v1",
+    "candidate_id": "CHEMBL_TEST",
+    "intervention_id": "CHEMBL_TEST",
+    "disease_id": "MONDO_TEST",
+    "endpoint_family_id": "progression_free_survival",
+    "endpoint_family_label": "Progression-free survival",
+    "ontology": {
+      "system": "urn:adds:synthetic-endpoint-ontology",
+      "version": "1.0",
+      "code": "PFS",
+      "label": "Progression-free survival"
+    },
+    "effect_measure": "hazard_ratio",
+    "favorable_direction": "lower_is_better",
+    "safety_measure": "serious_adverse_event_risk_difference",
+    "bindings": [
+      {
+        "trial_id": "NCT00000001",
+        "design_id": "NCT00000001:design",
+        "endpoint_id": "NCT00000001:endpoint:primary-0",
+        "safety_id": "NCT00000001:safety:serious-adverse-events"
+      },
+      {
+        "trial_id": "NCT00000002",
+        "design_id": "NCT00000002:design",
+        "endpoint_id": "NCT00000002:endpoint:primary-0",
+        "safety_id": "NCT00000002:safety:serious-adverse-events"
+      }
+    ],
+    "review": {
+      "status": "approved",
+      "reviewer_id": "reviewer:synthetic-example",
+      "reviewed_at": "2025-01-02T00:00:00+00:00"
+    },
+    "stage": "regulatory_postmarket",
+    "metadata": {
+      "review_note": "Synthetic example approval; no ontology-authority lookup is implied.",
+      "review_protocol_id": "adds.endpoint-mapping-review.v1"
+    }
+  },
+  "trials": [
+    {
+      "job_id": "clinicaltrials-gov-test-design",
+      "source_receipt_id": "ctgov-test-trial",
+      "trial_id": "NCT00000001",
+      "design_id": "NCT00000001:design",
+      "endpoint_id": "NCT00000001:endpoint:primary-0",
+      "safety_id": "NCT00000001:safety:serious-adverse-events"
+    },
+    {
+      "job_id": "clinicaltrials-gov-test-design-2",
+      "source_receipt_id": "ctgov-test-trial-2",
+      "trial_id": "NCT00000002",
+      "design_id": "NCT00000002:design",
+      "endpoint_id": "NCT00000002:endpoint:primary-0",
+      "safety_id": "NCT00000002:safety:serious-adverse-events"
+    }
+  ]
+}

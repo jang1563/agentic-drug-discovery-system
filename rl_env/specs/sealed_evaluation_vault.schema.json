@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/sealed_evaluation_vault.schema.json",
+  "title": "External sealed evaluation label vault envelope",
+  "description": "Evaluator-only labels and nonces bound to one exact sealed board fingerprint.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "vault"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.sealed-evaluation-vault.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "vault": {
+      "$ref": "#/$defs/vault"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "episodeId": {
+      "type": "string",
+      "pattern": "^ep-[0-9a-f]{24}$"
+    },
+    "pairId": {
+      "type": "string",
+      "pattern": "^pair-[0-9a-f]{16}$"
+    },
+    "labelId": {
+      "type": "string",
+      "pattern": "^lbl-[0-9a-f]{24}$"
+    },
+    "decision": {
+      "enum": [
+        "advance",
+        "hold",
+        "pivot",
+        "kill",
+        "defer"
+      ]
+    },
+    "failureCause": {
+      "enum": [
+        "efficacy",
+        "safety",
+        "pk_pd",
+        "biomarker",
+        "endpoint_or_trial_design",
+        "operational",
+        "regulatory",
+        "admet_or_toxicity",
+        "mechanism_or_context",
+        "evidence_quality",
+        "tool_unavailable",
+        "verifier_block",
+        "other"
+      ]
+    },
+    "label": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "episode_id",
+        "pair_id",
+        "evaluator_label_id",
+        "arm",
+        "gold_decision",
+        "commitment_nonce",
+        "failure_causes",
+        "evaluator_metadata"
+      ],
+      "properties": {
+        "episode_id": {
+          "$ref": "#/$defs/episodeId"
+        },
+        "pair_id": {
+          "$ref": "#/$defs/pairId"
+        },
+        "evaluator_label_id": {
+          "$ref": "#/$defs/labelId"
+        },
+        "arm": {
+          "enum": [
+            "success",
+            "failure"
+          ]
+        },
+        "gold_decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "commitment_nonce": {
+          "$ref": "#/$defs/sha256"
+        },
+        "failure_causes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/failureCause"
+          }
+        },
+        "evaluator_metadata": {
+          "type": "object"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "arm": {
+                "const": "success"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "failure_causes": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "failure_causes": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "vault": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "board_id",
+        "board_fingerprint",
+        "labels"
+      ],
+      "properties": {
+        "board_id": {
+          "$ref": "#/$defs/text"
+        },
+        "board_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "labels": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/label"
+          }
+        }
+      }
+    }
+  }
+}

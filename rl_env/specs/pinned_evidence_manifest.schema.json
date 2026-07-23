@@ -1,0 +1,584 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/pinned_evidence_manifest.schema.json",
+  "title": "ADDS source-pinned evidence manifest",
+  "description": "Public, payload-free summaries used by composite disease-context and preclinical hard gates.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.pinned-evidence.v1"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    }
+  },
+  "$defs": {
+    "publicSummaryValue": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4096
+        },
+        {
+          "type": [
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/publicSummaryValue"
+          }
+        },
+        {
+          "$ref": "#/$defs/publicSummaryObject"
+        }
+      ]
+    },
+    "publicSummaryObject": {
+      "type": "object",
+      "propertyNames": {
+        "not": {
+          "pattern": "^(?:[Bb][Oo][Dd][Yy]|[Dd][Oo][Cc][Uu][Mm][Ee][Nn][Tt][^A-Za-z0-9]+[Tt][Ee][Xx][Tt]|[Ff][Uu][Ll][Ll][^A-Za-z0-9]+[Tt][Ee][Xx][Tt]|[Hh][Tt][Mm][Ll]|[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Rr][Aa][Ww][^A-Za-z0-9]+[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Rr][Ee][Ss][Pp][Oo][Nn][Ss][Ee][^A-Za-z0-9]+[Bb][Oo][Dd][Yy]|[Ss][Oo][Uu][Rr][Cc][Ee][^A-Za-z0-9]+[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Xx][Mm][Ll])$"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/publicSummaryValue"
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_version",
+        "locator",
+        "content_hash"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "source_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "predicate",
+        "subject",
+        "object_value",
+        "observed_at",
+        "available_at",
+        "confidence",
+        "source",
+        "biological_context",
+        "metadata"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "predicate": {
+          "enum": [
+            "disease_burden_supported",
+            "treatment_gap_supported",
+            "candidate_target_functional_activity_supported",
+            "disease_model_effect_supported",
+            "clinical_trial_design_supported",
+            "clinical_trial_terminated_for_lack_of_efficacy",
+            "clinical_primary_endpoint_not_met"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "object_value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "available_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "biological_context": {
+          "$ref": "#/$defs/publicSummaryObject"
+        },
+        "metadata": {
+          "$ref": "#/$defs/publicSummaryObject"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "disease_burden_supported"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "biological_context": {
+                "required": [
+                  "disease_id",
+                  "evidence_context_id"
+                ]
+              },
+              "metadata": {
+                "required": [
+                  "measure_type",
+                  "measure_value",
+                  "measure_unit",
+                  "population",
+                  "geography",
+                  "reference_period"
+                ],
+                "properties": {
+                  "measure_type": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "measure_value": {
+                    "type": "number"
+                  },
+                  "measure_unit": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "population": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "geography": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reference_period": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "treatment_gap_supported"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "biological_context": {
+                "required": [
+                  "disease_id",
+                  "evidence_context_id"
+                ]
+              },
+              "metadata": {
+                "required": [
+                  "treatment_context",
+                  "gap_summary",
+                  "population",
+                  "geography",
+                  "reference_period"
+                ],
+                "properties": {
+                  "treatment_context": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "gap_summary": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "population": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "geography": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reference_period": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "candidate_target_functional_activity_supported"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "biological_context": {
+                "required": [
+                  "candidate_id",
+                  "target_id",
+                  "target_record_id",
+                  "disease_id",
+                  "organism",
+                  "assay_id"
+                ]
+              },
+              "metadata": {
+                "required": [
+                  "assay_name",
+                  "assay_type",
+                  "source_assay_type",
+                  "source_assay_type_description",
+                  "functional_readout",
+                  "endpoint",
+                  "endpoint_relation",
+                  "endpoint_value",
+                  "endpoint_unit",
+                  "effect_direction",
+                  "candidate_aliases",
+                  "source_lineage_ids"
+                ],
+                "properties": {
+                  "assay_type": {
+                    "const": "functional"
+                  },
+                  "source_assay_type": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_assay_type_description": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "functional_readout": {
+                    "const": true
+                  },
+                  "endpoint_relation": {
+                    "enum": ["lt", "le", "eq", "ge", "gt"]
+                  },
+                  "endpoint_value": {
+                    "type": "number"
+                  },
+                  "endpoint_unit": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "candidate_aliases": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 32,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "source_lineage_ids": {
+                    "$ref": "#/$defs/sourceLineageIds"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "disease_model_effect_supported"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "biological_context": {
+                "required": [
+                  "candidate_id",
+                  "disease_id",
+                  "organism",
+                  "model_system_id"
+                ]
+              },
+              "metadata": {
+                "required": [
+                  "model_system",
+                  "model_type",
+                  "endpoint",
+                  "endpoint_relation",
+                  "endpoint_value",
+                  "endpoint_unit",
+                  "effect_direction",
+                  "disease_relevance",
+                  "source_candidate_name",
+                  "source_lineage_ids"
+                ],
+                "properties": {
+                  "endpoint_relation": {
+                    "enum": ["lt", "le", "eq", "ge", "gt"]
+                  },
+                  "endpoint_value": {
+                    "type": "number"
+                  },
+                  "endpoint_unit": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_candidate_name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_lineage_ids": {
+                    "$ref": "#/$defs/sourceLineageIds"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "clinical_trial_design_supported"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "biological_context": {
+                "required": [
+                  "candidate_id",
+                  "intervention_id",
+                  "disease_id",
+                  "trial_id",
+                  "design_id"
+                ]
+              },
+              "metadata": {
+                "required": [
+                  "provider_id",
+                  "registry",
+                  "registry_version",
+                  "study_type",
+                  "overall_status",
+                  "phase",
+                  "effect_direction",
+                  "candidate_aliases",
+                  "source_interventions",
+                  "source_conditions",
+                  "source_lineage_ids",
+                  "arms",
+                  "population",
+                  "endpoint"
+                ],
+                "properties": {
+                  "provider_id": {"const": "clinicaltrials_gov"},
+                  "registry": {"const": "ClinicalTrials.gov"},
+                  "study_type": {"const": "INTERVENTIONAL"},
+                  "candidate_aliases": {"$ref": "#/$defs/textArray"},
+                  "source_interventions": {"$ref": "#/$defs/textArray"},
+                  "source_conditions": {"$ref": "#/$defs/textArray"},
+                  "source_lineage_ids": {"$ref": "#/$defs/sourceLineageIds"},
+                  "arms": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "population": {"type": "object"},
+                  "endpoint": {"type": "object"}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "clinical_trial_terminated_for_lack_of_efficacy"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "biological_context": {
+                "required": [
+                  "candidate_id",
+                  "intervention_id",
+                  "disease_id",
+                  "trial_id",
+                  "protocol_id"
+                ]
+              },
+              "metadata": {
+                "required": [
+                  "provider_id",
+                  "registry",
+                  "registry_version",
+                  "study_type",
+                  "overall_status",
+                  "phase",
+                  "why_stopped",
+                  "why_stopped_code",
+                  "primary_endpoint",
+                  "enrollment_count",
+                  "protocol_id",
+                  "candidate_aliases",
+                  "source_interventions",
+                  "source_conditions",
+                  "shared_trial_lineage_id",
+                  "source_lineage_ids"
+                ],
+                "properties": {
+                  "provider_id": {"const": "clinicaltrials_gov"},
+                  "registry": {"const": "ClinicalTrials.gov"},
+                  "study_type": {"const": "INTERVENTIONAL"},
+                  "overall_status": {"const": "TERMINATED"},
+                  "why_stopped_code": {"const": "lack_of_efficacy"},
+                  "enrollment_count": {"type": "integer", "minimum": 1},
+                  "candidate_aliases": {"$ref": "#/$defs/textArray"},
+                  "source_interventions": {"$ref": "#/$defs/textArray"},
+                  "source_conditions": {"$ref": "#/$defs/textArray"},
+                  "source_lineage_ids": {"$ref": "#/$defs/sourceLineageIds"}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "clinical_primary_endpoint_not_met"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "biological_context": {
+                "required": [
+                  "candidate_id",
+                  "intervention_id",
+                  "disease_id",
+                  "trial_id",
+                  "protocol_id"
+                ]
+              },
+              "metadata": {
+                "required": [
+                  "provider_id",
+                  "pmid",
+                  "doi",
+                  "article_title",
+                  "publication_date",
+                  "source_candidate_name",
+                  "primary_endpoint_met",
+                  "effect_direction",
+                  "endpoint_name",
+                  "candidate_rate",
+                  "comparator_rate",
+                  "rate_unit",
+                  "early_termination_reason",
+                  "protocol_id",
+                  "candidate_aliases",
+                  "shared_trial_lineage_id",
+                  "source_lineage_ids"
+                ],
+                "properties": {
+                  "provider_id": {"const": "ncbi_pubmed"},
+                  "pmid": {"type": "string", "pattern": "^[1-9][0-9]{0,15}$"},
+                  "doi": {
+                    "type": "string",
+                    "pattern": "^10\\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$"
+                  },
+                  "publication_date": {"type": "string", "format": "date"},
+                  "primary_endpoint_met": {"const": false},
+                  "effect_direction": {"const": "no_clinical_benefit"},
+                  "candidate_rate": {"type": "number", "minimum": 0},
+                  "comparator_rate": {"type": "number", "minimum": 0},
+                  "early_termination_reason": {"const": "lack_of_efficacy"},
+                  "candidate_aliases": {"$ref": "#/$defs/textArray"},
+                  "source_lineage_ids": {"$ref": "#/$defs/sourceLineageIds"}
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "textArray": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sourceLineageIds": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9._-]*:[^\\s:][^\\s]*$"
+      }
+    }
+  }
+}

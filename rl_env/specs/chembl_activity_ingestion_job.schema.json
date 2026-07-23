@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/chembl_activity_ingestion_job.schema.json",
+  "title": "ADDS ChEMBL activity ingestion job",
+  "description": "Reviewer-authored functional interpretation bound to one exact ChEMBL release and six linked API resources.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "job_id",
+    "source_receipt_ids",
+    "release",
+    "activity",
+    "record"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.chembl-activity-ingestion-job.v1"
+    },
+    "job_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "source_receipt_ids": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "activity",
+        "assay",
+        "document",
+        "molecule",
+        "target"
+      ],
+      "properties": {
+        "status": {"$ref": "#/$defs/safeId"},
+        "activity": {"$ref": "#/$defs/safeId"},
+        "assay": {"$ref": "#/$defs/safeId"},
+        "document": {"$ref": "#/$defs/safeId"},
+        "molecule": {"$ref": "#/$defs/safeId"},
+        "target": {"$ref": "#/$defs/safeId"}
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["database_version", "release_date"],
+      "properties": {
+        "database_version": {
+          "type": "string",
+          "pattern": "^ChEMBL_[1-9][0-9]*$"
+        },
+        "release_date": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "activity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "activity_id",
+        "assay_chembl_id",
+        "document_chembl_id",
+        "molecule_chembl_id",
+        "molecule_name",
+        "candidate_aliases",
+        "target_chembl_id",
+        "target_symbol",
+        "target_uniprot_accession",
+        "document_pubmed_id",
+        "document_doi",
+        "source_assay_type",
+        "source_assay_type_description"
+      ],
+      "properties": {
+        "activity_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "assay_chembl_id": {"$ref": "#/$defs/chemblId"},
+        "document_chembl_id": {"$ref": "#/$defs/chemblId"},
+        "molecule_chembl_id": {"$ref": "#/$defs/chemblId"},
+        "molecule_name": {"$ref": "#/$defs/text"},
+        "candidate_aliases": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        },
+        "target_chembl_id": {"$ref": "#/$defs/chemblId"},
+        "target_symbol": {"$ref": "#/$defs/text"},
+        "target_uniprot_accession": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]{6,10}$"
+        },
+        "document_pubmed_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,15}$"
+        },
+        "document_doi": {
+          "type": "string",
+          "pattern": "^10\\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$"
+        },
+        "source_assay_type": {"$ref": "#/$defs/text"},
+        "source_assay_type_description": {"$ref": "#/$defs/text"}
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "predicate",
+        "subject",
+        "object_value",
+        "observed_at",
+        "available_at",
+        "confidence",
+        "biological_context",
+        "metadata",
+        "evidence"
+      ],
+      "properties": {
+        "record_id": {"$ref": "#/$defs/safeId"},
+        "predicate": {
+          "const": "candidate_target_functional_activity_supported"
+        },
+        "subject": {"$ref": "#/$defs/text"},
+        "object_value": {"$ref": "#/$defs/text"},
+        "observed_at": {"type": "string", "format": "date"},
+        "available_at": {"type": "string", "format": "date"},
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "biological_context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "candidate_id",
+            "target_id",
+            "target_record_id",
+            "disease_id",
+            "organism",
+            "assay_id"
+          ],
+          "properties": {
+            "candidate_id": {"$ref": "#/$defs/text"},
+            "target_id": {"$ref": "#/$defs/text"},
+            "target_record_id": {"$ref": "#/$defs/text"},
+            "disease_id": {"$ref": "#/$defs/text"},
+            "organism": {"$ref": "#/$defs/text"},
+            "assay_id": {"$ref": "#/$defs/text"}
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "assay_name",
+            "assay_type",
+            "functional_readout",
+            "endpoint",
+            "endpoint_relation",
+            "endpoint_value",
+            "endpoint_unit",
+            "effect_direction"
+          ],
+          "properties": {
+            "assay_name": {"$ref": "#/$defs/text"},
+            "assay_type": {"const": "functional"},
+            "functional_readout": {"const": true},
+            "endpoint": {"$ref": "#/$defs/text"},
+            "endpoint_relation": {
+              "enum": ["lt", "le", "eq", "ge", "gt"]
+            },
+            "endpoint_value": {"type": "number"},
+            "endpoint_unit": {"$ref": "#/$defs/text"},
+            "effect_direction": {"$ref": "#/$defs/text"}
+          }
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["assay_description", "functional_readout_anchor"],
+          "properties": {
+            "assay_description": {"$ref": "#/$defs/text"},
+            "functional_readout_anchor": {"$ref": "#/$defs/text"}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "chemblId": {
+      "type": "string",
+      "pattern": "^CHEMBL[1-9][0-9]*$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    }
+  }
+}

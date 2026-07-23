@@ -1,0 +1,340 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/policy_checkpoint.schema.json",
+  "title": "Typed policy checkpoint envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "checkpoint"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.policy-checkpoint-envelope.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "checkpoint": {
+      "$ref": "#/$defs/checkpoint"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "advance",
+        "hold",
+        "pivot",
+        "kill",
+        "defer"
+      ]
+    },
+    "toolCall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "call_id",
+        "tool_id",
+        "operation",
+        "action_type",
+        "purpose",
+        "arguments",
+        "max_cost",
+        "required"
+      ],
+      "properties": {
+        "call_id": {"$ref": "#/$defs/text"},
+        "tool_id": {"$ref": "#/$defs/text"},
+        "operation": {"$ref": "#/$defs/text"},
+        "action_type": {
+          "enum": [
+            "retrieve_evidence",
+            "query_database",
+            "run_sfm",
+            "run_structure_tool",
+            "score_candidate",
+            "edit_candidate",
+            "run_verifier"
+          ]
+        },
+        "purpose": {"$ref": "#/$defs/text"},
+        "arguments": {"type": "object"},
+        "max_cost": {"type": "number", "minimum": 0},
+        "required": {"type": "boolean"}
+      }
+    },
+    "stagePlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "stage",
+        "calls",
+        "max_steps",
+        "max_total_cost",
+        "success_confidence",
+        "failure_confidence",
+        "success_decision",
+        "failure_decision",
+        "next_stage",
+        "backtrack_stage",
+        "stop_on_required_failure",
+        "recover_to_defer_on_readiness_block",
+        "metadata"
+      ],
+      "properties": {
+        "plan_id": {"$ref": "#/$defs/text"},
+        "stage": {"$ref": "#/$defs/stage"},
+        "calls": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/toolCall"}
+        },
+        "max_steps": {"type": "integer", "minimum": 1},
+        "max_total_cost": {"type": "number", "minimum": 0},
+        "success_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "failure_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "success_decision": {"$ref": "#/$defs/decision"},
+        "failure_decision": {"$ref": "#/$defs/decision"},
+        "next_stage": {
+          "oneOf": [
+            {"$ref": "#/$defs/stage"},
+            {"type": "null"}
+          ]
+        },
+        "backtrack_stage": {
+          "oneOf": [
+            {"$ref": "#/$defs/stage"},
+            {"type": "null"}
+          ]
+        },
+        "stop_on_required_failure": {"type": "boolean"},
+        "recover_to_defer_on_readiness_block": {"type": "boolean"},
+        "metadata": {"type": "object"}
+      }
+    },
+    "promotionContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed_at",
+        "available_at",
+        "subject",
+        "object_value",
+        "confidence",
+        "candidate_id",
+        "candidate_name",
+        "modality",
+        "biological_context",
+        "metadata"
+      ],
+      "properties": {
+        "observed_at": {"type": "string", "format": "date"},
+        "available_at": {"type": "string", "format": "date"},
+        "subject": {"$ref": "#/$defs/text"},
+        "object_value": {"$ref": "#/$defs/text"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "candidate_id": {"type": ["string", "null"], "minLength": 1},
+        "candidate_name": {"type": ["string", "null"], "minLength": 1},
+        "modality": {"type": ["string", "null"], "minLength": 1},
+        "biological_context": {"type": "object"},
+        "metadata": {"type": "object"}
+      }
+    },
+    "programStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage_plan", "promotion_bindings"],
+      "properties": {
+        "stage_plan": {"$ref": "#/$defs/stagePlan"},
+        "promotion_bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["call_id", "context"],
+            "properties": {
+              "call_id": {"$ref": "#/$defs/text"},
+              "context": {"$ref": "#/$defs/promotionContext"}
+            }
+          }
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "program_id",
+        "state_version",
+        "stage",
+        "program_status",
+        "run_status",
+        "program_run_code",
+        "stage_run_code",
+        "consumed_plan_id",
+        "pending_plan_ids",
+        "blocking_codes",
+        "last_decision"
+      ],
+      "properties": {
+        "program_id": {"$ref": "#/$defs/text"},
+        "state_version": {"type": "integer", "minimum": 0},
+        "stage": {"$ref": "#/$defs/stage"},
+        "program_status": {
+          "enum": ["active", "held", "deferred", "terminated", "completed"]
+        },
+        "run_status": {"enum": ["paused", "blocked"]},
+        "program_run_code": {"$ref": "#/$defs/text"},
+        "stage_run_code": {"$ref": "#/$defs/text"},
+        "consumed_plan_id": {"$ref": "#/$defs/text"},
+        "pending_plan_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        },
+        "blocking_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        },
+        "last_decision": {
+          "oneOf": [
+            {"$ref": "#/$defs/decision"},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "directive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "directive_id",
+        "policy_id",
+        "policy_version",
+        "rule_id",
+        "revision_index",
+        "action",
+        "reason_code",
+        "observation_fingerprint",
+        "replacement_steps",
+        "preserve_pending"
+      ],
+      "properties": {
+        "directive_id": {"$ref": "#/$defs/text"},
+        "policy_id": {"$ref": "#/$defs/text"},
+        "policy_version": {"$ref": "#/$defs/text"},
+        "rule_id": {"$ref": "#/$defs/text"},
+        "revision_index": {"type": "integer", "minimum": 1},
+        "action": {"enum": ["replan", "pause"]},
+        "reason_code": {"$ref": "#/$defs/text"},
+        "observation_fingerprint": {"$ref": "#/$defs/sha256"},
+        "replacement_steps": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/programStep"}
+        },
+        "preserve_pending": {"type": "boolean"}
+      }
+    },
+    "replanRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation",
+        "directive",
+        "prior_pending_plan_ids",
+        "resulting_pending_plan_ids"
+      ],
+      "properties": {
+        "observation": {"$ref": "#/$defs/observation"},
+        "directive": {"$ref": "#/$defs/directive"},
+        "prior_pending_plan_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        },
+        "resulting_pending_plan_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        }
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checkpoint_id",
+        "policy_id",
+        "policy_version",
+        "disposition",
+        "state",
+        "execution_ledger",
+        "pending_steps",
+        "consumed_plan_ids",
+        "replan_history",
+        "invocation_count",
+        "parent_fingerprint"
+      ],
+      "properties": {
+        "checkpoint_id": {"$ref": "#/$defs/text"},
+        "policy_id": {"$ref": "#/$defs/text"},
+        "policy_version": {"$ref": "#/$defs/text"},
+        "disposition": {
+          "enum": [
+            "ready",
+            "paused",
+            "blocked",
+            "exhausted",
+            "completed",
+            "terminated"
+          ]
+        },
+        "state": {"type": "object"},
+        "execution_ledger": {"type": "object"},
+        "pending_steps": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/programStep"}
+        },
+        "consumed_plan_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        },
+        "replan_history": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/replanRecord"}
+        },
+        "invocation_count": {"type": "integer", "minimum": 0},
+        "parent_fingerprint": {
+          "oneOf": [
+            {"$ref": "#/$defs/sha256"},
+            {"type": "null"}
+          ]
+        }
+      }
+    }
+  }
+}

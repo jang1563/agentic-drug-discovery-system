@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/clinical_endpoint_mapping.schema.json",
+  "title": "ADDS Clinical Endpoint Mapping",
+  "description": "Reviewer-approved endpoint-family ontology identity bound to exact trial, endpoint, and safety ledger identities. It contains no source measurements.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "mapping_id",
+    "portfolio_id",
+    "candidate_id",
+    "intervention_id",
+    "disease_id",
+    "endpoint_family_id",
+    "endpoint_family_label",
+    "ontology",
+    "effect_measure",
+    "favorable_direction",
+    "safety_measure",
+    "bindings",
+    "review",
+    "stage",
+    "metadata"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-endpoint-mapping-spec.v1"
+    },
+    "mapping_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "portfolio_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "candidate_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "intervention_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "disease_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "endpoint_family_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,127}$"
+    },
+    "endpoint_family_label": {
+      "$ref": "#/$defs/nonEmptyText"
+    },
+    "ontology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "version",
+        "code",
+        "label"
+      ],
+      "properties": {
+        "system": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "version": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "code": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyText"
+        }
+      }
+    },
+    "effect_measure": {
+      "const": "hazard_ratio"
+    },
+    "favorable_direction": {
+      "const": "lower_is_better"
+    },
+    "safety_measure": {
+      "const": "serious_adverse_event_risk_difference"
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/binding"
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewer_id",
+        "reviewed_at"
+      ],
+      "properties": {
+        "status": {
+          "const": "approved"
+        },
+        "reviewer_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "stage": {
+      "const": "regulatory_postmarket"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "review_note": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "review_protocol_id": {
+          "$ref": "#/$defs/nonEmptyText"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$"
+    },
+    "nonEmptyText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trial_id",
+        "design_id",
+        "endpoint_id",
+        "safety_id"
+      ],
+      "properties": {
+        "trial_id": {
+          "type": "string",
+          "pattern": "^NCT[0-9]{8}$"
+        },
+        "design_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "endpoint_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "safety_id": {
+          "$ref": "#/$defs/safeId"
+        }
+      }
+    }
+  }
+}

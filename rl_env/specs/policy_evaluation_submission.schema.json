@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/policy_evaluation_submission.schema.json",
+  "title": "Fingerprint-bound policy evaluation submission envelope",
+  "description": "One complete decision submission for an exact sealed board.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "submission"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.policy-evaluation-submission.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "submission": {
+      "$ref": "#/$defs/submission"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "episodeId": {
+      "type": "string",
+      "pattern": "^ep-[0-9a-f]{24}$"
+    },
+    "decision": {
+      "enum": [
+        "advance",
+        "hold",
+        "pivot",
+        "kill",
+        "defer"
+      ]
+    },
+    "prediction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "episode_id",
+        "observation_fingerprint",
+        "predicted_decision",
+        "confidence"
+      ],
+      "properties": {
+        "episode_id": {
+          "$ref": "#/$defs/episodeId"
+        },
+        "observation_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "predicted_decision": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/decision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "predicted_decision": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "confidence": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "confidence": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "submission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "submission_id",
+        "board_id",
+        "board_fingerprint",
+        "policy_id",
+        "policy_version",
+        "created_on",
+        "predictions",
+        "metadata"
+      ],
+      "properties": {
+        "submission_id": {
+          "$ref": "#/$defs/text"
+        },
+        "board_id": {
+          "$ref": "#/$defs/text"
+        },
+        "board_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_version": {
+          "$ref": "#/$defs/text"
+        },
+        "created_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "predictions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/prediction"
+          }
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

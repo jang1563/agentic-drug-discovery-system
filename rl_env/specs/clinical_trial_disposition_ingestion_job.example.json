@@ -1,0 +1,42 @@
+{
+  "schema_version": "adds.clinical-trial-disposition-ingestion-job.v1",
+  "job_id": "synthetic-clinical-disposition",
+  "source_receipt_ids": {
+    "registry": "synthetic-clinical-disposition-registry",
+    "publication": "synthetic-clinical-disposition-publication"
+  },
+  "identity": {
+    "candidate_id": "CHEMBL_TEST",
+    "candidate_name": "Test Drug",
+    "candidate_aliases": [
+      "Test Drug",
+      "TestDrug-1"
+    ],
+    "intervention_id": "CHEMBL_TEST",
+    "disease_id": "MONDO_TEST",
+    "disease_name": "test disease",
+    "trial_id": "NCT00000002",
+    "protocol_id": "TEST-P3-FAIL"
+  },
+  "registry_review": {
+    "record_id": "synthetic-registry-termination",
+    "confidence": 0.95,
+    "why_stopped_code": "lack_of_efficacy"
+  },
+  "publication_review": {
+    "record_id": "synthetic-publication-endpoint",
+    "confidence": 0.95,
+    "pmid": "99999991",
+    "doi": "10.1000/test.negative-trial",
+    "source_candidate_name": "Test Drug",
+    "primary_endpoint_met": false,
+    "effect_direction": "no_clinical_benefit",
+    "endpoint_name": "rate of test disease events",
+    "candidate_rate": 0.4,
+    "comparator_rate": 0.3,
+    "rate_unit": "reported event-rate value",
+    "early_termination_reason": "lack_of_efficacy",
+    "termination_excerpt": "The data monitoring committee terminated TEST-P3-FAIL early for lack of efficacy.",
+    "endpoint_excerpt": "No significant improvement in the rate of test disease events was observed for Test Drug compared with placebo (0.40 vs. 0.30, respectively)."
+  }
+}

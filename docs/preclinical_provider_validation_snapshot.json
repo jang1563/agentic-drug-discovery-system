@@ -1,0 +1,129 @@
+{
+  "schema_version": "adds.preclinical-provider-validation-snapshot.v1",
+  "artifact": "agentic-drug-discovery-system",
+  "validation_date": "2026-07-15",
+  "execution_scope": "external_public_source_contract_validation",
+  "public_payload_policy": {
+    "contains_source_bytes": false,
+    "contains_reviewer_text": false,
+    "contains_review_jobs": false,
+    "contains_local_paths": false,
+    "external_artifacts_required_for_exact_replay": true
+  },
+  "functional_activity": {
+    "provider_id": "chembl",
+    "database_version": "ChEMBL_37",
+    "release_date": "2026-05-01",
+    "activity_id": 2102131,
+    "assay_chembl_id": "CHEMBL948111",
+    "document_chembl_id": "CHEMBL1141563",
+    "molecule_chembl_id": "CHEMBL405821",
+    "molecule_name": "SENICAPOC",
+    "candidate_aliases": [
+      "SENICAPOC",
+      "ICA-17043",
+      "PF-05416266"
+    ],
+    "target_chembl_id": "CHEMBL4305",
+    "target_symbol": "KCNN4",
+    "target_uniprot_accession": "O15554",
+    "source_assay_type": "B",
+    "source_assay_type_description": "Binding",
+    "typed_endpoint": {
+      "name": "IC50",
+      "relation": "eq",
+      "value": 12.0,
+      "unit": "nM"
+    },
+    "source_lineage_ids": [
+      "chembl-document:CHEMBL1141563",
+      "pubmed:18232633",
+      "doi:10.1021/jm070663s"
+    ],
+    "source_sha256_by_resource": {
+      "status": "29dc1fb09487a8d2962253a4d0d92c4ded0aa0d831effab42445d0c3483d4740",
+      "activity": "f3bfc4ec4284208ef4a59edd9ad3a6f6f2769e970885f565fc82c581ffbaaea8",
+      "assay": "a674423dc94d7bfe41490d63888a76e4efe8c378053689262afbc85746b73a2e",
+      "document": "5bea5941df623a277074ca9dd2217903917b98ea0c9520476b02ba0cdf464699",
+      "molecule": "71f651a1c5573214135ab35cee0ba377265c991b64eee5142df8b4337c2a2e3a",
+      "target": "33cdfa7a23e12f07858077c658aa73de56bf9cf5dc7409dfbe340f265ab77b2a"
+    },
+    "review_job_sha256": "4f8b0439ac132d51d93f25386d334810a468f93a5e5b14d1a35b921b28d756bc",
+    "sanitized_output_sha256": "fc20bfea66e661815f9a8b6b164db7653a1bda52b58bdcfed3acb8b7a421cc76"
+  },
+  "disease_model_effect": {
+    "provider_id": "ncbi_pubmed",
+    "pmid": "12433690",
+    "pmcid": null,
+    "doi": "10.1182/blood-2002-05-1433",
+    "publication_date": "2002-11-14",
+    "source_candidate_name": "ICA-17043",
+    "model_system_id": "SAD_MOUSE_SCD",
+    "model_system": "SAD mouse sickle cell disease model",
+    "organism": "Mus musculus",
+    "typed_exposure": {
+      "dose_value": 10.0,
+      "dose_unit": "mg/kg",
+      "route": "oral",
+      "frequency": "twice a day",
+      "duration_value": 21.0,
+      "duration_unit": "days"
+    },
+    "typed_endpoint": {
+      "name": "Gardos channel activity inhibition",
+      "relation": "eq",
+      "value": 90.0,
+      "unit": "percent",
+      "variation_value": 27.0,
+      "variation_unit": "percent",
+      "p_value_relation": "lt",
+      "p_value": 0.005
+    },
+    "source_lineage_ids": [
+      "pubmed:12433690",
+      "doi:10.1182/blood-2002-05-1433"
+    ],
+    "source_xml_sha256": "9745d9cd028fc31f0c80cf17e34b1d1e3d75baab5c90f17d4801d69e87a85910",
+    "review_job_sha256": "38b83d820c61003a2ce59dae5a5d5a747eaaede6d62139e97d41c68d862cc5b2",
+    "sanitized_output_sha256": "baa7bd10028b2bf9d7833ac4a9b9c2eafd50a61109e9aeaeea9a0797a42a7075"
+  },
+  "composite_manifest": {
+    "sha256": "530ac6a4bcb8c8a973dc0474ddc15c807c05bed76ec31e1fe8e23e2d80ab536d",
+    "independent_source_count": 2
+  },
+  "matched_pair": {
+    "pair_count": 1,
+    "success": {
+      "decision": "advance",
+      "promotion_code": "pinned_functional_effect_promoted",
+      "final_stage": "clinical_strategy",
+      "new_preclinical_evidence_count": 2,
+      "independent_lineage_count": 5
+    },
+    "failure": {
+      "controlled_change": "add pubmed:18232633 to disease-model source_lineage_ids",
+      "overlapping_source_lineage_ids": [
+        "pubmed:18232633"
+      ],
+      "decision": "defer",
+      "promotion_code": "pinned_functional_effect_lineage_not_independent",
+      "final_stage": "preclinical_validation",
+      "new_preclinical_evidence_count": 0
+    },
+    "balanced_accuracy": 1.0,
+    "metric_interpretation": "deterministic one-pair contract regression, not discovery performance"
+  },
+  "official_sources": [
+    "https://www.ebi.ac.uk/chembl/api/data/docs",
+    "https://www.ebi.ac.uk/chembl/api/data/activity/2102131.json",
+    "https://pubmed.ncbi.nlm.nih.gov/18232633/",
+    "https://pubmed.ncbi.nlm.nih.gov/12433690/"
+  ],
+  "limitations": [
+    "Source payloads and reviewer-selected text are not included.",
+    "Exact replay requires the external source bundles and review jobs.",
+    "Hashes prove byte identity only, not source authority or scientific correctness.",
+    "The run does not establish assay validity, model translation, candidate efficacy, or discovery performance.",
+    "No real provider job or compiled manifest is approved for release."
+  ]
+}

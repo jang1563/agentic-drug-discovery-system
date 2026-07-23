@@ -1,0 +1,66 @@
+{
+  "schema_version": "adds.chembl-activity-ingestion-job.v1",
+  "job_id": "synthetic-chembl-functional-activity",
+  "source_receipt_ids": {
+    "status": "synthetic-chembl-status-receipt",
+    "activity": "synthetic-chembl-activity-receipt",
+    "assay": "synthetic-chembl-assay-receipt",
+    "document": "synthetic-chembl-document-receipt",
+    "molecule": "synthetic-chembl-molecule-receipt",
+    "target": "synthetic-chembl-target-receipt"
+  },
+  "release": {
+    "database_version": "ChEMBL_37",
+    "release_date": "2026-05-01"
+  },
+  "activity": {
+    "activity_id": 9000001,
+    "assay_chembl_id": "CHEMBL9000011",
+    "document_chembl_id": "CHEMBL9000012",
+    "molecule_chembl_id": "CHEMBL9000013",
+    "molecule_name": "SYNTHETIC-CANDIDATE",
+    "candidate_aliases": [
+      "SYNTHETIC-CANDIDATE",
+      "SYNTH-CODE-1",
+      "SYNTH-CODE-2"
+    ],
+    "target_chembl_id": "CHEMBL9000014",
+    "target_symbol": "SYN1",
+    "target_uniprot_accession": "P00001",
+    "document_pubmed_id": "99999991",
+    "document_doi": "10.1000/synthetic.chembl.activity",
+    "source_assay_type": "B",
+    "source_assay_type_description": "Binding"
+  },
+  "record": {
+    "record_id": "synthetic-chembl-functional-activity",
+    "predicate": "candidate_target_functional_activity_supported",
+    "subject": "SYNTHETIC-CANDIDATE",
+    "object_value": "A synthetic candidate changed a synthetic ion-efflux readout for contract testing only.",
+    "observed_at": "2008-12-31",
+    "available_at": "2026-05-01",
+    "confidence": 0.9,
+    "biological_context": {
+      "candidate_id": "CHEMBL9000013",
+      "target_id": "CHEMBL9000014",
+      "target_record_id": "ENSG_SYNTHETIC1",
+      "disease_id": "MONDO_SYNTHETIC",
+      "organism": "Homo sapiens",
+      "assay_id": "CHEMBL9000011"
+    },
+    "metadata": {
+      "assay_name": "Synthetic human-cell ion-efflux assay",
+      "assay_type": "functional",
+      "functional_readout": true,
+      "endpoint": "IC50",
+      "endpoint_relation": "eq",
+      "endpoint_value": 12.0,
+      "endpoint_unit": "nM",
+      "effect_direction": "decreased"
+    },
+    "evidence": {
+      "assay_description": "Synthetic channel inhibition in human cells assessed by a synthetic stimulated ion-efflux readout",
+      "functional_readout_anchor": "synthetic stimulated ion-efflux readout"
+    }
+  }
+}

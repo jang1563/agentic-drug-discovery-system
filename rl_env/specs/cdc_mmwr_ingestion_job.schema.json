@@ -1,0 +1,321 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/cdc_mmwr_ingestion_job.schema.json",
+  "title": "ADDS CDC MMWR ingestion job",
+  "description": "Reviewer-authored CDC MMWR evidence locations and typed values that must be verified against one captured HTML snapshot before generic manifest compilation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "job_id",
+    "source_receipt_id",
+    "article",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.cdc-mmwr-ingestion-job.v1"
+    },
+    "job_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "source_receipt_id": {
+      "$ref": "#/$defs/safeId"
+    },
+    "article": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "doi",
+        "publication_date",
+        "canonical_url"
+      ],
+      "properties": {
+        "title": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "doi": {
+          "type": "string",
+          "pattern": "^10\\.15585/mmwr\\.[A-Za-z0-9]+(?:\\.[A-Za-z0-9]+)*$"
+        },
+        "publication_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "canonical_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://(?:www\\.)?cdc\\.gov/mmwr/volumes/"
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "nonEmptyText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "publicSummaryValue": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4096
+        },
+        {
+          "type": [
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/publicSummaryValue"
+          }
+        },
+        {
+          "$ref": "#/$defs/publicSummaryObject"
+        }
+      ]
+    },
+    "publicSummaryObject": {
+      "type": "object",
+      "propertyNames": {
+        "not": {
+          "pattern": "^(?:[Bb][Oo][Dd][Yy]|[Dd][Oo][Cc][Uu][Mm][Ee][Nn][Tt][^A-Za-z0-9]+[Tt][Ee][Xx][Tt]|[Ff][Uu][Ll][Ll][^A-Za-z0-9]+[Tt][Ee][Xx][Tt]|[Hh][Tt][Mm][Ll]|[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Rr][Aa][Ww][^A-Za-z0-9]+[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Rr][Ee][Ss][Pp][Oo][Nn][Ss][Ee][^A-Za-z0-9]+[Bb][Oo][Dd][Yy]|[Ss][Oo][Uu][Rr][Cc][Ee][^A-Za-z0-9]+[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Xx][Mm][Ll])$"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/publicSummaryValue"
+      }
+    },
+    "providerMetadata": {
+      "type": "object",
+      "propertyNames": {
+        "allOf": [
+          {
+            "not": {
+              "pattern": "^(?:[Bb][Oo][Dd][Yy]|[Dd][Oo][Cc][Uu][Mm][Ee][Nn][Tt][^A-Za-z0-9]+[Tt][Ee][Xx][Tt]|[Ff][Uu][Ll][Ll][^A-Za-z0-9]+[Tt][Ee][Xx][Tt]|[Hh][Tt][Mm][Ll]|[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Rr][Aa][Ww][^A-Za-z0-9]+[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Rr][Ee][Ss][Pp][Oo][Nn][Ss][Ee][^A-Za-z0-9]+[Bb][Oo][Dd][Yy]|[Ss][Oo][Uu][Rr][Cc][Ee][^A-Za-z0-9]+[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Xx][Mm][Ll])$"
+            }
+          },
+          {
+            "not": {
+              "enum": [
+                "provider_id",
+                "article_doi",
+                "article_title",
+                "article_publication_date",
+                "evidence_location",
+                "evidence_excerpt_sha256",
+                "evidence_value_text"
+              ]
+            }
+          }
+        ]
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/publicSummaryValue"
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "predicate",
+        "subject",
+        "object_value",
+        "observed_at",
+        "available_at",
+        "confidence",
+        "biological_context",
+        "metadata",
+        "evidence"
+      ],
+      "properties": {
+        "record_id": {
+          "$ref": "#/$defs/safeId"
+        },
+        "predicate": {
+          "enum": [
+            "disease_burden_supported",
+            "treatment_gap_supported"
+          ]
+        },
+        "subject": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "object_value": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "available_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "biological_context": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/publicSummaryObject"
+            },
+            {
+              "required": [
+                "disease_id",
+                "evidence_context_id"
+              ],
+              "properties": {
+                "disease_id": {
+                  "$ref": "#/$defs/nonEmptyText"
+                },
+                "evidence_context_id": {
+                  "$ref": "#/$defs/nonEmptyText"
+                }
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/providerMetadata"
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "location_id",
+            "excerpt",
+            "value_text"
+          ],
+          "properties": {
+            "location_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_.:-]{0,127}$"
+            },
+            "excerpt": {
+              "type": "string",
+              "minLength": 20,
+              "maxLength": 4096
+            },
+            "value_text": {
+              "type": "string",
+              "pattern": "^[+-]?(?:[0-9]{1,3}(?:,[0-9]{3})+|[0-9]+)(?:\\.[0-9]+)?%?$"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "disease_burden_supported"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "metadata": {
+                "required": [
+                  "measure_type",
+                  "measure_value",
+                  "measure_unit",
+                  "population",
+                  "geography",
+                  "reference_period"
+                ],
+                "properties": {
+                  "measure_type": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "measure_value": {
+                    "type": "number"
+                  },
+                  "measure_unit": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "population": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "geography": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "reference_period": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "predicate": {
+                "const": "treatment_gap_supported"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "metadata": {
+                "required": [
+                  "treatment_context",
+                  "gap_summary",
+                  "gap_measure_value",
+                  "gap_measure_unit",
+                  "population",
+                  "geography",
+                  "reference_period"
+                ],
+                "properties": {
+                  "treatment_context": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "gap_summary": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "gap_measure_value": {
+                    "type": "number"
+                  },
+                  "gap_measure_unit": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "population": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "geography": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  },
+                  "reference_period": {
+                    "$ref": "#/$defs/nonEmptyText"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

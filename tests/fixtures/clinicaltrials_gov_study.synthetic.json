@@ -1,0 +1,213 @@
+{
+  "protocolSection": {
+    "identificationModule": {
+      "nctId": "NCT00000001"
+    },
+    "statusModule": {
+      "overallStatus": "COMPLETED",
+      "primaryCompletionDateStruct": {
+        "date": "2024-06-01",
+        "type": "ACTUAL"
+      },
+      "resultsFirstPostDateStruct": {
+        "date": "2024-09-15",
+        "type": "ACTUAL"
+      }
+    },
+    "conditionsModule": {
+      "conditions": [
+        "test disease"
+      ]
+    },
+    "designModule": {
+      "studyType": "INTERVENTIONAL",
+      "phases": [
+        "PHASE2"
+      ],
+      "enrollmentInfo": {
+        "count": 120,
+        "type": "ACTUAL"
+      }
+    },
+    "armsInterventionsModule": {
+      "armGroups": [
+        {
+          "label": "Test Drug Arm",
+          "type": "EXPERIMENTAL",
+          "interventionNames": [
+            "Drug: Test Drug"
+          ]
+        },
+        {
+          "label": "Active Comparator Arm",
+          "type": "ACTIVE_COMPARATOR",
+          "interventionNames": [
+            "Drug: Comparator Drug"
+          ]
+        }
+      ],
+      "interventions": [
+        {
+          "type": "DRUG",
+          "name": "Test Drug",
+          "otherNames": [
+            "TestDrug-1"
+          ],
+          "armGroupLabels": [
+            "Test Drug Arm"
+          ]
+        },
+        {
+          "type": "DRUG",
+          "name": "Comparator Drug",
+          "armGroupLabels": [
+            "Active Comparator Arm"
+          ]
+        }
+      ]
+    },
+    "outcomesModule": {
+      "primaryOutcomes": [
+        {
+          "measure": "Progression-Free Survival",
+          "timeFrame": "24 months"
+        }
+      ]
+    },
+    "eligibilityModule": {
+      "healthyVolunteers": false,
+      "sex": "ALL",
+      "minimumAge": "18 Years",
+      "maximumAge": "75 Years"
+    }
+  },
+  "resultsSection": {
+    "outcomeMeasuresModule": {
+      "outcomeMeasures": [
+        {
+          "type": "PRIMARY",
+          "title": "Progression-Free Survival",
+          "populationDescription": "All randomized participants",
+          "reportingStatus": "POSTED",
+          "paramType": "MEDIAN",
+          "unitOfMeasure": "months",
+          "timeFrame": "24 months",
+          "groups": [
+            {
+              "id": "OG000",
+              "title": "Test Drug"
+            },
+            {
+              "id": "OG001",
+              "title": "Comparator Drug"
+            }
+          ],
+          "denoms": [
+            {
+              "units": "Participants",
+              "counts": [
+                {
+                  "groupId": "OG000",
+                  "value": "60"
+                },
+                {
+                  "groupId": "OG001",
+                  "value": "60"
+                }
+              ]
+            }
+          ],
+          "classes": [
+            {
+              "categories": [
+                {
+                  "measurements": [
+                    {
+                      "groupId": "OG000",
+                      "value": "12.0"
+                    },
+                    {
+                      "groupId": "OG001",
+                      "value": "8.0"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "analyses": [
+            {
+              "groupIds": [
+                "OG000",
+                "OG001"
+              ],
+              "pValue": "<0.01",
+              "statisticalMethod": "Stratified Log Rank Test",
+              "paramType": "Hazard Ratio (HR)",
+              "paramValue": "0.70",
+              "ciPctValue": "95",
+              "ciLowerLimit": "0.55",
+              "ciUpperLimit": "0.89"
+            }
+          ]
+        }
+      ]
+    },
+    "adverseEventsModule": {
+      "timeFrame": "From first dose through 30 days after last dose",
+      "description": "Posted aggregate serious adverse events for the safety population.",
+      "eventGroups": [
+        {
+          "id": "EG000",
+          "title": "Test Drug",
+          "seriousNumAffected": 12,
+          "seriousNumAtRisk": 60
+        },
+        {
+          "id": "EG001",
+          "title": "Comparator Drug",
+          "seriousNumAffected": 18,
+          "seriousNumAtRisk": 60
+        }
+      ],
+      "seriousEvents": [
+        {
+          "term": "Synthetic serious event A",
+          "stats": [
+            {
+              "groupId": "EG000",
+              "numAffected": 4,
+              "numAtRisk": 60
+            },
+            {
+              "groupId": "EG001",
+              "numAffected": 7,
+              "numAtRisk": 60
+            }
+          ]
+        },
+        {
+          "term": "Synthetic serious event B",
+          "stats": [
+            {
+              "groupId": "EG000",
+              "numAffected": 8,
+              "numAtRisk": 60
+            },
+            {
+              "groupId": "EG001",
+              "numAffected": 11,
+              "numAtRisk": 60
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "derivedSection": {
+    "miscInfoModule": {
+      "versionHolder": "2025-01-01"
+    }
+  },
+  "hasResults": true
+}

@@ -1,0 +1,135 @@
+{
+  "schema_version": "adds.pinned-evidence.v1",
+  "records": [
+    {
+      "record_id": "example-disease-burden",
+      "predicate": "disease_burden_supported",
+      "subject": "example disease",
+      "object_value": "A synthetic burden measure is present for contract testing.",
+      "observed_at": "2024-06-01",
+      "available_at": "2024-06-15",
+      "confidence": 0.8,
+      "source": {
+        "source_id": "example-burden-source",
+        "source_version": "snapshot-2024-06",
+        "locator": "https://example.invalid/pinned-evidence/burden",
+        "content_hash": "bcac27b56302a8decce9e5576209bbcbced2bd38c418e38507b23340b201a2a2"
+      },
+      "biological_context": {
+        "disease_id": "MONDO_EXAMPLE",
+        "evidence_context_id": "example-disease-context-2024"
+      },
+      "metadata": {
+        "measure_type": "synthetic prevalence",
+        "measure_value": 10,
+        "measure_unit": "synthetic persons",
+        "population": "synthetic test population",
+        "geography": "synthetic geography",
+        "reference_period": "2024"
+      }
+    },
+    {
+      "record_id": "example-treatment-gap",
+      "predicate": "treatment_gap_supported",
+      "subject": "example disease",
+      "object_value": "A synthetic treatment-gap statement is present for contract testing.",
+      "observed_at": "2024-06-02",
+      "available_at": "2024-06-16",
+      "confidence": 0.8,
+      "source": {
+        "source_id": "example-gap-source",
+        "source_version": "snapshot-2024-06",
+        "locator": "https://example.invalid/pinned-evidence/treatment-gap",
+        "content_hash": "9885da45269544a566a561e665ba72e43c5cad0d47cb2b10b771a375d927f3a9"
+      },
+      "biological_context": {
+        "disease_id": "MONDO_EXAMPLE",
+        "evidence_context_id": "example-disease-context-2024"
+      },
+      "metadata": {
+        "treatment_context": "synthetic standard of care",
+        "gap_summary": "Synthetic residual need for contract testing only.",
+        "population": "synthetic test population",
+        "geography": "synthetic geography",
+        "reference_period": "2024"
+      }
+    },
+    {
+      "record_id": "example-target-function",
+      "predicate": "candidate_target_functional_activity_supported",
+      "subject": "Example Candidate",
+      "object_value": "A synthetic functional target response was measured.",
+      "observed_at": "2024-07-01",
+      "available_at": "2024-07-15",
+      "confidence": 0.8,
+      "source": {
+        "source_id": "example-functional-assay-source",
+        "source_version": "snapshot-2024-07",
+        "locator": "https://example.invalid/pinned-evidence/functional-assay",
+        "content_hash": "96037ae0666412b3dfbd4777d3a262827decbe57200109e31825e523c52d500e"
+      },
+      "biological_context": {
+        "candidate_id": "CHEMBL_EXAMPLE",
+        "target_id": "CHEMBL_TARGET_EXAMPLE",
+        "target_record_id": "ENSG_EXAMPLE",
+        "disease_id": "MONDO_EXAMPLE",
+        "organism": "Homo sapiens",
+        "assay_id": "ASSAY_EXAMPLE"
+      },
+      "metadata": {
+        "assay_name": "synthetic target functional assay",
+        "assay_type": "functional",
+        "source_assay_type": "synthetic-provider-functional",
+        "source_assay_type_description": "Synthetic functional assay classification",
+        "functional_readout": true,
+        "endpoint": "synthetic pathway response",
+        "endpoint_relation": "eq",
+        "endpoint_value": 12.0,
+        "endpoint_unit": "nM",
+        "effect_direction": "decreased",
+        "candidate_aliases": [
+          "Example Candidate",
+          "CHEMBL_EXAMPLE"
+        ],
+        "source_lineage_ids": [
+          "doi:10.1000/example-functional"
+        ]
+      }
+    },
+    {
+      "record_id": "example-disease-model-effect",
+      "predicate": "disease_model_effect_supported",
+      "subject": "Example Candidate",
+      "object_value": "A synthetic disease-model endpoint changed in the intended direction.",
+      "observed_at": "2024-07-02",
+      "available_at": "2024-07-16",
+      "confidence": 0.8,
+      "source": {
+        "source_id": "example-disease-model-source",
+        "source_version": "snapshot-2024-07",
+        "locator": "https://example.invalid/pinned-evidence/disease-model",
+        "content_hash": "ffcffb9101fd685426a96c6c4521d570404fe4e9815fee534b11dc54dc525d42"
+      },
+      "biological_context": {
+        "candidate_id": "CHEMBL_EXAMPLE",
+        "disease_id": "MONDO_EXAMPLE",
+        "organism": "Mus musculus",
+        "model_system_id": "MODEL_SYSTEM_EXAMPLE"
+      },
+      "metadata": {
+        "model_system": "synthetic disease model",
+        "model_type": "animal model",
+        "endpoint": "synthetic phenotype",
+        "endpoint_relation": "eq",
+        "endpoint_value": 80.0,
+        "endpoint_unit": "percent",
+        "effect_direction": "improved",
+        "disease_relevance": "Synthetic contract fixture, not a scientific claim.",
+        "source_candidate_name": "Example Candidate",
+        "source_lineage_ids": [
+          "doi:10.1000/example-disease-model"
+        ]
+      }
+    }
+  ]
+}

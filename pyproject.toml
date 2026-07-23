@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-drug-discovery-system"
+version = "0.3.0.dev0"
+description = "Evidence-governed execution core for end-to-end drug-discovery agents"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+  {name = "JangKeun Kim"},
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+  "jsonschema>=4.23,<5",
+  "pytest>=8,<10",
+]
+
+[project.scripts]
+adds-control-plane-demo = "agentic_drug_discovery.demo:main"
+adds-bounded-agent-demo = "agentic_drug_discovery.bounded_demo:main"
+adds-replay-bundle = "agentic_drug_discovery.replay_cli:main"
+adds-pinned-ingestion = "agentic_drug_discovery.ingestion_cli:main"
+
+[tool.setuptools.packages.find]
+include = ["agentic_drug_discovery*"]
+exclude = ["benchmark*", "tests*"]

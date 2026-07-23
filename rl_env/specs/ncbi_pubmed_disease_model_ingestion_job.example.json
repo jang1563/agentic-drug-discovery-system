@@ -1,0 +1,65 @@
+{
+  "schema_version": "adds.ncbi-pubmed-disease-model-ingestion-job.v1",
+  "job_id": "synthetic-pubmed-disease-model",
+  "source_receipt_id": "synthetic-pubmed-disease-model-receipt",
+  "article": {
+    "title": "Synthetic in-vivo disease-model contract fixture.",
+    "pmid": "99999992",
+    "pmcid": null,
+    "doi": "10.1000/synthetic.disease-model",
+    "publication_date": "2002-11-14",
+    "canonical_url": "https://pubmed.ncbi.nlm.nih.gov/99999992/"
+  },
+  "records": [
+    {
+      "record_id": "synthetic-pubmed-disease-model-effect",
+      "predicate": "disease_model_effect_supported",
+      "subject": "SYNTHETIC-CANDIDATE",
+      "object_value": "A synthetic treatment changed a synthetic disease-model endpoint for contract testing only.",
+      "observed_at": "2002-11-14",
+      "available_at": "2002-11-14",
+      "confidence": 0.9,
+      "biological_context": {
+        "candidate_id": "CHEMBL9000013",
+        "disease_id": "MONDO_SYNTHETIC",
+        "organism": "Mus musculus",
+        "model_system_id": "SYNTHETIC_MOUSE_MODEL"
+      },
+      "metadata": {
+        "model_system": "Synthetic transgenic mouse disease model",
+        "model_type": "transgenic animal model",
+        "endpoint": "synthetic channel activity inhibition",
+        "endpoint_relation": "eq",
+        "endpoint_value": 90.0,
+        "endpoint_unit": "percent",
+        "endpoint_variation_value": 27.0,
+        "endpoint_variation_unit": "percent",
+        "effect_direction": "improved",
+        "disease_relevance": "Synthetic contract fixture, not a scientific claim.",
+        "source_candidate_name": "SYNTH-CODE-1",
+        "dose_value": 10.0,
+        "dose_unit": "mg/kg",
+        "route": "oral",
+        "frequency": "twice a day",
+        "duration_value": 21.0,
+        "duration_unit": "days",
+        "p_value_relation": "lt",
+        "p_value": 0.005
+      },
+      "evidence": {
+        "result_excerpt": "In a synthetic transgenic mouse disease model, treatment with SYNTH-CODE-1 (10 mg/kg orally, twice a day) for 21 days showed synthetic channel activity inhibition of 90% +/- 27%, P <.005",
+        "conclusion_excerpt": "These synthetic data indicate that SYNTH-CODE-1 improves the synthetic disease-model endpoint.",
+        "candidate_anchor": "SYNTH-CODE-1",
+        "model_anchor": "synthetic transgenic mouse disease model",
+        "dose_text": "10 mg/kg",
+        "route_anchor": "orally",
+        "frequency_anchor": "twice a day",
+        "duration_text": "21 days",
+        "endpoint_value_text": "90%",
+        "endpoint_variation_text": "27%",
+        "p_value_text": "<.005",
+        "conclusion_anchor": "improves the synthetic disease-model endpoint"
+      }
+    }
+  ]
+}

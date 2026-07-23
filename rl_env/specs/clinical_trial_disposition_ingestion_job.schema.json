@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/clinical_trial_disposition_ingestion_job.schema.json",
+  "title": "ADDS historical clinical trial disposition ingestion job",
+  "description": "Reviewer declarations binding one terminated registry record and one primary-endpoint publication to the same trial lineage. The pair corroborates one trial and is not two independent efficacy studies.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "job_id",
+    "source_receipt_ids",
+    "identity",
+    "registry_review",
+    "publication_review"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-trial-disposition-ingestion-job.v1"
+    },
+    "job_id": {"$ref": "#/$defs/safeId"},
+    "source_receipt_ids": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registry", "publication"],
+      "properties": {
+        "registry": {"$ref": "#/$defs/safeId"},
+        "publication": {"$ref": "#/$defs/safeId"}
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "candidate_name",
+        "candidate_aliases",
+        "intervention_id",
+        "disease_id",
+        "disease_name",
+        "trial_id",
+        "protocol_id"
+      ],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/text"},
+        "candidate_name": {"$ref": "#/$defs/text"},
+        "candidate_aliases": {"$ref": "#/$defs/textArray"},
+        "intervention_id": {"$ref": "#/$defs/text"},
+        "disease_id": {"$ref": "#/$defs/text"},
+        "disease_name": {"$ref": "#/$defs/text"},
+        "trial_id": {"type": "string", "pattern": "^NCT[0-9]{8}$"},
+        "protocol_id": {"$ref": "#/$defs/text"}
+      }
+    },
+    "registry_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_id", "confidence", "why_stopped_code"],
+      "properties": {
+        "record_id": {"$ref": "#/$defs/safeId"},
+        "confidence": {"$ref": "#/$defs/probability"},
+        "why_stopped_code": {"const": "lack_of_efficacy"}
+      }
+    },
+    "publication_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "confidence",
+        "pmid",
+        "doi",
+        "source_candidate_name",
+        "primary_endpoint_met",
+        "effect_direction",
+        "endpoint_name",
+        "candidate_rate",
+        "comparator_rate",
+        "rate_unit",
+        "early_termination_reason",
+        "termination_excerpt",
+        "endpoint_excerpt"
+      ],
+      "properties": {
+        "record_id": {"$ref": "#/$defs/safeId"},
+        "confidence": {"$ref": "#/$defs/probability"},
+        "pmid": {"type": "string", "pattern": "^[1-9][0-9]{0,15}$"},
+        "doi": {
+          "type": "string",
+          "pattern": "^10\\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$"
+        },
+        "source_candidate_name": {"$ref": "#/$defs/text"},
+        "primary_endpoint_met": {"const": false},
+        "effect_direction": {"const": "no_clinical_benefit"},
+        "endpoint_name": {"$ref": "#/$defs/text"},
+        "candidate_rate": {"type": "number", "minimum": 0},
+        "comparator_rate": {"type": "number", "minimum": 0},
+        "rate_unit": {"$ref": "#/$defs/text"},
+        "early_termination_reason": {"const": "lack_of_efficacy"},
+        "termination_excerpt": {"$ref": "#/$defs/text"},
+        "endpoint_excerpt": {"$ref": "#/$defs/text"}
+      }
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "textArray": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/text"}
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

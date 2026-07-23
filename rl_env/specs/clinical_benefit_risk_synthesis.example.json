@@ -1,0 +1,31 @@
+{
+  "schema_version": "adds.clinical-benefit-risk-synthesis-spec.v1",
+  "synthesis_id": "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1",
+  "candidate_id": "CHEMBL_TEST",
+  "intervention_id": "CHEMBL_TEST",
+  "disease_id": "MONDO_TEST",
+  "endpoint_mapping_id": "CHEMBL_TEST:MONDO_TEST:pfs-map:v1",
+  "endpoint_family": "progression_free_survival",
+  "effect_measure": "hazard_ratio",
+  "effect_measure_favorable_direction": "lower_is_better",
+  "safety_measure": "serious_adverse_event_risk_difference",
+  "harmonization_policy_id": "adds.descriptive-cross-trial-benefit-risk.v1",
+  "selections": [
+    {
+      "trial_id": "NCT00000001",
+      "design_id": "NCT00000001:design",
+      "endpoint_id": "NCT00000001:endpoint:primary-0",
+      "safety_id": "NCT00000001:safety:serious-adverse-events"
+    },
+    {
+      "trial_id": "NCT00000002",
+      "design_id": "NCT00000002:design",
+      "endpoint_id": "NCT00000002:endpoint:primary-0",
+      "safety_id": "NCT00000002:safety:serious-adverse-events"
+    }
+  ],
+  "stage": "regulatory_postmarket",
+  "metadata": {
+    "review_status": "example_only"
+  }
+}

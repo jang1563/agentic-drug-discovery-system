@@ -90,10 +90,10 @@ evidence. Every string below is a publishable public fact.
 | Asset (public name) | Target symbol | Compound / target ID | Trial (NCT) | Regulatory ID |
 | --- | --- | --- | --- | --- |
 | voxelotor (Oxbryta) | HBB | CHEMBL4101807 (target CHEMBL2095168) | NCT03036813 (HOPE) | NDA213137 |
-| crizanlizumab (Adakveo) | SELP | CHEMBL5378 | NCT01895361 (SUSTAIN), NCT03814746 (STAND) | BLA761128 |
+| crizanlizumab (Adakveo) | SELP | CHEMBL4297734 (target CHEMBL5378) | NCT01895361 (SUSTAIN), NCT03814746 (STAND) | BLA761128 |
 | exa-cel / exagamglogene autotemcel (Casgevy) | BCL11A | — (CRISPR) | NCT03745287 (CLIMB) | FDA 2023-12-08 |
 | L-glutamine (Endari) | — (metabolic) | — | NCT01179217 | NDA208587 |
-| senicapoc | KCNN4 | — | NCT00294541 | investigational |
+| senicapoc | KCNN4 | CHEMBL405821 (target CHEMBL4305) | NCT00294541 | investigational |
 | rivipansel (GMI-1070) | SELE | — | NCT02187003 (RESET) | investigational |
 | hydroxyurea (Droxia/Siklos) | RRM1 | CHEMBL467 | NCT00000586 | NDA016295, NDA208843 |
 | Lyfgenia (lovotibeglogene autotemcel) | HBB | CHEMBL4650269 | NCT02140554 | BLA125788 |
