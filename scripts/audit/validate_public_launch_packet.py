@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -12,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[2]
 PACKET = ROOT / "release_decision_packet.json"
 CHECKLIST = ROOT / "docs" / "public_launch_checklist.md"
 RELEASE_MANIFEST = ROOT / "release_manifest.json"
+HF_RELEASE_MANIFEST = ROOT / "huggingface" / "release_manifest.json"
+FULL_GIT_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 REQUIRED_CHECKS = {
     "python3 scripts/audit/github_release_file_audit.py",
@@ -126,6 +129,9 @@ def main() -> int:
 
     packet = load_json(PACKET, "release_decision_packet.json", errors)
     release_manifest = load_json(RELEASE_MANIFEST, "release_manifest.json", errors)
+    hf_release_manifest = load_json(
+        HF_RELEASE_MANIFEST, "huggingface/release_manifest.json", errors
+    )
     if not CHECKLIST.exists():
         errors.append("missing docs/public_launch_checklist.md")
         checklist = ""
@@ -147,6 +153,14 @@ def main() -> int:
         "last_public_release_version"
     ):
         errors.append("release decision and manifest last-public versions must match")
+    if packet.get("release_version") != hf_release_manifest.get("release_version"):
+        errors.append("release decision and Hugging Face manifest versions must match")
+    if packet.get("last_public_release_version") != hf_release_manifest.get(
+        "last_public_release_version"
+    ):
+        errors.append(
+            "release decision and Hugging Face manifest last-public versions must match"
+        )
 
     surfaces = packet.get("surfaces") or {}
     github = surfaces.get("github") or {}
@@ -208,18 +222,104 @@ def main() -> int:
                 "pending candidate must record the Hugging Face update as not uploaded"
             )
     elif decision_status == "public_released_after_human_approval":
+        if release_manifest.get("release_stage") != "public_release":
+            errors.append("released artifact must use release_stage public_release")
+        if packet.get("last_public_release_version") != packet.get("release_version"):
+            errors.append(
+                "released artifact must identify the current version as last public"
+            )
         if github.get("release_state") != "merged_to_default_branch":
             errors.append("released GitHub state must be merged_to_default_branch")
         if not str(github.get("release_pull_request", "")).startswith(
             "https://github.com/jang1563/agentic-drug-discovery-system/pull/"
         ):
             errors.append("released metadata must point to the release PR")
+        for key in ("approved_content_commit", "approved_content_tree"):
+            if not FULL_GIT_SHA.fullmatch(str(github.get(key, ""))):
+                errors.append(f"released GitHub metadata has invalid {key}")
+        if "candidate_release_state" in github:
+            errors.append("released GitHub metadata must not retain candidate state")
+        if hf.get("release_state") != "uploaded_to_public_dataset":
+            errors.append(
+                "released Hugging Face state must be uploaded_to_public_dataset"
+            )
+        if hf.get("release_version") != packet.get("release_version"):
+            errors.append("released Hugging Face version must match the release")
+        if not FULL_GIT_SHA.fullmatch(str(hf.get("initial_content_commit", ""))):
+            errors.append(
+                "released Hugging Face metadata has invalid initial_content_commit"
+            )
+        if not isinstance(hf.get("file_count"), int) or hf.get("file_count", 0) <= 0:
+            errors.append("released Hugging Face metadata must record a file count")
+        if "candidate_release_state" in hf:
+            errors.append(
+                "released Hugging Face metadata must not retain candidate state"
+            )
         if launch.get("default") != "published_after_approval":
             errors.append("released launch default must be published_after_approval")
         if not launch.get("approval_record"):
             errors.append(
                 "released metadata must include the candidate approval record"
             )
+        if (release_manifest.get("hugging_face") or {}).get("status") != (
+            "public_repo_uploaded_after_approval"
+        ):
+            errors.append(
+                "released canonical manifest must record the Hugging Face upload"
+            )
+        if hf_release_manifest.get("status") != (
+            "public_repo_uploaded_after_approval"
+        ):
+            errors.append(
+                "released Hugging Face manifest must record the approved upload"
+            )
+        publication_record = packet.get("publication_record") or {}
+        if publication_record != release_manifest.get("publication_record"):
+            errors.append(
+                "decision packet and canonical manifest publication records must match"
+            )
+        if publication_record != hf_release_manifest.get("publication_record"):
+            errors.append(
+                "decision packet and Hugging Face publication records must match"
+            )
+        for key in (
+            "approved_candidate_commit",
+            "approved_candidate_tree",
+            "content_publication_commit",
+            "hugging_face_initial_content_commit",
+        ):
+            if not FULL_GIT_SHA.fullmatch(str(publication_record.get(key, ""))):
+                errors.append(f"publication_record has invalid {key}")
+        if publication_record.get("approved_candidate_tree") != github.get(
+            "approved_content_tree"
+        ):
+            errors.append(
+                "publication_record tree must match released GitHub content tree"
+            )
+        if publication_record.get("content_publication_commit") != github.get(
+            "approved_content_commit"
+        ):
+            errors.append(
+                "publication_record commit must match released GitHub content commit"
+            )
+        if publication_record.get("hugging_face_initial_content_commit") != hf.get(
+            "initial_content_commit"
+        ):
+            errors.append(
+                "publication_record commit must match released Hugging Face content"
+            )
+        if publication_record.get("hugging_face_file_count") != hf.get("file_count"):
+            errors.append(
+                "publication_record file count must match released Hugging Face state"
+            )
+        if not str(publication_record.get("github_pull_request", "")).startswith(
+            "https://github.com/jang1563/agentic-drug-discovery-system/pull/"
+        ):
+            errors.append("publication_record must identify the GitHub pull request")
+        if not str(publication_record.get("github_actions_run", "")).startswith(
+            "https://github.com/jang1563/agentic-drug-discovery-system/actions/runs/"
+        ):
+            errors.append("publication_record must identify the GitHub Actions run")
 
     commands = {
         item.get("command")
@@ -250,12 +350,21 @@ def main() -> int:
                 "release_manifest.json must not use proposed_repo_id after public release"
             )
 
-    checklist_phrases = (
-        *REQUIRED_CHECKLIST_PHRASES,
-        f"{packet.get('last_public_release_version')} public baseline",
-        f"{packet.get('release_version')} candidate",
-        str(decision_status),
-    )
+    checklist_phrases = [*REQUIRED_CHECKLIST_PHRASES, str(decision_status)]
+    if decision_status == "candidate_pending_human_approval":
+        checklist_phrases.extend(
+            (
+                f"{packet.get('last_public_release_version')} public baseline",
+                f"{packet.get('release_version')} candidate",
+            )
+        )
+    elif decision_status == "public_released_after_human_approval":
+        checklist_phrases.extend(
+            (
+                f"{packet.get('release_version')} public baseline",
+                f"{packet.get('release_version')} public development release",
+            )
+        )
     for phrase in checklist_phrases:
         if phrase not in checklist:
             errors.append(f"docs/public_launch_checklist.md missing phrase: {phrase}")

@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this research software, please cite it as below."
 title: "Agentic Drug Discovery System"
-version: "0.2.0"
-date-released: 2026-07-14
+version: "0.3.0.dev0"
+date-released: 2026-07-23
 repository-code: "https://github.com/jang1563/agentic-drug-discovery-system"
 url: "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system"
 authors:

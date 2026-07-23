@@ -1,6 +1,6 @@
 {
   "title": "Agentic Drug Discovery System",
-  "version": "0.2.0",
+  "version": "0.3.0.dev0",
   "description": "Evidence-governed execution backbone and benchmark-control surface for long-horizon drug-discovery agents, with typed state, verifier-gated transitions, adapter interfaces, and conservative public-release boundaries.",
   "creators": [
     {

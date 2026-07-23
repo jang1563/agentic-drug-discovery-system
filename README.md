@@ -14,8 +14,8 @@ their stated scope.
 
 The repository name reflects the longer-term research direction. The proposed
 eight-stage, long-horizon agentic drug discovery system remains a research
-scaffold rather than a completed public platform. The unmerged 0.3.0.dev0
-candidate adds an evidence-governed execution backbone with typed program state,
+scaffold rather than a completed public platform. The public 0.3.0.dev0 update
+adds an evidence-governed execution backbone with typed program state,
 verifier-gated transitions, cross-stage identity controls, source-pinned
 ingestion, tool/database adapters, scientific foundation-model interfaces, and
 sealed retrospective policy evaluation. Seven of eight planned atlases still do
@@ -27,7 +27,7 @@ program currently covers one disease/target slice.
 | Field | Value |
 | --- | --- |
 | Purpose | Build a verification-oriented, auditable decision environment for drug-discovery agents. |
-| Release status | 0.2.0 is public on GitHub and Hugging Face; 0.3.0.dev0 is an unmerged, not-uploaded candidate pending exact-commit approval. |
+| Release status | 0.3.0.dev0 is public on GitHub and Hugging Face after exact-package approval; 0.2.0 remains the latest tagged stable release. |
 | Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
 | Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed boards, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
@@ -47,8 +47,8 @@ Can a long-horizon discovery process be represented as an agentic environment wh
 
 The public 0.2.0 release provides a **retrospective clinical and regulatory
 decision benchmark with source-derived labels (generated without human
-curation), plus one audited end-to-end vertical slice**. The 0.3.0.dev0 candidate
-adds a typed execution and evaluation backbone around those artifacts. It is not
+curation), plus one audited end-to-end vertical slice**. The public 0.3.0.dev0
+update adds a typed execution and evaluation backbone around those artifacts. It is not
 yet the complete autonomous eight-stage system or full trajectory atlas
 described in the roadmap. Honest status:
 
