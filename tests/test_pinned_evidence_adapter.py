@@ -209,6 +209,7 @@ def full_chain_manifest() -> dict:
             ROOT / "rl_env/specs/clinicaltrials_gov_ingestion_job.example.json"
         ).read_text(encoding="utf-8")
     )
+    job["trial"]["candidate_aliases"] = ["Test Drug"]
     source = ROOT / "tests/fixtures/clinicaltrials_gov_study.synthetic.json"
     bundle = capture_source_bytes(
         source.read_bytes(),

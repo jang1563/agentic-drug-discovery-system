@@ -24,6 +24,8 @@ jobs:
         run: python3 scripts/audit/validate_public_launch_packet.py
       - name: Validate vertical-slice documentation
         run: python3 scripts/audit/validate_vertical_slice_doc.py
+      - name: Validate sealed policy-evaluation snapshot
+        run: python3 scripts/audit/validate_policy_evaluation_snapshot.py
       - name: Test executable control plane
         run: python3 -m unittest discover -s tests -v
       - name: Lint executable and audit code
@@ -50,3 +52,4 @@ jobs:
           python3 -m json.tool huggingface/release_manifest.json >/tmp/hf_release_manifest.json
           python3 -m json.tool release_decision_packet.json >/tmp/release_decision_packet.json
           python3 -m json.tool docs/public_evidence_summary.json >/tmp/public_evidence_summary.json
+          python3 -m json.tool docs/retrospective_policy_evaluation_snapshot.json >/tmp/retrospective_policy_evaluation_snapshot.json

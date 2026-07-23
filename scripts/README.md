@@ -4,6 +4,9 @@ Script groups:
 
 - `audit/`: repository-boundary and dependency checks.
 - `audit/build_hf_release_package.py`: creates the local Hugging Face Dataset mirror package from `huggingface/release_manifest.json` without uploading it.
+- `audit/validate_policy_evaluation_snapshot.py`: binds the public payload-free sealed-evaluation
+  aggregate to the current evaluation and clinical-promotion implementations and checks its
+  claim and release boundaries.
 - `adds-pinned-ingestion` is installed from `agentic_drug_discovery.ingestion_cli`. It captures
   immutable raw source bundles outside Git, verifies reviewer-selected CDC MMWR evidence with
   `extract-cdc-mmwr`, verifies NCBI PubMed treatment-gap evidence with `extract-ncbi-pubmed`, and

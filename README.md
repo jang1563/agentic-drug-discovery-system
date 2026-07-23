@@ -63,8 +63,11 @@ decision benchmark and one audited vertical slice**. It is not yet the complete 
 - **Evaluation contract:** matched success/failure episode types require an exact disease, stage,
   modality, population, endpoint-family, target/mechanism, and decision-time match. Evidence is
   cutoff-bounded, evaluator-only keys are rejected from visible state, and failure arms require
-  explicit failure causes. This is executable evaluation infrastructure, not a released episode
-  corpus or a scientific performance result.
+  explicit failure causes. A second layer emits role-neutral sealed boards with embedded,
+  hash-verified cached tool packets; salted external label commitments; fingerprint-bound policy
+  submissions; and exact, arm-specific, both-correct, unsafe-advance, and descriptive confidence
+  metrics. One external 4-pair/8-episode retrospective contract evaluation is summarized publicly;
+  the full board and labels are not released, and this is not a scientific performance result.
 - **Pinned composite evidence gates:** disease-context advance now requires independently sourced,
   SHA-256-pinned disease-burden and treatment-gap events linked to one supported unmet-need claim.
   Preclinical advance likewise requires independent candidate-target functional and disease-model
@@ -144,7 +147,8 @@ decision benchmark and one audited vertical slice**. It is not yet the complete 
   typed bindings for Open Targets, ChEMBL, ClinicalTrials.gov, EMA, Boltz-2, and RDKit molprops;
   a dependency-free source-pinned evidence-manifest adapter, capture/compiler CLI, and
   machine-readable receipt/job/review, disease-context, preclinical, clinical provider, and
-  clinical portfolio, endpoint mapping, and cross-trial synthesis schemas;
+  clinical portfolio, endpoint mapping, cross-trial synthesis, sealed-board, label-vault,
+  policy-submission, and policy-report schemas;
   one disease/target slice (sickle cell) traversed retrospectively; an unscored
   prospective scaffold whose stale example is invalidated pending source refresh;
   conditional local RDKit druglikeness screening; and aggregate retrospective
@@ -165,7 +169,7 @@ decision benchmark and one audited vertical slice**. It is not yet the complete 
   standalone data; the CDC/PubMed unmet-need path still has no release-approved context-matched real
   composite manifest. ChEMBL functional-activity and PubMed disease-model providers now pass one
   external context-matched pair, but no real provider job or compiled manifest is release-approved.
-  There is no public matched trajectory corpus; broader clinical endpoint families, participant-
+  There is no public real per-episode trajectory corpus; broader clinical endpoint families, participant-
   level reanalysis, event-level causality, live ontology-authority resolution and terminology
   validation, statistically justified pooling, soft-verifier calibration,
   candidate edit/rank loops, and
@@ -198,11 +202,14 @@ decision benchmark and one audited vertical slice**. It is not yet the complete 
   multi-bundle portfolio transaction and append-only reviewer-approved mapping ledger.
   `docs/24_policy_replanning_and_resume.md` defines bounded policy rules, hash-bound checkpoints,
   deterministic resume, and the non-public checkpoint payload boundary.
+  `docs/25_cutoff_safe_policy_evaluation.md` defines role-neutral sealed boards, external label
+  commitments, policy comparison, and the external real-board boundary;
+  `docs/retrospective_policy_evaluation_snapshot.json` carries aggregate-only results and hashes.
   `docs/public_evidence_summary.json` is the
   aggregate claim ledger.
 - `agentic_drug_discovery/`: typed state, bounded planning, tool execution, semantic promotion,
-  bounded multi-stage program orchestration, matched evaluation, strict serialization/replay,
-  verifier contracts, and the fail-closed transition engine.
+  bounded multi-stage program orchestration, matched and sealed evaluation, strict
+  serialization/replay, verifier contracts, and the fail-closed transition engine.
 - `tests/`: deterministic regression tests for planning, promotion, matched evaluation, advance,
   defer, pivot, temporal leakage, evidence polarity, action provenance, candidate presence,
   contradictions, budget enforcement, and verifier failure.
@@ -265,6 +272,8 @@ decision benchmark and one audited vertical slice**. It is not yet the complete 
 | `docs/22_clinical_benefit_risk_synthesis.md` | Humans + agents | Explicit cross-trial selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
+| `docs/25_cutoff_safe_policy_evaluation.md` | Humans + agents | Cutoff-safe cached packets, role-neutral pair sealing, external label commitments, policy scoring, and claim boundaries. |
+| `docs/retrospective_policy_evaluation_snapshot.json` | Machines + reviewers | Aggregate 4-pair/8-episode policy metrics, payload-free artifact hashes, real gate outcomes, and limitations. |
 | `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
 | `agentic_drug_discovery/` | Developers + agents | Bounded planning, typed execution, semantic promotion, multi-stage stop semantics, matched evaluation, replay, and verifier-gated transitions. |
 | `agentic_drug_discovery/ingestion.py` | Developers + agents | Immutable source receipts, external bundles, manifest compilation, and review reports. |
@@ -276,6 +285,7 @@ decision benchmark and one audited vertical slice**. It is not yet the complete 
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Developers + agents | Strict reviewer-approved mapping parser, exact ledger compiler, fingerprints, and continuity recompilation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Developers + agents | Deterministic reviewed-selection compiler for source-disjoint, non-pooled trial-level benefit-risk records. |
 | `agentic_drug_discovery/policy.py` | Developers + agents | Deterministic policy rules, queue-bound replanning, checkpoint integrity, and exact resume orchestration. |
+| `agentic_drug_discovery/sealed_evaluation.py` | Developers + agents | Role-neutral sealed boards, salted label vaults, fingerprint-bound submissions, strict envelope readers, and matched policy metrics. |
 | `adapters/pinned_evidence_adapter.py` | Developers + agents | Validates payload-free source records for composite unmet-need and functional-effect gates. |
 | `adapters/clinical_synthesis_adapter.py` | Developers + agents | Normalizes explicit synthesis specs locally without retrieving or supplying source measurements. |
 | `rl_env/specs/pinned_evidence_manifest.schema.json` | Machines + reviewers | JSON Schema for pinned source identity, dates, hashes, contexts, and typed summaries. |
@@ -286,6 +296,10 @@ decision benchmark and one audited vertical slice**. It is not yet the complete 
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machines + agents | JSON Schema for approved reviewer, ontology identity, and exact endpoint/safety bindings without measurements. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machines + reviewers | JSON Schema for the exact set of single-trial jobs, receipts, and mapping-bound identities. |
 | `rl_env/specs/policy_checkpoint.schema.json` | Machines + reviewers | JSON Schema for hash-bound policy checkpoints, typed pending plans, observations, directives, and replan history. |
+| `rl_env/specs/sealed_evaluation_board.schema.json` | Machines + reviewers | JSON Schema for cutoff-safe role-neutral observations and cached policy-visible packets. |
+| `rl_env/specs/sealed_evaluation_vault.schema.json` | Evaluators | JSON Schema for external arm, outcome, failure-cause, and commitment-nonce labels. |
+| `rl_env/specs/policy_evaluation_submission.schema.json` | Machines + reviewers | JSON Schema for complete observation-fingerprint-bound policy predictions. |
+| `rl_env/specs/policy_evaluation_report.schema.json` | Machines + reviewers | JSON Schema for aggregate arm, pair, unsafe-advance, and confidence diagnostics. |
 | `rl_env/specs/source_receipt.schema.json` | Machines + reviewers | JSON Schema for exact source version, locator, SHA-256, size, retrieval time, and transport. |
 | `rl_env/specs/pinned_evidence_ingestion_job.schema.json` | Machines + reviewers | JSON Schema for reviewer-authored summaries linked to captured receipts. |
 | `rl_env/specs/cdc_mmwr_ingestion_job.schema.json` | Machines + reviewers | JSON Schema for reviewer-selected CDC MMWR article, context, value, unit, and excerpt fields. |

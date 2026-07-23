@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/sealed_evaluation_board.schema.json",
+  "title": "Cutoff-safe sealed evaluation board envelope",
+  "description": "Role-neutral matched observations. Arm assignments, outcomes, failure causes, and commitment nonces are excluded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "board"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.sealed-evaluation-board.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "board": {
+      "$ref": "#/$defs/board"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "episodeId": {
+      "type": "string",
+      "pattern": "^ep-[0-9a-f]{24}$"
+    },
+    "pairId": {
+      "type": "string",
+      "pattern": "^pair-[0-9a-f]{16}$"
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "matchKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disease",
+        "stage",
+        "modality",
+        "population",
+        "endpoint_family",
+        "target_or_mechanism",
+        "decision_time_bin"
+      ],
+      "properties": {
+        "disease": {
+          "$ref": "#/$defs/text"
+        },
+        "stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "modality": {
+          "$ref": "#/$defs/text"
+        },
+        "population": {
+          "$ref": "#/$defs/text"
+        },
+        "endpoint_family": {
+          "$ref": "#/$defs/text"
+        },
+        "target_or_mechanism": {
+          "$ref": "#/$defs/text"
+        },
+        "decision_time_bin": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "programState": {
+      "type": "object",
+      "description": "Complete ProgramState. Semantic and cutoff invariants are enforced by the reference implementation.",
+      "required": [
+        "program_id",
+        "disease",
+        "therapeutic_hypothesis",
+        "as_of_date",
+        "current_stage",
+        "budget",
+        "evidence",
+        "packet_history",
+        "decision_history",
+        "status",
+        "version"
+      ],
+      "properties": {
+        "program_id": {
+          "type": "string",
+          "pattern": "^sealed-program-[0-9a-f]{24}$"
+        },
+        "disease": {
+          "$ref": "#/$defs/text"
+        },
+        "therapeutic_hypothesis": {
+          "$ref": "#/$defs/text"
+        },
+        "as_of_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "current_stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "budget": {
+          "type": "object"
+        },
+        "evidence": {
+          "type": "array"
+        },
+        "packet_history": {
+          "type": "array"
+        },
+        "decision_history": {
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "active",
+            "held",
+            "deferred",
+            "terminated",
+            "completed"
+          ]
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "episode_id",
+        "pair_id",
+        "match_key",
+        "decision_cutoff",
+        "visible_state",
+        "asset_or_candidate_id",
+        "target_or_mechanism_id",
+        "condition_or_context_id",
+        "available_evidence_packet_id",
+        "available_evidence_packet_available_at",
+        "available_evidence_packet",
+        "available_evidence_packet_sha256",
+        "label_commitment"
+      ],
+      "properties": {
+        "episode_id": {
+          "$ref": "#/$defs/episodeId"
+        },
+        "pair_id": {
+          "$ref": "#/$defs/pairId"
+        },
+        "match_key": {
+          "$ref": "#/$defs/matchKey"
+        },
+        "decision_cutoff": {
+          "type": "string",
+          "format": "date"
+        },
+        "visible_state": {
+          "$ref": "#/$defs/programState"
+        },
+        "asset_or_candidate_id": {
+          "$ref": "#/$defs/text"
+        },
+        "target_or_mechanism_id": {
+          "$ref": "#/$defs/text"
+        },
+        "condition_or_context_id": {
+          "$ref": "#/$defs/text"
+        },
+        "available_evidence_packet_id": {
+          "type": "string",
+          "pattern": "^packet-[0-9a-f]{24}$"
+        },
+        "available_evidence_packet_available_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "available_evidence_packet": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "Label-free cached tool contract and sanitized payload available to the policy at the decision cutoff."
+        },
+        "available_evidence_packet_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "label_commitment": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pair_id",
+        "episode_ids"
+      ],
+      "properties": {
+        "pair_id": {
+          "$ref": "#/$defs/pairId"
+        },
+        "episode_ids": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/episodeId"
+          }
+        }
+      }
+    },
+    "board": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "board_id",
+        "version",
+        "split",
+        "created_on",
+        "observations",
+        "pairs",
+        "metadata"
+      ],
+      "properties": {
+        "board_id": {
+          "$ref": "#/$defs/text"
+        },
+        "version": {
+          "$ref": "#/$defs/text"
+        },
+        "split": {
+          "enum": [
+            "development",
+            "sealed_external"
+          ]
+        },
+        "created_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "observations": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/observation"
+          }
+        },
+        "pairs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/pair"
+          }
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

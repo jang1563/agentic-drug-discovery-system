@@ -36,6 +36,16 @@ All notable public-surface changes to this repository will be documented here.
 - Added typed deterministic policy replanning over paused/blocked observations, predeclared
   replacement steps, per-rule/global revision limits, append-only queue history, SHA-256-bound
   checkpoints, duplicate-key/tamper/stale-token rejection, and exact checkpoint resume.
+- Added a cutoff-safe sealed evaluation contract with role-neutral opaque episode and pair
+  identities, externally separated evaluator labels, salted commitments, board-bound submissions,
+  explicit per-episode confidence, strict JSON Schemas and envelope readers, and synthetic
+  tamper/leakage tests.
+- Executed an external four-pair/eight-episode retrospective policy board over the real senicapoc
+  continuous program and PALOMA-2/PALOMA-3 portfolio. The governed deterministic output was exact
+  on 8/8 episodes with zero unsafe advances, while always-advance was exact on 1/8 with 7/7 unsafe
+  advances and defer-safe was exact on 4/8 with zero unsafe advances. Only payload-free aggregate
+  metrics, implementation/artifact hashes, gate outcomes, and explicit small-N limitations are
+  released; this is not a discovery-performance or calibration claim.
 - Added Open Targets disease-profile and ChEMBL molecule-mechanism profile bindings plus conservative
   disease-context, modality-mechanism, and preclinical activity-volume mappings. Disease identity
   cannot establish unmet need, and target activity volume cannot establish candidate functional
@@ -88,6 +98,10 @@ All notable public-surface changes to this repository will be documented here.
   posted primary endpoint, statistical analysis, and selected-arm serious-adverse-event aggregates
   before emitting a payload-free job. Source, NCT, arm, result/adverse-event group, analysis, and
   safety-count drift fail closed.
+- Hardened source-pinned clinical promotion so every declared candidate alias must resolve through
+  the accepted candidate id/name or its pre-approved identity aliases; mixing a canonical alias
+  with an unapproved subject alias no longer authorizes the latter. Source disease aliases require
+  an approved disease-name binding.
 - Added bounded source-pinned clinical promotion with canonical intervention, trial, candidate and
   comparator arm roles, population, endpoint, safety, and safety-arm records projected as one
   atomic design. Clinical advance requires both `clinical_evidence_assessed` and

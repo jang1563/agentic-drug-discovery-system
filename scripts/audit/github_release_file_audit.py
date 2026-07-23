@@ -101,6 +101,8 @@ REQUIRED_PUBLIC_FILES = (
     "docs/22_clinical_benefit_risk_synthesis.md",
     "docs/23_clinical_portfolio_endpoint_mapping.md",
     "docs/24_policy_replanning_and_resume.md",
+    "docs/25_cutoff_safe_policy_evaluation.md",
+    "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "huggingface/README.md",
     "huggingface/release_manifest.json",
@@ -129,6 +131,7 @@ REQUIRED_PUBLIC_FILES = (
     "agentic_drug_discovery/policy.py",
     "agentic_drug_discovery/promotion.py",
     "agentic_drug_discovery/replay_cli.py",
+    "agentic_drug_discovery/sealed_evaluation.py",
     "agentic_drug_discovery/serialization.py",
     "agentic_drug_discovery/verifiers.py",
     "adapters/boltz_adapter.py",
@@ -167,6 +170,10 @@ REQUIRED_PUBLIC_FILES = (
     "rl_env/specs/clinical_benefit_risk_synthesis.schema.json",
     "rl_env/specs/clinical_benefit_risk_synthesis.example.json",
     "rl_env/specs/policy_checkpoint.schema.json",
+    "rl_env/specs/sealed_evaluation_board.schema.json",
+    "rl_env/specs/sealed_evaluation_vault.schema.json",
+    "rl_env/specs/policy_evaluation_submission.schema.json",
+    "rl_env/specs/policy_evaluation_report.schema.json",
     "tests/test_agent_loop.py",
     "tests/test_environment.py",
     "tests/test_adapter_bindings.py",
@@ -174,6 +181,7 @@ REQUIRED_PUBLIC_FILES = (
     "tests/test_matched_evaluation.py",
     "tests/test_program_runner.py",
     "tests/test_policy_replanning.py",
+    "tests/test_sealed_evaluation.py",
     "tests/test_pinned_evidence_adapter.py",
     "tests/test_semantic_mappings.py",
     "tests/test_target_identity_continuity.py",
@@ -194,6 +202,7 @@ REQUIRED_PUBLIC_FILES = (
     "scripts/audit/validate_hf_release_package.py",
     "scripts/audit/validate_public_launch_packet.py",
     "scripts/audit/validate_vertical_slice_doc.py",
+    "scripts/audit/validate_policy_evaluation_snapshot.py",
 )
 
 REQUIRED_MANIFEST_CHECKS = {
@@ -201,6 +210,7 @@ REQUIRED_MANIFEST_CHECKS = {
     "python3 scripts/audit/validate_hf_release_package.py",
     "python3 scripts/audit/validate_public_launch_packet.py",
     "python3 scripts/audit/validate_vertical_slice_doc.py",
+    "python3 scripts/audit/validate_policy_evaluation_snapshot.py",
     "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
     "python3 scripts/audit/validate_hf_release_package.py --package /tmp/agentic-hf-release-package",
     "python3 -m unittest discover -s tests -v",
@@ -216,6 +226,7 @@ REQUIRED_PUBLIC_EXCLUSIONS = {
     "raw source snapshots",
     "raw source bundles, real provider review jobs, and ingestion runs",
     "real policy checkpoints and policy-run artifacts",
+    "real sealed evaluation boards, cached episode packets, label vaults, commitment nonces, policy submissions, and per-episode evaluations",
     "hidden/evaluator labels",
     "credentials and key material",
 }
@@ -361,6 +372,7 @@ def scan_file_for_secrets(path: Path) -> list[str]:
         "scripts/audit/build_hf_release_package.py",
         "scripts/audit/validate_hf_release_package.py",
         "scripts/audit/validate_vertical_slice_doc.py",
+        "scripts/audit/validate_policy_evaluation_snapshot.py",
     }:
         for pattern in FORBIDDEN_CONTENT_PATTERNS:
             if pattern.search(content):

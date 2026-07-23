@@ -14,8 +14,9 @@ The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
-  `docs/11_*` through `docs/24_*`, the payload-free preclinical and clinical provider validation
-  snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and this plan.
+  `docs/11_*` through `docs/25_*`, the payload-free preclinical, clinical provider, and sealed
+  policy-evaluation snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and
+  this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
 - Hugging Face local package: `huggingface/README.md` and `huggingface/release_manifest.json`.
 - Executable and scaffold code: `agentic_drug_discovery/`, `tests/`, `adapters/`,
@@ -32,6 +33,8 @@ The following stay outside Git unless a separate audited release package explici
 - Raw source bundles, real provider review jobs, ingestion runs, multi-trial portfolio selections,
   endpoint-family reviewer approvals, ontology-authority resolutions, and reviewer working files.
 - Real policy checkpoints and policy-run artifacts containing complete state or tool ledgers.
+- Real sealed boards, cached episode packets, label vaults, commitment nonces, policy submissions,
+  and per-episode evaluation outputs.
 - Local working notes, imported research packs, private opportunity records, and machine-specific source maps.
 - Scheduler logs, root-level run outputs, generated caches, Python bytecode, and large experiment directories.
 - Credentials, API tokens, `.env*`, key material, local account names, absolute local paths, and internal compute-location breadcrumbs.

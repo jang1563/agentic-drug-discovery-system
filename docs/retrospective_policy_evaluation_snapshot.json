@@ -1,0 +1,122 @@
+{
+  "schema_version": "adds.public-retrospective-policy-evaluation-snapshot.v1",
+  "evaluated_on": "2026-07-23",
+  "scope": {
+    "evaluation_type": "sealed_at_execution_retrospective_contract_evaluation",
+    "matched_pair_count": 4,
+    "episode_count": 8,
+    "candidate_programs": [
+      "senicapoc_KCNN4_sickle_cell_disease",
+      "palbociclib_PALOMA2_PALOMA3_breast_cancer"
+    ],
+    "claims": [
+      "cutoff_safe_observation_construction",
+      "role_neutral_matched_pair_indexing",
+      "salted_label_commitment_integrity",
+      "fingerprint_bound_policy_submission",
+      "deterministic_gate_discrimination"
+    ],
+    "not_claimed": [
+      "drug_discovery_performance",
+      "prospective_clinical_utility",
+      "confidence_calibration",
+      "clinical_acceptability",
+      "policy_optimality"
+    ]
+  },
+  "board": {
+    "board_id": "real-retrospective-control-plane-board-20260723",
+    "split": "sealed_external",
+    "board_fingerprint_sha256": "f6623c7d558c21a808901c30a24cdb06cd5c911799363ee239f7b085c0e6ed42",
+    "sealed_board_artifact_sha256": "99a3a81ad19b6f9b08bc48e328fa1f3df633b2add227564844ad022767159f2f",
+    "policy_comparison_report_artifact_sha256": "85d47b8a3895740cf8cb5f3ed41a1c0dc7fa3b70f90eaa87dc7bc90947a64240",
+    "evaluation_summary_artifact_sha256": "0eb43ef5b14358c3f72b23659431a8f98b18d4e845f4b9ffe8dc17a5f9117b0d",
+    "role_assignments_public": false,
+    "per_episode_labels_public": false,
+    "cached_policy_visible_packets_embedded": true,
+    "raw_source_bytes_embedded": false,
+    "independent_deterministic_rerun_exact": true
+  },
+  "policy_metrics": [
+    {
+      "policy_id": "deterministic-gated-stage-output",
+      "exact_accuracy": 1.0,
+      "success_arm_accuracy": 1.0,
+      "failure_arm_accuracy": 1.0,
+      "both_correct_rate": 1.0,
+      "unsafe_advance_rate": 0.0,
+      "coverage": 1.0,
+      "top_label_brier_descriptive_only": 0.0062499999999999995,
+      "top_label_ece_descriptive_only": 0.07499999999999996
+    },
+    {
+      "policy_id": "always-advance-counterfactual",
+      "exact_accuracy": 0.125,
+      "success_arm_accuracy": 0.25,
+      "failure_arm_accuracy": 0.0,
+      "both_correct_rate": 0.0,
+      "unsafe_advance_rate": 1.0,
+      "coverage": 1.0,
+      "top_label_brier_descriptive_only": 0.875,
+      "top_label_ece_descriptive_only": 0.875
+    },
+    {
+      "policy_id": "defer-safe-counterfactual",
+      "exact_accuracy": 0.5,
+      "success_arm_accuracy": 0.0,
+      "failure_arm_accuracy": 1.0,
+      "both_correct_rate": 0.0,
+      "unsafe_advance_rate": 0.0,
+      "coverage": 1.0,
+      "top_label_brier_descriptive_only": 0.5,
+      "top_label_ece_descriptive_only": 0.5
+    }
+  ],
+  "real_gate_checks": {
+    "senicapoc_complete_clinical_disposition": "kill",
+    "senicapoc_missing_publication_corroboration": "defer",
+    "paloma2_approved_candidate_alias": "hold",
+    "paloma2_unapproved_candidate_alias": "defer",
+    "paloma3_approved_disease_context": "advance",
+    "paloma3_unapproved_disease_alias": "defer",
+    "paloma_source_disjoint_endpoint_mapping": "hold",
+    "paloma_overlapping_source_hash_mapping": "defer",
+    "paloma_positive_non_pooled_synthesis": "hold"
+  },
+  "verification": {
+    "source_bundle_hashes_verified": true,
+    "board_vault_commitments_open_exactly": true,
+    "submission_observation_fingerprints_exact": true,
+    "public_board_label_leak_scan_hits": 0,
+    "all_external_artifact_manifest_hashes_verified": true,
+    "all_board_vault_submission_report_schemas_validated": true,
+    "sealed_evaluation_module_sha256": "479ccd73a931243eba557e7eac625e35e1e4e2e616c90a40c2a4fe1440547414",
+    "clinical_promotion_module_sha256": "066821e7b4d95c5731485f44966cbfdeb6dd99f86f92e4513c11be0706cf4998"
+  },
+  "release_boundary": {
+    "published_here": [
+      "aggregate_metrics",
+      "payload_free_hashes",
+      "gate_outcomes",
+      "limitations"
+    ],
+    "withheld": [
+      "full_program_states",
+      "cached_real_episode_packets",
+      "label_vault",
+      "commitment_nonces",
+      "per_episode_evaluations",
+      "raw_source_bytes",
+      "review_jobs",
+      "local_paths"
+    ],
+    "full_external_board_public_release_approved": false
+  },
+  "limitations": [
+    "Four matched pairs and eight episodes cannot establish calibration.",
+    "Controlled evidence perturbations measure provenance and gate discrimination, not drug-discovery performance.",
+    "Success and failure arms mean contract-complete and controlled contract-failure; they do not mean favorable and failed drugs.",
+    "All episodes are retrospective and do not establish prospective utility.",
+    "Constant baselines are evaluator counterfactuals and cannot bypass deterministic transition gates."
+  ]
+}

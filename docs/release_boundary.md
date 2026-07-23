@@ -18,6 +18,8 @@ This repository uses a conservative boundary so that future public or collaborat
 - Generated reward and verifier results.
 - Run logs and machine-specific execution outputs.
 - Real policy checkpoints and policy-run artifacts containing full state or tool ledgers.
+- Real sealed boards, cached episode packets, label vaults, commitment nonces, policy submissions,
+  and per-episode evaluations.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -30,6 +32,7 @@ These may become release assets after a separate audit:
 - Public-only source manifests.
 - Payload-free source receipts and ingestion review reports after separate scientific and boundary review.
 - Aggregated benchmark metrics without evaluator-only labels or raw source snapshots.
+- Payload-free sealed-evaluation hashes and aggregate policy metrics after leakage review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -38,8 +41,13 @@ The GitHub repo should be treated as a sanitized executable control plane and pr
 
 The scientific claim anchors are `docs/12_scd_vertical_slice.md`,
 `docs/13_target_id_governance_node.md`, and
-`docs/public_evidence_summary.json`; `scripts/audit/validate_vertical_slice_doc.py`
-keeps their aggregate values and limitations synchronized.
+`docs/public_evidence_summary.json`. The sealed policy-evaluation aggregate is separately anchored
+by `docs/25_cutoff_safe_policy_evaluation.md` and
+`docs/retrospective_policy_evaluation_snapshot.json`;
+`scripts/audit/validate_vertical_slice_doc.py`
+checks the vertical-slice claims, while
+`scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate and
+implementation hashes.
 
 `docs/preclinical_provider_validation_snapshot.json` is a separate contract-execution anchor. It
 contains no source bytes, reviewer text, review jobs, or local paths and explicitly states that
@@ -49,10 +57,10 @@ exact replay requires excluded external artifacts.
 ClinicalTrials.gov contract run: it records registry/design/safety identities, typed aggregate
 values, artifact hashes, outcomes, and limitations, but no source payload or reviewer job.
 
-The cross-trial synthesis surface contains only explicit synthetic selection examples, typed
-trial-level outputs, source evidence IDs, and content hashes. It does not include real synthesis
-review files, pooled estimates, benefit-risk scores, clinical judgments, or treatment
-recommendations.
+The cross-trial synthesis surface contains explicit synthetic selection examples, typed
+trial-level outputs, source evidence IDs, content hashes, and a payload-free aggregate record of
+one external PALOMA-2/3 execution. It does not include the real review packet, full state, source
+bytes, pooled estimates, benefit-risk scores, clinical judgments, or treatment recommendations.
 
 The portfolio and endpoint-mapping surface likewise contains only executable verifiers, strict
 schemas, synthetic references, and tests. Real multi-trial source bundles, single-trial review jobs,
@@ -60,9 +68,16 @@ portfolio review files, reviewer working identities, and ontology-resolution art
 external until separate scientific and release-boundary approval.
 
 The typed replanning surface contains policy/checkpoint code, JSON Schema, documentation, and
-synthetic tests only. Real `PolicyCheckpoint` values contain the complete program state and
-cumulative tool ledger, so `policy_checkpoints/` and `policy_runs/` remain outside Git until a
-separate payload and provenance review approves a sanitized artifact.
+synthetic tests. Real senicapoc and PALOMA policy/checkpoint runs were executed externally, but
+`PolicyCheckpoint` values contain the complete program state and cumulative tool ledger, so
+`policy_checkpoints/` and `policy_runs/` remain outside Git until a separate payload and provenance
+review approves a sanitized artifact.
+
+The sealed-evaluation surface ships implementation, JSON Schemas, synthetic development tests,
+aggregate real-board metrics, payload-free hashes, and limitations. The real role-neutral board
+still contains full `ProgramState` values and cached sanitized tool packets; its external label
+vault contains arm, gold decision, failure cause, metadata, and commitment nonce. Those artifacts,
+all policy submissions, and per-episode scores remain outside Git.
 
 `adds-pinned-ingestion` enforces the raw-data boundary operationally: source bundles are immutable,
 contain exact bytes plus a receipt, and are refused inside any Git worktree. Compiled manifests and

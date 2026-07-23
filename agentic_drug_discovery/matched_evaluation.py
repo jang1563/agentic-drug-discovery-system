@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import date
@@ -83,7 +84,8 @@ _EVALUATOR_ONLY_KEYS = {
 def _normalized_key(value: Any) -> Any:
     if not isinstance(value, str):
         return value
-    return "_".join(value.casefold().replace("-", " ").split())
+    expanded = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", value)
+    return "_".join(re.findall(r"[a-z0-9]+", expanded.casefold()))
 
 
 def _contains_evaluator_key(value: Any) -> bool:

@@ -124,6 +124,9 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   verifier blocks direct commits, rebinding, mutation, removal, and stale source identities.
 - Matched success/failure evaluation records with exact context matching, evidence cutoffs,
   evaluator-label separation, explicit failure causes, and separate arm/pair summary metrics.
+- Role-neutral sealed boards with embedded cutoff-safe cached tool packets, salted external label
+  commitments, opaque identities, fingerprint-bound policy submissions, unsafe-advance scoring,
+  and descriptive top-label confidence diagnostics.
 - An illustrative non-benchmark eight-stage trajectory plus deterministic regression tests.
 - Existing Open Targets, ChEMBL, ClinicalTrials.gov, clinical synthesis, EMA, Boltz-2, and RDKit
   molprops adapters have
@@ -191,14 +194,17 @@ validation, and a matched missing-safety control. Its payload-free identifiers, 
 and limits are recorded
 in `docs/clinical_provider_validation_snapshot.json`.
 
+The current external validation also runs one continuous source-pinned senicapoc program through
+five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the
+approved PALOMA-2/3 exact-set portfolio through typed replan, endpoint mapping, and non-pooled
+benefit-risk synthesis; and seals four real matched contract pairs for three-policy comparison.
+Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are public in
+`docs/retrospective_policy_evaluation_snapshot.json`.
+
 1. Add a genuinely context-matched, independently reviewed disease-burden/treatment-gap pair; do
    not coerce the current CDC and PubMed populations into one context.
-2. Execute and release-review a real context-matched multi-trial provider portfolio, wire it into the
-   standard clinical stage, and add external ontology-authority/version validation without weakening
-   explicit review or atomic identity contracts.
-3. Exercise multiple live adapter/provider stages through semantic promotion, stage gates, serialization,
-   and replay as one bounded end-to-end program run.
-4. Derive failure causes from verifier outputs and assemble real cutoff-safe matched episodes.
-5. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
-6. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
+2. Expand the four-pair sealed board with independently curated, stage-stratified held-out cases
+   and predeclared label policy.
+3. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
+4. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
    operator reauthorization above the shipped deterministic resume/replan control layer.

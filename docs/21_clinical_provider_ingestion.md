@@ -71,6 +71,10 @@ The extractor verifies:
 
 Duplicate JSON keys, non-finite values, malformed source receipts, source drift, index drift, arm
 swaps, result-group swaps, adverse-event-group swaps, and typed value mismatches fail closed.
+During promotion, every source candidate alias must also resolve through the accepted
+`CandidateRecord` id, name, or pre-approved `attributes.identity_aliases`; mixed canonical and
+unapproved aliases are rejected. A source condition must intersect the accepted disease name or
+its pre-approved identity aliases.
 
 ## Bounded Support Rule
 

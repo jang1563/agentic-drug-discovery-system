@@ -72,6 +72,10 @@ exact ClinicalTrials.gov API study snapshot. The provider verifies receipt SHA-2
 NCT, registry version, candidate aliases, condition, protocol arms, posted result groups,
 population, endpoint measurements, denominators, statistical analysis, and posted serious-adverse-
 event arm summaries. Promotion succeeds only when every parent and nested identity agrees.
+Every source-level candidate alias must be the canonical candidate id/name or appear in the
+candidate's pre-approved `attributes.identity_aliases`; adding a canonical name alongside an
+unapproved alias does not authorize the latter. At least one source condition must likewise match
+the canonical disease name or a pre-approved disease identity alias.
 
 Version 2 supports one bounded endpoint shape: a posted primary time-to-event endpoint with
 `higher_is_better` measurements, a candidate-first hazard ratio, upper confidence bound below one,

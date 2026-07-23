@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/policy_evaluation_report.schema.json",
+  "title": "Sealed policy comparison report envelope",
+  "description": "Aggregate matched-board metrics. Per-episode labels remain outside this report.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "report"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.policy-evaluation-report.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "report": {
+      "$ref": "#/$defs/report"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "counts": {
+      "type": "object",
+      "propertyNames": {
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "optionalProbability": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/probability"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "policy_version",
+        "pair_count",
+        "episode_count",
+        "exact_accuracy",
+        "success_arm_accuracy",
+        "failure_arm_accuracy",
+        "both_correct_rate",
+        "coverage",
+        "defer_rate",
+        "unsafe_advance_rate",
+        "mean_confidence",
+        "top_label_brier",
+        "top_label_ece",
+        "predicted_decision_counts",
+        "gold_decision_counts",
+        "confusion_counts",
+        "failure_cause_counts"
+      ],
+      "properties": {
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_version": {
+          "$ref": "#/$defs/text"
+        },
+        "pair_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "episode_count": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "exact_accuracy": {
+          "$ref": "#/$defs/probability"
+        },
+        "success_arm_accuracy": {
+          "$ref": "#/$defs/probability"
+        },
+        "failure_arm_accuracy": {
+          "$ref": "#/$defs/probability"
+        },
+        "both_correct_rate": {
+          "$ref": "#/$defs/probability"
+        },
+        "coverage": {
+          "$ref": "#/$defs/probability"
+        },
+        "defer_rate": {
+          "$ref": "#/$defs/probability"
+        },
+        "unsafe_advance_rate": {
+          "$ref": "#/$defs/probability"
+        },
+        "mean_confidence": {
+          "$ref": "#/$defs/optionalProbability"
+        },
+        "top_label_brier": {
+          "$ref": "#/$defs/optionalProbability"
+        },
+        "top_label_ece": {
+          "$ref": "#/$defs/optionalProbability"
+        },
+        "predicted_decision_counts": {
+          "$ref": "#/$defs/counts"
+        },
+        "gold_decision_counts": {
+          "$ref": "#/$defs/counts"
+        },
+        "confusion_counts": {
+          "$ref": "#/$defs/counts"
+        },
+        "failure_cause_counts": {
+          "$ref": "#/$defs/counts"
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluation_id",
+        "board_id",
+        "board_fingerprint",
+        "vault_fingerprint",
+        "summaries",
+        "limitations"
+      ],
+      "properties": {
+        "evaluation_id": {
+          "$ref": "#/$defs/text"
+        },
+        "board_id": {
+          "$ref": "#/$defs/text"
+        },
+        "board_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "vault_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "summaries": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/summary"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    }
+  }
+}

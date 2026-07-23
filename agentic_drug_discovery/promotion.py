@@ -691,6 +691,60 @@ def _metadata_text_values(
     return items
 
 
+def _approved_identity_aliases(
+    *,
+    identity_id: str,
+    identity_name: str,
+    attributes: Mapping[str, Any],
+) -> frozenset[str] | None:
+    value = attributes.get("identity_aliases")
+    if value is None:
+        declared: tuple[str, ...] = ()
+    elif (
+        not isinstance(value, Sequence)
+        or isinstance(value, (str, bytes))
+        or not 1 <= len(value) <= 64
+    ):
+        return None
+    else:
+        declared = tuple(
+            item.strip() for item in value if isinstance(item, str) and item.strip()
+        )
+        if len(declared) != len(value):
+            return None
+        normalized_declared = tuple(_normalized(item) for item in declared)
+        if len(normalized_declared) != len(set(normalized_declared)):
+            return None
+    return frozenset(
+        _normalized(item)
+        for item in (identity_id, identity_name, *declared)
+    )
+
+
+def _candidate_identity_aliases(
+    candidate: CandidateRecord,
+) -> frozenset[str] | None:
+    """Return the canonical candidate identity plus approved source aliases."""
+
+    return _approved_identity_aliases(
+        identity_id=candidate.candidate_id,
+        identity_name=candidate.name,
+        attributes=candidate.attributes,
+    )
+
+
+def _disease_identity_aliases(
+    disease: DiseaseRecord,
+) -> frozenset[str] | None:
+    """Return the canonical disease identity plus approved source aliases."""
+
+    return _approved_identity_aliases(
+        identity_id=disease.disease_id,
+        identity_name=disease.name,
+        attributes=disease.attributes,
+    )
+
+
 def _typed_effect_metadata_valid(
     record: _PinnedPromotionRecord,
     *,
@@ -2563,7 +2617,6 @@ def _map_pinned_clinical_trial_design(
             trial_id=trial_id,
             design_id=design_id,
         )
-        or _normalized(record.subject) != _normalized(candidate.name)
         or _normalized(record.object_value) != _normalized(disease.name)
     ):
         return _empty_result(
@@ -2617,12 +2670,6 @@ def _map_pinned_clinical_trial_design(
         or not isinstance(population_raw, Mapping)
         or not isinstance(endpoint_raw, Mapping)
         or not isinstance(safety_raw, Mapping)
-        or _normalized(candidate.name)
-        not in {_normalized(item) for item in aliases}
-        or not any(
-            _source_text_matches(candidate.name, item) for item in source_interventions
-        )
-        or not any(_source_text_matches(disease.name, item) for item in source_conditions)
     ):
         return _empty_result(
             mapper_id,
@@ -2630,6 +2677,70 @@ def _map_pinned_clinical_trial_design(
             PromotionStatus.REJECTED,
             "pinned_clinical_design_metadata_invalid",
             "Pinned clinical design metadata lacks exact registry identities.",
+        )
+    approved_aliases = _candidate_identity_aliases(candidate)
+    source_aliases = {_normalized(item) for item in aliases}
+    if (
+        approved_aliases is None
+        or _normalized(record.subject) not in source_aliases
+        or not source_aliases.issubset(approved_aliases)
+        or not any(
+            any(
+                _source_text_matches(alias, intervention)
+                for intervention in source_interventions
+            )
+            for alias in aliases
+        )
+    ):
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_design_candidate_alias_unapproved",
+            (
+                "Every source-level candidate alias must resolve through the "
+                "candidate's pre-approved identity aliases."
+            ),
+            details={
+                "record_subject": record.subject,
+                "source_alias_count": len(source_aliases),
+                "approved_alias_count": len(approved_aliases or ()),
+            },
+        )
+    approved_disease_aliases = _disease_identity_aliases(disease)
+    source_condition_aliases = {
+        _normalized(item) for item in source_conditions
+    }
+    explicit_disease_aliases = "identity_aliases" in disease.attributes
+    if (
+        approved_disease_aliases is None
+        or (
+            explicit_disease_aliases
+            and not source_condition_aliases.intersection(
+                approved_disease_aliases
+            )
+        )
+        or (
+            not explicit_disease_aliases
+            and not any(
+                _source_text_matches(disease.name, item)
+                for item in source_conditions
+            )
+        )
+    ):
+        return _empty_result(
+            mapper_id,
+            outcome,
+            PromotionStatus.REJECTED,
+            "pinned_clinical_design_disease_alias_unapproved",
+            (
+                "At least one source-level condition must resolve through the "
+                "disease's pre-approved identity aliases."
+            ),
+            details={
+                "source_condition_count": len(source_condition_aliases),
+                "approved_alias_count": len(approved_disease_aliases or ()),
+            },
         )
     try:
         _iso_date(registry_version, "registry_version")
@@ -2672,7 +2783,8 @@ def _map_pinned_clinical_trial_design(
             ):
                 raise ValueError("arm denominator must be positive")
         if not any(
-            _source_text_matches(candidate.name, item)
+            _source_text_matches(alias, item)
+            for alias in approved_aliases
             for item in candidate_arm["intervention_names"]
         ):
             raise ValueError("candidate arm does not name the accepted candidate")

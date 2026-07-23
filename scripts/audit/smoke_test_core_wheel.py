@@ -658,6 +658,34 @@ def main() -> int:
                 text=True,
                 env=clean_env,
             )
+            sealed_api = subprocess.run(
+                [
+                    str(python),
+                    "-c",
+                    (
+                        "from agentic_drug_discovery import ("
+                        "evaluate_policy_submission, "
+                        "policy_evaluation_report_from_json, "
+                        "policy_evaluation_submission_from_json, "
+                        "sealed_evaluation_board_from_json, "
+                        "sealed_evaluation_vault_from_json"
+                        "); "
+                        "assert all(callable(item) for item in ("
+                        "evaluate_policy_submission, "
+                        "policy_evaluation_report_from_json, "
+                        "policy_evaluation_submission_from_json, "
+                        "sealed_evaluation_board_from_json, "
+                        "sealed_evaluation_vault_from_json"
+                        ")); "
+                        "print('sealed-evaluation-api-ok')"
+                    ),
+                ],
+                cwd=temp_dir,
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            )
             completed = subprocess.run(
                 [str(demo)],
                 cwd=temp_dir,
@@ -1396,11 +1424,14 @@ def main() -> int:
     ):
         return fail("ClinicalTrials.gov portfolio retained source payload structure")
 
+    if sealed_api.stdout.strip() != "sealed-evaluation-api-ok":
+        return fail("sealed evaluation API was not importable from the wheel")
+
     print(
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
         "CDC MMWR, NCBI PubMed, ChEMBL activity, PubMed disease-model, and "
-        "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio "
-        "extraction smoke tests "
+        "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
+        "plus sealed evaluation API smoke tests "
         f"completed for {wheels[0].name}"
     )
     return 0

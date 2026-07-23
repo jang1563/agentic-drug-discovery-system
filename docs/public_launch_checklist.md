@@ -16,8 +16,10 @@ Scientific anchors: `docs/12_scd_vertical_slice.md`,
 `docs/21_clinical_provider_ingestion.md`; the cross-trial synthesis contract is
 `docs/22_clinical_benefit_risk_synthesis.md`; portfolio ingestion and approved endpoint mapping
 are in `docs/23_clinical_portfolio_endpoint_mapping.md`; typed policy replanning and checkpoint
-resume are in `docs/24_policy_replanning_and_resume.md`. The external scorer is under `benchmark/`,
-and `scripts/audit/validate_vertical_slice_doc.py` checks claim drift.
+resume are in `docs/24_policy_replanning_and_resume.md`; cutoff-safe matched and sealed policy
+evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`. The external scorer is under `benchmark/`,
+`scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
+`scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
 ## Current Launch State
 
@@ -83,6 +85,10 @@ of the exact committed package.
 - [x] Typed replan observations/rules/directives, per-rule and global limits, checkpoint SHA-256
   envelopes, stale-token/tamper controls, and deterministic resume tests are mirrored. Real
   checkpoints and policy-run artifacts remain outside both release surfaces.
+- [x] Role-neutral sealed-board, external label-vault, policy-submission, and aggregate-report
+  schemas are mirrored with synthetic fail-closed tests. The real 4-pair/8-episode run publishes
+  aggregate metrics and hashes only; full states, cached packets, labels, nonces, submissions, and
+  per-episode scores remain external.
 - [x] The eight-stage provider-backed fixture carries one cumulative ledger from disease context
   through source-pinned clinical endpoint/safety design and EMA regulatory review, reaches
   `COMPLETED`, and replays
@@ -104,6 +110,7 @@ python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
+python3 scripts/audit/validate_policy_evaluation_snapshot.py
 python3 -m unittest discover -s tests -v
 python3 -m ruff check agentic_drug_discovery tests adapters/boltz_adapter.py adapters/chembl_adapter.py adapters/opentargets_adapter.py adapters/execution_registry.py adapters/pinned_evidence_adapter.py adapters/clinical_synthesis_adapter.py scripts/audit
 python3 -m pytest -q benchmark/tests

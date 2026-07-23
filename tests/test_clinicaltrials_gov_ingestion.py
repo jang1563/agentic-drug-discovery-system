@@ -151,6 +151,7 @@ def clinical_state(*, program_id: str) -> ProgramState:
                     "target_chembl_id": "CHEMBL_TARGET",
                     "target_symbol": "TEST1",
                     "disease_id": "MONDO_TEST",
+                    "identity_aliases": ("TestDrug-1",),
                 },
             ),
         ),
@@ -184,7 +185,14 @@ def clinical_plan() -> StagePlan:
     )
 
 
-def run_manifest(manifest: dict, *, program_id: str):
+def run_manifest(
+    manifest: dict,
+    *,
+    program_id: str,
+    state: ProgramState | None = None,
+):
+    selected_state = state or clinical_state(program_id=program_id)
+    candidate = selected_state.candidates[0]
     registry = register_existing_adapters(
         ToolRegistry(clock=lambda: COMPLETED_AT),
         pinned_evidence=PinnedEvidenceAdapter(manifest),
@@ -199,18 +207,18 @@ def run_manifest(manifest: dict, *, program_id: str):
     )
     return runner.run_stage(
         run_id=f"{program_id}-run",
-        state=clinical_state(program_id=program_id),
+        state=selected_state,
         stage_plan=clinical_plan(),
         promotion_contexts={
             "clinical-design": PromotionContext(
                 observed_at=date(2024, 6, 1),
                 available_at=date(2024, 9, 15),
-                subject="Test Drug",
-                object_value="test disease",
+                subject=candidate.name,
+                object_value=selected_state.disease,
                 confidence=0.9,
-                candidate_id="CHEMBL_TEST",
-                candidate_name="Test Drug",
-                modality="small molecule",
+                candidate_id=candidate.candidate_id,
+                candidate_name=candidate.name,
+                modality=candidate.modality,
                 biological_context={
                     "disease_id": "MONDO_TEST",
                     "intervention_id": "CHEMBL_TEST",
@@ -609,7 +617,7 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         self.assertEqual(failure.promotions[0].status, PromotionStatus.REJECTED)
         self.assertEqual(
             failure.promotions[0].code,
-            "pinned_clinical_design_metadata_invalid",
+            "pinned_clinical_design_disease_alias_unapproved",
         )
 
         match_key = EpisodeMatchKey(
@@ -655,6 +663,112 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         score = evaluate_matched_pair(pair)
         self.assertTrue(score.both_correct)
         self.assertEqual(score.balanced_accuracy, 1.0)
+
+    def test_source_candidate_alias_requires_preapproved_identity_binding(
+        self,
+    ) -> None:
+        manifest, _ = clinical_manifest()
+        aliased = copy.deepcopy(manifest)
+        record = aliased["records"][0]
+        record["subject"] = "Legacy Test Drug"
+        record["metadata"]["candidate_aliases"] = ["Legacy Test Drug"]
+        record["metadata"]["source_interventions"] = [
+            "Drug: Legacy Test Drug",
+            "Drug: Placebo",
+        ]
+        candidate_arm = next(
+            item
+            for item in record["metadata"]["arms"]
+            if item["role"] == "candidate"
+        )
+        candidate_arm["intervention_names"] = ["Drug: Legacy Test Drug"]
+        approved_state = clinical_state(program_id="clinical-design-approved-alias")
+        approved_candidate = replace(
+            approved_state.candidates[0],
+            attributes={
+                **dict(approved_state.candidates[0].attributes),
+                "identity_aliases": ("Test Drug", "Legacy Test Drug"),
+            },
+        )
+        approved_state = replace(
+            approved_state,
+            candidates=(approved_candidate,),
+        )
+
+        approved = run_manifest(
+            aliased,
+            program_id="clinical-design-approved-alias",
+            state=approved_state,
+        )
+        unapproved = run_manifest(
+            aliased,
+            program_id="clinical-design-unapproved-alias",
+        )
+        mixed_aliases = copy.deepcopy(aliased)
+        mixed_record = mixed_aliases["records"][0]
+        mixed_record["metadata"]["candidate_aliases"] = [
+            "Test Drug",
+            "Legacy Test Drug",
+        ]
+        mixed_unapproved = run_manifest(
+            mixed_aliases,
+            program_id="clinical-design-mixed-unapproved-alias",
+        )
+
+        self.assertEqual(approved.accepted_packets[0].decision, Decision.ADVANCE)
+        self.assertEqual(len(approved.final_state.trial_designs), 1)
+        self.assertEqual(unapproved.accepted_packets[0].decision, Decision.DEFER)
+        self.assertEqual(unapproved.final_state.trial_designs, ())
+        self.assertEqual(
+            unapproved.promotions[0].code,
+            "pinned_clinical_design_candidate_alias_unapproved",
+        )
+        self.assertEqual(
+            mixed_unapproved.accepted_packets[0].decision,
+            Decision.DEFER,
+        )
+        self.assertEqual(mixed_unapproved.final_state.trial_designs, ())
+        self.assertEqual(
+            mixed_unapproved.promotions[0].code,
+            "pinned_clinical_design_candidate_alias_unapproved",
+        )
+
+    def test_source_disease_alias_requires_preapproved_identity_binding(
+        self,
+    ) -> None:
+        manifest, _ = clinical_manifest()
+        aliased = copy.deepcopy(manifest)
+        aliased["records"][0]["metadata"]["source_conditions"] = [
+            "Legacy Disease Name"
+        ]
+        approved_state = clinical_state(program_id="clinical-disease-approved-alias")
+        approved_disease = replace(
+            approved_state.diseases[0],
+            attributes={"identity_aliases": ("Legacy Disease Name",)},
+        )
+        approved_state = replace(
+            approved_state,
+            diseases=(approved_disease,),
+        )
+
+        approved = run_manifest(
+            aliased,
+            program_id="clinical-disease-approved-alias",
+            state=approved_state,
+        )
+        unapproved = run_manifest(
+            aliased,
+            program_id="clinical-disease-unapproved-alias",
+        )
+
+        self.assertEqual(approved.accepted_packets[0].decision, Decision.ADVANCE)
+        self.assertEqual(len(approved.final_state.trial_designs), 1)
+        self.assertEqual(unapproved.accepted_packets[0].decision, Decision.DEFER)
+        self.assertEqual(unapproved.final_state.trial_designs, ())
+        self.assertEqual(
+            unapproved.promotions[0].code,
+            "pinned_clinical_design_disease_alias_unapproved",
+        )
 
     def test_missing_safety_metadata_defers_without_partial_state(self) -> None:
         manifest, _ = clinical_manifest()

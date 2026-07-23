@@ -42,12 +42,13 @@
       "schemas, verifier contracts, adapters, and flow scaffolds",
       "audited SCD and target-identification aggregate results cards",
       "machine-readable aggregate evidence summary",
-      "typed agentic_drug_discovery source capture and payload-free compilation, bounded planning, tool execution, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, composite pinned-source gates, semantic promotion, stage and multi-stage program orchestration, matched evaluation, strict replay, transition core, and fail-closed tests",
+      "typed agentic_drug_discovery source capture and payload-free compilation, bounded planning, tool execution, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, composite pinned-source gates, semantic promotion, stage and multi-stage program orchestration, cutoff-safe matched and sealed evaluation, strict replay, transition core, and fail-closed tests",
       "dependency-free pinned-evidence adapter and compiler, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, and ClinicalTrials.gov endpoint/safety trial-design provider verifiers, machine schemas, synthetic examples, typed endpoint, safety, and lineage controls, review report, and typed binding",
       "payload-free machine snapshot of the external ChEMBL/PubMed preclinical contract run, including hashes, matched outcomes, and exact-replay limitations",
       "payload-free machine snapshot of the external ClinicalTrials.gov endpoint/safety design contract run, including NCT/design/safety identities, hashes, matched outcomes, and exact-replay limitations",
       "atomic multi-trial ClinicalTrials.gov portfolio extraction plus reviewer-approved endpoint-family mapping with exact bindings, append-only replay, synthetic public examples, and no ontology-authority claim",
       "explicit source-disjoint cross-trial hazard-ratio and serious-event harmonization with retained trial-level values, no automatic pooling, and no clinical acceptability inference",
+      "role-neutral cutoff-safe sealed evaluation contracts, externally separated labels and commitments, strict policy submissions, aggregate policy comparison, and synthetic fail-closed tests",
       "eight-stage provider-backed program fixture with one cumulative execution ledger, typed identity continuity through regulatory review, and exact accepted-packet replay",
       "benchmark/ scorer and tests for the separately hosted clinical-trial decision dataset",
       "audit scripts and GitHub Actions release audit"
@@ -55,8 +56,9 @@
     "exclude": [
       "raw source snapshots",
       "raw source bundles, real provider review jobs, and ingestion runs",
-      "real multi-trial portfolio review files, reviewer working identities, and ontology-resolution artifacts",
-      "hidden or evaluator-only labels",
+    "real multi-trial portfolio review files, reviewer working identities, and ontology-resolution artifacts",
+    "real sealed evaluation boards, cached episode packets, label vaults, commitment nonces, policy submissions, and per-episode evaluations",
+    "hidden or evaluator-only labels",
       "locked episode records",
       "generated reward or verifier outputs",
       "run logs",
@@ -85,6 +87,11 @@
     {
       "name": "vertical_slice_doc_validation",
       "command": "python3 scripts/audit/validate_vertical_slice_doc.py",
+      "blocking": true
+    },
+    {
+      "name": "policy_evaluation_snapshot_validation",
+      "command": "python3 scripts/audit/validate_policy_evaluation_snapshot.py",
       "blocking": true
     },
     {
@@ -151,6 +158,8 @@
     "docs/22_clinical_benefit_risk_synthesis.md",
     "docs/23_clinical_portfolio_endpoint_mapping.md",
     "docs/24_policy_replanning_and_resume.md",
+    "docs/25_cutoff_safe_policy_evaluation.md",
+    "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
     "docs/release_boundary.md",
@@ -159,6 +168,7 @@
     "huggingface/release_manifest.json",
     "pyproject.toml",
     "agentic_drug_discovery/",
+    "agentic_drug_discovery/sealed_evaluation.py",
     "adapters/pinned_evidence_adapter.py",
     "adapters/clinical_synthesis_adapter.py",
     "rl_env/specs/pinned_evidence_manifest.schema.json",
@@ -176,6 +186,12 @@
     "rl_env/specs/ncbi_pubmed_disease_model_ingestion_job.schema.json",
     "rl_env/specs/clinicaltrials_gov_ingestion_job.schema.json",
     "rl_env/specs/policy_checkpoint.schema.json",
+    "rl_env/specs/sealed_evaluation_board.schema.json",
+    "rl_env/specs/sealed_evaluation_vault.schema.json",
+    "rl_env/specs/policy_evaluation_submission.schema.json",
+    "rl_env/specs/policy_evaluation_report.schema.json",
+    "tests/test_sealed_evaluation.py",
+    "scripts/audit/validate_policy_evaluation_snapshot.py",
     "tests/",
     "benchmark/"
   ],

@@ -49,4 +49,11 @@ Current repository scope:
   set of those single-trial review jobs to one approved endpoint mapping before emitting a
   payload-free portfolio ingestion job. Adjacent jobs and study fixtures are synthetic; real API
   bytes, portfolio selections, and reviewer approvals stay outside Git.
-- Keep concrete task instances, trajectories, evaluator labels, generated reward outputs, and case-bank-specific scripts outside Git until a release package is explicitly prepared.
+- Use `specs/sealed_evaluation_board.schema.json` for role-neutral matched observations with
+  cutoff-safe cached tool packets. Keep `specs/sealed_evaluation_vault.schema.json` on the evaluator
+  side, and exchange predictions and aggregate results through
+  `specs/policy_evaluation_submission.schema.json` and
+  `specs/policy_evaluation_report.schema.json`. Synthetic development cases are public; the real
+  board, label vault, per-episode scores, and cached packets remain external.
+- Keep concrete task instances, trajectories, evaluator labels, generated reward outputs, and
+  case-bank-specific scripts outside Git until a release package is explicitly prepared.

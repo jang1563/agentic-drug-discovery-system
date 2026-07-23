@@ -135,6 +135,7 @@ def _clinical_state(program_id: str) -> ProgramState:
                     "target_chembl_id": "CHEMBL_TARGET",
                     "target_symbol": "TEST1",
                     "disease_id": "MONDO_TEST",
+                    "identity_aliases": ("TestDrug-1",),
                 },
             ),
         ),

@@ -21,8 +21,8 @@ This is the candidate Hugging Face Dataset-card package for the Agentic Drug Dis
 - **Surface:** Hugging Face Dataset repository.
 - **Public state:** 0.2.0 baseline.
 - **Candidate:** 0.3.0.dev0 source prepared; not uploaded; approval pending.
-- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched evaluator, tests, documentation, schemas, aggregate evidence, manifests, audit code, and the `ctdbench` scorer.
-- **Excludes:** Raw source data, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
+- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched and sealed evaluators, synthetic evaluation tests, aggregate external evaluation evidence, manifests, audit code, and the `ctdbench` scorer.
+- **Excludes:** Raw source data, real sealed boards, cached episode packets, label vaults, policy submissions, per-episode evaluations, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
 - **Source:** Exact commit and tree are recorded in `upload_manifest.json`.
 
 ## Intended Use
@@ -76,6 +76,14 @@ This is the candidate Hugging Face Dataset-card package for the Agentic Drug Dis
 - Inspect `docs/23_clinical_portfolio_endpoint_mapping.md` and
   `tests/test_clinical_portfolio.py` for exact-set multi-job/bundle preflight, payload-free output,
   reviewer-approved ontology identity, append-only mapping continuity, and atomic failure controls.
+- Inspect `docs/24_policy_replanning_and_resume.md` and `tests/test_policy_replanning.py` for typed
+  observations, bounded rule application, append-only queue revisions, hash-bound checkpoints, and
+  deterministic resume.
+- Inspect `docs/25_cutoff_safe_policy_evaluation.md`,
+  `docs/retrospective_policy_evaluation_snapshot.json`, and
+  `tests/test_sealed_evaluation.py` for role-neutral board sealing, externally separated labels,
+  commitment opening, strict JSON round-trip, exact submission binding, aggregate policy
+  comparison, and leakage controls.
 - Inspect `rl_env/specs/pinned_evidence_manifest.schema.json` and its synthetic example before
   constructing a source manifest.
 - Inspect `rl_env/specs/target_identity_record.schema.json` and its synthetic example before
@@ -104,6 +112,23 @@ This is the candidate Hugging Face Dataset-card package for the Agentic Drug Dis
 - Track provenance for the public artifact surface.
 - Inspect the mirrored GitHub release surface and source-commit provenance.
 
+## Sealed Retrospective Evaluation
+
+The external evaluator executed four matched pairs and eight cutoff-safe episodes built from the
+real senicapoc continuous program and PALOMA-2/PALOMA-3 clinical portfolio. Only the payload-free
+aggregate and artifact hashes are included here.
+
+| Policy | Exact | Success arm | Failure arm | Both correct | Unsafe advance |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Deterministic gated stage output | 8/8 | 4/4 | 4/4 | 4/4 | 0/7 |
+| Always advance counterfactual | 1/8 | 1/4 | 0/4 | 0/4 | 7/7 |
+| Defer-safe counterfactual | 4/8 | 0/4 | 4/4 | 0/4 | 0/7 |
+
+This is a small contract diagnostic. It does not establish drug-discovery performance,
+prospective clinical utility, policy optimality, or confidence calibration. The complete board,
+cached real packets, label vault, commitment nonces, submissions, and per-episode evaluations stay
+outside both public release surfaces.
+
 ## Artifact Map
 
 | Path | Purpose |
@@ -130,8 +155,12 @@ This is the candidate Hugging Face Dataset-card package for the Agentic Drug Dis
 | `docs/clinical_provider_validation_snapshot.json` | Payload-free NCT/design/safety identities, artifact hashes, live stage outcome, matched control, and limitations. |
 | `docs/22_clinical_benefit_risk_synthesis.md` | Explicit reviewed selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed synthesis behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Exact multi-bundle portfolio transaction, reviewer-approved endpoint mapping ledger, synthesis dependency, and release boundary. |
+| `docs/24_policy_replanning_and_resume.md` | Typed policy observations, bounded replans, checkpoint integrity, and deterministic resume. |
+| `docs/25_cutoff_safe_policy_evaluation.md` | Cutoff-safe sealing, submission, scoring, real aggregate results, and interpretation limits. |
+| `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |
+| `agentic_drug_discovery/sealed_evaluation.py` | Role-neutral board sealing, external label vaults, commitments, strict envelope readers, submission validation, and aggregate scoring. |
 | `agentic_drug_discovery/ingestion.py` | Immutable source receipts, external bundle verification, payload-free manifest compilation, and review reports. |
 | `agentic_drug_discovery/cdc_mmwr.py` | CDC MMWR article and reviewer-selected evidence verification with excerpt removal. |
 | `agentic_drug_discovery/ncbi_pubmed.py` | NCBI PubMed EFetch article and treatment-gap evidence verification with excerpt and anchor removal. |
@@ -149,6 +178,10 @@ This is the candidate Hugging Face Dataset-card package for the Agentic Drug Dis
 | `rl_env/specs/clinical_intervention_identity.schema.json` | Machine-readable clinical intervention, trial, endpoint, safety, and atomic design records; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machine-readable approved reviewer, ontology identity, and exact endpoint/safety binding contract; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_benefit_risk_synthesis.schema.json` | Machine-readable reviewed multi-trial selection contract; the adjacent example is synthetic. |
+| `rl_env/specs/sealed_evaluation_board.schema.json` | Policy-visible, role-neutral cutoff episode and matched-pair board contract. |
+| `rl_env/specs/sealed_evaluation_vault.schema.json` | Evaluator-only label, failure-cause, arm-role, and commitment-opening contract. |
+| `rl_env/specs/policy_evaluation_submission.schema.json` | Exact board-bound policy prediction and confidence contract. |
+| `rl_env/specs/policy_evaluation_report.schema.json` | Aggregate and evaluator-only per-episode scoring report contract. |
 | `rl_env/specs/source_receipt.schema.json` | Machine-readable exact source version, locator, hash, size, retrieval time, and transport. |
 | `rl_env/specs/pinned_evidence_ingestion_job.schema.json` | Machine-readable reviewer-authored summaries linked to external source receipts. |
 | `rl_env/specs/cdc_mmwr_ingestion_job.schema.json` | Machine-readable CDC MMWR article, context, value, unit, and excerpt review contract. |
@@ -169,6 +202,7 @@ This is the candidate Hugging Face Dataset-card package for the Agentic Drug Dis
 | `tests/test_clinicaltrials_gov_ingestion.py` | Strict registry extraction, payload removal, atomic promotion, continuity attacks, and matched mismatch coverage. |
 | `tests/test_clinical_benefit_risk_synthesis.py` | Two-source tool-to-replay synthesis plus mismatch, overlap, pooling, forgery, unbound-support, direct-commit, and removal controls. |
 | `tests/test_clinical_portfolio.py` | Exact-set portfolio extraction, source chronology/disjointness, strict schemas, payload removal, and atomic CLI failure controls. |
+| `tests/test_sealed_evaluation.py` | Synthetic board determinism, commitment, submission, confidence, schema, leakage, and baseline-policy coverage. |
 | `tests/` | Dependency-free planning, multi-stage stopping, mapping, evaluation, execution, replay, and transition regression tests. |
 | `benchmark/` | Installable `ctdbench` scorer and tests. |
 | `docs/public_launch_checklist.md` | Human launch checklist before any visibility change. |
@@ -180,6 +214,8 @@ This is the candidate Hugging Face Dataset-card package for the Agentic Drug Dis
 - Raw source bundles, real provider review jobs, ingestion runs, multi-trial portfolio selections,
   endpoint-family reviewer approvals, ontology-authority resolutions, or reviewer working files.
 - Hidden/evaluator labels or locked episode records.
+- Real sealed evaluation boards, cached episode packets, label vaults, commitment nonces, policy
+  submissions, or per-episode evaluations.
 - Generated reward/verifier outputs or run logs.
 - Credentials, local machine paths, or private infrastructure details.
 - Model weights or a complete autonomous discovery or wet-lab system.
@@ -212,6 +248,7 @@ python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
+python3 scripts/audit/validate_policy_evaluation_snapshot.py
 python3 -m unittest discover -s tests -v
 python3 -m ruff check agentic_drug_discovery tests adapters/boltz_adapter.py adapters/chembl_adapter.py adapters/opentargets_adapter.py adapters/execution_registry.py adapters/pinned_evidence_adapter.py adapters/clinical_synthesis_adapter.py scripts/audit
 python3 -m pytest -q benchmark/tests

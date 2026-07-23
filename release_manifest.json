@@ -50,6 +50,8 @@
       "docs/22_clinical_benefit_risk_synthesis.md",
       "docs/23_clinical_portfolio_endpoint_mapping.md",
       "docs/24_policy_replanning_and_resume.md",
+      "docs/25_cutoff_safe_policy_evaluation.md",
+      "docs/retrospective_policy_evaluation_snapshot.json",
       "docs/public_evidence_summary.json",
       "agentic_drug_discovery/",
       "adapters/",
@@ -85,6 +87,7 @@
       "raw source bundles, real provider review jobs, and ingestion runs",
       "real multi-trial portfolio reviews, reviewer working identities, and ontology-resolution artifacts",
       "real policy checkpoints and policy-run artifacts",
+      "real sealed evaluation boards, cached episode packets, label vaults, commitment nonces, policy submissions, and per-episode evaluations",
       "locked episodes",
       "hidden/evaluator labels",
       "generated reward or verifier outputs",
@@ -95,8 +98,8 @@
     ]
   },
   "surface_scope": {
-    "github": "Full sanitized bounded agent, execution core, typed policy replanning and checkpoint resume, source capture, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, payload-free manifest compiler, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, protocol, adapter, flow, verifier, benchmark-scorer, documentation, tests, and audit surface.",
-    "hugging_face": "Commit-pinned subset containing the dependency-free source capture/compiler, typed policy replanning and hash-bound checkpoint resume contracts, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, pinned-evidence and clinical-synthesis adapters and bindings, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, semantic mappings, stage and program runners, matched evaluator, executable core, tests, documentation, schemas, aggregate evidence, audit code, and the scorer for the separately hosted clinical-trial decision dataset.",
+    "github": "Full sanitized bounded agent, execution core, typed policy replanning and checkpoint resume, cutoff-safe matched and sealed evaluation, source capture, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, payload-free manifest compiler, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, protocol, adapter, flow, verifier, benchmark-scorer, documentation, tests, and audit surface.",
+    "hugging_face": "Commit-pinned subset containing the dependency-free source capture/compiler, typed policy replanning and hash-bound checkpoint resume contracts, cutoff-safe matched and sealed evaluation contracts plus payload-free aggregate evidence, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, pinned-evidence and clinical-synthesis adapters and bindings, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, semantic mappings, stage and program runners, executable core, tests, documentation, schemas, audit code, and the scorer for the separately hosted clinical-trial decision dataset.",
     "github_only": [
       "CONTRIBUTING.md",
       "SECURITY.md",
@@ -123,11 +126,16 @@
       "command": "python3 scripts/audit/validate_public_launch_packet.py",
       "blocking": true
     },
-    {
-      "name": "vertical_slice_doc_validation",
-      "command": "python3 scripts/audit/validate_vertical_slice_doc.py",
-      "blocking": true
-    },
+      {
+        "name": "vertical_slice_doc_validation",
+        "command": "python3 scripts/audit/validate_vertical_slice_doc.py",
+        "blocking": true
+      },
+      {
+        "name": "policy_evaluation_snapshot_validation",
+        "command": "python3 scripts/audit/validate_policy_evaluation_snapshot.py",
+        "blocking": true
+      },
     {
       "name": "hf_release_package_build",
       "command": "python3 scripts/audit/build_hf_release_package.py --output /tmp/agentic-hf-release-package --force",
@@ -182,7 +190,7 @@
     "No real policy checkpoints or policy-run artifacts",
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
     "Vertical-slice benchmark numbers remain caveats-first and small-N scoped",
-    "Source capture/compiler, typed policy replanning and checkpoint resume, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and multi-trial portfolio verification, reviewer-approved endpoint mapping, and explicit mapping-gated source-disjoint non-pooled clinical synthesis, typed endpoint and lineage-independent preclinical promotion, atomic clinical endpoint/safety promotion, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, semantic mapper, eight-stage provider-backed program replay, matched evaluator, core tests, and wheel build pass without private research artifacts",
+    "Source capture/compiler, typed policy replanning and checkpoint resume, cutoff-safe matched and sealed evaluation, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and multi-trial portfolio verification, reviewer-approved endpoint mapping, and explicit mapping-gated source-disjoint non-pooled clinical synthesis, typed endpoint and lineage-independent preclinical promotion, atomic clinical endpoint/safety promotion, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, semantic mapper, eight-stage provider-backed program replay, core tests, and wheel build pass without private research artifacts",
     "Hugging Face candidate package is built from the exact committed candidate and validated by file hashes",
     "Release decision packet remains pending until the exact candidate commit and package receive explicit approval",
     "Release audit workflow green on GitHub"
