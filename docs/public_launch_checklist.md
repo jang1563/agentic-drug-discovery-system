@@ -1,8 +1,9 @@
 # Public Launch Checklist
 
 This checklist is the human-readable companion to `release_decision_packet.json`.
-It separates the existing 0.2.0 public baseline from the 0.3.0.dev0 candidate;
-approval of the baseline is not approval of the candidate.
+It records the explicitly approved 0.3.0.dev0 public development release. The
+0.2.0 tag remains the latest stable release, and approval of 0.3.0.dev0 does not
+authorize any future candidate.
 Scientific anchors: `docs/12_scd_vertical_slice.md`,
 `docs/13_target_id_governance_node.md`, and
 `docs/public_evidence_summary.json`. Execution contracts:
@@ -23,14 +24,14 @@ evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`. The external scorer
 
 ## Current Launch State
 
-| Surface | Current state | Candidate action allowed now? |
+| Surface | Current state | Publication record |
 | --- | --- | --- |
-| GitHub | 0.2.0 public baseline; 0.3.0.dev0 candidate not approved or merged | No |
-| Hugging Face | 0.2.0 public baseline; 0.3.0.dev0 candidate not uploaded | No |
+| GitHub | 0.3.0.dev0 public development release on `main` | Approved content published through PR 10 |
+| Hugging Face | 0.3.0.dev0 public, ungated exact-source mirror | Manifest-bound package uploaded and downloaded for verification |
 
-Machine status is `candidate_pending_human_approval`. Do not merge the candidate
-into public `main` or update the public Hub Dataset before explicit human approval
-of the exact committed package.
+Machine status is `public_released_after_human_approval`. The approval record
+applies only to the reviewed 0.3.0.dev0 content. Every future public update still
+requires explicit human approval of its exact committed package.
 
 ## 0.2.0 Baseline Record
 
@@ -38,15 +39,15 @@ of the exact committed package.
 - [x] Hugging Face remained private until the final boundary review was approved.
 - [x] The prior public release is recorded by GitHub PR 7 and the 2026-07-12 owner approval.
 
-## 0.3.0.dev0 Candidate Gates
+## 0.3.0.dev0 Publication Record
 
 - [x] The README distinguishes the executable control plane from roadmap-only functionality.
 - [x] `docs/release_boundary.md` still excludes raw source snapshots, hidden
   labels, locked episodes, generated trajectories, run logs, credentials,
   machine-local paths, and model weights.
 - [x] `release_manifest.json` and `huggingface/release_manifest.json` match the
-  candidate release surface.
-- [x] `release_decision_packet.json` says `candidate_pending_human_approval`.
+  public release surface.
+- [x] `release_decision_packet.json` says `public_released_after_human_approval`.
 - [x] Local control-plane, benchmark, lint, compile, wheel, and source-boundary checks pass.
 - [x] The linked external dataset's Croissant
   metadata is absent from this artifact mirror.
@@ -93,13 +94,14 @@ of the exact committed package.
   through source-pinned clinical endpoint/safety design and EMA regulatory review, reaches
   `COMPLETED`, and replays
   exactly.
-- [ ] The candidate is committed to an exact reviewed source commit.
-- [ ] GitHub Actions `release-audit` is green for that exact commit.
-- [ ] The Hugging Face package is built from that commit and its exact file set,
+- [x] The candidate is committed to an exact reviewed source commit.
+- [x] GitHub Actions `release-audit` is green for that exact commit and the
+  linear-history publication commit.
+- [x] The Hugging Face package is built from the public `main` commit and its exact file set,
   source tree, byte sizes, and SHA-256 values are validated.
-- [ ] The owner explicitly approves the exact candidate commit and package.
-- [ ] The approved candidate is merged to public `main`.
-- [ ] The approved package is uploaded and anonymous GitHub/Hub reads verify the
+- [x] The owner explicitly approves the exact candidate commit and package.
+- [x] The approved content is merged to public `main`.
+- [x] The approved package is uploaded and anonymous GitHub/Hub reads verify the
   source commit and upload manifest.
 
 ## Required Local Commands
@@ -124,10 +126,10 @@ python3 -m compileall agentic_drug_discovery adapters chains benchmark/src scrip
 
 ## Launch Decision Rule
 
-The candidate may update the public release only when every candidate gate is
-checked, every required command is green, the GitHub Actions release audit is
+Future candidates may update the public release only when every candidate gate
+is checked, every required command is green, the GitHub Actions release audit is
 green for the exact commit, and the owner explicitly approves that commit and
 its Hugging Face package.
 
-If any release-boundary check regresses, hold the candidate and leave the 0.2.0
-public baseline unchanged until the issue is fixed.
+If any release-boundary check regresses, hold the future candidate and leave the
+0.3.0.dev0 public baseline unchanged until the issue is fixed.

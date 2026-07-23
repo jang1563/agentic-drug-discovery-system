@@ -14,13 +14,13 @@ tags:
 
 # Agentic Drug Discovery System
 
-This is the candidate Hugging Face Dataset-card package for the Agentic Drug Discovery System public artifact. The existing public Dataset is the 0.2.0 baseline; this 0.3.0.dev0 package is not uploaded until its exact source commit passes review and receives explicit approval. The package mirrors the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
+This is the public 0.3.0.dev0 Hugging Face Dataset-card package for the Agentic Drug Discovery System. It was published after exact-package review and mirrors the GitHub source commit and tree recorded in `upload_manifest.json`. The package contains the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
 
-## At A Glance
+## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
-- **Public state:** 0.2.0 baseline.
-- **Candidate:** 0.3.0.dev0 source prepared; not uploaded; approval pending.
+- **Public state:** 0.3.0.dev0 exact-source mirror.
+- **Release lineage:** 0.2.0 remains the latest tagged stable release.
 - **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched and sealed evaluators, synthetic evaluation tests, aggregate external evaluation evidence, manifests, audit code, and the `ctdbench` scorer.
 - **Excludes:** Raw source data, real sealed boards, cached episode packets, label vaults, policy submissions, per-episode evaluations, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
 - **Source:** Exact commit and tree are recorded in `upload_manifest.json`.
@@ -264,8 +264,9 @@ python3 -m compileall agentic_drug_discovery adapters chains benchmark/src scrip
 
 - Repository type: Dataset
 - Repo id: `jang1563/agentic-drug-discovery-system`
-- Current visibility: public 0.2.0 baseline
-- Candidate update: 0.3.0.dev0, not uploaded, explicit approval required
+- Current visibility: public and ungated
+- Current update: 0.3.0.dev0, published after explicit approval
+- Future updates: require a new exact-package boundary review
 
 ## Source
 

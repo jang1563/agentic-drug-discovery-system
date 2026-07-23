@@ -2,36 +2,49 @@
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
   "release_version": "0.3.0.dev0",
-  "last_public_release_version": "0.2.0",
-  "decision_status": "candidate_pending_human_approval",
-  "as_of_date": "2026-07-15",
+  "last_public_release_version": "0.3.0.dev0",
+  "decision_status": "public_released_after_human_approval",
+  "as_of_date": "2026-07-23",
   "human_readable_checklist": "docs/public_launch_checklist.md",
   "surfaces": {
     "github": {
       "url": "https://github.com/jang1563/agentic-drug-discovery-system",
       "current_visibility": "public",
       "default_branch": "main",
-      "last_public_release_state": "merged_to_default_branch",
-      "last_public_release_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/7",
-      "candidate_release_state": "not_approved_or_merged",
-      "publication_target": "public_default_branch_after_approval"
+      "release_state": "merged_to_default_branch",
+      "release_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/10",
+      "approved_content_commit": "02ad3cbb8a2811838da2feb1fe51bdcc70c94584",
+      "approved_content_tree": "5a8ab474c527b856f0b5bf93181800260de225db",
+      "publication_target": "public_default_branch"
     },
     "hugging_face": {
       "url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
       "repo_type": "dataset",
       "current_visibility": "public",
-      "last_public_release_version": "0.2.0",
-      "candidate_release_state": "not_uploaded",
-      "publication_target": "public_dataset_update_after_approval"
+      "release_version": "0.3.0.dev0",
+      "release_state": "uploaded_to_public_dataset",
+      "initial_content_commit": "fd056625dacc98597ad461c05bb73f811f67bf19",
+      "file_count": 153,
+      "publication_target": "public_dataset"
     }
   },
   "launch_decision": {
-    "default": "hold_candidate_until_approval",
+    "default": "published_after_approval",
     "human_approval_required": true,
     "no_public_visibility_change_without_explicit_approval": true,
     "no_public_update_without_explicit_approval": true,
-    "approval_record": null,
-    "last_public_release_approval_record": "Explicit owner approval received on 2026-07-12 to remediate and publish the 0.2.0 GitHub and Hugging Face surfaces"
+    "approval_record": "Explicit owner continuation approval received on 2026-07-23 after exact candidate commit, source tree, GitHub draft PR, validated Hugging Face package, and publication hold were presented",
+    "last_public_release_approval_record": "Explicit owner continuation approval received on 2026-07-23 for the reviewed 0.3.0.dev0 GitHub and Hugging Face package"
+  },
+  "publication_record": {
+    "approved_candidate_commit": "9b44f88a201e4ecfa825815c797418e0303bd6a7",
+    "approved_candidate_tree": "5a8ab474c527b856f0b5bf93181800260de225db",
+    "content_publication_commit": "02ad3cbb8a2811838da2feb1fe51bdcc70c94584",
+    "github_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/10",
+    "github_actions_run": "https://github.com/jang1563/agentic-drug-discovery-system/actions/runs/30033966236",
+    "hugging_face_initial_content_commit": "fd056625dacc98597ad461c05bb73f811f67bf19",
+    "hugging_face_file_count": 153,
+    "approved_and_published_on": "2026-07-23"
   },
   "release_scope": {
     "include": [
@@ -198,7 +211,7 @@
   "hard_stop_if": [
     "any required check fails",
     "any release-surface file has unreviewed sensitive content",
-    "the candidate is merged to public GitHub main or uploaded to the public Hugging Face Dataset without explicit approval",
+    "any future candidate is merged to public GitHub main or uploaded to the public Hugging Face Dataset without explicit approval",
     "the README overstates built functionality beyond the audited slice",
     "the Hugging Face mirror is stale relative to the reviewed source commit or fails exact file/hash validation",
     "Croissant metadata for the separate clinical-trial-decision-benchmark enters this Hub package"

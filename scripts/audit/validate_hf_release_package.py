@@ -418,6 +418,24 @@ def validate_source() -> tuple[list[str], dict]:
             errors.append(
                 "public Hugging Face package must declare current_visibility public"
             )
+        if manifest.get("release_stage") != "public_release":
+            errors.append(
+                "public Hugging Face package must use release_stage public_release"
+            )
+        if release_manifest.get("release_stage") != "public_release":
+            errors.append(
+                "canonical manifest must use release_stage public_release"
+            )
+        if manifest.get("last_public_release_version") != manifest.get(
+            "release_version"
+        ):
+            errors.append(
+                "public Hugging Face package must identify its version as last public"
+            )
+        if manifest.get("current_public_version") != manifest.get("release_version"):
+            errors.append(
+                "public Hugging Face package current_public_version must match"
+            )
         if not str(manifest.get("public_visibility_gate", "")).startswith(
             "explicit human boundary review"
         ):
@@ -432,6 +450,23 @@ def validate_source() -> tuple[list[str], dict]:
             errors.append("public Hugging Face package must declare the repo_id")
         if "proposed_repo_id" in manifest:
             errors.append("public Hugging Face package must not use proposed_repo_id")
+        canonical_hf = release_manifest.get("hugging_face") or {}
+        if canonical_hf.get("status") != "public_repo_uploaded_after_approval":
+            errors.append(
+                "canonical manifest must record the approved Hugging Face upload"
+            )
+        if canonical_hf.get("current_public_version") != manifest.get(
+            "release_version"
+        ):
+            errors.append(
+                "canonical Hugging Face current_public_version must match"
+            )
+        if manifest.get("publication_record") != release_manifest.get(
+            "publication_record"
+        ):
+            errors.append(
+                "Hugging Face and canonical publication records must match"
+            )
 
     include = set(manifest.get("include") or [])
     exclude = set(manifest.get("exclude") or [])

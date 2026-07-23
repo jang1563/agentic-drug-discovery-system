@@ -2,14 +2,14 @@
 
 Last reviewed: 2026-07-23
 
-This report summarizes what the public GitHub repository and Hugging Face Dataset mirror are intended to prove, what they do not prove, and which files machines should inspect first. The 0.2.0 surfaces are the current public baseline; the 0.3.0.dev0 execution-core update is a candidate pending exact-commit review, approval, merge, and Hub upload.
+This report summarizes what the public GitHub repository and Hugging Face Dataset mirror are intended to prove, what they do not prove, and which files machines should inspect first. The 0.3.0.dev0 execution-core update is the current public development release after exact-package approval; 0.2.0 remains the latest tagged stable release.
 
 ## Trust Claims
 
 | Claim | Evidence | Boundary |
 | --- | --- | --- |
 | The public artifact is intentionally scoped. | `docs/release_boundary.md`, `release_manifest.json`, `huggingface/release_manifest.json` | Raw source snapshots, evaluator-only labels, locked episodes, generated trajectories, logs, credentials, local paths, and model weights are excluded. |
-| The release decision is machine-readable. | `release_decision_packet.json` | The current candidate is explicitly pending; the prior 0.2.0 approval is not approval of 0.3.0.dev0. |
+| The release decision is machine-readable. | `release_decision_packet.json` | The current development release records approval, GitHub publication, Hub upload, and the reviewed content identity. Future updates require a new approval record. |
 | The SCD vertical slice is caveats-first. | `docs/12_scd_vertical_slice.md`, `scripts/audit/validate_vertical_slice_doc.py` | The slice is one disease, small-N, and not evidence of broad clinical prediction or autonomous drug design capability. |
 | Aggregate claims are machine-readable. | `docs/public_evidence_summary.json`, `docs/13_target_id_governance_node.md` | Raw runs and per-record gold remain excluded; aggregate values are not independent replication. |
 | Sealed policy evaluation preserves the answer boundary. | `docs/25_cutoff_safe_policy_evaluation.md`, `docs/retrospective_policy_evaluation_snapshot.json`, `agentic_drug_discovery/sealed_evaluation.py`, `tests/test_sealed_evaluation.py` | Role-neutral observations carry cutoff-safe cached packets and salted commitments while labels remain in an external vault. One external 4-pair/8-episode run reports aggregate contract metrics only; it does not establish discovery performance, calibration, policy optimality, or prospective utility. |
@@ -31,7 +31,7 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | Selected tool operations have explicit semantic mappings. | `agentic_drug_discovery/promotion.py`, `tests/test_semantic_mappings.py` | The mappings validate known payload shapes and conservative interpretation rules; they do not prove payload truth, external database completeness, or cross-disease validity. |
 | Bounded multi-stage execution reaches every verifier-gated stage. | `agentic_drug_discovery/orchestration.py`, `agentic_drug_discovery/program.py`, `tests/test_program_runner.py`, `tests/test_adapter_bindings.py`, `tests/test_pinned_evidence_adapter.py` | Ordered stage runs share one cumulative ledger and continue only after accepted advance decisions. One five-stage fixture intentionally defers on activity-count context; one synthetic provider-backed fixture preserves disease, target, candidate, preclinical, trial-design, and intervention identities through all eight stages and replays exactly. This is control-path completeness, not autonomous discovery or a performance result. |
 | Evaluation requires matched success and failure arms. | `agentic_drug_discovery/matched_evaluation.py`, `tests/test_matched_evaluation.py`, `tests/test_target_identity_continuity.py`, `tests/test_pinned_evidence_adapter.py`, `tests/test_pinned_evidence_ingestion.py`, `tests/test_cdc_mmwr_ingestion.py`, `tests/test_ncbi_pubmed_ingestion.py`, `tests/test_preclinical_provider_pair.py`, `tests/test_clinicaltrials_gov_ingestion.py`, `tests/test_semantic_mappings.py` | The schema enforces cutoff and context matching. Target-symbol, assay-target-link, compiled source independence, CDC same-document reuse, PubMed cross-population context, preclinical publication-lineage reuse, and ClinicalTrials.gov condition/source-identity pairs each isolate a bounded failure, but this package does not publish a real matched episode corpus or claim measured discovery performance. |
-| A Hugging Face mirror is reproducible from an exact Git commit. | `scripts/audit/build_hf_release_package.py`, `scripts/audit/validate_hf_release_package.py`, `upload_manifest.json` on the Hub | The builder reads Git commit objects, and the validator checks the exact file set, source tree, sizes, and SHA-256 values; the 0.3.0.dev0 package cannot be claimed until the candidate is committed and rebuilt. |
+| A Hugging Face mirror is reproducible from an exact Git commit. | `scripts/audit/build_hf_release_package.py`, `scripts/audit/validate_hf_release_package.py`, `upload_manifest.json` on the Hub | The builder reads Git commit objects, and the validator checks the exact file set, source tree, sizes, and SHA-256 values. The public 0.3.0.dev0 Hub snapshot was downloaded again and validated after upload. |
 | The scorer is separate from its row dataset. | `benchmark/`, `huggingface/release_manifest.json` | `ctdbench` targets `jang1563/clinical-trial-decision-benchmark`; its rows and Croissant metadata are not copied into this artifact mirror. |
 | The public surface is checked before release changes. | `.github/workflows/release-audit.yml`, `scripts/audit/` | Passing checks reduce release-boundary risk but do not certify scientific correctness. |
 
@@ -245,7 +245,7 @@ The generated `upload_manifest.json` records:
 - exact uploaded file list,
 - per-file SHA-256 and byte size (excluding the self-referential manifest file).
 
-The 0.3.0.dev0 candidate package is a deliberate subset of GitHub. Live adapters, legacy chains,
+The public 0.3.0.dev0 Hub package is a deliberate subset of GitHub. Live adapters, legacy chains,
 evaluator-directory scaffolds, contributor/security files, and GitHub automation remain
 GitHub-only. The Hub subset contains the dependency-free pinned-evidence adapter and binding,
 bounded planner, semantic mappings, stage and program runners, matched and sealed evaluators, typed execution
