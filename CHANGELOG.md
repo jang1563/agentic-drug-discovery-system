@@ -4,6 +4,17 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added preregistered held-out evaluation protocols that bind cohort, label/exclusion guidance,
+  opaque curator roster, outcome window, stage minima, and metric policy before board sealing.
+  Evaluator-only curation manifests now enforce policy-blinded independent affiliations,
+  strict-majority or independent-adjudication rules, chronology, complete episode coverage, and
+  exact vault labels. Aggregate reports emit exact overall/stage counts, Wilson intervals, action
+  coverage, selective risk, unsafe-advance rates, and explicit sufficiency flags. Public schemas,
+  strict readers, synthetic examples, and adversarial tests are included; no real independently
+  curated result is claimed.
+- Declared the release lint rule set in `pyproject.toml` so unpinned Ruff upgrades cannot silently
+  expand blocking CI policy across the already-public legacy surface.
+
 ## 0.3.0.dev0 - 2026-07-23
 
 - Updated release CI to immutable Node 24-based checkout and Python setup actions.

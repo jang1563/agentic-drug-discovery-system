@@ -14,15 +14,15 @@ tags:
 
 # Agentic Drug Discovery System
 
-This is the public 0.3.0.dev0 Hugging Face Dataset-card package for the Agentic Drug Discovery System. It was published after exact-package review and mirrors the GitHub source commit and tree recorded in `upload_manifest.json`. The package contains the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
+This card describes the unapproved 0.3.0.dev1 candidate package for the Agentic Drug Discovery System. The public Hugging Face Dataset remains at the reviewed 0.3.0.dev0 exact-source mirror until a new exact commit and package receive explicit approval. The candidate contains the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, real curator manifests, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
 
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
-- **Public state:** 0.3.0.dev0 exact-source mirror.
+- **Public state:** 0.3.0.dev0 exact-source mirror; 0.3.0.dev1 candidate not uploaded.
 - **Release lineage:** 0.2.0 remains the latest tagged stable release.
-- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched and sealed evaluators, synthetic evaluation tests, aggregate external evaluation evidence, manifests, audit code, and the `ctdbench` scorer.
-- **Excludes:** Raw source data, real sealed boards, cached episode packets, label vaults, policy submissions, per-episode evaluations, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
+- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched and sealed evaluators, preregistered held-out curation contracts, stage-stratified uncertainty, synthetic evaluation tests, aggregate external evaluation evidence, manifests, audit code, and the `ctdbench` scorer.
+- **Excludes:** Raw source data, real sealed or held-out boards, curator identities/attestations/votes/adjudications, curation manifests, cached episode packets, label vaults, policy submissions, per-episode evaluations, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
 - **Source:** Exact commit and tree are recorded in `upload_manifest.json`.
 
 ## Intended Use
@@ -84,6 +84,10 @@ This is the public 0.3.0.dev0 Hugging Face Dataset-card package for the Agentic 
   `tests/test_sealed_evaluation.py` for role-neutral board sealing, externally separated labels,
   commitment opening, strict JSON round-trip, exact submission binding, aggregate policy
   comparison, and leakage controls.
+- Inspect `docs/26_independent_heldout_evaluation.md` and
+  `tests/test_heldout_evaluation.py` for preregistered cohort/label/curator contracts,
+  strict-majority and independent-adjudication validation, stage minima, Wilson intervals, action
+  coverage, selective risk, and the explicit no-real-result boundary.
 - Inspect `rl_env/specs/pinned_evidence_manifest.schema.json` and its synthetic example before
   constructing a source manifest.
 - Inspect `rl_env/specs/target_identity_record.schema.json` and its synthetic example before
@@ -157,10 +161,12 @@ outside both public release surfaces.
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Exact multi-bundle portfolio transaction, reviewer-approved endpoint mapping ledger, synthesis dependency, and release boundary. |
 | `docs/24_policy_replanning_and_resume.md` | Typed policy observations, bounded replans, checkpoint integrity, and deterministic resume. |
 | `docs/25_cutoff_safe_policy_evaluation.md` | Cutoff-safe sealing, submission, scoring, real aggregate results, and interpretation limits. |
+| `docs/26_independent_heldout_evaluation.md` | Preregistered held-out protocol, evaluator-only curator manifest, stage uncertainty, and release boundary. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |
 | `agentic_drug_discovery/sealed_evaluation.py` | Role-neutral board sealing, external label vaults, commitments, strict envelope readers, submission validation, and aggregate scoring. |
+| `agentic_drug_discovery/heldout_evaluation.py` | Preregistered protocol binding, independent curation validation, Wilson intervals, action coverage, selective risk, and strict aggregate reporting. |
 | `agentic_drug_discovery/ingestion.py` | Immutable source receipts, external bundle verification, payload-free manifest compilation, and review reports. |
 | `agentic_drug_discovery/cdc_mmwr.py` | CDC MMWR article and reviewer-selected evidence verification with excerpt removal. |
 | `agentic_drug_discovery/ncbi_pubmed.py` | NCBI PubMed EFetch article and treatment-gap evidence verification with excerpt and anchor removal. |
@@ -182,6 +188,9 @@ outside both public release surfaces.
 | `rl_env/specs/sealed_evaluation_vault.schema.json` | Evaluator-only label, failure-cause, arm-role, and commitment-opening contract. |
 | `rl_env/specs/policy_evaluation_submission.schema.json` | Exact board-bound policy prediction and confidence contract. |
 | `rl_env/specs/policy_evaluation_report.schema.json` | Aggregate and evaluator-only per-episode scoring report contract. |
+| `rl_env/specs/heldout_evaluation_protocol.schema.json` | Public preregistration contract for cohort, labels, opaque roster, stages, and metrics; the adjacent example is synthetic. |
+| `rl_env/specs/heldout_curation_manifest.schema.json` | Evaluator-only opaque declarations, votes, consensus, and adjudication contract. |
+| `rl_env/specs/stage_stratified_evaluation_report.schema.json` | Aggregate exact counts, Wilson intervals, sufficiency flags, action coverage, and selective-risk contract; the adjacent example is synthetic. |
 | `rl_env/specs/source_receipt.schema.json` | Machine-readable exact source version, locator, hash, size, retrieval time, and transport. |
 | `rl_env/specs/pinned_evidence_ingestion_job.schema.json` | Machine-readable reviewer-authored summaries linked to external source receipts. |
 | `rl_env/specs/cdc_mmwr_ingestion_job.schema.json` | Machine-readable CDC MMWR article, context, value, unit, and excerpt review contract. |
@@ -265,8 +274,8 @@ python3 -m compileall agentic_drug_discovery adapters chains benchmark/src scrip
 - Repository type: Dataset
 - Repo id: `jang1563/agentic-drug-discovery-system`
 - Current visibility: public and ungated
-- Current update: 0.3.0.dev0, published after explicit approval
-- Future updates: require a new exact-package boundary review
+- Current public update: 0.3.0.dev0, published after explicit approval
+- Candidate update: 0.3.0.dev1, not uploaded and pending exact-package review
 
 ## Source
 

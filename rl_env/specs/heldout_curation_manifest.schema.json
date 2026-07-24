@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/heldout_curation_manifest.schema.json",
+  "title": "Evaluator-only held-out curation manifest envelope",
+  "description": "Private vote and adjudication artifact that opens a preregistered opaque curator roster and binds final labels to one sealed vault.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "manifest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.heldout-curation-manifest.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "manifest": {
+      "$ref": "#/$defs/manifest"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "curatorId": {
+      "type": "string",
+      "pattern": "^cur-[0-9a-f]{16}$"
+    },
+    "episodeId": {
+      "type": "string",
+      "pattern": "^ep-[0-9a-f]{24}$"
+    },
+    "decision": {
+      "enum": [
+        "advance",
+        "hold",
+        "pivot",
+        "kill",
+        "defer"
+      ]
+    },
+    "curatorDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "curator_id",
+        "role",
+        "affiliation_commitment",
+        "independence_attestation_sha256",
+        "declared_on",
+        "policy_blinded",
+        "conflict_free"
+      ],
+      "properties": {
+        "curator_id": {
+          "$ref": "#/$defs/curatorId"
+        },
+        "role": {
+          "enum": [
+            "curator",
+            "adjudicator"
+          ]
+        },
+        "affiliation_commitment": {
+          "$ref": "#/$defs/sha256"
+        },
+        "independence_attestation_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "declared_on": {
+          "$ref": "#/$defs/date"
+        },
+        "policy_blinded": {
+          "const": true
+        },
+        "conflict_free": {
+          "const": true
+        }
+      }
+    },
+    "vote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "curator_id",
+        "decision",
+        "labeled_on",
+        "evidence_snapshot_sha256",
+        "rationale_sha256"
+      ],
+      "properties": {
+        "curator_id": {
+          "$ref": "#/$defs/curatorId"
+        },
+        "decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "labeled_on": {
+          "$ref": "#/$defs/date"
+        },
+        "evidence_snapshot_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "rationale_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "episodeRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "episode_id",
+        "votes",
+        "final_decision",
+        "adjudicator_id",
+        "adjudicated_on",
+        "adjudication_rationale_sha256"
+      ],
+      "properties": {
+        "episode_id": {
+          "$ref": "#/$defs/episodeId"
+        },
+        "votes": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/vote"
+          }
+        },
+        "final_decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "adjudicator_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/curatorId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adjudicated_on": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adjudication_rationale_sha256": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_id",
+        "version",
+        "protocol_id",
+        "protocol_fingerprint",
+        "board_id",
+        "board_fingerprint",
+        "vault_fingerprint",
+        "created_on",
+        "curator_declarations",
+        "episode_records"
+      ],
+      "properties": {
+        "manifest_id": {
+          "$ref": "#/$defs/text"
+        },
+        "version": {
+          "$ref": "#/$defs/text"
+        },
+        "protocol_id": {
+          "$ref": "#/$defs/text"
+        },
+        "protocol_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "board_id": {
+          "$ref": "#/$defs/text"
+        },
+        "board_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "vault_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "created_on": {
+          "$ref": "#/$defs/date"
+        },
+        "curator_declarations": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/curatorDeclaration"
+          }
+        },
+        "episode_records": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/episodeRecord"
+          }
+        }
+      }
+    }
+  }
+}

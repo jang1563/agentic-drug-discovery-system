@@ -1,9 +1,9 @@
 # Public Launch Checklist
 
 This checklist is the human-readable companion to `release_decision_packet.json`.
-It records the explicitly approved 0.3.0.dev0 public development release. The
-0.2.0 tag remains the latest stable release, and approval of 0.3.0.dev0 does not
-authorize any future candidate.
+It records the unapproved 0.3.0.dev1 candidate while preserving the explicitly
+approved 0.3.0.dev0 public baseline. The 0.2.0 tag remains the latest stable
+release, and approval of 0.3.0.dev0 does not authorize this candidate.
 Scientific anchors: `docs/12_scd_vertical_slice.md`,
 `docs/13_target_id_governance_node.md`, and
 `docs/public_evidence_summary.json`. Execution contracts:
@@ -18,7 +18,9 @@ Scientific anchors: `docs/12_scd_vertical_slice.md`,
 `docs/22_clinical_benefit_risk_synthesis.md`; portfolio ingestion and approved endpoint mapping
 are in `docs/23_clinical_portfolio_endpoint_mapping.md`; typed policy replanning and checkpoint
 resume are in `docs/24_policy_replanning_and_resume.md`; cutoff-safe matched and sealed policy
-evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`. The external scorer is under `benchmark/`,
+evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`; independently curated held-out
+preregistration and stage-stratified uncertainty are in
+`docs/26_independent_heldout_evaluation.md`. The external scorer is under `benchmark/`,
 `scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
@@ -26,12 +28,13 @@ evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`. The external scorer
 
 | Surface | Current state | Publication record |
 | --- | --- | --- |
-| GitHub | 0.3.0.dev0 public development release on `main` | Approved content published through PR 10 |
-| Hugging Face | 0.3.0.dev0 public, ungated exact-source mirror | Manifest-bound package uploaded and downloaded for verification |
+| GitHub | 0.3.0.dev0 public baseline on `main`; 0.3.0.dev1 candidate unmerged | Last approved content published through PR 10 |
+| Hugging Face | 0.3.0.dev0 public, ungated exact-source mirror; 0.3.0.dev1 not uploaded | Public baseline remains unchanged |
 
-Machine status is `public_released_after_human_approval`. The approval record
-applies only to the reviewed 0.3.0.dev0 content. Every future public update still
-requires explicit human approval of its exact committed package.
+Machine status is `candidate_pending_human_approval`. The prior approval record
+applies only to the reviewed 0.3.0.dev0 content. The 0.3.0.dev1 candidate
+requires explicit human approval of its exact committed package before merge or
+Hugging Face upload.
 
 ## 0.2.0 Baseline Record
 
@@ -104,6 +107,20 @@ requires explicit human approval of its exact committed package.
 - [x] The approved package is uploaded and anonymous GitHub/Hub reads verify the
   source commit and upload manifest.
 
+## 0.3.0.dev1 Candidate Record
+
+- [x] Held-out protocol, evaluator-only curator manifest, and stage-stratified aggregate-report
+  schemas have strict readers, exact synthetic examples, majority/adjudication controls, Wilson
+  intervals, and coverage sufficiency flags.
+- [x] The release boundary excludes real curator identities, attestations, votes, adjudications,
+  curation manifests, and per-episode curation results.
+- [x] Documentation states that the existing real retrospective board is unchanged and that no
+  real independently curated result is claimed.
+- [x] GitHub `main` and the public Hugging Face Dataset remain at the 0.3.0.dev0 baseline.
+- [ ] The exact 0.3.0.dev1 candidate commit and Hugging Face package have received explicit human
+  approval.
+- [ ] The approved candidate has been merged and uploaded.
+
 ## Required Local Commands
 
 ```bash
@@ -126,10 +143,10 @@ python3 -m compileall agentic_drug_discovery adapters chains benchmark/src scrip
 
 ## Launch Decision Rule
 
-Future candidates may update the public release only when every candidate gate
+This candidate may update the public release only when every candidate gate
 is checked, every required command is green, the GitHub Actions release audit is
 green for the exact commit, and the owner explicitly approves that commit and
 its Hugging Face package.
 
-If any release-boundary check regresses, hold the future candidate and leave the
+If any release-boundary check regresses, hold the candidate and leave the
 0.3.0.dev0 public baseline unchanged until the issue is fixed.

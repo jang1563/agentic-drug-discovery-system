@@ -1,0 +1,275 @@
+{
+  "integrity_sha256": "61bcb6b94e55bc8607d4c8a3e82eae2a882c5daf750adc7cf889031cbecbf966",
+  "report": {
+    "board_fingerprint": "65422d1926dacd1ff50f2c6f0de99d8831a9c1d8297138125c0964ab848e1d1a",
+    "board_id": "synthetic-heldout-board",
+    "created_on": "2026-07-23",
+    "curation_manifest_fingerprint": "d5a86ddedb1a3d11bb5ad5b3707a6db64ed01313e4cb4856b6a76f94024257c7",
+    "evaluation_id": "synthetic-envelope-check",
+    "limitations": [
+      "Wilson intervals quantify finite-board sampling uncertainty only.",
+      "Episode-level Wilson intervals do not adjust for within-pair dependence or curator-label uncertainty.",
+      "Action coverage excludes missing and explicit defer decisions.",
+      "Held-out policy scores do not establish prospective clinical utility."
+    ],
+    "protocol_fingerprint": "1b19bcf16bf397bd1e9081868abc80b37c81c63c5871942231c72955fa581abd",
+    "protocol_id": "synthetic-heldout-protocol",
+    "summaries": [
+      {
+        "all_action_requirements_met": false,
+        "all_stage_requirements_met": true,
+        "by_stage": [
+          {
+            "action_coverage": {
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "event_count": 0,
+              "lower": 0.0,
+              "method": "wilson_score",
+              "total": 4,
+              "upper": 0.4898908364545972
+            },
+            "action_requirement_met": false,
+            "board_requirement_met": true,
+            "both_correct_rate": {
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "event_count": 0,
+              "lower": 0.0,
+              "method": "wilson_score",
+              "total": 2,
+              "upper": 0.6576197724933468
+            },
+            "defer_rate": {
+              "confidence_level": 0.95,
+              "estimate": 1.0,
+              "event_count": 4,
+              "lower": 0.5101091635454027,
+              "method": "wilson_score",
+              "total": 4,
+              "upper": 1.0
+            },
+            "episode_count": 4,
+            "exact_accuracy": {
+              "confidence_level": 0.95,
+              "estimate": 0.25,
+              "event_count": 1,
+              "lower": 0.0455872608097006,
+              "method": "wilson_score",
+              "total": 4,
+              "upper": 0.699358157417598
+            },
+            "failure_arm_accuracy": {
+              "confidence_level": 0.95,
+              "estimate": 0.5,
+              "event_count": 1,
+              "lower": 0.09453120573423074,
+              "method": "wilson_score",
+              "total": 2,
+              "upper": 0.9054687942657693
+            },
+            "minimum_action_covered_episodes": 2,
+            "minimum_pairs": 2,
+            "pair_count": 2,
+            "selective_risk": {
+              "confidence_level": 0.95,
+              "estimate": null,
+              "event_count": 0,
+              "lower": null,
+              "method": "wilson_score",
+              "total": 0,
+              "upper": null
+            },
+            "stage": "target_nomination",
+            "success_arm_accuracy": {
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "event_count": 0,
+              "lower": 0.0,
+              "method": "wilson_score",
+              "total": 2,
+              "upper": 0.6576197724933468
+            },
+            "unsafe_advance_rate": {
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "event_count": 0,
+              "lower": 0.0,
+              "method": "wilson_score",
+              "total": 3,
+              "upper": 0.5614970317550454
+            }
+          },
+          {
+            "action_coverage": {
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "event_count": 0,
+              "lower": 0.0,
+              "method": "wilson_score",
+              "total": 4,
+              "upper": 0.4898908364545972
+            },
+            "action_requirement_met": false,
+            "board_requirement_met": true,
+            "both_correct_rate": {
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "event_count": 0,
+              "lower": 0.0,
+              "method": "wilson_score",
+              "total": 2,
+              "upper": 0.6576197724933468
+            },
+            "defer_rate": {
+              "confidence_level": 0.95,
+              "estimate": 1.0,
+              "event_count": 4,
+              "lower": 0.5101091635454027,
+              "method": "wilson_score",
+              "total": 4,
+              "upper": 1.0
+            },
+            "episode_count": 4,
+            "exact_accuracy": {
+              "confidence_level": 0.95,
+              "estimate": 0.25,
+              "event_count": 1,
+              "lower": 0.0455872608097006,
+              "method": "wilson_score",
+              "total": 4,
+              "upper": 0.699358157417598
+            },
+            "failure_arm_accuracy": {
+              "confidence_level": 0.95,
+              "estimate": 0.5,
+              "event_count": 1,
+              "lower": 0.09453120573423074,
+              "method": "wilson_score",
+              "total": 2,
+              "upper": 0.9054687942657693
+            },
+            "minimum_action_covered_episodes": 2,
+            "minimum_pairs": 2,
+            "pair_count": 2,
+            "selective_risk": {
+              "confidence_level": 0.95,
+              "estimate": null,
+              "event_count": 0,
+              "lower": null,
+              "method": "wilson_score",
+              "total": 0,
+              "upper": null
+            },
+            "stage": "clinical_strategy",
+            "success_arm_accuracy": {
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "event_count": 0,
+              "lower": 0.0,
+              "method": "wilson_score",
+              "total": 2,
+              "upper": 0.6576197724933468
+            },
+            "unsafe_advance_rate": {
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "event_count": 0,
+              "lower": 0.0,
+              "method": "wilson_score",
+              "total": 3,
+              "upper": 0.5614970317550454
+            }
+          }
+        ],
+        "overall": {
+          "action_coverage": {
+            "confidence_level": 0.95,
+            "estimate": 0.0,
+            "event_count": 0,
+            "lower": 0.0,
+            "method": "wilson_score",
+            "total": 8,
+            "upper": 0.3244075648838801
+          },
+          "action_requirement_met": false,
+          "board_requirement_met": true,
+          "both_correct_rate": {
+            "confidence_level": 0.95,
+            "estimate": 0.0,
+            "event_count": 0,
+            "lower": 0.0,
+            "method": "wilson_score",
+            "total": 4,
+            "upper": 0.4898908364545972
+          },
+          "defer_rate": {
+            "confidence_level": 0.95,
+            "estimate": 1.0,
+            "event_count": 8,
+            "lower": 0.6755924351161198,
+            "method": "wilson_score",
+            "total": 8,
+            "upper": 1.0
+          },
+          "episode_count": 8,
+          "exact_accuracy": {
+            "confidence_level": 0.95,
+            "estimate": 0.25,
+            "event_count": 2,
+            "lower": 0.07147921275210906,
+            "method": "wilson_score",
+            "total": 8,
+            "upper": 0.5907245696898311
+          },
+          "failure_arm_accuracy": {
+            "confidence_level": 0.95,
+            "estimate": 0.5,
+            "event_count": 2,
+            "lower": 0.15003898915214958,
+            "method": "wilson_score",
+            "total": 4,
+            "upper": 0.8499610108478504
+          },
+          "minimum_action_covered_episodes": 4,
+          "minimum_pairs": 4,
+          "pair_count": 4,
+          "selective_risk": {
+            "confidence_level": 0.95,
+            "estimate": null,
+            "event_count": 0,
+            "lower": null,
+            "method": "wilson_score",
+            "total": 0,
+            "upper": null
+          },
+          "stage": null,
+          "success_arm_accuracy": {
+            "confidence_level": 0.95,
+            "estimate": 0.0,
+            "event_count": 0,
+            "lower": 0.0,
+            "method": "wilson_score",
+            "total": 4,
+            "upper": 0.4898908364545972
+          },
+          "unsafe_advance_rate": {
+            "confidence_level": 0.95,
+            "estimate": 0.0,
+            "event_count": 0,
+            "lower": 0.0,
+            "method": "wilson_score",
+            "total": 6,
+            "upper": 0.39033428790216523
+          }
+        },
+        "policy_id": "defer-safe",
+        "policy_version": "1",
+        "submission_fingerprint": "176fcec8ed578245ca833e1579f3a710943059757ab30c5bea563a7f40856361",
+        "submission_id": "defer-safe-submission"
+      }
+    ],
+    "vault_fingerprint": "7be273aec818e9a214950c87c11f236abb76c2cb02213a22432f7e52344255cc"
+  },
+  "schema_version": "adds.stage-stratified-evaluation-report.v1"
+}

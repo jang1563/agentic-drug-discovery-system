@@ -1,50 +1,37 @@
 {
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
-  "release_version": "0.3.0.dev0",
+  "release_version": "0.3.0.dev1",
   "last_public_release_version": "0.3.0.dev0",
-  "decision_status": "public_released_after_human_approval",
-  "as_of_date": "2026-07-23",
+  "decision_status": "candidate_pending_human_approval",
+  "as_of_date": "2026-07-24",
   "human_readable_checklist": "docs/public_launch_checklist.md",
   "surfaces": {
     "github": {
       "url": "https://github.com/jang1563/agentic-drug-discovery-system",
       "current_visibility": "public",
       "default_branch": "main",
-      "release_state": "merged_to_default_branch",
-      "release_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/10",
-      "approved_content_commit": "02ad3cbb8a2811838da2feb1fe51bdcc70c94584",
-      "approved_content_tree": "5a8ab474c527b856f0b5bf93181800260de225db",
-      "publication_target": "public_default_branch"
+      "last_public_release_state": "merged_to_default_branch",
+      "last_public_release_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/10",
+      "candidate_release_state": "not_approved_or_merged",
+      "publication_target": "public_default_branch_after_approval"
     },
     "hugging_face": {
       "url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
       "repo_type": "dataset",
       "current_visibility": "public",
-      "release_version": "0.3.0.dev0",
-      "release_state": "uploaded_to_public_dataset",
-      "initial_content_commit": "fd056625dacc98597ad461c05bb73f811f67bf19",
-      "file_count": 153,
-      "publication_target": "public_dataset"
+      "last_public_release_version": "0.3.0.dev0",
+      "candidate_release_state": "not_uploaded",
+      "publication_target": "public_dataset_update_after_approval"
     }
   },
   "launch_decision": {
-    "default": "published_after_approval",
+    "default": "hold_candidate_until_approval",
     "human_approval_required": true,
     "no_public_visibility_change_without_explicit_approval": true,
     "no_public_update_without_explicit_approval": true,
-    "approval_record": "Explicit owner continuation approval received on 2026-07-23 after exact candidate commit, source tree, GitHub draft PR, validated Hugging Face package, and publication hold were presented",
+    "approval_record": null,
     "last_public_release_approval_record": "Explicit owner continuation approval received on 2026-07-23 for the reviewed 0.3.0.dev0 GitHub and Hugging Face package"
-  },
-  "publication_record": {
-    "approved_candidate_commit": "9b44f88a201e4ecfa825815c797418e0303bd6a7",
-    "approved_candidate_tree": "5a8ab474c527b856f0b5bf93181800260de225db",
-    "content_publication_commit": "02ad3cbb8a2811838da2feb1fe51bdcc70c94584",
-    "github_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/10",
-    "github_actions_run": "https://github.com/jang1563/agentic-drug-discovery-system/actions/runs/30033966236",
-    "hugging_face_initial_content_commit": "fd056625dacc98597ad461c05bb73f811f67bf19",
-    "hugging_face_file_count": 153,
-    "approved_and_published_on": "2026-07-23"
   },
   "release_scope": {
     "include": [
@@ -62,6 +49,7 @@
       "atomic multi-trial ClinicalTrials.gov portfolio extraction plus reviewer-approved endpoint-family mapping with exact bindings, append-only replay, synthetic public examples, and no ontology-authority claim",
       "explicit source-disjoint cross-trial hazard-ratio and serious-event harmonization with retained trial-level values, no automatic pooling, and no clinical acceptability inference",
       "role-neutral cutoff-safe sealed evaluation contracts, externally separated labels and commitments, strict policy submissions, aggregate policy comparison, and synthetic fail-closed tests",
+      "preregistered held-out cohort, label, curator-roster, outcome-window, stage-minimum, and metric contracts; evaluator-only independent curation validation; aggregate Wilson intervals, action coverage, selective risk, and synthetic fail-closed tests",
       "eight-stage provider-backed program fixture with one cumulative execution ledger, typed identity continuity through regulatory review, and exact accepted-packet replay",
       "benchmark/ scorer and tests for the separately hosted clinical-trial decision dataset",
       "audit scripts and GitHub Actions release audit"
@@ -71,6 +59,7 @@
       "raw source bundles, real provider review jobs, and ingestion runs",
     "real multi-trial portfolio review files, reviewer working identities, and ontology-resolution artifacts",
     "real sealed evaluation boards, cached episode packets, label vaults, commitment nonces, policy submissions, and per-episode evaluations",
+    "real held-out curator identities, attestations, votes, adjudications, curation manifests, and per-episode curation results",
     "hidden or evaluator-only labels",
       "locked episode records",
       "generated reward or verifier outputs",
@@ -172,6 +161,7 @@
     "docs/23_clinical_portfolio_endpoint_mapping.md",
     "docs/24_policy_replanning_and_resume.md",
     "docs/25_cutoff_safe_policy_evaluation.md",
+    "docs/26_independent_heldout_evaluation.md",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
@@ -182,6 +172,7 @@
     "pyproject.toml",
     "agentic_drug_discovery/",
     "agentic_drug_discovery/sealed_evaluation.py",
+    "agentic_drug_discovery/heldout_evaluation.py",
     "adapters/pinned_evidence_adapter.py",
     "adapters/clinical_synthesis_adapter.py",
     "rl_env/specs/pinned_evidence_manifest.schema.json",
@@ -203,7 +194,11 @@
     "rl_env/specs/sealed_evaluation_vault.schema.json",
     "rl_env/specs/policy_evaluation_submission.schema.json",
     "rl_env/specs/policy_evaluation_report.schema.json",
+    "rl_env/specs/heldout_evaluation_protocol.schema.json",
+    "rl_env/specs/heldout_curation_manifest.schema.json",
+    "rl_env/specs/stage_stratified_evaluation_report.schema.json",
     "tests/test_sealed_evaluation.py",
+    "tests/test_heldout_evaluation.py",
     "scripts/audit/validate_policy_evaluation_snapshot.py",
     "tests/",
     "benchmark/"
@@ -211,7 +206,7 @@
   "hard_stop_if": [
     "any required check fails",
     "any release-surface file has unreviewed sensitive content",
-    "any future candidate is merged to public GitHub main or uploaded to the public Hugging Face Dataset without explicit approval",
+    "the candidate is merged to public GitHub main or uploaded to the public Hugging Face Dataset without explicit approval",
     "the README overstates built functionality beyond the audited slice",
     "the Hugging Face mirror is stale relative to the reviewed source commit or fails exact file/hash validation",
     "Croissant metadata for the separate clinical-trial-decision-benchmark enters this Hub package"

@@ -20,6 +20,8 @@ This repository uses a conservative boundary so that future public or collaborat
 - Real policy checkpoints and policy-run artifacts containing full state or tool ledgers.
 - Real sealed boards, cached episode packets, label vaults, commitment nonces, policy submissions,
   and per-episode evaluations.
+- Real held-out curator identities, affiliation records, attestations, evidence snapshots, votes,
+  rationales, adjudications, curation manifests, and per-episode curation results.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -33,6 +35,8 @@ These may become release assets after a separate audit:
 - Payload-free source receipts and ingestion review reports after separate scientific and boundary review.
 - Aggregated benchmark metrics without evaluator-only labels or raw source snapshots.
 - Payload-free sealed-evaluation hashes and aggregate policy metrics after leakage review.
+- Preregistered held-out protocols and payload-free stage-stratified aggregate reports after
+  curator-privacy, label-leakage, and small-stratum review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -44,6 +48,7 @@ The scientific claim anchors are `docs/12_scd_vertical_slice.md`,
 `docs/public_evidence_summary.json`. The sealed policy-evaluation aggregate is separately anchored
 by `docs/25_cutoff_safe_policy_evaluation.md` and
 `docs/retrospective_policy_evaluation_snapshot.json`;
+the next-board protocol is defined by `docs/26_independent_heldout_evaluation.md`.
 `scripts/audit/validate_vertical_slice_doc.py`
 checks the vertical-slice claims, while
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate and
@@ -79,6 +84,12 @@ still contains full `ProgramState` values and cached sanitized tool packets; its
 vault contains arm, gold decision, failure cause, metadata, and commitment nonce. Those artifacts,
 all policy submissions, and per-episode scores remain outside Git.
 
+The held-out evaluation layer ships typed preregistration, opaque roster commitment, curation
+validation, stage-stratified Wilson metrics, strict schemas/readers, and synthetic protocol/report
+examples. A real curation manifest would expose episode-level votes and working governance
+records, so it remains evaluator-only together with identity/affiliation source documents and
+label evidence. No real independently curated held-out result is currently public or claimed.
+
 `adds-pinned-ingestion` enforces the raw-data boundary operationally: source bundles are immutable,
 contain exact bytes plus a receipt, and are refused inside any Git worktree. Compiled manifests and
 review reports contain no raw bundle path and still require explicit human review before promotion.
@@ -90,10 +101,11 @@ external until separate scientific and release-boundary approval.
 
 ## GitHub and Hugging Face Split
 
-- The 0.3.0.dev0 GitHub candidate contains the full sanitized code surface:
+- The approved 0.3.0.dev0 baseline remains public on GitHub and Hugging Face.
+- The unapproved 0.3.0.dev1 GitHub candidate contains the full sanitized code surface:
   adapters, chains, verifiers, the typed `agentic_drug_discovery/` core,
   governance docs, automation, tests, and `benchmark/`.
-- Its candidate Hugging Face Dataset package is a commit-pinned subset:
+- Its not-yet-uploaded Hugging Face Dataset package is a commit-pinned subset:
   documentation, the typed execution core, the dependency-free pinned-evidence and
   local clinical-synthesis adapters and bindings, tests, schemas, aggregate evidence, audit code, and the
   `benchmark/` scorer.
