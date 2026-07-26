@@ -1,9 +1,9 @@
 # Public Launch Checklist
 
 This checklist is the human-readable companion to `release_decision_packet.json`.
-It records the unapproved 0.3.0.dev1 candidate while preserving the explicitly
-approved 0.3.0.dev0 public baseline. The 0.2.0 tag remains the latest stable
-release, and approval of 0.3.0.dev0 does not authorize this candidate.
+It records the approved and published 0.3.0.dev1 public development release.
+The 0.2.0 tag remains the latest stable release, and every future public update
+requires a new exact-package review and explicit human approval.
 Scientific anchors: `docs/12_scd_vertical_slice.md`,
 `docs/13_target_id_governance_node.md`, and
 `docs/public_evidence_summary.json`. Execution contracts:
@@ -28,13 +28,13 @@ preregistration and stage-stratified uncertainty are in
 
 | Surface | Current state | Publication record |
 | --- | --- | --- |
-| GitHub | 0.3.0.dev0 public baseline on `main`; 0.3.0.dev1 candidate unmerged | Last approved content published through PR 10 |
-| Hugging Face | 0.3.0.dev0 public, ungated exact-source mirror; 0.3.0.dev1 not uploaded | Public baseline remains unchanged |
+| GitHub | 0.3.0.dev1 public baseline on `main` | Approved content published through PR 16 at `5a39af737879126973777b5df897d18a76011b07` |
+| Hugging Face | 0.3.0.dev1 public, ungated exact-source mirror | Initial approved upload `3cb6d21055b481ca01124e7ff91c84a41a6f1489`; 169 files |
 
-Machine status is `candidate_pending_human_approval`. The prior approval record
-applies only to the reviewed 0.3.0.dev0 content. The 0.3.0.dev1 candidate
-requires explicit human approval of its exact committed package before merge or
-Hugging Face upload.
+Machine status is `public_released_after_human_approval`. The 0.3.0.dev1 public
+development release was approved after its exact candidate commit, tree,
+release audits, GitHub PR, validated Hugging Face package, and human/visual QA
+were presented.
 
 ## 0.2.0 Baseline Record
 
@@ -107,7 +107,7 @@ Hugging Face upload.
 - [x] The approved package is uploaded and anonymous GitHub/Hub reads verify the
   source commit and upload manifest.
 
-## 0.3.0.dev1 Candidate Record
+## 0.3.0.dev1 Publication Record
 
 - [x] Held-out protocol, evaluator-only curator manifest, and stage-stratified aggregate-report
   schemas have strict readers, exact synthetic examples, majority/adjudication controls, Wilson
@@ -134,10 +134,11 @@ Hugging Face upload.
 - [x] The release boundary excludes real closed-loop policies, execution batches, provider
   requests/outcomes, receipts, reviewer refresh records, before/after tensors, and transition
   packages.
-- [x] GitHub `main` and the public Hugging Face Dataset remain at the 0.3.0.dev0 baseline.
-- [ ] The exact 0.3.0.dev1 candidate commit and Hugging Face package have received explicit human
+- [x] GitHub `main` and the public Hugging Face Dataset expose the approved 0.3.0.dev1 exact-source release.
+- [x] The exact 0.3.0.dev1 candidate commit and Hugging Face package received explicit human
   approval.
-- [ ] The approved candidate has been merged and uploaded.
+- [x] The approved candidate was merged and uploaded, and the anonymous Hub snapshot passed exact
+  file/hash validation.
 
 ## Required Local Commands
 
@@ -161,10 +162,10 @@ python3 -m compileall agentic_drug_discovery adapters chains benchmark/src scrip
 
 ## Launch Decision Rule
 
-This candidate may update the public release only when every candidate gate
-is checked, every required command is green, the GitHub Actions release audit is
-green for the exact commit, and the owner explicitly approves that commit and
-its Hugging Face package.
+Every future candidate may update the public release only when every candidate
+gate is checked, every required command is green, the GitHub Actions release
+audit is green for the exact commit, and the owner explicitly approves that
+commit and its Hugging Face package.
 
-If any release-boundary check regresses, hold the candidate and leave the
-0.3.0.dev0 public baseline unchanged until the issue is fixed.
+If any release-boundary check regresses, hold the future candidate and leave the
+0.3.0.dev1 public baseline unchanged until the issue is fixed.

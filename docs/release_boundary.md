@@ -118,11 +118,11 @@ external until separate scientific and release-boundary approval.
 
 ## GitHub and Hugging Face Split
 
-- The approved 0.3.0.dev0 baseline remains public on GitHub and Hugging Face.
-- The unapproved 0.3.0.dev1 GitHub candidate contains the full sanitized code surface:
+- The approved 0.3.0.dev1 release is public on GitHub and Hugging Face.
+- The GitHub release contains the full sanitized code surface:
   adapters, chains, verifiers, the typed `agentic_drug_discovery/` core,
   governance docs, automation, tests, and `benchmark/`.
-- Its not-yet-uploaded Hugging Face Dataset package is a commit-pinned subset:
+- The public Hugging Face Dataset package is a commit-pinned subset:
   documentation, the typed execution core, the dependency-free pinned-evidence and
   local clinical-synthesis adapters and bindings, the clinical evidence tensor and bounded-VOI
   compiler, the bounded clinical closed-loop compiler and synthetic transition, tests, schemas,

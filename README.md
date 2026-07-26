@@ -17,23 +17,24 @@ their stated scope.
 
 The repository name reflects the longer-term research direction. The proposed
 eight-stage, long-horizon agentic drug discovery system remains a research
-scaffold rather than a completed public platform. The public 0.3.0.dev0 update
+scaffold rather than a completed public platform. The public 0.3.0.dev1 update
 adds an evidence-governed execution backbone with typed program state,
 verifier-gated transitions, cross-stage identity controls, source-pinned
-ingestion, tool/database adapters, scientific foundation-model interfaces, and
-sealed retrospective policy evaluation. The current development candidate also
-adds a preregistered independently curated held-out evaluation contract with
-stage-stratified uncertainty; no real independently curated board result is
-claimed. Seven of eight planned atlases still do not have standalone public
-data, and the demonstrated continuous multi-stage program currently covers one
-disease/target slice.
+ingestion, tool/database adapters, scientific foundation-model interfaces,
+sealed retrospective policy evaluation, preregistered held-out evaluation
+contracts, stage-stratified uncertainty, provenance-preserving clinical
+evidence and bounded-VOI planning, and a reviewer-governed clinical evidence
+closed loop. No real independently curated board result is claimed. Seven of
+eight planned atlases still do not have standalone public data, and the
+demonstrated continuous multi-stage program currently covers one disease/target
+slice.
 
 ## At a Glance
 
 | Field | Value |
 | --- | --- |
 | Purpose | Build a verification-oriented, auditable decision environment for drug-discovery agents. |
-| Release status | 0.3.0.dev0 remains public on GitHub and Hugging Face; 0.3.0.dev1 is an unapproved development candidate. 0.2.0 remains the latest tagged stable release. |
+| Release status | 0.3.0.dev1 is the current public development release on GitHub and Hugging Face after exact-package approval. 0.2.0 remains the latest tagged stable release. |
 | Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
 | Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed or held-out boards, curator identities/attestations/votes/adjudications, real clinical decision policies/action catalogs/evidence tensors/packages, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
@@ -53,10 +54,11 @@ Can a long-horizon discovery process be represented as an agentic environment wh
 
 The public 0.2.0 release provides a **retrospective clinical and regulatory
 decision benchmark with source-derived labels (generated without human
-curation), plus one audited end-to-end vertical slice**. The public 0.3.0.dev0
-update adds a typed execution and evaluation backbone around those artifacts. It is not
-yet the complete autonomous eight-stage system or full trajectory atlas
-described in the roadmap. Honest status:
+curation), plus one audited end-to-end vertical slice**. The public 0.3.0.dev1
+update adds a typed execution, evaluation, clinical-evidence planning, and
+reviewer-governed closed-loop backbone around those artifacts. It is not yet
+the complete autonomous eight-stage system or full trajectory atlas described
+in the roadmap. Honest status:
 
 - **Executable bounded agent loop:** `agentic_drug_discovery/` provides typed evidence, claims,
   targets, candidates, accepted-packet/action/decision/verifier ledgers, program state, decision packets,
