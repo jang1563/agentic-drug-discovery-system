@@ -124,6 +124,16 @@ Hugging Face upload.
   source overlap, direction forgery, duplicate JSON keys, and integrity tampering.
 - [x] The release boundary excludes real clinical decision policies, action catalogs, evidence
   tensors, and compiled decision packages; `ADVANCE` is documented as workflow readiness only.
+- [x] The clinical closed-loop layer binds selected actions to exact state/package/tensor/plan
+  identities, executes through the standard fail-closed runner, bounds reviewer-verifier refresh,
+  consumes attempted actions, and requires exact promoted-evidence source rejoin for every resolved
+  gap.
+- [x] The closed-loop schema and compiler-generated synthetic transition are strict-reader
+  compatible, contain no provider payload, and replay one bounded `HOLD`-to-`ADVANCE`
+  evidence-workflow transition with exact cost, packet, action, evidence, and source hashes.
+- [x] The release boundary excludes real closed-loop policies, execution batches, provider
+  requests/outcomes, receipts, reviewer refresh records, before/after tensors, and transition
+  packages.
 - [x] GitHub `main` and the public Hugging Face Dataset remain at the 0.3.0.dev0 baseline.
 - [ ] The exact 0.3.0.dev1 candidate commit and Hugging Face package have received explicit human
   approval.

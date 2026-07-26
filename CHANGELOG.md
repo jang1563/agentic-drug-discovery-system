@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a bounded clinical evidence closed loop over the existing execution core. Exact
+  selected-action batches now bind decision-package, tensor, plan, policy, state version, tool
+  contract, arguments, targeted gaps, and cost; compact receipts retain request/payload/source/
+  packet/action/evidence provenance without provider payloads. Bounded reviewer-verifier refresh
+  runs append new mappings and syntheses, attempted actions are single-use, and a resolved gap
+  requires a successful targeted receipt that promotes evidence whose new source hash enters the
+  after tensor. A strict transition schema, compiler-generated `HOLD`-to-`ADVANCE` synthetic
+  example, two-state replay validator, and adversarial controls are included.
 - Added a provenance-preserving clinical evidence decision layer over committed, replay-valid
   multi-trial synthesis records. Exact endpoint/safety cells feed nine ordered workflow
   dimensions and typed source-linked gaps; preregistered action catalogs are ranked by

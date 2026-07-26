@@ -110,6 +110,14 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   recompilation bind the synthesis, policy, tensor, catalog, scores, gap partition, and plan.
   `ADVANCE` means evidence-workflow readiness only. Pooling, clinical acceptability, treatment
   recommendations, terminal decisions, and calibrated economic VOI claims are prohibited.
+- A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
+  state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
+  request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
+  permits only bounded successful reviewer-verifier refresh runs; consumes attempted action ids;
+  and recompiles the after decision package from an exactly committed append-only synthesis. A
+  resolved gap must be targeted by a successful selected action that promotes evidence whose exact
+  new source hash enters the after tensor. Strict envelopes and two-state validation detect history,
+  receipt, source, catalog, budget, and after-plan tampering without retaining provider payloads.
 - An evidence-backed `TargetRecord` ledger carries Open Targets Ensembl/gene-symbol identity into
   a ChEMBL target-profile check, then into candidate and preclinical records. Deterministic checks
   reject namespace rebinding, collisions, partial or broken candidate links, and mismatched target

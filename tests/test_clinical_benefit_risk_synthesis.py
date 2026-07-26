@@ -8,6 +8,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
 
 from adapters.clinical_synthesis_adapter import ClinicalSynthesisAdapter
 from adapters.execution_registry import register_existing_adapters
@@ -19,6 +20,8 @@ from agentic_drug_discovery import (
     BudgetState,
     CandidateRecord,
     CandidateStatus,
+    ClinicalClosedLoopError,
+    ClinicalClosedLoopPolicy,
     ClinicalDecisionPolicy,
     ClinicalDimensionStatus,
     ClinicalEndpointMappingReview,
@@ -26,6 +29,7 @@ from agentic_drug_discovery import (
     ClinicalEndpointOntology,
     ClinicalEndpointSelection,
     ClinicalEvidenceActionOption,
+    ClinicalEvidenceTransitionPackage,
     ClinicalEvidenceDimension,
     ClinicalEvidenceGapCode,
     ClinicalStudySelection,
@@ -33,12 +37,16 @@ from agentic_drug_discovery import (
     Decision,
     DecisionPacket,
     DiseaseRecord,
+    EvidenceDraft,
     EvidenceEvent,
     EvidenceRelation,
+    ExecutionMode,
     GatedDiscoveryEnvironment,
     ProgramState,
     ProgramStatus,
     PromotionContext,
+    PromotionResult,
+    PromotionStatus,
     ReplayBundle,
     RecordParseError,
     SourceReference,
@@ -48,28 +56,38 @@ from agentic_drug_discovery import (
     StageRunStatus,
     TargetRecord,
     ToolCallSpec,
+    ToolContract,
     ToolExecutionLedger,
     ToolRegistry,
+    ToolResponse,
+    ToolStatus,
     build_default_semantic_mapper_registry,
     capture_source_bytes,
     clinical_endpoint_mapping_spec_to_dict,
     clinical_decision_package_envelope,
     clinical_decision_package_from_dict,
     clinical_decision_package_from_json,
+    clinical_evidence_transition_envelope,
+    clinical_evidence_transition_from_dict,
+    clinical_evidence_transition_from_json,
     clinical_synthesis_spec_from_dict,
     clinical_synthesis_spec_to_dict,
     compile_clinical_decision_package,
     compile_clinical_evidence_tensor,
+    compile_clinical_evidence_transition,
+    compile_clinical_execution_batch,
     compile_benefit_risk_synthesis,
     compile_clinical_endpoint_mapping,
     compile_pinned_evidence_manifest,
     default_stage_gates,
+    execute_clinical_evidence_batch,
     extract_clinicaltrials_gov_ingestion_job,
     program_state_from_dict,
     replay_program,
     to_primitive,
     validate_benefit_risk_synthesis,
     validate_clinical_decision_package,
+    validate_clinical_evidence_transition,
     validate_clinical_endpoint_mapping,
 )
 
@@ -85,10 +103,28 @@ DECISION_SCHEMA = (
 DECISION_EXAMPLE = (
     ROOT / "rl_env/specs/clinical_evidence_decision_package.example.json"
 )
+CLOSED_LOOP_SCHEMA = (
+    ROOT
+    / "rl_env/specs/clinical_evidence_closed_loop_transition.schema.json"
+)
+CLOSED_LOOP_EXAMPLE = (
+    ROOT
+    / "rl_env/specs/clinical_evidence_closed_loop_transition.example.json"
+)
 REQUEST_AT = datetime(2025, 1, 2, 1, tzinfo=timezone.utc)
 COMPLETED_AT = REQUEST_AT + timedelta(minutes=1)
 MAPPING_REQUEST_AT = REQUEST_AT - timedelta(minutes=2)
 MAPPING_COMPLETED_AT = REQUEST_AT - timedelta(minutes=1)
+CLOSED_LOOP_REQUEST_AT = REQUEST_AT + timedelta(hours=1)
+CLOSED_LOOP_COMPLETED_AT = CLOSED_LOOP_REQUEST_AT + timedelta(minutes=1)
+CLOSED_LOOP_MAPPING_REQUEST_AT = CLOSED_LOOP_COMPLETED_AT + timedelta(minutes=1)
+CLOSED_LOOP_MAPPING_COMPLETED_AT = CLOSED_LOOP_MAPPING_REQUEST_AT + timedelta(minutes=1)
+CLOSED_LOOP_SYNTHESIS_REQUEST_AT = (
+    CLOSED_LOOP_MAPPING_COMPLETED_AT + timedelta(minutes=1)
+)
+CLOSED_LOOP_SYNTHESIS_COMPLETED_AT = (
+    CLOSED_LOOP_SYNTHESIS_REQUEST_AT + timedelta(minutes=1)
+)
 
 
 def _clinical_state(program_id: str) -> ProgramState:
@@ -335,6 +371,58 @@ def _combined_state(
     )
 
 
+def _combined_three_trial_state() -> ProgramState:
+    states = (
+        _run_clinical_trial("NCT00000001", "cycle-trial-one"),
+        _run_clinical_trial("NCT00000002", "cycle-trial-two"),
+        _run_clinical_trial("NCT00000003", "cycle-trial-three"),
+    )
+    first = states[0]
+    first_intervention = first.interventions[0]
+    merged_intervention = replace(
+        first_intervention,
+        supporting_evidence=tuple(
+            dict.fromkeys(
+                evidence_id
+                for state in states
+                for evidence_id in state.interventions[0].supporting_evidence
+            )
+        ),
+        attributes={
+            **dict(first_intervention.attributes),
+            "clinical_trial_ids": sorted(
+                {
+                    trial_id
+                    for state in states
+                    for trial_id in state.interventions[0].attributes[
+                        "clinical_trial_ids"
+                    ]
+                }
+            ),
+        },
+    )
+    return ProgramState(
+        program_id="clinical-closed-loop-program",
+        disease=first.disease,
+        therapeutic_hypothesis=first.therapeutic_hypothesis,
+        as_of_date=first.as_of_date,
+        current_stage=Stage.REGULATORY_POSTMARKET,
+        budget=BudgetState(limit=3.0),
+        evidence=tuple(
+            item for state in states for item in state.evidence
+        ),
+        claims=tuple(item for state in states for item in state.claims),
+        diseases=first.diseases,
+        targets=first.targets,
+        candidates=first.candidates,
+        interventions=(merged_intervention,),
+        trials=tuple(item for state in states for item in state.trials),
+        trial_designs=tuple(
+            item for state in states for item in state.trial_designs
+        ),
+    )
+
+
 def _spec() -> ClinicalSynthesisSpec:
     return ClinicalSynthesisSpec(
         synthesis_id="CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1",
@@ -404,9 +492,15 @@ def _mapping_spec() -> ClinicalEndpointMappingSpec:
     )
 
 
-def _run_mapping(state: ProgramState, spec: ClinicalEndpointMappingSpec):
+def _run_mapping(
+    state: ProgramState,
+    spec: ClinicalEndpointMappingSpec,
+    *,
+    request_at: datetime = MAPPING_REQUEST_AT,
+    completed_at: datetime = MAPPING_COMPLETED_AT,
+):
     registry = register_existing_adapters(
-        ToolRegistry(clock=lambda: MAPPING_COMPLETED_AT),
+        ToolRegistry(clock=lambda: completed_at),
         clinical_synthesis=ClinicalSynthesisAdapter(),
     )
     environment = GatedDiscoveryEnvironment()
@@ -415,9 +509,9 @@ def _run_mapping(state: ProgramState, spec: ClinicalEndpointMappingSpec):
         mapper_registry=build_default_semantic_mapper_registry(
             target_association_minimum_score=0.5
         ),
-        planner=BoundedPlanner(clock=lambda: MAPPING_REQUEST_AT),
+        planner=BoundedPlanner(clock=lambda: request_at),
         environment=environment,
-        clock=lambda: MAPPING_COMPLETED_AT,
+        clock=lambda: completed_at,
     )
     plan = StagePlan(
         plan_id="reviewed-endpoint-family-mapping",
@@ -480,9 +574,16 @@ def _synthesis_environment() -> GatedDiscoveryEnvironment:
     return GatedDiscoveryEnvironment(stage_gates=gates)
 
 
-def _run_synthesis(state: ProgramState, spec: ClinicalSynthesisSpec):
+def _run_synthesis(
+    state: ProgramState,
+    spec: ClinicalSynthesisSpec,
+    *,
+    request_at: datetime = REQUEST_AT,
+    completed_at: datetime = COMPLETED_AT,
+    success_decision: Decision = Decision.ADVANCE,
+):
     registry = register_existing_adapters(
-        ToolRegistry(clock=lambda: COMPLETED_AT),
+        ToolRegistry(clock=lambda: completed_at),
         clinical_synthesis=ClinicalSynthesisAdapter(),
     )
     environment = _synthesis_environment()
@@ -491,9 +592,9 @@ def _run_synthesis(state: ProgramState, spec: ClinicalSynthesisSpec):
         mapper_registry=build_default_semantic_mapper_registry(
             target_association_minimum_score=0.5
         ),
-        planner=BoundedPlanner(clock=lambda: REQUEST_AT),
+        planner=BoundedPlanner(clock=lambda: request_at),
         environment=environment,
-        clock=lambda: COMPLETED_AT,
+        clock=lambda: completed_at,
     )
     plan = StagePlan(
         plan_id="cross-trial-benefit-risk-synthesis",
@@ -513,6 +614,7 @@ def _run_synthesis(state: ProgramState, spec: ClinicalSynthesisSpec):
         max_total_cost=0.01,
         success_confidence=0.9,
         failure_confidence=0.95,
+        success_decision=success_decision,
     )
     result = runner.run_stage(
         run_id="benefit-risk-synthesis",
@@ -609,6 +711,188 @@ def _decision_actions() -> tuple[ClinicalEvidenceActionOption, ...]:
             metadata={"payload_class": "synthetic"},
         ),
     )
+
+
+def _closed_loop_mapping_spec() -> ClinicalEndpointMappingSpec:
+    base = _mapping_spec()
+    trial_ids = ("NCT00000001", "NCT00000002", "NCT00000003")
+    return replace(
+        base,
+        mapping_id="CHEMBL_TEST:MONDO_TEST:pfs-map:v2",
+        portfolio_id="CHEMBL_TEST-MONDO_TEST-ctgov-portfolio-v2",
+        bindings=tuple(
+            ClinicalEndpointSelection(
+                trial_id=trial_id,
+                design_id=f"{trial_id}:design",
+                endpoint_id=f"{trial_id}:endpoint:primary-0",
+                safety_id=f"{trial_id}:safety:serious-adverse-events",
+            )
+            for trial_id in trial_ids
+        ),
+        review=replace(
+            base.review,
+            reviewed_at=CLOSED_LOOP_COMPLETED_AT,
+        ),
+        metadata={
+            "review_note": "Synthetic three-trial closed-loop approval.",
+            "review_protocol_id": "adds.endpoint-mapping-review.v1",
+        },
+    )
+
+
+def _closed_loop_synthesis_spec() -> ClinicalSynthesisSpec:
+    return replace(
+        _spec(),
+        synthesis_id="CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v2",
+        endpoint_mapping_id="CHEMBL_TEST:MONDO_TEST:pfs-map:v2",
+        selections=tuple(
+            ClinicalStudySelection(
+                trial_id=trial_id,
+                design_id=f"{trial_id}:design",
+                endpoint_id=f"{trial_id}:endpoint:primary-0",
+                safety_id=f"{trial_id}:safety:serious-adverse-events",
+            )
+            for trial_id in ("NCT00000001", "NCT00000002", "NCT00000003")
+        ),
+        metadata={
+            "review_status": "synthetic_closed_loop_selection",
+        },
+    )
+
+
+def _closed_loop_action() -> ClinicalEvidenceActionOption:
+    return ClinicalEvidenceActionOption(
+        action_id="verify-third-source-disjoint-trial",
+        action_type=ActionType.QUERY_DATABASE,
+        tool_id="clinical_trial_portfolio",
+        operation="verify_source_disjoint_trial",
+        purpose=(
+            "Verify one captured trial as source-disjoint and eligible for "
+            "reviewer harmonization."
+        ),
+        targeted_gap_codes=(
+            ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,
+        ),
+        expected_gap_resolution_probability=0.9,
+        decision_relevance=0.9,
+        max_cost=0.05,
+        arguments={
+            "candidate_id": "CHEMBL_TEST",
+            "disease_id": "MONDO_TEST",
+            "trial_id": "NCT00000003",
+        },
+        metadata={
+            "payload_class": "synthetic",
+            "provider_auto_promotion": False,
+        },
+    )
+
+
+def _closed_loop_policy() -> ClinicalClosedLoopPolicy:
+    return ClinicalClosedLoopPolicy(
+        policy_id="synthetic-clinical-closed-loop-policy",
+        version="1",
+        registered_on=date(2025, 1, 1),
+        max_refresh_runs=2,
+        max_refresh_actions=2,
+        max_refresh_cost=0.02,
+        metadata={
+            "payload_class": "synthetic",
+            "clinical_use": "prohibited",
+        },
+    )
+
+
+def _eligibility_provider(
+    state: ProgramState,
+) -> tuple[ToolRegistry, object, SourceReference]:
+    third_design = state.trial_designs_by_id["NCT00000003:design"]
+    sources = {
+        state.evidence_by_id[evidence_id].source
+        for evidence_id in third_design.supporting_evidence
+    }
+    if len(sources) != 1:
+        raise AssertionError("synthetic third trial must use one exact source")
+    (source,) = tuple(sources)
+    registry = ToolRegistry(clock=lambda: CLOSED_LOOP_COMPLETED_AT)
+    contract = ToolContract(
+        tool_id="clinical_trial_portfolio",
+        operation="verify_source_disjoint_trial",
+        action_type=ActionType.QUERY_DATABASE,
+        description=(
+            "Verify one captured trial against the reviewed source-disjoint "
+            "portfolio eligibility contract."
+        ),
+        allowed_stages=(Stage.REGULATORY_POSTMARKET,),
+        required_arguments=("candidate_id", "disease_id", "trial_id"),
+        default_cost=0.05,
+    )
+
+    def handler(arguments):
+        return ToolResponse(
+            status=ToolStatus.SUCCEEDED,
+            payload={
+                "eligible": True,
+                "source_disjoint": True,
+                "trial_id": arguments["trial_id"],
+                "candidate_id": arguments["candidate_id"],
+                "disease_id": arguments["disease_id"],
+            },
+            execution_mode=ExecutionMode.REPLAY,
+            sources=(source,),
+            message="Synthetic source-disjoint trial verification completed.",
+        )
+
+    registry.register(contract, handler)
+    mappers = build_default_semantic_mapper_registry(
+        target_association_minimum_score=0.5
+    )
+
+    def mapper(program_state, outcome, context):
+        trial_id = outcome.request.arguments["trial_id"]
+        draft = EvidenceDraft(
+            evidence_id=f"{outcome.request_id}:trial-eligibility",
+            request_id=outcome.request_id,
+            subject=context.subject,
+            predicate="clinical_trial_harmonization_eligibility_verified",
+            object_value=trial_id,
+            observed_at=context.observed_at,
+            available_at=context.available_at,
+            source_id=source.source_id,
+            biological_context={
+                "candidate_id": outcome.request.arguments["candidate_id"],
+                "disease_id": outcome.request.arguments["disease_id"],
+                "trial_id": trial_id,
+                "source_disjoint": True,
+                "provider_auto_decision": False,
+                "state_version": program_state.version,
+            },
+            confidence=context.confidence,
+            metadata={
+                "review_scope": "harmonization_eligibility_only",
+                "clinical_acceptability_inferred": False,
+            },
+        )
+        return PromotionResult(
+            mapper_id="synthetic_trial_eligibility_v1",
+            request_id=outcome.request_id,
+            status=PromotionStatus.PROMOTED,
+            code="clinical_trial_harmonization_eligibility_promoted",
+            message=(
+                "Source-disjoint eligibility was promoted without changing "
+                "clinical artifacts."
+            ),
+            evidence_drafts=(draft,),
+            recommended_decision=Decision.HOLD,
+        )
+
+    mappers.register(
+        tool_id=contract.tool_id,
+        operation=contract.operation,
+        mapper_id="synthetic_trial_eligibility_v1",
+        mapper=mapper,
+    )
+    return registry, mappers, source
 
 
 class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
@@ -1437,6 +1721,467 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             clinical_decision_package_envelope(parsed),
             example,
         )
+
+
+class ClinicalClosedLoopTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.unmapped_state = _combined_three_trial_state()
+        mapping_result, _ = _run_mapping(
+            cls.unmapped_state,
+            _mapping_spec(),
+        )
+        if mapping_result.status is not StageRunStatus.COMMITTED:
+            raise AssertionError(mapping_result.code)
+        synthesis_result, _ = _run_synthesis(
+            mapping_result.final_state,
+            _spec(),
+            success_decision=Decision.HOLD,
+        )
+        if synthesis_result.status is not StageRunStatus.COMMITTED:
+            raise AssertionError(synthesis_result.code)
+        cls.before_state = synthesis_result.final_state
+        if cls.before_state.is_terminal:
+            raise AssertionError("closed-loop fixture must remain active")
+        cls.before_synthesis = cls.before_state.benefit_risk_syntheses_by_id[
+            _spec().synthesis_id
+        ]
+        cls.decision_policy = _decision_policy(
+            minimum_independent_trials=3,
+            minimum_safety_participants_per_arm=60,
+            max_planned_actions=1,
+            max_planned_cost=0.05,
+            minimum_bounded_voi=0.05,
+        )
+        cls.before_package = compile_clinical_decision_package(
+            cls.before_state,
+            cls.before_synthesis,
+            cls.decision_policy,
+            (_closed_loop_action(),),
+            package_id="synthetic-closed-loop-before-package",
+            tensor_id="synthetic-closed-loop-before-tensor",
+            plan_id="synthetic-closed-loop-before-plan",
+        )
+        cls.closed_loop_policy = _closed_loop_policy()
+        cls.execution_batch = compile_clinical_execution_batch(
+            cls.before_state,
+            cls.before_package,
+            cls.closed_loop_policy,
+            batch_id="synthetic-closed-loop-batch",
+        )
+        tool_registry, mapper_registry, source = _eligibility_provider(
+            cls.before_state
+        )
+        cls.third_source = source
+        call_id = cls.execution_batch.calls[0].call_id
+        cls.acquisition_run = execute_clinical_evidence_batch(
+            cls.before_state,
+            cls.before_package,
+            cls.execution_batch,
+            tool_registry=tool_registry,
+            mapper_registry=mapper_registry,
+            promotion_contexts={
+                call_id: PromotionContext(
+                    observed_at=date(2025, 1, 2),
+                    available_at=date(2025, 1, 2),
+                    subject="Test Drug",
+                    object_value="NCT00000003",
+                    confidence=1.0,
+                    candidate_id="CHEMBL_TEST",
+                    candidate_name="Test Drug",
+                    modality="small molecule",
+                    biological_context={
+                        "candidate_id": "CHEMBL_TEST",
+                        "disease_id": "MONDO_TEST",
+                        "trial_id": "NCT00000003",
+                    },
+                )
+            },
+            planner=BoundedPlanner(clock=lambda: CLOSED_LOOP_REQUEST_AT),
+            clock=lambda: CLOSED_LOOP_COMPLETED_AT,
+            run_id="synthetic-closed-loop-acquisition",
+        )
+        if cls.acquisition_run.status is not StageRunStatus.COMMITTED:
+            raise AssertionError(cls.acquisition_run.code)
+        cls.mapping_refresh_run, _ = _run_mapping(
+            cls.acquisition_run.final_state,
+            _closed_loop_mapping_spec(),
+            request_at=CLOSED_LOOP_MAPPING_REQUEST_AT,
+            completed_at=CLOSED_LOOP_MAPPING_COMPLETED_AT,
+        )
+        if cls.mapping_refresh_run.status is not StageRunStatus.COMMITTED:
+            raise AssertionError(cls.mapping_refresh_run.code)
+        cls.synthesis_refresh_run, _ = _run_synthesis(
+            cls.mapping_refresh_run.final_state,
+            _closed_loop_synthesis_spec(),
+            request_at=CLOSED_LOOP_SYNTHESIS_REQUEST_AT,
+            completed_at=CLOSED_LOOP_SYNTHESIS_COMPLETED_AT,
+            success_decision=Decision.HOLD,
+        )
+        if cls.synthesis_refresh_run.status is not StageRunStatus.COMMITTED:
+            raise AssertionError(cls.synthesis_refresh_run.code)
+        cls.after_state = cls.synthesis_refresh_run.final_state
+        cls.after_synthesis = cls.after_state.benefit_risk_syntheses_by_id[
+            _closed_loop_synthesis_spec().synthesis_id
+        ]
+        cls.transition = compile_clinical_evidence_transition(
+            cls.before_state,
+            cls.before_package,
+            cls.execution_batch,
+            cls.acquisition_run,
+            (cls.mapping_refresh_run, cls.synthesis_refresh_run),
+            cls.after_synthesis,
+            transition_id="synthetic-clinical-evidence-transition",
+            after_package_id="synthetic-closed-loop-after-package",
+            after_tensor_id="synthetic-closed-loop-after-tensor",
+            after_plan_id="synthetic-closed-loop-after-plan",
+        )
+
+    def test_end_to_end_cycle_resolves_gap_with_exact_source_rejoin(self) -> None:
+        transition = self.transition
+        self.assertIsInstance(transition, ClinicalEvidenceTransitionPackage)
+        self.assertIs(transition.before_decision, Decision.HOLD)
+        self.assertIs(transition.after_decision, Decision.ADVANCE)
+        self.assertEqual(
+            transition.resolved_gap_codes,
+            (ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,),
+        )
+        self.assertEqual(transition.persisted_gap_codes, ())
+        self.assertEqual(transition.new_gap_codes, ())
+        self.assertEqual(
+            transition.added_source_content_hashes,
+            (self.third_source.content_hash,),
+        )
+        receipt = transition.selected_action_receipts[0]
+        self.assertIn(
+            self.third_source.content_hash,
+            receipt.outcome.source_content_hashes,
+        )
+        self.assertIs(receipt.outcome.status, ToolStatus.SUCCEEDED)
+        self.assertEqual(len(receipt.outcome.evidence_ids), 1)
+        self.assertEqual(
+            validate_clinical_evidence_transition(
+                self.before_state,
+                self.after_state,
+                transition,
+            ),
+            (),
+        )
+
+    def test_cycle_is_bounded_and_consumes_attempted_action(self) -> None:
+        transition = self.transition
+        self.assertEqual(
+            transition.consumed_action_ids,
+            ("verify-third-source-disjoint-trial",),
+        )
+        self.assertEqual(transition.remaining_action_ids, ())
+        self.assertEqual(transition.after_package.action_catalog, ())
+        self.assertTrue(math.isclose(transition.acquisition_cost, 0.05))
+        self.assertTrue(math.isclose(transition.refresh_cost, 0.02))
+        self.assertTrue(math.isclose(transition.total_cost, 0.07))
+        self.assertTrue(
+            math.isclose(
+                transition.budget_spent_after
+                - transition.budget_spent_before,
+                transition.total_cost,
+            )
+        )
+        self.assertEqual(
+            transition.after_state_version,
+            transition.before_state_version + 3,
+        )
+
+    def test_execution_batch_is_exactly_bound_to_selected_voi_action(self) -> None:
+        batch = self.execution_batch
+        selection = self.before_package.plan.selected_actions[0]
+        option = self.before_package.action_catalog[0]
+        call = batch.calls[0]
+        self.assertEqual(call.rank, selection.rank)
+        self.assertEqual(call.action_id, option.action_id)
+        self.assertEqual(call.action_fingerprint, option.fingerprint)
+        self.assertEqual(call.targeted_gap_ids, selection.targeted_gap_ids)
+        self.assertEqual(call.arguments, option.arguments)
+        self.assertEqual(batch.max_total_cost, selection.max_cost)
+        self.assertEqual(
+            self.acquisition_run.plan_result.details["stage_plan_metadata"][
+                "clinical_execution_batch_fingerprint"
+            ],
+            batch.fingerprint,
+        )
+
+    def test_refresh_receipts_are_reviewer_verifier_only(self) -> None:
+        self.assertEqual(len(self.transition.refresh_receipts), 2)
+        for receipt in self.transition.refresh_receipts:
+            self.assertIs(receipt.decision, Decision.HOLD)
+            self.assertEqual(len(receipt.outcomes), 1)
+            self.assertIs(
+                receipt.outcomes[0].action_type,
+                ActionType.RUN_VERIFIER,
+            )
+            self.assertIs(receipt.outcomes[0].status, ToolStatus.SUCCEEDED)
+
+    def test_refresh_receipt_lineage_matches_committed_packet(self) -> None:
+        original = self.transition.refresh_receipts[0]
+        for forged in (
+            replace(original, run_id="forged-refresh-run"),
+            replace(original, plan_id="forged-refresh-plan"),
+            replace(original, promotion_codes=("forged_promotion",)),
+        ):
+            with self.subTest(forged=forged):
+                transition = replace(
+                    self.transition,
+                    refresh_receipts=(
+                        forged,
+                        self.transition.refresh_receipts[1],
+                    ),
+                )
+                self.assertEqual(
+                    validate_clinical_evidence_transition(
+                        self.before_state,
+                        self.after_state,
+                        transition,
+                    ),
+                    ("refresh_packet_metadata_mismatch",),
+                )
+
+    def test_refresh_run_must_append_governed_artifact(self) -> None:
+        original = self.mapping_refresh_run
+        forged_packet = replace(
+            original.accepted_packets[0],
+            claim_updates=(),
+            clinical_endpoint_mapping_updates=(),
+        )
+        forged_result = GatedDiscoveryEnvironment().transition(
+            original.initial_state,
+            forged_packet,
+        )
+        self.assertTrue(forged_result.applied, forged_result.reason)
+        forged_run = replace(
+            original,
+            final_state=forged_result.state,
+            attempted_packets=(forged_packet,),
+            transition_results=(forged_result,),
+        )
+        with self.assertRaisesRegex(
+            ClinicalClosedLoopError,
+            "must append only governed mapping or synthesis artifacts",
+        ):
+            compile_clinical_evidence_transition(
+                self.before_state,
+                self.before_package,
+                self.execution_batch,
+                self.acquisition_run,
+                (forged_run,),
+                self.before_synthesis,
+                transition_id="no-op-refresh-transition",
+                after_package_id="no-op-refresh-after-package",
+                after_tensor_id="no-op-refresh-after-tensor",
+                after_plan_id="no-op-refresh-after-plan",
+            )
+
+    def test_stale_execution_batch_fails_before_provider_invocation(self) -> None:
+        with self.assertRaisesRegex(
+            ClinicalClosedLoopError,
+            "before decision package failed replay",
+        ):
+            execute_clinical_evidence_batch(
+                self.acquisition_run.final_state,
+                self.before_package,
+                self.execution_batch,
+                tool_registry=ToolRegistry(),
+                mapper_registry=build_default_semantic_mapper_registry(
+                    target_association_minimum_score=0.5
+                ),
+                promotion_contexts={},
+            )
+
+    def test_acquisition_cannot_bypass_reviewer_synthesis_refresh(self) -> None:
+        forged_synthesis = compile_benefit_risk_synthesis(
+            self.before_state,
+            replace(
+                _spec(),
+                synthesis_id="forged-acquisition-synthesis",
+            ),
+        )
+        source_count = len(forged_synthesis.supporting_evidence)
+        template_evidence = self.before_state.evidence_by_id[
+            self.before_synthesis.supporting_evidence[source_count]
+        ]
+        forged_evidence_id = "forged-acquisition-synthesis:evidence"
+        forged_context = to_primitive(template_evidence.biological_context)
+        forged_context["synthesis_id"] = forged_synthesis.synthesis_id
+        forged_evidence = replace(
+            template_evidence,
+            evidence_id=forged_evidence_id,
+            biological_context=forged_context,
+        )
+        forged_synthesis = replace(
+            forged_synthesis,
+            supporting_evidence=(
+                *forged_synthesis.supporting_evidence,
+                forged_evidence_id,
+            ),
+        )
+        forged_packet = replace(
+            self.acquisition_run.accepted_packets[0],
+            evidence_additions=(
+                *self.acquisition_run.accepted_packets[0].evidence_additions,
+                forged_evidence,
+            ),
+            benefit_risk_synthesis_updates=(forged_synthesis,),
+        )
+        forged_result = GatedDiscoveryEnvironment().transition(
+            self.before_state,
+            forged_packet,
+        )
+        self.assertTrue(
+            forged_result.applied,
+            to_primitive(forged_result.verifier_results),
+        )
+        forged_run = replace(
+            self.acquisition_run,
+            final_state=forged_result.state,
+            attempted_packets=(forged_packet,),
+            transition_results=(forged_result,),
+        )
+        with self.assertRaisesRegex(
+            ClinicalClosedLoopError,
+            "cannot directly refresh governed clinical artifacts",
+        ):
+            compile_clinical_evidence_transition(
+                self.before_state,
+                self.before_package,
+                self.execution_batch,
+                forged_run,
+                (),
+                forged_synthesis,
+                transition_id="forged-acquisition-transition",
+                after_package_id="forged-acquisition-after-package",
+                after_tensor_id="forged-acquisition-after-tensor",
+                after_plan_id="forged-acquisition-after-plan",
+            )
+
+    def test_transition_envelope_round_trips_strictly(self) -> None:
+        envelope = clinical_evidence_transition_envelope(self.transition)
+        self.assertEqual(
+            clinical_evidence_transition_from_dict(envelope),
+            self.transition,
+        )
+        self.assertEqual(
+            clinical_evidence_transition_from_json(
+                json.dumps(envelope, sort_keys=True)
+            ),
+            self.transition,
+        )
+
+    def test_public_closed_loop_schema_matches_compiler_and_reader(self) -> None:
+        schema = json.loads(CLOSED_LOOP_SCHEMA.read_text(encoding="utf-8"))
+        decision_schema = json.loads(
+            DECISION_SCHEMA.read_text(encoding="utf-8")
+        )
+        example = json.loads(CLOSED_LOOP_EXAMPLE.read_text(encoding="utf-8"))
+        Draft202012Validator.check_schema(schema)
+        registry = Registry().with_resource(
+            decision_schema["$id"],
+            Resource.from_contents(decision_schema),
+        )
+        Draft202012Validator(schema, registry=registry).validate(example)
+        self.assertEqual(
+            clinical_evidence_transition_envelope(self.transition),
+            example,
+        )
+        parsed = clinical_evidence_transition_from_dict(example)
+        self.assertEqual(parsed, self.transition)
+
+    def test_transition_integrity_and_duplicate_keys_fail_closed(self) -> None:
+        envelope = clinical_evidence_transition_envelope(self.transition)
+        forged = json.loads(json.dumps(envelope))
+        forged["transition"]["after_decision"] = "defer"
+        with self.assertRaisesRegex(
+            RecordParseError,
+            "integrity hash does not match",
+        ):
+            clinical_evidence_transition_from_dict(forged)
+        payload = json.dumps(envelope, sort_keys=True)
+        duplicated = payload.replace(
+            '"schema_version":',
+            '"schema_version":"forged","schema_version":',
+            1,
+        )
+        with self.assertRaisesRegex(RecordParseError, "duplicates key"):
+            clinical_evidence_transition_from_json(duplicated)
+
+    def test_resolved_gap_rejects_unbound_source_provenance(self) -> None:
+        receipt = self.transition.selected_action_receipts[0]
+        forged_source = replace(
+            receipt.outcome.sources[0],
+            content_hash="f" * 64,
+        )
+        forged_outcome = replace(
+            receipt.outcome,
+            sources=(forged_source,),
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "new tensor sources are not bound",
+        ):
+            replace(
+                self.transition,
+                selected_action_receipts=(
+                    replace(receipt, outcome=forged_outcome),
+                ),
+            )
+
+    def test_refresh_cost_above_preregistered_bound_is_rejected(self) -> None:
+        with self.assertRaisesRegex(
+            ValueError,
+            "refresh_cost exceeds",
+        ):
+            replace(
+                self.transition,
+                closed_loop_policy=replace(
+                    self.closed_loop_policy,
+                    max_refresh_cost=0.01,
+                ),
+                execution_batch=replace(
+                    self.execution_batch,
+                    closed_loop_policy=replace(
+                        self.closed_loop_policy,
+                        max_refresh_cost=0.01,
+                    ),
+                ),
+            )
+
+    def test_terminal_state_cannot_compile_execution_batch(self) -> None:
+        terminal_result, _ = _run_synthesis(
+            self.mapping_refresh_run.final_state,
+            _closed_loop_synthesis_spec(),
+            request_at=CLOSED_LOOP_SYNTHESIS_REQUEST_AT,
+            completed_at=CLOSED_LOOP_SYNTHESIS_COMPLETED_AT,
+        )
+        self.assertTrue(terminal_result.final_state.is_terminal)
+        terminal_synthesis = terminal_result.final_state.benefit_risk_syntheses_by_id[
+            _closed_loop_synthesis_spec().synthesis_id
+        ]
+        terminal_package = compile_clinical_decision_package(
+            terminal_result.final_state,
+            terminal_synthesis,
+            self.decision_policy,
+            (),
+            package_id="terminal-package",
+            tensor_id="terminal-tensor",
+            plan_id="terminal-plan",
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "terminal programs",
+        ):
+            compile_clinical_execution_batch(
+                terminal_result.final_state,
+                terminal_package,
+                self.closed_loop_policy,
+                batch_id="terminal-batch",
+            )
 
 
 if __name__ == "__main__":

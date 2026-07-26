@@ -27,6 +27,7 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | Source-pinned ClinicalTrials.gov evidence promotes atomically. | `docs/21_clinical_provider_ingestion.md`, `docs/clinical_provider_validation_snapshot.json`, `agentic_drug_discovery/clinicaltrials_gov.py`, `rl_env/specs/clinicaltrials_gov_ingestion_job.schema.json`, `tests/test_clinicaltrials_gov_ingestion.py` | One exact registry receipt is reconciled through NCT/version, candidate/condition, protocol/result/adverse-event arms, population, posted endpoint, analysis, and serious-adverse-event affected/at-risk counts. The bounded external example advances; removing only safety metadata defers with no partial identity state. This proves exact aggregate reconciliation, not registry authority, endpoint/event validity, participant-level results, safety acceptability, efficacy, or discovery performance. |
 | Cross-trial benefit-risk synthesis preserves source-level provenance without pooling. | `docs/22_clinical_benefit_risk_synthesis.md`, `docs/retrospective_policy_evaluation_snapshot.json`, `agentic_drug_discovery/clinical_synthesis.py`, `rl_env/specs/clinical_benefit_risk_synthesis.schema.json`, `tests/test_clinical_benefit_risk_synthesis.py` | Reviewed trial/design/endpoint/safety selections are recompiled from committed source-pinned ledgers. Hazard ratios, confidence intervals, arm measurements, serious-event counts, evidence IDs, and source hashes remain trial-level and source-disjoint. One external PALOMA-2/3 execution confirms the non-pooled path; its full state and review artifacts remain external. This is descriptive harmonization, not a meta-analysis, benefit-risk score, population comparability claim, clinical acceptability judgment, or treatment recommendation. |
 | Clinical evidence gaps and bounded actions are provenance- and budget-bound. | `docs/27_clinical_evidence_tensor_and_voi.md`, `agentic_drug_discovery/clinical_decision.py`, `rl_env/specs/clinical_evidence_decision_package.schema.json`, `tests/test_clinical_benefit_risk_synthesis.py` | A committed synthesis is replayed into exact trial cells, ordered workflow dimensions, typed provenance-linked gaps, and a deterministic action plan. Policy, tensor, catalog, scores, gap partition, and budget are integrity-bound. `ADVANCE` is evidence-workflow readiness only; gap mass and bounded VOI are uncalibrated heuristics, selected actions do not resolve evidence, and no treatment, clinical acceptability, terminal, pooling, or economic-VOI claim is made. |
+| Clinical evidence actions close the loop only through committed source rejoin. | `docs/28_clinical_evidence_closed_loop.md`, `agentic_drug_discovery/clinical_closed_loop.py`, `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json`, `tests/test_clinical_benefit_risk_synthesis.py` | Selected actions compile into exact state-bound calls and compact payload-free receipts. Reviewer-only verifier runs append refreshed mappings and syntheses. An attempted action is consumed, and a gap can resolve only when a successful targeted receipt promotes evidence whose exact source hash enters the after tensor. The public control is synthetic; it proves execution, provenance, budget, and replay invariants, not provider truth, action efficacy, clinical utility, calibrated VOI, or a treatment decision. |
 | Multi-trial portfolio ingestion and endpoint mapping are exact-set and replay-bound. | `docs/23_clinical_portfolio_endpoint_mapping.md`, `docs/retrospective_policy_evaluation_snapshot.json`, `agentic_drug_discovery/clinical_portfolio.py`, `agentic_drug_discovery/clinical_endpoint_mapping.py`, `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json`, `rl_env/specs/clinical_endpoint_mapping.schema.json`, `tests/test_clinical_portfolio.py` | Every declared single-trial job and external bundle must verify before payload-free output. A reviewer-approved mapping retains exact endpoint/safety fingerprints and source hashes, and synthesis must reference it. A real external PALOMA exact set executed under this contract, while the public package retains only aggregate outcomes and hashes; the portfolio review, authority payloads, full state, and per-episode artifacts are not release-approved. |
 | Planning is bounded before required calls spend budget. | `agentic_drug_discovery/planning.py`, `tests/test_agent_loop.py` | Preflight covers state/version, stage, contracts, chronology, duplicate requests, steps, and declared cost. It does not prove that a chosen tool plan is scientifically optimal. |
 | Policy replanning and resume preserve deterministic boundaries. | `docs/24_policy_replanning_and_resume.md`, `agentic_drug_discovery/policy.py`, `rl_env/specs/policy_checkpoint.schema.json`, `tests/test_policy_replanning.py` | Only predeclared typed replacement plans can follow a paused or blocked observation. Rule/global limits, queue identity, policy identity, observation hashes, checkpoint hashes, state/ledger chains, and stale resume tokens fail closed. Real senicapoc and PALOMA runs exercised this layer, but their checkpoints remain external. This proves control-flow continuity, not plan optimality or scientific validity. |
@@ -127,6 +128,10 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 86. `rl_env/specs/policy_evaluation_submission.schema.json`
 87. `rl_env/specs/policy_evaluation_report.schema.json`
 88. `tests/test_sealed_evaluation.py`
+89. `docs/27_clinical_evidence_tensor_and_voi.md`
+90. `agentic_drug_discovery/clinical_decision.py`
+91. `docs/28_clinical_evidence_closed_loop.md`
+92. `agentic_drug_discovery/clinical_closed_loop.py`
 
 ## Machine Anchors
 
@@ -159,6 +164,8 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | `agentic_drug_discovery/clinical_portfolio.py` | Exact-set multi-job/bundle preflight and payload-free portfolio extraction. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Approved reviewer/ontology declaration parsing, exact endpoint/safety fingerprint binding, and replay validation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Mapping-gated selection parsing, source-disjoint trial recompilation, trial-level effect/safety records, and non-pooling invariants. |
+| `agentic_drug_discovery/clinical_decision.py` | Exact evidence tensor, typed gap, bounded-VOI action plan, integrity reader, and committed-state recompilation contracts. |
+| `agentic_drug_discovery/clinical_closed_loop.py` | State-bound execution batches, compact provider/reviewer receipts, source-rejoined before/after transition compilation, and two-state validation. |
 | `agentic_drug_discovery/ingestion_cli.py` | Machine-readable `capture`, disease-context, preclinical, clinical extraction, and `compile` commands for the external source path. |
 | `agentic_drug_discovery/bounded_demo.py` | Dependency-free planner-to-transition fixture with machine-readable output. |
 | `adapters/execution_registry.py` | Conservative typed bindings for explicitly supplied adapter instances; selected dependency-free bindings are mirrored to Hugging Face. |
@@ -180,6 +187,10 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | `rl_env/specs/ncbi_pubmed_disease_model_ingestion_job.example.json` | Synthetic PubMed disease-model job with no scientific claim. |
 | `rl_env/specs/clinical_benefit_risk_synthesis.schema.json` | Machine schema for reviewed source-ledger trial/design/endpoint/safety selections. |
 | `rl_env/specs/clinical_benefit_risk_synthesis.example.json` | Synthetic two-trial selection example with no clinical judgment. |
+| `rl_env/specs/clinical_evidence_decision_package.schema.json` | Machine schema for exact clinical evidence cells, typed gaps, bounded actions, budget accounting, and integrity binding. |
+| `rl_env/specs/clinical_evidence_decision_package.example.json` | Compiler-generated synthetic HOLD package with no treatment or acceptability judgment. |
+| `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json` | Machine schema for selected-action execution, compact receipts, reviewer refresh, exact source rejoin, and nested before/after packages. |
+| `rl_env/specs/clinical_evidence_closed_loop_transition.example.json` | Compiler-generated synthetic HOLD-to-ADVANCE evidence-workflow transition. |
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machine schema for reviewer approval, ontology identity, and exact ordered endpoint/safety bindings. |
 | `rl_env/specs/clinical_endpoint_mapping.example.json` | Synthetic approved mapping example; ontology authority is not implied. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machine schema for the exact set of single-trial jobs, receipts, and mapping bindings. |
@@ -278,6 +289,11 @@ source bundles, real provider review jobs, and ingestion runs are not included.
 - Clinical evidence gap mass, resolution probability, decision relevance, and bounded VOI are
   declared workflow-priority inputs, not calibrated probabilities, causal estimates, or
   health-economic value. Real policies, catalogs, tensors, and decision packages remain external.
+- Closed-loop source rejoin proves that a selected action promoted evidence whose exact source
+  entered a refreshed committed tensor under bounded reviewer verification. It does not prove that
+  the source is true, that the action caused the gap to resolve scientifically, or that the
+  resulting workflow-ready state is clinically acceptable. Real execution batches, receipts,
+  refresh records, and transitions remain external.
 - This is not a clinical decision tool.
 - The SCD slice is an audited small-N vertical slice, not a broad multi-disease atlas.
 - Public benchmark numbers should be cited only with the caveats in `docs/12_scd_vertical_slice.md`.
