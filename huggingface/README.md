@@ -14,15 +14,15 @@ tags:
 
 # Agentic Drug Discovery System
 
-This card describes the unapproved 0.3.0.dev1 candidate package for the Agentic Drug Discovery System. The public Hugging Face Dataset remains at the reviewed 0.3.0.dev0 exact-source mirror until a new exact commit and package receive explicit approval. The candidate contains the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, real curator manifests, real clinical decision policies/catalogs/packages, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
+This card describes the unapproved 0.3.0.dev1 candidate package for the Agentic Drug Discovery System. The public Hugging Face Dataset remains at the reviewed 0.3.0.dev0 exact-source mirror until a new exact commit and package receive explicit approval. The candidate contains the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, real curator manifests, real clinical decision or closed-loop policies/catalogs/batches/receipts/packages, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes.
 
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
 - **Public state:** 0.3.0.dev0 exact-source mirror; 0.3.0.dev1 candidate not uploaded.
 - **Release lineage:** 0.2.0 remains the latest tagged stable release.
-- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, provenance-preserving clinical evidence tensor compilation and bounded VOI action planning, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched and sealed evaluators, preregistered held-out curation contracts, stage-stratified uncertainty, synthetic evaluation tests, aggregate external evaluation evidence, manifests, audit code, and the `ctdbench` scorer.
-- **Excludes:** Raw source data, real sealed or held-out boards, curator identities/attestations/votes/adjudications, curation manifests, real clinical decision policies/action catalogs/evidence tensors/packages, cached episode packets, label vaults, policy submissions, per-episode evaluations, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
+- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, provenance-preserving clinical evidence tensor compilation and bounded VOI action planning, bounded selected-action execution with compact receipts, reviewer-only refresh and exact source-rejoined transition validation, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched and sealed evaluators, preregistered held-out curation contracts, stage-stratified uncertainty, synthetic evaluation tests, aggregate external evaluation evidence, manifests, audit code, and the `ctdbench` scorer.
+- **Excludes:** Raw source data, real sealed or held-out boards, curator identities/attestations/votes/adjudications, curation manifests, real clinical decision policies/action catalogs/evidence tensors/packages, real closed-loop policies/execution batches/provider requests or outcomes/receipts/reviewer refresh records/transitions, cached episode packets, label vaults, policy submissions, per-episode evaluations, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
 - **Source:** Exact commit and tree are recorded in `upload_manifest.json`.
 
 ## Intended Use
@@ -93,6 +93,10 @@ This card describes the unapproved 0.3.0.dev1 candidate package for the Agentic 
   `tests/test_clinical_benefit_risk_synthesis.py` for committed-synthesis tensor compilation,
   provenance-linked gaps, deterministic bounded VOI ranking, budget failure, safety-signal hold,
   integrity checks, and the evidence-workflow-only decision boundary.
+- Inspect `docs/28_clinical_evidence_closed_loop.md`,
+  `agentic_drug_discovery/clinical_closed_loop.py`, and the adjacent transition schema/example for
+  exact selected-action execution, compact payload-free receipts, bounded reviewer-verifier
+  refresh, single-use actions, exact source rejoin, and two-state transition replay.
 - Inspect `rl_env/specs/pinned_evidence_manifest.schema.json` and its synthetic example before
   constructing a source manifest.
 - Inspect `rl_env/specs/target_identity_record.schema.json` and its synthetic example before

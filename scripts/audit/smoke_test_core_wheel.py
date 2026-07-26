@@ -658,26 +658,39 @@ def main() -> int:
                 text=True,
                 env=clean_env,
             )
-            sealed_api = subprocess.run(
+            public_api = subprocess.run(
                 [
                     str(python),
                     "-c",
                     (
                         "from agentic_drug_discovery import ("
+                        "CLINICAL_CLOSED_LOOP_SCHEMA_VERSION, "
+                        "compile_clinical_evidence_transition, "
+                        "compile_clinical_execution_batch, "
+                        "clinical_evidence_transition_from_json, "
                         "evaluate_policy_submission, "
+                        "execute_clinical_evidence_batch, "
                         "policy_evaluation_report_from_json, "
                         "policy_evaluation_submission_from_json, "
                         "sealed_evaluation_board_from_json, "
-                        "sealed_evaluation_vault_from_json"
+                        "sealed_evaluation_vault_from_json, "
+                        "validate_clinical_evidence_transition"
                         "); "
+                        "assert CLINICAL_CLOSED_LOOP_SCHEMA_VERSION == "
+                        "'adds.clinical-evidence-closed-loop-transition.v1'; "
                         "assert all(callable(item) for item in ("
+                        "compile_clinical_evidence_transition, "
+                        "compile_clinical_execution_batch, "
+                        "clinical_evidence_transition_from_json, "
                         "evaluate_policy_submission, "
+                        "execute_clinical_evidence_batch, "
                         "policy_evaluation_report_from_json, "
                         "policy_evaluation_submission_from_json, "
                         "sealed_evaluation_board_from_json, "
-                        "sealed_evaluation_vault_from_json"
+                        "sealed_evaluation_vault_from_json, "
+                        "validate_clinical_evidence_transition"
                         ")); "
-                        "print('sealed-evaluation-api-ok')"
+                        "print('public-api-ok')"
                     ),
                 ],
                 cwd=temp_dir,
@@ -1424,14 +1437,17 @@ def main() -> int:
     ):
         return fail("ClinicalTrials.gov portfolio retained source payload structure")
 
-    if sealed_api.stdout.strip() != "sealed-evaluation-api-ok":
-        return fail("sealed evaluation API was not importable from the wheel")
+    if public_api.stdout.strip() != "public-api-ok":
+        return fail(
+            "sealed evaluation and clinical closed-loop APIs were not importable "
+            "from the wheel"
+        )
 
     print(
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
         "CDC MMWR, NCBI PubMed, ChEMBL activity, PubMed disease-model, and "
         "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
-        "plus sealed evaluation API smoke tests "
+        "plus sealed evaluation and clinical closed-loop API smoke tests "
         f"completed for {wheels[0].name}"
     )
     return 0

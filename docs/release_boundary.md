@@ -100,6 +100,13 @@ program thresholds, priorities, costs, source identities, and planned operations
 package can retain trial-level evidence lineage. Those artifacts remain outside Git and Hugging
 Face until a separate scientific, privacy, and release-boundary review approves them.
 
+The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
+tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution
+batches, provider requests/outcomes, compact receipts, reviewer refresh records, before/after
+tensors, and transition packages can expose program strategy, source lineage, trial-level changes,
+costs, and planned operations. They remain outside Git and Hugging Face until separate scientific,
+privacy, security, and release-boundary review approves them.
+
 `adds-pinned-ingestion` enforces the raw-data boundary operationally: source bundles are immutable,
 contain exact bytes plus a receipt, and are refused inside any Git worktree. Compiled manifests and
 review reports contain no raw bundle path and still require explicit human review before promotion.
@@ -118,7 +125,8 @@ external until separate scientific and release-boundary approval.
 - Its not-yet-uploaded Hugging Face Dataset package is a commit-pinned subset:
   documentation, the typed execution core, the dependency-free pinned-evidence and
   local clinical-synthesis adapters and bindings, the clinical evidence tensor and bounded-VOI
-  compiler, tests, schemas, aggregate evidence, audit code, and the `benchmark/` scorer.
+  compiler, the bounded clinical closed-loop compiler and synthetic transition, tests, schemas,
+  aggregate evidence, audit code, and the `benchmark/` scorer.
 - `benchmark/` scores the separately hosted
   `jang1563/clinical-trial-decision-benchmark` dataset. Its data rows and
   Croissant metadata do not belong in the Agentic Drug Discovery System mirror.

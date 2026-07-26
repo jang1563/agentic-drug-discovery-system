@@ -164,13 +164,23 @@ described in the roadmap. Honest status:
   synthesis, policy, tensor, catalog, and plan, and strict replay rejects tampering. `ADVANCE`
   means only that evidence-workflow criteria are satisfied; clinical acceptability, terminal
   decisions, pooling, and calibrated economic VOI claims remain prohibited.
+- **Provenance-preserving clinical evidence closed loop:** Selected bounded-VOI actions compile
+  into exact state-bound calls for the existing fail-closed runner. Compact receipts bind request,
+  contract, payload hash, source hash, cost, accepted packet, action, and promoted evidence;
+  bounded reviewer-only verifier runs append a refreshed endpoint mapping and synthesis. The
+  after decision package removes attempted action ids from its residual catalog and can mark a gap
+  resolved only when a successful targeted receipt promotes evidence whose exact source hash enters
+  the after tensor. The transition remains
+  evidence-workflow-only and cannot issue a provider, terminal, treatment, or acceptability
+  decision.
 - **Built & audited:** source-derived label authority plus scoped construct-validity controls;
   callable tool/DB adapters
   (ClinicalTrials.gov, openFDA, Open Targets, ChEMBL, EMA EPAR) and multi-stage flow orchestrators;
   typed bindings for Open Targets, ChEMBL, ClinicalTrials.gov, EMA, Boltz-2, and RDKit molprops;
   a dependency-free source-pinned evidence-manifest adapter, capture/compiler CLI, and
   machine-readable receipt/job/review, disease-context, preclinical, clinical provider, and
-  clinical portfolio, endpoint mapping, cross-trial synthesis, clinical evidence decision,
+  clinical portfolio, endpoint mapping, cross-trial synthesis, clinical evidence decision and
+  closed-loop transition,
   sealed-board, label-vault, policy-submission, policy-report, held-out protocol,
   curator-manifest, and stage-stratified report schemas;
   one disease/target slice (sickle cell) traversed retrospectively; an unscored
@@ -183,7 +193,8 @@ described in the roadmap. Honest status:
   molecular properties; contextual ClinicalTrials.gov search results; source-pinned
   ClinicalTrials.gov trial designs; reviewer-approved endpoint mapping; deterministic non-pooled
   clinical benefit-risk synthesis; provenance-preserving clinical evidence tensor compilation and
-  bounded evidence-action prioritization; EMA
+  bounded evidence-action prioritization; bounded selected-action execution, reviewer-only
+  refresh, and exact source-rejoined decision transition; EMA
   regulatory status; and structured
   Boltz binding output; and source-pinned unmet-need and candidate functional-effect profiles have
   conservative mappings. Disease identity does not establish unmet need, ChEMBL activity volume
@@ -236,6 +247,9 @@ described in the roadmap. Honest status:
   `docs/27_clinical_evidence_tensor_and_voi.md` defines exact evidence cells, policy-relative gap
   ontology, deterministic bounded VOI action ranking, budget semantics, integrity envelopes, and
   the evidence-workflow-only decision boundary.
+  `docs/28_clinical_evidence_closed_loop.md` defines exact selected-action execution, compact
+  provider receipts, reviewer-verifier refresh bounds, source rejoin, single-use actions, and
+  before/after transition validation.
   `docs/public_evidence_summary.json` is the
   aggregate claim ledger.
 - `agentic_drug_discovery/`: typed state, bounded planning, tool execution, semantic promotion,
@@ -257,6 +271,9 @@ described in the roadmap. Honest status:
 - `rl_env/specs/clinical_evidence_decision_package.schema.json`: strict integrity-bound policy,
   tensor, gap, action-catalog, and bounded-VOI plan contract; the adjacent compiler-generated
   example is synthetic.
+- `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json`: strict integrity-bound
+  execution-batch, selected-action receipt, reviewer-refresh, source-rejoin, and before/after
+  decision contract; the adjacent compiler-generated example is synthetic.
 - `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` and
   `rl_env/specs/clinical_endpoint_mapping.schema.json`: exact portfolio-set and reviewer-approved
   endpoint-family mapping contracts; adjacent examples are synthetic.
@@ -309,6 +326,7 @@ described in the roadmap. Honest status:
 | `docs/25_cutoff_safe_policy_evaluation.md` | Humans + agents | Cutoff-safe cached packets, role-neutral pair sealing, external label commitments, policy scoring, and claim boundaries. |
 | `docs/26_independent_heldout_evaluation.md` | Humans + agents | Preregistered cohort/label/curator contracts, curation validation, stage minima, action coverage, selective risk, and uncertainty boundaries. |
 | `docs/27_clinical_evidence_tensor_and_voi.md` | Humans + agents | Exact clinical evidence cells, policy-relative gap ontology, bounded VOI action ranking, budget behavior, provenance replay, and interpretation boundaries. |
+| `docs/28_clinical_evidence_closed_loop.md` | Humans + agents | Exact selected-action execution, compact receipts, reviewer-only refresh, source rejoin, single-use catalog behavior, and before/after validation. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Machines + reviewers | Aggregate 4-pair/8-episode policy metrics, payload-free artifact hashes, real gate outcomes, and limitations. |
 | `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
 | `agentic_drug_discovery/` | Developers + agents | Bounded planning, typed execution, semantic promotion, multi-stage stop semantics, matched evaluation, replay, and verifier-gated transitions. |
@@ -321,6 +339,7 @@ described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Developers + agents | Strict reviewer-approved mapping parser, exact ledger compiler, fingerprints, and continuity recompilation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Developers + agents | Deterministic reviewed-selection compiler for source-disjoint, non-pooled trial-level benefit-risk records. |
 | `agentic_drug_discovery/clinical_decision.py` | Developers + agents | Committed-synthesis tensor compiler, typed evidence gaps, deterministic budget-aware VOI planner, strict integrity readers, and state replay. |
+| `agentic_drug_discovery/clinical_closed_loop.py` | Developers + agents | State-bound selected-action batches, bounded runner integration, compact execution and refresh receipts, source-rejoined transition compilation, strict readers, and two-state replay validation. |
 | `agentic_drug_discovery/policy.py` | Developers + agents | Deterministic policy rules, queue-bound replanning, checkpoint integrity, and exact resume orchestration. |
 | `agentic_drug_discovery/sealed_evaluation.py` | Developers + agents | Role-neutral sealed boards, salted label vaults, fingerprint-bound submissions, strict envelope readers, and matched policy metrics. |
 | `agentic_drug_discovery/heldout_evaluation.py` | Developers + agents | Preregistered held-out protocols, opaque independent-curator manifests, stage-stratified Wilson metrics, strict readers, and report integrity. |
@@ -332,6 +351,7 @@ described in the roadmap. Honest status:
 | `rl_env/specs/clinical_intervention_identity.schema.json` | Machines + agents | JSON Schema for evidence-backed clinical intervention, trial, and atomic design records. |
 | `rl_env/specs/clinical_benefit_risk_synthesis.schema.json` | Machines + agents | JSON Schema for reviewed multi-trial endpoint/safety selections with no supplied measurements. |
 | `rl_env/specs/clinical_evidence_decision_package.schema.json` | Machines + agents | JSON Schema for the integrity-bound policy, exact evidence tensor, gaps, action catalog, budget, and bounded-VOI plan; the adjacent example is synthetic. |
+| `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json` | Machines + agents | JSON Schema for integrity-bound execution batches, compact provider/reviewer receipts, exact source rejoin, costs, gap transitions, and nested before/after decision packages; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machines + agents | JSON Schema for approved reviewer, ontology identity, and exact endpoint/safety bindings without measurements. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machines + reviewers | JSON Schema for the exact set of single-trial jobs, receipts, and mapping-bound identities. |
 | `rl_env/specs/policy_checkpoint.schema.json` | Machines + reviewers | JSON Schema for hash-bound policy checkpoints, typed pending plans, observations, directives, and replan history. |

@@ -14,7 +14,7 @@ The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
-  `docs/11_*` through `docs/26_*`, the payload-free preclinical, clinical provider, and sealed
+  `docs/11_*` through `docs/28_*`, the payload-free preclinical, clinical provider, and sealed
   policy-evaluation snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and
   this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
@@ -22,6 +22,10 @@ The public GitHub surface includes:
 - Executable and scaffold code: `agentic_drug_discovery/`, `tests/`, `adapters/`,
   `chains/`, `rl_env/specs/`, `rl_env/rewards/`, `verifiers/soft/README.md`,
   audit scripts, and the `benchmark/` scorer/tests.
+- The clinical evidence closed-loop surface is limited to implementation, schemas,
+  compiler-generated synthetic examples, tests, and documentation. Real policies,
+  execution batches, provider requests or outcomes, receipts, reviewer refresh
+  records, before/after tensors, and transition packages remain excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 
