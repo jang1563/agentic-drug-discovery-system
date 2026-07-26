@@ -1,8 +1,8 @@
 {
   "artifact": "agentic-drug-discovery-system",
   "release_version": "0.3.0.dev1",
-  "last_public_release_version": "0.3.0.dev0",
-  "release_stage": "public_update_candidate",
+  "last_public_release_version": "0.3.0.dev1",
+  "release_stage": "public_release",
   "target_surface": "github_and_huggingface_dataset",
   "public_boundary": {
     "include_semantics": "Exhaustive tracked public file anchors and directory prefixes; every tracked or unignored candidate file must be covered and is scanned by github_release_file_audit.py.",
@@ -197,18 +197,28 @@
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
     "Vertical-slice benchmark numbers remain caveats-first and small-N scoped",
     "Source capture/compiler, typed policy replanning and checkpoint resume, cutoff-safe matched and sealed evaluation, preregistered held-out curation and stage-stratified uncertainty, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and multi-trial portfolio verification, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, provenance-preserving clinical evidence tensor plus bounded VOI action planning, and bounded selected-action execution plus reviewer-only source-rejoined transition validation, typed endpoint and lineage-independent preclinical promotion, atomic clinical endpoint/safety promotion, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, semantic mapper, eight-stage provider-backed program replay, core tests, and wheel build pass without private research artifacts",
-    "Hugging Face candidate package is built from the exact committed candidate and validated by file hashes",
-    "Release decision packet remains pending until the exact candidate commit and package receive explicit approval",
+    "Hugging Face public package is built from the exact committed source and validated by file hashes",
+    "Release decision packet records explicit approval and publication; every future update requires a new exact-package approval",
     "Release audit workflow green on GitHub"
   ],
+  "publication_record": {
+    "approved_candidate_commit": "0f00c37f7beedca0c63ccc33476df9be40a2500e",
+    "approved_candidate_tree": "0e737346b773bffaf6200432dbaf810b569bc7b9",
+    "content_publication_commit": "5a39af737879126973777b5df897d18a76011b07",
+    "github_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/16",
+    "github_actions_run": "https://github.com/jang1563/agentic-drug-discovery-system/actions/runs/30219745025",
+    "hugging_face_initial_content_commit": "3cb6d21055b481ca01124e7ff91c84a41a6f1489",
+    "hugging_face_file_count": 169,
+    "approved_and_published_on": "2026-07-26"
+  },
   "hugging_face": {
-    "status": "public_repo_update_candidate_not_uploaded",
+    "status": "public_repo_uploaded_after_approval",
     "repo_type": "dataset",
     "repo_id": "jang1563/agentic-drug-discovery-system",
     "repo_url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
     "visibility": "public",
-    "last_public_release_version": "0.3.0.dev0",
-    "candidate_version": "0.3.0.dev1",
-    "rule": "Do not merge or upload the candidate until final human boundary review approves the exact committed release package."
+    "last_public_release_version": "0.3.0.dev1",
+    "current_public_version": "0.3.0.dev1",
+    "rule": "Every future public update requires final human boundary review of the exact committed release package."
   }
 }

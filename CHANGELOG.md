@@ -4,6 +4,8 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+## 0.3.0.dev1 - 2026-07-26
+
 - Added a bounded clinical evidence closed loop over the existing execution core. Exact
   selected-action batches now bind decision-package, tensor, plan, policy, state version, tool
   contract, arguments, targeted gaps, and cost; compact receipts retain request/payload/source/
