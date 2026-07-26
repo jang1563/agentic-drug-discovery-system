@@ -1,0 +1,869 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_evidence_decision_package.schema.json",
+  "title": "Provenance-preserving clinical evidence decision package",
+  "description": "Integrity-bound evidence-workflow policy, exact trial tensor, open gaps, action catalog, and deterministic bounded-VOI plan. ADVANCE is not a clinical recommendation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "package"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-evidence-decision-package.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "package": {
+      "$ref": "#/$defs/package"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "positiveProbability": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1
+    },
+    "nonNegativeNumber": {
+      "type": "number",
+      "minimum": 0
+    },
+    "positiveNumber": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "positiveInteger": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "advance",
+        "hold",
+        "defer"
+      ]
+    },
+    "actionType": {
+      "enum": [
+        "retrieve_evidence",
+        "query_database",
+        "run_verifier"
+      ]
+    },
+    "dimension": {
+      "enum": [
+        "source_independence",
+        "trial_count",
+        "benefit_direction",
+        "benefit_precision",
+        "safety_direction",
+        "safety_exposure",
+        "endpoint_timeframe_alignment",
+        "safety_timeframe_alignment",
+        "measurement_unit_alignment"
+      ]
+    },
+    "dimensionStatus": {
+      "enum": [
+        "satisfied",
+        "gap",
+        "blocking_signal"
+      ]
+    },
+    "gapCode": {
+      "enum": [
+        "insufficient_independent_trials",
+        "benefit_not_demonstrated",
+        "benefit_direction_conflict",
+        "benefit_harm_signal",
+        "imprecise_benefit_estimate",
+        "higher_observed_serious_event_risk",
+        "safety_direction_conflict",
+        "insufficient_safety_exposure",
+        "endpoint_timeframe_mismatch",
+        "safety_timeframe_mismatch",
+        "measurement_unit_mismatch"
+      ]
+    },
+    "textArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "sha256Array": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "version",
+        "registered_on",
+        "minimum_independent_trials",
+        "maximum_log_effect_ci_width",
+        "minimum_safety_participants_per_arm",
+        "max_planned_actions",
+        "max_planned_cost",
+        "minimum_bounded_voi",
+        "workflow_scope",
+        "require_all_trials_benefit",
+        "require_consistent_safety_direction",
+        "prohibit_higher_observed_serious_event_risk",
+        "require_aligned_endpoint_timeframes",
+        "require_aligned_safety_timeframes",
+        "require_aligned_measurement_units",
+        "automatic_pooling_prohibited",
+        "clinical_acceptability_inference_prohibited",
+        "terminal_decisions_prohibited",
+        "metadata"
+      ],
+      "properties": {
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "version": {
+          "$ref": "#/$defs/text"
+        },
+        "registered_on": {
+          "$ref": "#/$defs/date"
+        },
+        "minimum_independent_trials": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "maximum_log_effect_ci_width": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "minimum_safety_participants_per_arm": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_planned_actions": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "minimum_bounded_voi": {
+          "$ref": "#/$defs/probability"
+        },
+        "workflow_scope": {
+          "const": "evidence_workflow_only"
+        },
+        "require_all_trials_benefit": {
+          "const": true
+        },
+        "require_consistent_safety_direction": {
+          "const": true
+        },
+        "prohibit_higher_observed_serious_event_risk": {
+          "const": true
+        },
+        "require_aligned_endpoint_timeframes": {
+          "const": true
+        },
+        "require_aligned_safety_timeframes": {
+          "const": true
+        },
+        "require_aligned_measurement_units": {
+          "const": true
+        },
+        "automatic_pooling_prohibited": {
+          "const": true
+        },
+        "clinical_acceptability_inference_prohibited": {
+          "const": true
+        },
+        "terminal_decisions_prohibited": {
+          "const": true
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cell_id",
+        "study_record_id",
+        "trial_id",
+        "design_id",
+        "endpoint_id",
+        "safety_id",
+        "effect_measure",
+        "effect_estimate",
+        "confidence_interval_percent",
+        "confidence_interval_lower",
+        "confidence_interval_upper",
+        "log_effect_ci_width",
+        "benefit_direction",
+        "candidate_measurement",
+        "comparator_measurement",
+        "measurement_unit",
+        "endpoint_time_frame",
+        "safety_time_frame",
+        "candidate_serious_num_affected",
+        "candidate_serious_num_at_risk",
+        "comparator_serious_num_affected",
+        "comparator_serious_num_at_risk",
+        "candidate_serious_event_risk",
+        "comparator_serious_event_risk",
+        "serious_event_risk_difference",
+        "safety_direction",
+        "source_evidence_ids",
+        "source_content_hashes",
+        "endpoint_fingerprint_sha256",
+        "safety_fingerprint_sha256"
+      ],
+      "properties": {
+        "cell_id": {
+          "$ref": "#/$defs/text"
+        },
+        "study_record_id": {
+          "$ref": "#/$defs/text"
+        },
+        "trial_id": {
+          "$ref": "#/$defs/text"
+        },
+        "design_id": {
+          "$ref": "#/$defs/text"
+        },
+        "endpoint_id": {
+          "$ref": "#/$defs/text"
+        },
+        "safety_id": {
+          "$ref": "#/$defs/text"
+        },
+        "effect_measure": {
+          "$ref": "#/$defs/text"
+        },
+        "effect_estimate": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "confidence_interval_percent": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        },
+        "confidence_interval_lower": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "confidence_interval_upper": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "log_effect_ci_width": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "benefit_direction": {
+          "enum": [
+            "benefit",
+            "harm",
+            "null_or_uncertain"
+          ]
+        },
+        "candidate_measurement": {
+          "type": "number"
+        },
+        "comparator_measurement": {
+          "type": "number"
+        },
+        "measurement_unit": {
+          "$ref": "#/$defs/text"
+        },
+        "endpoint_time_frame": {
+          "$ref": "#/$defs/text"
+        },
+        "safety_time_frame": {
+          "$ref": "#/$defs/text"
+        },
+        "candidate_serious_num_affected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "candidate_serious_num_at_risk": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "comparator_serious_num_affected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "comparator_serious_num_at_risk": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "candidate_serious_event_risk": {
+          "$ref": "#/$defs/probability"
+        },
+        "comparator_serious_event_risk": {
+          "$ref": "#/$defs/probability"
+        },
+        "serious_event_risk_difference": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "safety_direction": {
+          "enum": [
+            "lower_observed_serious_event_risk",
+            "higher_observed_serious_event_risk",
+            "equal_observed_serious_event_risk"
+          ]
+        },
+        "source_evidence_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "source_content_hashes": {
+          "$ref": "#/$defs/sha256Array"
+        },
+        "endpoint_fingerprint_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "safety_fingerprint_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gap_id",
+        "code",
+        "dimension",
+        "summary",
+        "gap_mass",
+        "blocking",
+        "study_record_ids",
+        "source_evidence_ids"
+      ],
+      "properties": {
+        "gap_id": {
+          "$ref": "#/$defs/text"
+        },
+        "code": {
+          "$ref": "#/$defs/gapCode"
+        },
+        "dimension": {
+          "$ref": "#/$defs/dimension"
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "gap_mass": {
+          "$ref": "#/$defs/positiveProbability"
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "study_record_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "source_evidence_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        }
+      }
+    },
+    "dimensionRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "status",
+        "observed",
+        "criterion",
+        "gap_ids"
+      ],
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/dimension"
+        },
+        "status": {
+          "$ref": "#/$defs/dimensionStatus"
+        },
+        "observed": {
+          "type": "object"
+        },
+        "criterion": {
+          "type": "object"
+        },
+        "gap_ids": {
+          "$ref": "#/$defs/textArray"
+        }
+      }
+    },
+    "tensor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tensor_id",
+        "method_id",
+        "program_id",
+        "synthesis_id",
+        "synthesis_fingerprint",
+        "policy_id",
+        "policy_version",
+        "policy_fingerprint",
+        "candidate_id",
+        "intervention_id",
+        "disease_id",
+        "endpoint_mapping_id",
+        "endpoint_family",
+        "effect_measure",
+        "safety_measure",
+        "as_of_date",
+        "stage",
+        "cells",
+        "dimensions",
+        "gaps",
+        "source_evidence_ids",
+        "source_content_hashes",
+        "pooling_performed",
+        "cross_trial_comparability_inferred",
+        "population_homogeneity_inferred",
+        "clinical_acceptability_inferred"
+      ],
+      "properties": {
+        "tensor_id": {
+          "$ref": "#/$defs/text"
+        },
+        "method_id": {
+          "const": "adds.provenance-preserving-clinical-evidence-tensor.v1"
+        },
+        "program_id": {
+          "$ref": "#/$defs/text"
+        },
+        "synthesis_id": {
+          "$ref": "#/$defs/text"
+        },
+        "synthesis_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_version": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "candidate_id": {
+          "$ref": "#/$defs/text"
+        },
+        "intervention_id": {
+          "$ref": "#/$defs/text"
+        },
+        "disease_id": {
+          "$ref": "#/$defs/text"
+        },
+        "endpoint_mapping_id": {
+          "$ref": "#/$defs/text"
+        },
+        "endpoint_family": {
+          "$ref": "#/$defs/text"
+        },
+        "effect_measure": {
+          "$ref": "#/$defs/text"
+        },
+        "safety_measure": {
+          "$ref": "#/$defs/text"
+        },
+        "as_of_date": {
+          "$ref": "#/$defs/date"
+        },
+        "stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "cells": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/cell"
+          }
+        },
+        "dimensions": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": {
+            "$ref": "#/$defs/dimensionRecord"
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/gap"
+          }
+        },
+        "source_evidence_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 2
+            }
+          ]
+        },
+        "source_content_hashes": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/sha256Array"
+            },
+            {
+              "minItems": 2
+            }
+          ]
+        },
+        "pooling_performed": {
+          "const": false
+        },
+        "cross_trial_comparability_inferred": {
+          "const": false
+        },
+        "population_homogeneity_inferred": {
+          "const": false
+        },
+        "clinical_acceptability_inferred": {
+          "const": false
+        }
+      }
+    },
+    "actionOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id",
+        "action_type",
+        "tool_id",
+        "operation",
+        "purpose",
+        "targeted_gap_codes",
+        "expected_gap_resolution_probability",
+        "decision_relevance",
+        "max_cost",
+        "arguments",
+        "metadata"
+      ],
+      "properties": {
+        "action_id": {
+          "$ref": "#/$defs/text"
+        },
+        "action_type": {
+          "$ref": "#/$defs/actionType"
+        },
+        "tool_id": {
+          "$ref": "#/$defs/text"
+        },
+        "operation": {
+          "$ref": "#/$defs/text"
+        },
+        "purpose": {
+          "$ref": "#/$defs/text"
+        },
+        "targeted_gap_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/gapCode"
+          }
+        },
+        "expected_gap_resolution_probability": {
+          "$ref": "#/$defs/positiveProbability"
+        },
+        "decision_relevance": {
+          "$ref": "#/$defs/positiveProbability"
+        },
+        "max_cost": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "arguments": {
+          "type": "object"
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    },
+    "actionSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rank",
+        "action_id",
+        "action_fingerprint",
+        "targeted_gap_ids",
+        "marginal_gap_mass",
+        "bounded_voi",
+        "voi_per_cost",
+        "max_cost"
+      ],
+      "properties": {
+        "rank": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "action_id": {
+          "$ref": "#/$defs/text"
+        },
+        "action_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "targeted_gap_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "marginal_gap_mass": {
+          "$ref": "#/$defs/positiveProbability"
+        },
+        "bounded_voi": {
+          "$ref": "#/$defs/positiveProbability"
+        },
+        "voi_per_cost": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "max_cost": {
+          "$ref": "#/$defs/positiveNumber"
+        }
+      }
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "tensor_id",
+        "tensor_fingerprint",
+        "policy_id",
+        "policy_version",
+        "policy_fingerprint",
+        "decision",
+        "code",
+        "rationale_codes",
+        "selected_actions",
+        "open_gap_ids",
+        "targeted_gap_ids",
+        "untargeted_gap_ids",
+        "budget_limit",
+        "budget_spent",
+        "budget_available",
+        "planned_cost",
+        "budget_remaining_after_plan",
+        "voi_method_id",
+        "workflow_scope",
+        "clinical_acceptability_inferred",
+        "terminal_decision_issued"
+      ],
+      "properties": {
+        "plan_id": {
+          "$ref": "#/$defs/text"
+        },
+        "tensor_id": {
+          "$ref": "#/$defs/text"
+        },
+        "tensor_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_version": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "code": {
+          "$ref": "#/$defs/text"
+        },
+        "rationale_codes": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "selected_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/actionSelection"
+          }
+        },
+        "open_gap_ids": {
+          "$ref": "#/$defs/textArray"
+        },
+        "targeted_gap_ids": {
+          "$ref": "#/$defs/textArray"
+        },
+        "untargeted_gap_ids": {
+          "$ref": "#/$defs/textArray"
+        },
+        "budget_limit": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "budget_spent": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "budget_available": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "budget_remaining_after_plan": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "voi_method_id": {
+          "const": "adds.bounded-voi-priority.v1"
+        },
+        "workflow_scope": {
+          "const": "evidence_workflow_only"
+        },
+        "clinical_acceptability_inferred": {
+          "const": false
+        },
+        "terminal_decision_issued": {
+          "const": false
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {
+          "const": "ADVANCE means that preregistered evidence-workflow criteria are satisfied; it is not a treatment, regulatory, or clinical acceptability recommendation."
+        },
+        {
+          "const": "Serious-event risk differences are unadjusted posted aggregate comparisons and do not establish causality."
+        },
+        {
+          "const": "Bounded VOI is a deterministic prioritization heuristic based on declared gap mass, resolution probability, decision relevance, and cost; it is not calibrated economic value of information."
+        },
+        {
+          "const": "No cross-trial pooling, population-homogeneity inference, or clinical benefit-risk score is performed."
+        }
+      ],
+      "items": false
+    },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_id",
+        "program_id",
+        "as_of_date",
+        "policy",
+        "action_catalog",
+        "tensor",
+        "plan",
+        "limitations"
+      ],
+      "properties": {
+        "package_id": {
+          "$ref": "#/$defs/text"
+        },
+        "program_id": {
+          "$ref": "#/$defs/text"
+        },
+        "as_of_date": {
+          "$ref": "#/$defs/date"
+        },
+        "policy": {
+          "$ref": "#/$defs/policy"
+        },
+        "action_catalog": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/actionOption"
+          }
+        },
+        "tensor": {
+          "$ref": "#/$defs/tensor"
+        },
+        "plan": {
+          "$ref": "#/$defs/plan"
+        },
+        "limitations": {
+          "$ref": "#/$defs/limitations"
+        }
+      }
+    }
+  }
+}

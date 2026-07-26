@@ -116,6 +116,14 @@ Hugging Face upload.
   curation manifests, and per-episode curation results.
 - [x] Documentation states that the existing real retrospective board is unchanged and that no
   real independently curated result is claimed.
+- [x] The clinical evidence decision layer requires a committed replay-valid synthesis, preserves
+  exact trial/source provenance, and deterministically replays tensor gaps, bounded VOI scores,
+  action ranking, gap partition, and budget accounting.
+- [x] The decision package schema and compiler-generated synthetic example are strict-reader
+  compatible, and tests cover safety signals, insufficient budget, low VOI, duplicate actions,
+  source overlap, direction forgery, duplicate JSON keys, and integrity tampering.
+- [x] The release boundary excludes real clinical decision policies, action catalogs, evidence
+  tensors, and compiled decision packages; `ADVANCE` is documented as workflow readiness only.
 - [x] GitHub `main` and the public Hugging Face Dataset remain at the 0.3.0.dev0 baseline.
 - [ ] The exact 0.3.0.dev1 candidate commit and Hugging Face package have received explicit human
   approval.

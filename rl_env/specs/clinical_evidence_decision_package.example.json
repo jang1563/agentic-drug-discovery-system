@@ -1,0 +1,456 @@
+{
+  "integrity_sha256": "a0656758418b15ef38b947e37dbd8781aeeb722b2dd64084ccf15cb9ca4926ea",
+  "package": {
+    "action_catalog": [
+      {
+        "action_id": "query-independent-trial",
+        "action_type": "query_database",
+        "arguments": {
+          "candidate_id": "CHEMBL_TEST",
+          "disease_id": "MONDO_TEST",
+          "endpoint_family": "progression_free_survival"
+        },
+        "decision_relevance": 0.9,
+        "expected_gap_resolution_probability": 0.8,
+        "max_cost": 0.2,
+        "metadata": {
+          "payload_class": "synthetic"
+        },
+        "operation": "find_source_disjoint_trial",
+        "purpose": "Find one additional source-disjoint eligible trial.",
+        "targeted_gap_codes": [
+          "insufficient_independent_trials"
+        ],
+        "tool_id": "clinical_trial_portfolio"
+      },
+      {
+        "action_id": "retrieve-safety-followup",
+        "action_type": "retrieve_evidence",
+        "arguments": {
+          "candidate_id": "CHEMBL_TEST",
+          "disease_id": "MONDO_TEST"
+        },
+        "decision_relevance": 0.8,
+        "expected_gap_resolution_probability": 0.7,
+        "max_cost": 0.1,
+        "metadata": {
+          "payload_class": "synthetic"
+        },
+        "operation": "retrieve_posted_safety_update",
+        "purpose": "Retrieve a later posted aggregate safety follow-up.",
+        "targeted_gap_codes": [
+          "higher_observed_serious_event_risk",
+          "insufficient_safety_exposure"
+        ],
+        "tool_id": "clinical_registry_followup"
+      }
+    ],
+    "as_of_date": "2025-01-02",
+    "limitations": [
+      "ADVANCE means that preregistered evidence-workflow criteria are satisfied; it is not a treatment, regulatory, or clinical acceptability recommendation.",
+      "Serious-event risk differences are unadjusted posted aggregate comparisons and do not establish causality.",
+      "Bounded VOI is a deterministic prioritization heuristic based on declared gap mass, resolution probability, decision relevance, and cost; it is not calibrated economic value of information.",
+      "No cross-trial pooling, population-homogeneity inference, or clinical benefit-risk score is performed."
+    ],
+    "package_id": "synthetic-clinical-evidence-decision-package",
+    "plan": {
+      "budget_available": 0.25,
+      "budget_limit": 2.0,
+      "budget_remaining_after_plan": 0.15,
+      "budget_spent": 0.02,
+      "clinical_acceptability_inferred": false,
+      "code": "clinical_evidence_acquisition_planned",
+      "decision": "hold",
+      "open_gap_ids": [
+        "synthetic-clinical-evidence-tensor:gap:insufficient_independent_trials",
+        "synthetic-clinical-evidence-tensor:gap:insufficient_safety_exposure"
+      ],
+      "plan_id": "synthetic-clinical-evidence-plan",
+      "planned_cost": 0.1,
+      "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+      "policy_id": "synthetic-clinical-workflow-policy",
+      "policy_version": "1",
+      "rationale_codes": [
+        "open_evidence_gaps_have_bounded_actions",
+        "gap:insufficient_independent_trials",
+        "gap:insufficient_safety_exposure"
+      ],
+      "selected_actions": [
+        {
+          "action_fingerprint": "3bd5d40a578a5886df65fc3780a76e1d829df7475d23584e847092d0aa8061b3",
+          "action_id": "retrieve-safety-followup",
+          "bounded_voi": 0.224,
+          "marginal_gap_mass": 0.4,
+          "max_cost": 0.1,
+          "rank": 1,
+          "targeted_gap_ids": [
+            "synthetic-clinical-evidence-tensor:gap:insufficient_safety_exposure"
+          ],
+          "voi_per_cost": 2.24
+        }
+      ],
+      "targeted_gap_ids": [
+        "synthetic-clinical-evidence-tensor:gap:insufficient_safety_exposure"
+      ],
+      "tensor_fingerprint": "bcd1a7f1e2ed1a36f48dd8b45280e972d7999b26c0f0767d92aff20fb17ee6e5",
+      "tensor_id": "synthetic-clinical-evidence-tensor",
+      "terminal_decision_issued": false,
+      "untargeted_gap_ids": [
+        "synthetic-clinical-evidence-tensor:gap:insufficient_independent_trials"
+      ],
+      "voi_method_id": "adds.bounded-voi-priority.v1",
+      "workflow_scope": "evidence_workflow_only"
+    },
+    "policy": {
+      "automatic_pooling_prohibited": true,
+      "clinical_acceptability_inference_prohibited": true,
+      "max_planned_actions": 2,
+      "max_planned_cost": 0.25,
+      "maximum_log_effect_ci_width": 0.6,
+      "metadata": {
+        "clinical_use": "prohibited",
+        "payload_class": "synthetic"
+      },
+      "minimum_bounded_voi": 0.05,
+      "minimum_independent_trials": 3,
+      "minimum_safety_participants_per_arm": 100,
+      "policy_id": "synthetic-clinical-workflow-policy",
+      "prohibit_higher_observed_serious_event_risk": true,
+      "registered_on": "2025-01-01",
+      "require_aligned_endpoint_timeframes": true,
+      "require_aligned_measurement_units": true,
+      "require_aligned_safety_timeframes": true,
+      "require_all_trials_benefit": true,
+      "require_consistent_safety_direction": true,
+      "terminal_decisions_prohibited": true,
+      "version": "1",
+      "workflow_scope": "evidence_workflow_only"
+    },
+    "program_id": "benefit-risk-program",
+    "tensor": {
+      "as_of_date": "2025-01-02",
+      "candidate_id": "CHEMBL_TEST",
+      "cells": [
+        {
+          "benefit_direction": "benefit",
+          "candidate_measurement": 12.0,
+          "candidate_serious_event_risk": 0.2,
+          "candidate_serious_num_affected": 12,
+          "candidate_serious_num_at_risk": 60,
+          "cell_id": "synthetic-clinical-evidence-tensor:cell:NCT00000001",
+          "comparator_measurement": 8.0,
+          "comparator_serious_event_risk": 0.3,
+          "comparator_serious_num_affected": 18,
+          "comparator_serious_num_at_risk": 60,
+          "confidence_interval_lower": 0.55,
+          "confidence_interval_percent": 95.0,
+          "confidence_interval_upper": 0.89,
+          "design_id": "NCT00000001:design",
+          "effect_estimate": 0.7,
+          "effect_measure": "hazard_ratio",
+          "endpoint_fingerprint_sha256": "b167962364ddb482c5bda1e7a8466bd0b3a2548c04f547bde4cd060743d8d76c",
+          "endpoint_id": "NCT00000001:endpoint:primary-0",
+          "endpoint_time_frame": "24 months",
+          "log_effect_ci_width": 0.4813031844996689,
+          "measurement_unit": "months",
+          "safety_direction": "lower_observed_serious_event_risk",
+          "safety_fingerprint_sha256": "df3ecaec6837e2e05858448dee20e504f59ecd3367403d956f866ede7008828c",
+          "safety_id": "NCT00000001:safety:serious-adverse-events",
+          "safety_time_frame": "From first dose through 30 days after last dose",
+          "serious_event_risk_difference": -0.09999999999999998,
+          "source_content_hashes": [
+            "b38ff7101866615de08e6e206a945cde0c184b1ae16532dd544787307b34310b"
+          ],
+          "source_evidence_ids": [
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:clinical-endpoint-benefit",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:clinical-safety-assessment",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-arm-OG000",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-arm-OG001",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-endpoint-identity",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-identity-NCT00000001",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-population",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-safety-identity"
+          ],
+          "study_record_id": "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000001",
+          "trial_id": "NCT00000001"
+        },
+        {
+          "benefit_direction": "benefit",
+          "candidate_measurement": 12.0,
+          "candidate_serious_event_risk": 0.2,
+          "candidate_serious_num_affected": 12,
+          "candidate_serious_num_at_risk": 60,
+          "cell_id": "synthetic-clinical-evidence-tensor:cell:NCT00000002",
+          "comparator_measurement": 8.0,
+          "comparator_serious_event_risk": 0.3,
+          "comparator_serious_num_affected": 18,
+          "comparator_serious_num_at_risk": 60,
+          "confidence_interval_lower": 0.55,
+          "confidence_interval_percent": 95.0,
+          "confidence_interval_upper": 0.89,
+          "design_id": "NCT00000002:design",
+          "effect_estimate": 0.7,
+          "effect_measure": "hazard_ratio",
+          "endpoint_fingerprint_sha256": "e1e8840ff8eaf580914c2a416715fa4fd3422527f8719bf37cd9fbd38912cacf",
+          "endpoint_id": "NCT00000002:endpoint:primary-0",
+          "endpoint_time_frame": "24 months",
+          "log_effect_ci_width": 0.4813031844996689,
+          "measurement_unit": "months",
+          "safety_direction": "lower_observed_serious_event_risk",
+          "safety_fingerprint_sha256": "b3080f06976ce2026d383c152d040a8c834092e5654d962f826b448870172919",
+          "safety_id": "NCT00000002:safety:serious-adverse-events",
+          "safety_time_frame": "From first dose through 30 days after last dose",
+          "serious_event_risk_difference": -0.09999999999999998,
+          "source_content_hashes": [
+            "63aafdc5ff7c0582930d5a32a7018070f830547d5e8d5521c56be093eea5beaf"
+          ],
+          "source_evidence_ids": [
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:clinical-endpoint-benefit",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:clinical-safety-assessment",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-arm-OG000",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-arm-OG001",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-endpoint-identity",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-identity-NCT00000002",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-population",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-safety-identity"
+          ],
+          "study_record_id": "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000002",
+          "trial_id": "NCT00000002"
+        }
+      ],
+      "clinical_acceptability_inferred": false,
+      "cross_trial_comparability_inferred": false,
+      "dimensions": [
+        {
+          "criterion": {
+            "source_disjoint": true
+          },
+          "dimension": "source_independence",
+          "gap_ids": [],
+          "observed": {
+            "source_content_hash_count": 2,
+            "source_disjoint": true
+          },
+          "status": "satisfied"
+        },
+        {
+          "criterion": {
+            "minimum_independent_trials": 3
+          },
+          "dimension": "trial_count",
+          "gap_ids": [
+            "synthetic-clinical-evidence-tensor:gap:insufficient_independent_trials"
+          ],
+          "observed": {
+            "independent_trial_count": 2
+          },
+          "status": "gap"
+        },
+        {
+          "criterion": {
+            "all_trials_benefit": true
+          },
+          "dimension": "benefit_direction",
+          "gap_ids": [],
+          "observed": {
+            "direction_counts": {
+              "benefit": 2
+            }
+          },
+          "status": "satisfied"
+        },
+        {
+          "criterion": {
+            "maximum_log_effect_ci_width": 0.6
+          },
+          "dimension": "benefit_precision",
+          "gap_ids": [],
+          "observed": {
+            "log_effect_ci_width_by_study": {
+              "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000001": 0.4813031845,
+              "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000002": 0.4813031845
+            },
+            "maximum_observed_log_effect_ci_width": 0.4813031845
+          },
+          "status": "satisfied"
+        },
+        {
+          "criterion": {
+            "consistent_direction_required": true,
+            "higher_observed_serious_event_risk_trials": 0
+          },
+          "dimension": "safety_direction",
+          "gap_ids": [],
+          "observed": {
+            "direction_counts": {
+              "lower_observed_serious_event_risk": 2
+            },
+            "risk_difference_by_study": {
+              "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000001": -0.09999999999999998,
+              "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000002": -0.09999999999999998
+            }
+          },
+          "status": "satisfied"
+        },
+        {
+          "criterion": {
+            "minimum_safety_participants_per_arm": 100
+          },
+          "dimension": "safety_exposure",
+          "gap_ids": [
+            "synthetic-clinical-evidence-tensor:gap:insufficient_safety_exposure"
+          ],
+          "observed": {
+            "minimum_arm_participants_by_study": {
+              "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000001": 60,
+              "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000002": 60
+            },
+            "minimum_observed_arm_participants": 60
+          },
+          "status": "gap"
+        },
+        {
+          "criterion": {
+            "identical_across_trials": true
+          },
+          "dimension": "endpoint_timeframe_alignment",
+          "gap_ids": [],
+          "observed": {
+            "endpoint_time_frames": [
+              "24 months"
+            ]
+          },
+          "status": "satisfied"
+        },
+        {
+          "criterion": {
+            "identical_across_trials": true
+          },
+          "dimension": "safety_timeframe_alignment",
+          "gap_ids": [],
+          "observed": {
+            "safety_time_frames": [
+              "From first dose through 30 days after last dose"
+            ]
+          },
+          "status": "satisfied"
+        },
+        {
+          "criterion": {
+            "identical_across_trials": true
+          },
+          "dimension": "measurement_unit_alignment",
+          "gap_ids": [],
+          "observed": {
+            "measurement_units": [
+              "months"
+            ]
+          },
+          "status": "satisfied"
+        }
+      ],
+      "disease_id": "MONDO_TEST",
+      "effect_measure": "hazard_ratio",
+      "endpoint_family": "progression_free_survival",
+      "endpoint_mapping_id": "CHEMBL_TEST:MONDO_TEST:pfs-map:v1",
+      "gaps": [
+        {
+          "blocking": false,
+          "code": "insufficient_independent_trials",
+          "dimension": "trial_count",
+          "gap_id": "synthetic-clinical-evidence-tensor:gap:insufficient_independent_trials",
+          "gap_mass": 0.333333333333,
+          "source_evidence_ids": [
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:clinical-endpoint-benefit",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:clinical-safety-assessment",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-arm-OG000",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-arm-OG001",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-endpoint-identity",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-identity-NCT00000001",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-population",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-safety-identity",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:clinical-endpoint-benefit",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:clinical-safety-assessment",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-arm-OG000",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-arm-OG001",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-endpoint-identity",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-identity-NCT00000002",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-population",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-safety-identity"
+          ],
+          "study_record_ids": [
+            "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000001",
+            "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000002"
+          ],
+          "summary": "Fewer source-disjoint trials are available than the policy requires."
+        },
+        {
+          "blocking": false,
+          "code": "insufficient_safety_exposure",
+          "dimension": "safety_exposure",
+          "gap_id": "synthetic-clinical-evidence-tensor:gap:insufficient_safety_exposure",
+          "gap_mass": 0.4,
+          "source_evidence_ids": [
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:clinical-endpoint-benefit",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:clinical-safety-assessment",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-arm-OG000",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-arm-OG001",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-endpoint-identity",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-identity-NCT00000001",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-population",
+            "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-safety-identity",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:clinical-endpoint-benefit",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:clinical-safety-assessment",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-arm-OG000",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-arm-OG001",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-endpoint-identity",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-identity-NCT00000002",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-population",
+            "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-safety-identity"
+          ],
+          "study_record_ids": [
+            "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000001",
+            "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000002"
+          ],
+          "summary": "At least one trial arm has fewer safety participants than the policy requires."
+        }
+      ],
+      "intervention_id": "CHEMBL_TEST",
+      "method_id": "adds.provenance-preserving-clinical-evidence-tensor.v1",
+      "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+      "policy_id": "synthetic-clinical-workflow-policy",
+      "policy_version": "1",
+      "pooling_performed": false,
+      "population_homogeneity_inferred": false,
+      "program_id": "benefit-risk-program",
+      "safety_measure": "serious_adverse_event_risk_difference",
+      "source_content_hashes": [
+        "63aafdc5ff7c0582930d5a32a7018070f830547d5e8d5521c56be093eea5beaf",
+        "b38ff7101866615de08e6e206a945cde0c184b1ae16532dd544787307b34310b"
+      ],
+      "source_evidence_ids": [
+        "clinical-design-NCT00000001:v0:clinical-design:evidence:clinical-endpoint-benefit",
+        "clinical-design-NCT00000001:v0:clinical-design:evidence:clinical-safety-assessment",
+        "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-arm-OG000",
+        "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-arm-OG001",
+        "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-endpoint-identity",
+        "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-identity-NCT00000001",
+        "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-population",
+        "clinical-design-NCT00000001:v0:clinical-design:evidence:trial-safety-identity",
+        "clinical-design-NCT00000002:v0:clinical-design:evidence:clinical-endpoint-benefit",
+        "clinical-design-NCT00000002:v0:clinical-design:evidence:clinical-safety-assessment",
+        "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-arm-OG000",
+        "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-arm-OG001",
+        "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-endpoint-identity",
+        "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-identity-NCT00000002",
+        "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-population",
+        "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-safety-identity"
+      ],
+      "stage": "regulatory_postmarket",
+      "synthesis_fingerprint": "8567419f16492d80c3fba208a4df06192b1f67fffa3d072d4eff551b6f9912c4",
+      "synthesis_id": "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1",
+      "tensor_id": "synthetic-clinical-evidence-tensor"
+    }
+  },
+  "schema_version": "adds.clinical-evidence-decision-package.v1"
+}

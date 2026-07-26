@@ -19,10 +19,15 @@ from agentic_drug_discovery import (
     BudgetState,
     CandidateRecord,
     CandidateStatus,
+    ClinicalDecisionPolicy,
+    ClinicalDimensionStatus,
     ClinicalEndpointMappingReview,
     ClinicalEndpointMappingSpec,
     ClinicalEndpointOntology,
     ClinicalEndpointSelection,
+    ClinicalEvidenceActionOption,
+    ClinicalEvidenceDimension,
+    ClinicalEvidenceGapCode,
     ClinicalStudySelection,
     ClinicalSynthesisSpec,
     Decision,
@@ -35,6 +40,7 @@ from agentic_drug_discovery import (
     ProgramStatus,
     PromotionContext,
     ReplayBundle,
+    RecordParseError,
     SourceReference,
     Stage,
     StageGate,
@@ -47,8 +53,13 @@ from agentic_drug_discovery import (
     build_default_semantic_mapper_registry,
     capture_source_bytes,
     clinical_endpoint_mapping_spec_to_dict,
+    clinical_decision_package_envelope,
+    clinical_decision_package_from_dict,
+    clinical_decision_package_from_json,
     clinical_synthesis_spec_from_dict,
     clinical_synthesis_spec_to_dict,
+    compile_clinical_decision_package,
+    compile_clinical_evidence_tensor,
     compile_benefit_risk_synthesis,
     compile_clinical_endpoint_mapping,
     compile_pinned_evidence_manifest,
@@ -58,6 +69,7 @@ from agentic_drug_discovery import (
     replay_program,
     to_primitive,
     validate_benefit_risk_synthesis,
+    validate_clinical_decision_package,
     validate_clinical_endpoint_mapping,
 )
 
@@ -67,6 +79,12 @@ JOB = ROOT / "rl_env/specs/clinicaltrials_gov_ingestion_job.example.json"
 SOURCE = ROOT / "tests/fixtures/clinicaltrials_gov_study.synthetic.json"
 SYNTHESIS_SCHEMA = ROOT / "rl_env/specs/clinical_benefit_risk_synthesis.schema.json"
 SYNTHESIS_EXAMPLE = ROOT / "rl_env/specs/clinical_benefit_risk_synthesis.example.json"
+DECISION_SCHEMA = (
+    ROOT / "rl_env/specs/clinical_evidence_decision_package.schema.json"
+)
+DECISION_EXAMPLE = (
+    ROOT / "rl_env/specs/clinical_evidence_decision_package.example.json"
+)
 REQUEST_AT = datetime(2025, 1, 2, 1, tzinfo=timezone.utc)
 COMPLETED_AT = REQUEST_AT + timedelta(minutes=1)
 MAPPING_REQUEST_AT = REQUEST_AT - timedelta(minutes=2)
@@ -142,15 +160,33 @@ def _clinical_state(program_id: str) -> ProgramState:
     )
 
 
-def _manifest(trial_id: str) -> dict:
+def _manifest(
+    trial_id: str,
+    *,
+    candidate_serious_num_affected: int = 12,
+) -> dict:
     original_trial_id = "NCT00000001"
     job_text = JOB.read_text(encoding="utf-8").replace(
         original_trial_id, trial_id
     )
-    source_bytes = SOURCE.read_text(encoding="utf-8").replace(
+    source_text = SOURCE.read_text(encoding="utf-8").replace(
         original_trial_id, trial_id
-    ).encode("utf-8")
+    )
     job = json.loads(job_text)
+    if candidate_serious_num_affected != 12:
+        job["trial"]["safety"]["arms"][0]["serious_num_affected"] = (
+            candidate_serious_num_affected
+        )
+        source = json.loads(source_text)
+        source["resultsSection"]["adverseEventsModule"]["eventGroups"][0][
+            "seriousNumAffected"
+        ] = candidate_serious_num_affected
+        source_text = json.dumps(
+            source,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+    source_bytes = source_text.encode("utf-8")
     receipt_id = f"ctgov-test-{trial_id}"
     job["source_receipt_id"] = receipt_id
     bundle = capture_source_bytes(
@@ -172,10 +208,22 @@ def _manifest(trial_id: str) -> dict:
     return manifest
 
 
-def _run_clinical_trial(trial_id: str, program_id: str) -> ProgramState:
+def _run_clinical_trial(
+    trial_id: str,
+    program_id: str,
+    *,
+    candidate_serious_num_affected: int = 12,
+) -> ProgramState:
     registry = register_existing_adapters(
         ToolRegistry(clock=lambda: COMPLETED_AT),
-        pinned_evidence=PinnedEvidenceAdapter(_manifest(trial_id)),
+        pinned_evidence=PinnedEvidenceAdapter(
+            _manifest(
+                trial_id,
+                candidate_serious_num_affected=(
+                    candidate_serious_num_affected
+                ),
+            )
+        ),
     )
     runner = BoundedStageRunner(
         tool_registry=registry,
@@ -235,9 +283,18 @@ def _run_clinical_trial(trial_id: str, program_id: str) -> ProgramState:
     return result.final_state
 
 
-def _combined_state() -> ProgramState:
+def _combined_state(
+    *,
+    second_candidate_serious_num_affected: int = 12,
+) -> ProgramState:
     first = _run_clinical_trial("NCT00000001", "trial-one")
-    second = _run_clinical_trial("NCT00000002", "trial-two")
+    second = _run_clinical_trial(
+        "NCT00000002",
+        "trial-two",
+        candidate_serious_num_affected=(
+            second_candidate_serious_num_affected
+        ),
+    )
     first_intervention = first.interventions[0]
     second_intervention = second.interventions[0]
     merged_intervention = replace(
@@ -483,6 +540,77 @@ def _run_synthesis(state: ProgramState, spec: ClinicalSynthesisSpec):
     return result, environment
 
 
+def _decision_policy(
+    *,
+    minimum_independent_trials: int = 2,
+    maximum_log_effect_ci_width: float = 0.6,
+    minimum_safety_participants_per_arm: int = 60,
+    max_planned_actions: int = 2,
+    max_planned_cost: float = 0.3,
+    minimum_bounded_voi: float = 0.05,
+) -> ClinicalDecisionPolicy:
+    return ClinicalDecisionPolicy(
+        policy_id="synthetic-clinical-workflow-policy",
+        version="1",
+        registered_on=date(2025, 1, 1),
+        minimum_independent_trials=minimum_independent_trials,
+        maximum_log_effect_ci_width=maximum_log_effect_ci_width,
+        minimum_safety_participants_per_arm=(
+            minimum_safety_participants_per_arm
+        ),
+        max_planned_actions=max_planned_actions,
+        max_planned_cost=max_planned_cost,
+        minimum_bounded_voi=minimum_bounded_voi,
+        metadata={
+            "payload_class": "synthetic",
+            "clinical_use": "prohibited",
+        },
+    )
+
+
+def _decision_actions() -> tuple[ClinicalEvidenceActionOption, ...]:
+    return (
+        ClinicalEvidenceActionOption(
+            action_id="query-independent-trial",
+            action_type=ActionType.QUERY_DATABASE,
+            tool_id="clinical_trial_portfolio",
+            operation="find_source_disjoint_trial",
+            purpose="Find one additional source-disjoint eligible trial.",
+            targeted_gap_codes=(
+                ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,
+            ),
+            expected_gap_resolution_probability=0.8,
+            decision_relevance=0.9,
+            max_cost=0.2,
+            arguments={
+                "candidate_id": "CHEMBL_TEST",
+                "disease_id": "MONDO_TEST",
+                "endpoint_family": "progression_free_survival",
+            },
+            metadata={"payload_class": "synthetic"},
+        ),
+        ClinicalEvidenceActionOption(
+            action_id="retrieve-safety-followup",
+            action_type=ActionType.RETRIEVE_EVIDENCE,
+            tool_id="clinical_registry_followup",
+            operation="retrieve_posted_safety_update",
+            purpose="Retrieve a later posted aggregate safety follow-up.",
+            targeted_gap_codes=(
+                ClinicalEvidenceGapCode.HIGHER_OBSERVED_SERIOUS_EVENT_RISK,
+                ClinicalEvidenceGapCode.INSUFFICIENT_SAFETY_EXPOSURE,
+            ),
+            expected_gap_resolution_probability=0.7,
+            decision_relevance=0.8,
+            max_cost=0.1,
+            arguments={
+                "candidate_id": "CHEMBL_TEST",
+                "disease_id": "MONDO_TEST",
+            },
+            metadata={"payload_class": "synthetic"},
+        ),
+    )
+
+
 class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -494,6 +622,16 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         if cls.mapping_result.status is not StageRunStatus.COMMITTED:
             raise AssertionError(cls.mapping_result.code)
         cls.state = cls.mapping_result.final_state
+        cls.synthesis_result, cls.synthesis_environment = _run_synthesis(
+            cls.state,
+            _spec(),
+        )
+        if cls.synthesis_result.status is not StageRunStatus.COMMITTED:
+            raise AssertionError(cls.synthesis_result.code)
+        cls.committed_state = cls.synthesis_result.final_state
+        cls.committed_synthesis = (
+            cls.committed_state.benefit_risk_syntheses[0]
+        )
 
     def test_mapping_tool_commit_serialization_and_replay(self) -> None:
         result = self.mapping_result
@@ -889,6 +1027,416 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             "clinical endpoint mapping ledger",
         ):
             stripped.validate_committed_history()
+
+    def test_tensor_advances_workflow_without_acceptability_inference(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(),
+            _decision_actions(),
+            package_id="synthetic-clinical-decision-package",
+            tensor_id="synthetic-clinical-evidence-tensor",
+            plan_id="synthetic-clinical-decision-plan",
+        )
+        self.assertIs(package.plan.decision, Decision.ADVANCE)
+        self.assertEqual(package.plan.selected_actions, ())
+        self.assertEqual(package.tensor.gaps, ())
+        self.assertEqual(len(package.tensor.cells), 2)
+        self.assertEqual(
+            package.tensor.source_content_hashes,
+            self.committed_synthesis.source_content_hashes,
+        )
+        self.assertTrue(
+            all(
+                item.status is ClinicalDimensionStatus.SATISFIED
+                for item in package.tensor.dimensions
+            )
+        )
+        self.assertFalse(package.tensor.pooling_performed)
+        self.assertFalse(package.tensor.clinical_acceptability_inferred)
+        self.assertFalse(package.plan.clinical_acceptability_inferred)
+        self.assertEqual(
+            validate_clinical_decision_package(
+                self.committed_state,
+                package,
+            ),
+            (),
+        )
+
+    def test_gap_tensor_selects_marginal_voi_action_within_budget(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(
+                minimum_independent_trials=3,
+                minimum_safety_participants_per_arm=100,
+                max_planned_cost=0.25,
+            ),
+            _decision_actions(),
+            package_id="synthetic-gap-package",
+            tensor_id="synthetic-gap-tensor",
+            plan_id="synthetic-gap-plan",
+        )
+        self.assertIs(package.plan.decision, Decision.HOLD)
+        self.assertEqual(
+            tuple(item.code for item in package.tensor.gaps),
+            (
+                ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,
+                ClinicalEvidenceGapCode.INSUFFICIENT_SAFETY_EXPOSURE,
+            ),
+        )
+        self.assertEqual(len(package.plan.selected_actions), 1)
+        selection = package.plan.selected_actions[0]
+        self.assertEqual(selection.action_id, "retrieve-safety-followup")
+        self.assertTrue(math.isclose(package.plan.planned_cost, 0.1))
+        self.assertEqual(
+            package.plan.targeted_gap_ids,
+            (
+                "synthetic-gap-tensor:gap:"
+                "insufficient_safety_exposure",
+            ),
+        )
+        self.assertEqual(
+            package.plan.untargeted_gap_ids,
+            (
+                "synthetic-gap-tensor:gap:"
+                "insufficient_independent_trials",
+            ),
+        )
+
+    def test_equal_voi_actions_use_action_id_tie_break(self) -> None:
+        common = {
+            "action_type": ActionType.QUERY_DATABASE,
+            "tool_id": "clinical_trial_portfolio",
+            "operation": "find_source_disjoint_trial",
+            "purpose": "Find one additional source-disjoint eligible trial.",
+            "targeted_gap_codes": (
+                ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,
+            ),
+            "expected_gap_resolution_probability": 0.8,
+            "decision_relevance": 0.9,
+            "max_cost": 0.2,
+            "arguments": {"candidate_id": "CHEMBL_TEST"},
+        }
+        actions = (
+            ClinicalEvidenceActionOption(action_id="action-b", **common),
+            ClinicalEvidenceActionOption(action_id="action-a", **common),
+        )
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(
+                minimum_independent_trials=3,
+                max_planned_actions=1,
+            ),
+            actions,
+            package_id="synthetic-tie-package",
+            tensor_id="synthetic-tie-tensor",
+            plan_id="synthetic-tie-plan",
+        )
+        self.assertEqual(
+            package.plan.selected_actions[0].action_id,
+            "action-a",
+        )
+        self.assertEqual(
+            tuple(item.action_id for item in package.action_catalog),
+            ("action-a", "action-b"),
+        )
+
+    def test_unaffordable_action_defers_without_partial_plan(self) -> None:
+        constrained_state = replace(
+            self.committed_state,
+            budget=BudgetState(
+                limit=self.committed_state.budget.spent + 0.05,
+                spent=self.committed_state.budget.spent,
+            ),
+        )
+        package = compile_clinical_decision_package(
+            constrained_state,
+            self.committed_synthesis,
+            _decision_policy(minimum_independent_trials=3),
+            (_decision_actions()[0],),
+            package_id="synthetic-budget-package",
+            tensor_id="synthetic-budget-tensor",
+            plan_id="synthetic-budget-plan",
+        )
+        self.assertIs(package.plan.decision, Decision.DEFER)
+        self.assertEqual(
+            package.plan.code,
+            "clinical_evidence_action_budget_insufficient",
+        )
+        self.assertEqual(package.plan.selected_actions, ())
+        self.assertEqual(package.plan.planned_cost, 0.0)
+
+    def test_open_gap_without_catalog_action_defers(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(minimum_independent_trials=3),
+            (),
+            package_id="synthetic-no-action-package",
+            tensor_id="synthetic-no-action-tensor",
+            plan_id="synthetic-no-action-plan",
+        )
+        self.assertIs(package.plan.decision, Decision.DEFER)
+        self.assertEqual(
+            package.plan.code,
+            "clinical_evidence_gaps_unaddressed",
+        )
+        self.assertEqual(
+            package.plan.untargeted_gap_ids,
+            package.plan.open_gap_ids,
+        )
+
+    def test_higher_observed_safety_signal_holds_and_never_terminates(self) -> None:
+        safety_unmapped = _combined_state(
+            second_candidate_serious_num_affected=30
+        )
+        mapping_result, _ = _run_mapping(
+            safety_unmapped,
+            _mapping_spec(),
+        )
+        self.assertIs(mapping_result.status, StageRunStatus.COMMITTED)
+        synthesis_result, _ = _run_synthesis(
+            mapping_result.final_state,
+            _spec(),
+        )
+        self.assertIs(synthesis_result.status, StageRunStatus.COMMITTED)
+        safety_state = synthesis_result.final_state
+        package = compile_clinical_decision_package(
+            safety_state,
+            safety_state.benefit_risk_syntheses[0],
+            _decision_policy(),
+            _decision_actions(),
+            package_id="synthetic-safety-signal-package",
+            tensor_id="synthetic-safety-signal-tensor",
+            plan_id="synthetic-safety-signal-plan",
+        )
+        self.assertIn(
+            ClinicalEvidenceGapCode.HIGHER_OBSERVED_SERIOUS_EVENT_RISK,
+            {item.code for item in package.tensor.gaps},
+        )
+        safety_dimension = next(
+            item
+            for item in package.tensor.dimensions
+            if item.dimension is ClinicalEvidenceDimension.SAFETY_DIRECTION
+        )
+        self.assertIs(
+            safety_dimension.status,
+            ClinicalDimensionStatus.BLOCKING_SIGNAL,
+        )
+        self.assertIs(package.plan.decision, Decision.HOLD)
+        self.assertFalse(package.plan.terminal_decision_issued)
+        self.assertFalse(package.plan.clinical_acceptability_inferred)
+
+    def test_uncommitted_synthesis_cannot_compile_tensor(self) -> None:
+        uncommitted = compile_benefit_risk_synthesis(self.state, _spec())
+        with self.assertRaisesRegex(
+            ValueError,
+            "committed state ledger",
+        ):
+            compile_clinical_evidence_tensor(
+                self.state,
+                uncommitted,
+                _decision_policy(),
+                tensor_id="uncommitted-synthesis-tensor",
+            )
+
+    def test_policy_safety_boundaries_cannot_be_disabled(self) -> None:
+        with self.assertRaisesRegex(
+            ValueError,
+            "clinical_acceptability_inference_prohibited must be true",
+        ):
+            replace(
+                _decision_policy(),
+                clinical_acceptability_inference_prohibited=False,
+            )
+        with self.assertRaisesRegex(
+            ValueError,
+            "terminal_decisions_prohibited must be true",
+        ):
+            replace(
+                _decision_policy(),
+                terminal_decisions_prohibited=False,
+            )
+
+    def test_cell_direction_and_source_overlap_tampering_fail_closed(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(),
+            _decision_actions(),
+            package_id="synthetic-cell-integrity-package",
+            tensor_id="synthetic-cell-integrity-tensor",
+            plan_id="synthetic-cell-integrity-plan",
+        )
+        first, second = package.tensor.cells
+        with self.assertRaisesRegex(
+            ValueError,
+            "benefit_direction does not match",
+        ):
+            replace(first, benefit_direction="harm")
+        overlapping = replace(
+            second,
+            source_content_hashes=first.source_content_hashes,
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "pairwise disjoint",
+        ):
+            replace(package.tensor, cells=(first, overlapping))
+
+    def test_gap_provenance_must_equal_implicated_study_union(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(minimum_independent_trials=3),
+            _decision_actions(),
+            package_id="synthetic-gap-provenance-package",
+            tensor_id="synthetic-gap-provenance-tensor",
+            plan_id="synthetic-gap-provenance-plan",
+        )
+        gap = package.tensor.gaps[0]
+        forged_gap = replace(
+            gap,
+            study_record_ids=(
+                package.tensor.cells[0].study_record_id,
+            ),
+            source_evidence_ids=package.tensor.source_evidence_ids,
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "does not match implicated studies",
+        ):
+            replace(package.tensor, gaps=(forged_gap,))
+
+    def test_post_cutoff_policy_and_duplicate_actions_fail_closed(self) -> None:
+        with self.assertRaisesRegex(ValueError, "after the program cutoff"):
+            compile_clinical_evidence_tensor(
+                self.committed_state,
+                self.committed_synthesis,
+                replace(
+                    _decision_policy(),
+                    registered_on=date(2025, 1, 3),
+                ),
+                tensor_id="post-cutoff-policy-tensor",
+            )
+        duplicate = _decision_actions()[0]
+        with self.assertRaisesRegex(
+            ValueError,
+            "action ids must be unique",
+        ):
+            compile_clinical_decision_package(
+                self.committed_state,
+                self.committed_synthesis,
+                _decision_policy(minimum_independent_trials=3),
+                (duplicate, duplicate),
+                package_id="duplicate-action-package",
+                tensor_id="duplicate-action-tensor",
+                plan_id="duplicate-action-plan",
+            )
+
+    def test_actions_below_voi_threshold_defer_without_selection(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(
+                minimum_independent_trials=3,
+                minimum_bounded_voi=0.5,
+            ),
+            (_decision_actions()[0],),
+            package_id="synthetic-low-voi-package",
+            tensor_id="synthetic-low-voi-tensor",
+            plan_id="synthetic-low-voi-plan",
+        )
+        self.assertIs(package.plan.decision, Decision.DEFER)
+        self.assertEqual(
+            package.plan.code,
+            "clinical_evidence_actions_below_voi_threshold",
+        )
+        self.assertEqual(package.plan.selected_actions, ())
+
+    def test_package_strict_envelope_round_trip(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(minimum_independent_trials=3),
+            _decision_actions(),
+            package_id="synthetic-round-trip-package",
+            tensor_id="synthetic-round-trip-tensor",
+            plan_id="synthetic-round-trip-plan",
+        )
+        envelope = clinical_decision_package_envelope(package)
+        self.assertEqual(
+            clinical_decision_package_from_dict(envelope),
+            package,
+        )
+        self.assertEqual(
+            clinical_decision_package_from_json(
+                json.dumps(envelope, sort_keys=True)
+            ),
+            package,
+        )
+
+    def test_package_integrity_and_duplicate_keys_fail_closed(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(),
+            _decision_actions(),
+            package_id="synthetic-integrity-package",
+            tensor_id="synthetic-integrity-tensor",
+            plan_id="synthetic-integrity-plan",
+        )
+        envelope = clinical_decision_package_envelope(package)
+        forged = json.loads(json.dumps(envelope))
+        forged["package"]["plan"]["code"] = "forged"
+        with self.assertRaisesRegex(
+            RecordParseError,
+            "integrity hash does not match",
+        ):
+            clinical_decision_package_from_dict(forged)
+        payload = json.dumps(envelope, sort_keys=True)
+        duplicated = payload.replace(
+            '"schema_version":',
+            '"schema_version":"forged","schema_version":',
+            1,
+        )
+        with self.assertRaisesRegex(RecordParseError, "duplicates key"):
+            clinical_decision_package_from_json(duplicated)
+
+    def test_package_constructor_rejects_plan_tamper(self) -> None:
+        package = compile_clinical_decision_package(
+            self.committed_state,
+            self.committed_synthesis,
+            _decision_policy(),
+            _decision_actions(),
+            package_id="synthetic-replay-package",
+            tensor_id="synthetic-replay-tensor",
+            plan_id="synthetic-replay-plan",
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "deterministic bounded-VOI replay",
+        ):
+            replace(
+                package,
+                plan=replace(
+                    package.plan,
+                    code="self-consistent-but-not-recompiled",
+                ),
+            )
+
+    def test_public_decision_schema_matches_strict_reader(self) -> None:
+        schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
+        example = json.loads(DECISION_EXAMPLE.read_text(encoding="utf-8"))
+        Draft202012Validator.check_schema(schema)
+        Draft202012Validator(schema).validate(example)
+        parsed = clinical_decision_package_from_dict(example)
+        self.assertEqual(
+            clinical_decision_package_envelope(parsed),
+            example,
+        )
 
 
 if __name__ == "__main__":

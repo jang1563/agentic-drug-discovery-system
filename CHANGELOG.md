@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a provenance-preserving clinical evidence decision layer over committed, replay-valid
+  multi-trial synthesis records. Exact endpoint/safety cells feed nine ordered workflow
+  dimensions and typed source-linked gaps; preregistered action catalogs are ranked by
+  deterministic marginal bounded VOI under live and policy budgets. Package construction replays
+  scores, ranks, gap partitions, and budget accounting, while strict integrity readers and state
+  recompilation reject tampering. Public schema, compiler-generated synthetic example,
+  safety-signal/budget/adversarial tests, and explicit non-clinical interpretation boundaries are
+  included.
 - Added preregistered held-out evaluation protocols that bind cohort, label/exclusion guidance,
   opaque curator roster, outcome window, stage minima, and metric policy before board sealing.
   Evaluator-only curation manifests now enforce policy-blinded independent affiliations,
