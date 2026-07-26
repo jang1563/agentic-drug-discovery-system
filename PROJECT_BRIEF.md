@@ -101,6 +101,15 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   serious-event participant risks from committed ledgers. It requires at least two source-disjoint
   trials, retains trial-level values and hashes, and prohibits automatic endpoint mapping, pooling,
   benefit-risk scoring, population comparability inference, and clinical acceptability inference.
+- A clinical evidence decision layer requires that committed synthesis to pass complete history and
+  continuity replay, then projects exact trial cells into nine ordered workflow dimensions and
+  typed provenance-linked gaps. A preregistered policy and action catalog bound trial-count,
+  precision, safety-exposure, alignment, action-count, cost, and minimum-VOI criteria. The
+  deterministic planner ranks marginal gap coverage by declared resolution probability,
+  decision relevance, and cost against the live budget ledger; integrity envelopes and state
+  recompilation bind the synthesis, policy, tensor, catalog, scores, gap partition, and plan.
+  `ADVANCE` means evidence-workflow readiness only. Pooling, clinical acceptability, treatment
+  recommendations, terminal decisions, and calibrated economic VOI claims are prohibited.
 - An evidence-backed `TargetRecord` ledger carries Open Targets Ensembl/gene-symbol identity into
   a ChEMBL target-profile check, then into candidate and preclinical records. Deterministic checks
   reject namespace rebinding, collisions, partial or broken candidate links, and mismatched target

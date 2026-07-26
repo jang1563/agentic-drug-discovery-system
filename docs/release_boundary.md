@@ -22,6 +22,8 @@ This repository uses a conservative boundary so that future public or collaborat
   and per-episode evaluations.
 - Real held-out curator identities, affiliation records, attestations, evidence snapshots, votes,
   rationales, adjudications, curation manifests, and per-episode curation results.
+- Real clinical decision policies, action catalogs, evidence tensors, and compiled decision
+  packages.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -37,6 +39,8 @@ These may become release assets after a separate audit:
 - Payload-free sealed-evaluation hashes and aggregate policy metrics after leakage review.
 - Preregistered held-out protocols and payload-free stage-stratified aggregate reports after
   curator-privacy, label-leakage, and small-stratum review.
+- Compiler-generated synthetic clinical evidence decision packages after schema and provenance
+  review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -90,6 +94,12 @@ examples. A real curation manifest would expose episode-level votes and working 
 records, so it remains evaluator-only together with identity/affiliation source documents and
 label evidence. No real independently curated held-out result is currently public or claimed.
 
+The clinical evidence decision layer ships implementation, strict schema/readers, documentation,
+tests, and one compiler-generated synthetic package. A real policy or action catalog can expose
+program thresholds, priorities, costs, source identities, and planned operations; a real tensor or
+package can retain trial-level evidence lineage. Those artifacts remain outside Git and Hugging
+Face until a separate scientific, privacy, and release-boundary review approves them.
+
 `adds-pinned-ingestion` enforces the raw-data boundary operationally: source bundles are immutable,
 contain exact bytes plus a receipt, and are refused inside any Git worktree. Compiled manifests and
 review reports contain no raw bundle path and still require explicit human review before promotion.
@@ -107,8 +117,8 @@ external until separate scientific and release-boundary approval.
   governance docs, automation, tests, and `benchmark/`.
 - Its not-yet-uploaded Hugging Face Dataset package is a commit-pinned subset:
   documentation, the typed execution core, the dependency-free pinned-evidence and
-  local clinical-synthesis adapters and bindings, tests, schemas, aggregate evidence, audit code, and the
-  `benchmark/` scorer.
+  local clinical-synthesis adapters and bindings, the clinical evidence tensor and bounded-VOI
+  compiler, tests, schemas, aggregate evidence, audit code, and the `benchmark/` scorer.
 - `benchmark/` scores the separately hosted
   `jang1563/clinical-trial-decision-benchmark` dataset. Its data rows and
   Croissant metadata do not belong in the Agentic Drug Discovery System mirror.
