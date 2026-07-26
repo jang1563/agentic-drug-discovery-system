@@ -1,0 +1,61 @@
+{
+  "integrity_sha256": "1b19bcf16bf397bd1e9081868abc80b37c81c63c5871942231c72955fa581abd",
+  "protocol": {
+    "board_id": "synthetic-heldout-board",
+    "board_version": "1",
+    "cohort_specification_sha256": "597b742dba4c4868cb8bc5ab81cf75465831aaf2836ade0266e03c2d16eb4061",
+    "curator_roster_commitment": "d7c1ba653262b5a1a1de167808af92d8052817ef33ce181723da427ab7b8d0b9",
+    "label_policy": {
+      "adjudicator_independence_required": true,
+      "allowed_decisions": [
+        "advance",
+        "defer",
+        "hold",
+        "kill",
+        "pivot"
+      ],
+      "conflict_free_required": true,
+      "consensus_rule": "strict_majority",
+      "decision_definitions": {
+        "advance": "Synthetic definition for advance.",
+        "defer": "Synthetic definition for defer.",
+        "hold": "Synthetic definition for hold.",
+        "kill": "Synthetic definition for kill.",
+        "pivot": "Synthetic definition for pivot."
+      },
+      "exclusion_rules_sha256": "146b5753b092c74291aaf47e2ca10b1d3b0a919cb8f978df67a5e002d9488e51",
+      "label_guidance_sha256": "36bf44763b75159f6de2859ef85cade44627a172a4f9c62541f1b5ceed6d06d3",
+      "minimum_independent_curators": 3,
+      "outcome_window_days": 30,
+      "policy_blinding_required": true,
+      "policy_id": "synthetic-label-policy",
+      "version": "1"
+    },
+    "metadata": {
+      "payload_class": "synthetic",
+      "policy_outputs_visible_to_curators": false
+    },
+    "metric_policy": {
+      "action_coverage_rule": "non_missing_non_defer",
+      "confidence_level": 0.95,
+      "interval_method": "wilson_score",
+      "missing_prediction_rule": "count_as_incorrect",
+      "stage_requirements": [
+        {
+          "minimum_action_covered_episodes": 2,
+          "minimum_pairs": 2,
+          "stage": "target_nomination"
+        },
+        {
+          "minimum_action_covered_episodes": 2,
+          "minimum_pairs": 2,
+          "stage": "clinical_strategy"
+        }
+      ]
+    },
+    "protocol_id": "synthetic-heldout-protocol",
+    "registered_on": "2024-12-01",
+    "version": "1"
+  },
+  "schema_version": "adds.heldout-evaluation-protocol.v1"
+}

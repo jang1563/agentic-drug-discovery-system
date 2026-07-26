@@ -10,7 +10,12 @@ The interface is the same as the single-stage loop: swap LLMStagePolicy for a ho
 model client. Default LLM backend is the local `claude -p` CLI when available.
 """
 from __future__ import annotations
-import os, subprocess, json, urllib.request, urllib.parse
+
+import json
+import os
+import subprocess
+import urllib.parse
+import urllib.request
 
 ACTIONS = ["request_more_evidence", "advance", "stop", "defer", "flag"]
 
@@ -226,8 +231,14 @@ def run_stage_tooluse(model, asset, disease, stage, leads, toolbox, max_calls=3)
             observations="\n".join(obs) or "(none yet)",
             instr="You MUST DECIDE now." if force else "Then CALL a tool OR DECIDE.")
         resp = _claude(prompt, model)
-        line = next((l.strip() for l in resp.splitlines()
-                     if l.strip().upper().startswith(("CALL", "DECIDE"))), resp.strip())
+        line = next(
+            (
+                response_line.strip()
+                for response_line in resp.splitlines()
+                if response_line.strip().upper().startswith(("CALL", "DECIDE"))
+            ),
+            resp.strip(),
+        )
         if line.upper().startswith("CALL") and not force:
             parts = line.split(None, 2)
             tool = parts[1] if len(parts) > 1 else ""

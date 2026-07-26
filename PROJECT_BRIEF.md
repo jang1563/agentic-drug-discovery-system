@@ -127,6 +127,11 @@ Drug discovery can be modeled as a sequence of structured decision points rather
 - Role-neutral sealed boards with embedded cutoff-safe cached tool packets, salted external label
   commitments, opaque identities, fingerprint-bound policy submissions, unsafe-advance scoring,
   and descriptive top-label confidence diagnostics.
+- Preregistered held-out protocols that bind cohort, label/exclusion guidance, opaque curator
+  roster, outcome window, stage minima, and metric policy before sealing. Evaluator-only curation
+  manifests enforce independent affiliations, policy blinding, consensus/adjudication, and exact
+  vault labels; aggregate reports emit stage-stratified exact counts, Wilson intervals, action
+  coverage, selective risk, and sufficiency flags.
 - An illustrative non-benchmark eight-stage trajectory plus deterministic regression tests.
 - Existing Open Targets, ChEMBL, ClinicalTrials.gov, clinical synthesis, EMA, Boltz-2, and RDKit
   molprops adapters have
@@ -203,8 +208,8 @@ Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are 
 
 1. Add a genuinely context-matched, independently reviewed disease-burden/treatment-gap pair; do
    not coerce the current CDC and PubMed populations into one context.
-2. Expand the four-pair sealed board with independently curated, stage-stratified held-out cases
-   and predeclared label policy.
+2. Use the shipped preregistration and curation contract to build a real independently curated,
+   stage-stratified held-out board; no such real-board result is claimed yet.
 3. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
 4. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
    operator reauthorization above the shipped deterministic resume/replan control layer.

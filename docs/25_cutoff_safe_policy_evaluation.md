@@ -117,6 +117,7 @@ deterministic rerun.
 
 This result establishes a working provenance and control-flow evaluation surface. It does not
 establish discovery performance, policy optimality, confidence calibration, clinical
-acceptability, or prospective utility. The next valid expansion is a larger independently curated
-held-out board with predeclared label policy and enough episodes for stage-stratified uncertainty
-analysis.
+acceptability, or prospective utility. The executable preregistration, independent-curation, and
+stage-stratified uncertainty contract for the next board is defined in
+`docs/26_independent_heldout_evaluation.md`; a real independently curated board has not yet been
+run.

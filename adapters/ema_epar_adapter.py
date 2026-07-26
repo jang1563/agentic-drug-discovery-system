@@ -10,7 +10,10 @@ for matched rows (date cells can be blank). A no-match is not proof that no EU f
 aliases, parser drift, or an unavailable/stale table can also cause it.
 """
 from __future__ import annotations
-import os, json, urllib.request
+
+import json
+import os
+import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, "experiments/local/track_b/slice_scd/data/adapter_cache")
@@ -73,8 +76,10 @@ class EmaEparAdapter:
     def __init__(self, live=True):
         self.rows = []
         if os.path.exists(PARSED):
-            try: self.rows = json.load(open(PARSED))
-            except Exception: self.rows = []
+            try:
+                self.rows = json.load(open(PARSED))
+            except Exception:
+                self.rows = []
         if not self.rows:
             self.rows = _build_cache(live)
 

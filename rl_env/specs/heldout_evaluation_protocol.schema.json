@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/heldout_evaluation_protocol.schema.json",
+  "title": "Preregistered held-out evaluation protocol envelope",
+  "description": "Public protocol contract binding an independently curated board, label policy, and stage-level sample requirements before scoring.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "protocol"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.heldout-evaluation-protocol.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "protocol": {
+      "$ref": "#/$defs/protocol"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "advance",
+        "hold",
+        "pivot",
+        "kill",
+        "defer"
+      ]
+    },
+    "stageRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage",
+        "minimum_pairs",
+        "minimum_action_covered_episodes"
+      ],
+      "properties": {
+        "stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "minimum_pairs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_action_covered_episodes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "labelPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "version",
+        "allowed_decisions",
+        "decision_definitions",
+        "consensus_rule",
+        "minimum_independent_curators",
+        "outcome_window_days",
+        "label_guidance_sha256",
+        "exclusion_rules_sha256",
+        "policy_blinding_required",
+        "conflict_free_required",
+        "adjudicator_independence_required"
+      ],
+      "properties": {
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "version": {
+          "$ref": "#/$defs/text"
+        },
+        "allowed_decisions": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/decision"
+          },
+          "contains": {
+            "const": "advance"
+          }
+        },
+        "decision_definitions": {
+          "type": "object",
+          "minProperties": 2,
+          "propertyNames": {
+            "$ref": "#/$defs/text"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "consensus_rule": {
+          "enum": [
+            "unanimous",
+            "strict_majority",
+            "adjudicated"
+          ]
+        },
+        "minimum_independent_curators": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "outcome_window_days": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "label_guidance_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "exclusion_rules_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "policy_blinding_required": {
+          "const": true
+        },
+        "conflict_free_required": {
+          "const": true
+        },
+        "adjudicator_independence_required": {
+          "const": true
+        }
+      }
+    },
+    "metricPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "confidence_level",
+        "stage_requirements",
+        "interval_method",
+        "missing_prediction_rule",
+        "action_coverage_rule"
+      ],
+      "properties": {
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0.5,
+          "exclusiveMaximum": 1
+        },
+        "stage_requirements": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stageRequirement"
+          }
+        },
+        "interval_method": {
+          "const": "wilson_score"
+        },
+        "missing_prediction_rule": {
+          "const": "count_as_incorrect"
+        },
+        "action_coverage_rule": {
+          "const": "non_missing_non_defer"
+        }
+      }
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "version",
+        "registered_on",
+        "board_id",
+        "board_version",
+        "label_policy",
+        "metric_policy",
+        "cohort_specification_sha256",
+        "curator_roster_commitment",
+        "metadata"
+      ],
+      "properties": {
+        "protocol_id": {
+          "$ref": "#/$defs/text"
+        },
+        "version": {
+          "$ref": "#/$defs/text"
+        },
+        "registered_on": {
+          "$ref": "#/$defs/date"
+        },
+        "board_id": {
+          "$ref": "#/$defs/text"
+        },
+        "board_version": {
+          "$ref": "#/$defs/text"
+        },
+        "label_policy": {
+          "$ref": "#/$defs/labelPolicy"
+        },
+        "metric_policy": {
+          "$ref": "#/$defs/metricPolicy"
+        },
+        "cohort_specification_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "curator_roster_commitment": {
+          "$ref": "#/$defs/sha256"
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

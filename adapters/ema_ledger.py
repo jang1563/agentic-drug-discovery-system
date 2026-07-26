@@ -6,7 +6,9 @@ ledger. It fills the gap where an asset is FDA-approved but EMA-reversed (e.g.
 crizanlizumab), which openFDA alone cannot surface. Honest: curated, not live.
 """
 from __future__ import annotations
-import os, json
+
+import json
+import os
 
 LEDGER = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                       "experiments/local/track_b/slice_scd/ema_events.json")
@@ -25,6 +27,6 @@ class EmaLedger:
 
 
 if __name__ == "__main__":
-    l = EmaLedger()
+    ledger = EmaLedger()
     for k in ("crizanlizumab", "voxelotor", "exacel", "senicapoc"):
-        print(k, "->", l.event(k))
+        print(k, "->", ledger.event(k))

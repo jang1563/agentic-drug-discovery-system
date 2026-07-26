@@ -1,4 +1,7 @@
-# CTDBench v0.2 + Audited Sickle Cell Disease Vertical Slice
+# Agentic Drug Discovery System
+
+**CTDBench v0.2, an audited sickle cell disease vertical slice, and an
+evidence-governed end-to-end research scaffold**
 
 [![release-audit](https://github.com/jang1563/agentic-drug-discovery-system/actions/workflows/release-audit.yml/badge.svg?branch=main)](https://github.com/jang1563/agentic-drug-discovery-system/actions/workflows/release-audit.yml)
 [![GitHub release](https://img.shields.io/github/v/release/jang1563/agentic-drug-discovery-system)](https://github.com/jang1563/agentic-drug-discovery-system/releases/latest)
@@ -18,18 +21,21 @@ scaffold rather than a completed public platform. The public 0.3.0.dev0 update
 adds an evidence-governed execution backbone with typed program state,
 verifier-gated transitions, cross-stage identity controls, source-pinned
 ingestion, tool/database adapters, scientific foundation-model interfaces, and
-sealed retrospective policy evaluation. Seven of eight planned atlases still do
-not have standalone public data, and the demonstrated continuous multi-stage
-program currently covers one disease/target slice.
+sealed retrospective policy evaluation. The current development candidate also
+adds a preregistered independently curated held-out evaluation contract with
+stage-stratified uncertainty; no real independently curated board result is
+claimed. Seven of eight planned atlases still do not have standalone public
+data, and the demonstrated continuous multi-stage program currently covers one
+disease/target slice.
 
 ## At a Glance
 
 | Field | Value |
 | --- | --- |
 | Purpose | Build a verification-oriented, auditable decision environment for drug-discovery agents. |
-| Release status | 0.3.0.dev0 is public on GitHub and Hugging Face after exact-package approval; 0.2.0 remains the latest tagged stable release. |
+| Release status | 0.3.0.dev0 remains public on GitHub and Hugging Face; 0.3.0.dev1 is an unapproved development candidate. 0.2.0 remains the latest tagged stable release. |
 | Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
-| Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed boards, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
+| Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed or held-out boards, curator identities/attestations/votes/adjudications, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
 
 ## Core Question
@@ -72,7 +78,11 @@ described in the roadmap. Honest status:
   hash-verified cached tool packets; salted external label commitments; fingerprint-bound policy
   submissions; and exact, arm-specific, both-correct, unsafe-advance, and descriptive confidence
   metrics. One external 4-pair/8-episode retrospective contract evaluation is summarized publicly;
-  the full board and labels are not released, and this is not a scientific performance result.
+  the full board and labels are not released, and this is not a scientific performance result. A
+  third layer now preregisters cohort, label, curator-roster, outcome-window, stage-minimum, and
+  metric commitments; validates independent strict-majority or adjudicated curation; and emits
+  exact-count stage strata with Wilson intervals, action coverage, and selective risk. That layer
+  currently has synthetic contract coverage only.
 - **Pinned composite evidence gates:** disease-context advance now requires independently sourced,
   SHA-256-pinned disease-burden and treatment-gap events linked to one supported unmet-need claim.
   Preclinical advance likewise requires independent candidate-target functional and disease-model
@@ -153,7 +163,8 @@ described in the roadmap. Honest status:
   a dependency-free source-pinned evidence-manifest adapter, capture/compiler CLI, and
   machine-readable receipt/job/review, disease-context, preclinical, clinical provider, and
   clinical portfolio, endpoint mapping, cross-trial synthesis, sealed-board, label-vault,
-  policy-submission, and policy-report schemas;
+  policy-submission, policy-report, held-out protocol, curator-manifest, and stage-stratified
+  report schemas;
   one disease/target slice (sickle cell) traversed retrospectively; an unscored
   prospective scaffold whose stale example is invalidated pending source refresh;
   conditional local RDKit druglikeness screening; and aggregate retrospective
@@ -177,7 +188,7 @@ described in the roadmap. Honest status:
   There is no public real per-episode trajectory corpus; broader clinical endpoint families, participant-
   level reanalysis, event-level causality, live ontology-authority resolution and terminology
   validation, statistically justified pooling, soft-verifier calibration,
-  candidate edit/rank loops, and
+  a real independently curated multi-stage held-out board, candidate edit/rank loops, and
   learned or dynamically generated replanning, operator reauthorization workflows, and policy
   calibration remain future work. Boltz scoring needs a GPU endpoint,
   while RDKit molprops runs locally when installed.
@@ -210,6 +221,9 @@ described in the roadmap. Honest status:
   `docs/25_cutoff_safe_policy_evaluation.md` defines role-neutral sealed boards, external label
   commitments, policy comparison, and the external real-board boundary;
   `docs/retrospective_policy_evaluation_snapshot.json` carries aggregate-only results and hashes.
+  `docs/26_independent_heldout_evaluation.md` defines preregistration, opaque curator commitments,
+  blinded curation, stage minima, Wilson intervals, action coverage, and selective risk; it
+  explicitly records that no real independently curated result exists yet.
   `docs/public_evidence_summary.json` is the
   aggregate claim ledger.
 - `agentic_drug_discovery/`: typed state, bounded planning, tool execution, semantic promotion,
@@ -278,6 +292,7 @@ described in the roadmap. Honest status:
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
 | `docs/25_cutoff_safe_policy_evaluation.md` | Humans + agents | Cutoff-safe cached packets, role-neutral pair sealing, external label commitments, policy scoring, and claim boundaries. |
+| `docs/26_independent_heldout_evaluation.md` | Humans + agents | Preregistered cohort/label/curator contracts, curation validation, stage minima, action coverage, selective risk, and uncertainty boundaries. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Machines + reviewers | Aggregate 4-pair/8-episode policy metrics, payload-free artifact hashes, real gate outcomes, and limitations. |
 | `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
 | `agentic_drug_discovery/` | Developers + agents | Bounded planning, typed execution, semantic promotion, multi-stage stop semantics, matched evaluation, replay, and verifier-gated transitions. |
@@ -291,6 +306,7 @@ described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinical_synthesis.py` | Developers + agents | Deterministic reviewed-selection compiler for source-disjoint, non-pooled trial-level benefit-risk records. |
 | `agentic_drug_discovery/policy.py` | Developers + agents | Deterministic policy rules, queue-bound replanning, checkpoint integrity, and exact resume orchestration. |
 | `agentic_drug_discovery/sealed_evaluation.py` | Developers + agents | Role-neutral sealed boards, salted label vaults, fingerprint-bound submissions, strict envelope readers, and matched policy metrics. |
+| `agentic_drug_discovery/heldout_evaluation.py` | Developers + agents | Preregistered held-out protocols, opaque independent-curator manifests, stage-stratified Wilson metrics, strict readers, and report integrity. |
 | `adapters/pinned_evidence_adapter.py` | Developers + agents | Validates payload-free source records for composite unmet-need and functional-effect gates. |
 | `adapters/clinical_synthesis_adapter.py` | Developers + agents | Normalizes explicit synthesis specs locally without retrieving or supplying source measurements. |
 | `rl_env/specs/pinned_evidence_manifest.schema.json` | Machines + reviewers | JSON Schema for pinned source identity, dates, hashes, contexts, and typed summaries. |
@@ -305,6 +321,9 @@ described in the roadmap. Honest status:
 | `rl_env/specs/sealed_evaluation_vault.schema.json` | Evaluators | JSON Schema for external arm, outcome, failure-cause, and commitment-nonce labels. |
 | `rl_env/specs/policy_evaluation_submission.schema.json` | Machines + reviewers | JSON Schema for complete observation-fingerprint-bound policy predictions. |
 | `rl_env/specs/policy_evaluation_report.schema.json` | Machines + reviewers | JSON Schema for aggregate arm, pair, unsafe-advance, and confidence diagnostics. |
+| `rl_env/specs/heldout_evaluation_protocol.schema.json` | Machines + reviewers | JSON Schema for preregistered cohort, label, curator-roster, stage, and metric commitments; the adjacent example is synthetic. |
+| `rl_env/specs/heldout_curation_manifest.schema.json` | Evaluators | JSON Schema for opaque curator declarations, votes, consensus, and adjudication; real manifests remain external. |
+| `rl_env/specs/stage_stratified_evaluation_report.schema.json` | Machines + reviewers | JSON Schema for exact counts, Wilson intervals, stage sufficiency, action coverage, selective risk, and aggregate provenance; the adjacent example is synthetic. |
 | `rl_env/specs/source_receipt.schema.json` | Machines + reviewers | JSON Schema for exact source version, locator, SHA-256, size, retrieval time, and transport. |
 | `rl_env/specs/pinned_evidence_ingestion_job.schema.json` | Machines + reviewers | JSON Schema for reviewer-authored summaries linked to captured receipts. |
 | `rl_env/specs/cdc_mmwr_ingestion_job.schema.json` | Machines + reviewers | JSON Schema for reviewer-selected CDC MMWR article, context, value, unit, and excerpt fields. |

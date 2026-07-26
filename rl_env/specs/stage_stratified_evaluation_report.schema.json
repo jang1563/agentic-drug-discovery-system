@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/stage_stratified_evaluation_report.schema.json",
+  "title": "Stage-stratified held-out evaluation report envelope",
+  "description": "Aggregate policy metrics with preregistered stage strata, exact counts, Wilson intervals, and explicit sufficiency flags.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "report"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.stage-stratified-evaluation-report.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "report": {
+      "$ref": "#/$defs/report"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "optionalProbability": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/probability"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_count",
+        "total",
+        "estimate",
+        "lower",
+        "upper",
+        "confidence_level",
+        "method"
+      ],
+      "properties": {
+        "event_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "estimate": {
+          "$ref": "#/$defs/optionalProbability"
+        },
+        "lower": {
+          "$ref": "#/$defs/optionalProbability"
+        },
+        "upper": {
+          "$ref": "#/$defs/optionalProbability"
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0.5,
+          "exclusiveMaximum": 1
+        },
+        "method": {
+          "const": "wilson_score"
+        }
+      }
+    },
+    "stratum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage",
+        "pair_count",
+        "episode_count",
+        "minimum_pairs",
+        "minimum_action_covered_episodes",
+        "board_requirement_met",
+        "action_requirement_met",
+        "exact_accuracy",
+        "success_arm_accuracy",
+        "failure_arm_accuracy",
+        "both_correct_rate",
+        "action_coverage",
+        "selective_risk",
+        "defer_rate",
+        "unsafe_advance_rate"
+      ],
+      "properties": {
+        "stage": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/stage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pair_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "episode_count": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "minimum_pairs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_action_covered_episodes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "board_requirement_met": {
+          "type": "boolean"
+        },
+        "action_requirement_met": {
+          "type": "boolean"
+        },
+        "exact_accuracy": {
+          "$ref": "#/$defs/estimate"
+        },
+        "success_arm_accuracy": {
+          "$ref": "#/$defs/estimate"
+        },
+        "failure_arm_accuracy": {
+          "$ref": "#/$defs/estimate"
+        },
+        "both_correct_rate": {
+          "$ref": "#/$defs/estimate"
+        },
+        "action_coverage": {
+          "$ref": "#/$defs/estimate"
+        },
+        "selective_risk": {
+          "$ref": "#/$defs/estimate"
+        },
+        "defer_rate": {
+          "$ref": "#/$defs/estimate"
+        },
+        "unsafe_advance_rate": {
+          "$ref": "#/$defs/estimate"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "submission_id",
+        "submission_fingerprint",
+        "policy_id",
+        "policy_version",
+        "overall",
+        "by_stage",
+        "all_stage_requirements_met",
+        "all_action_requirements_met"
+      ],
+      "properties": {
+        "submission_id": {
+          "$ref": "#/$defs/text"
+        },
+        "submission_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_version": {
+          "$ref": "#/$defs/text"
+        },
+        "overall": {
+          "$ref": "#/$defs/stratum"
+        },
+        "by_stage": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stratum"
+          }
+        },
+        "all_stage_requirements_met": {
+          "type": "boolean"
+        },
+        "all_action_requirements_met": {
+          "type": "boolean"
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluation_id",
+        "protocol_id",
+        "protocol_fingerprint",
+        "board_id",
+        "board_fingerprint",
+        "vault_fingerprint",
+        "curation_manifest_fingerprint",
+        "created_on",
+        "summaries",
+        "limitations"
+      ],
+      "properties": {
+        "evaluation_id": {
+          "$ref": "#/$defs/text"
+        },
+        "protocol_id": {
+          "$ref": "#/$defs/text"
+        },
+        "protocol_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "board_id": {
+          "$ref": "#/$defs/text"
+        },
+        "board_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "vault_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "curation_manifest_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "created_on": {
+          "$ref": "#/$defs/date"
+        },
+        "summaries": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/summary"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    }
+  }
+}

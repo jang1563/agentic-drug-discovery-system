@@ -1,6 +1,6 @@
 # Public Release Readiness Plan
 
-Status: public release active; incremental refresh under review
+Status: 0.3.0.dev0 public release active; 0.3.0.dev1 candidate under review
 Release posture: GitHub and Hugging Face public; publish refreshes only from reviewed Git commits after all blocking gates pass
 Target surface: public GitHub repository with a commit-pinned Hugging Face Dataset mirror
 
@@ -14,7 +14,7 @@ The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
-  `docs/11_*` through `docs/25_*`, the payload-free preclinical, clinical provider, and sealed
+  `docs/11_*` through `docs/26_*`, the payload-free preclinical, clinical provider, and sealed
   policy-evaluation snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and
   this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
@@ -35,6 +35,8 @@ The following stay outside Git unless a separate audited release package explici
 - Real policy checkpoints and policy-run artifacts containing complete state or tool ledgers.
 - Real sealed boards, cached episode packets, label vaults, commitment nonces, policy submissions,
   and per-episode evaluation outputs.
+- Real held-out curator identities, affiliation records, attestations, evidence snapshots, votes,
+  rationales, adjudications, curation manifests, and per-episode curation outputs.
 - Local working notes, imported research packs, private opportunity records, and machine-specific source maps.
 - Scheduler logs, root-level run outputs, generated caches, Python bytecode, and large experiment directories.
 - Credentials, API tokens, `.env*`, key material, local account names, absolute local paths, and internal compute-location breadcrumbs.
