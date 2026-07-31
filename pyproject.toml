@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agentic-drug-discovery-system"
-version = "0.3.0.dev1"
+version = "0.3.0.dev2"
 description = "Evidence-governed execution core for end-to-end drug-discovery agents"
 readme = "README.md"
 requires-python = ">=3.11"

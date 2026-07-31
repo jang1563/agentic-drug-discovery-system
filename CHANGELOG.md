@@ -4,6 +4,8 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+## 0.3.0.dev2 - 2026-07-31
+
 - Extended the strict ClinicalTrials.gov harmonization boundary for source-preserving registry
   variants: exact numeric p-values, a frozen hazard-ratio alias set, approved missing descriptive
   arm markers, dose-unit and `on-treatment` safety-title qualifiers, and sparse omitted affected

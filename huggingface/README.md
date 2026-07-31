@@ -14,14 +14,14 @@ tags:
 
 # Agentic Drug Discovery System
 
-This card describes the approved public 0.3.0.dev1 exact-source mirror for the Agentic Drug Discovery System. It contains the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, real curator manifests, real clinical decision or closed-loop policies/catalogs/batches/receipts/packages, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes. Every future update requires a new exact-package review and explicit approval.
+This card describes the approved public 0.3.0.dev2 exact-source mirror for the Agentic Drug Discovery System. It contains the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, real curator manifests, real clinical decision or closed-loop policies/catalogs/batches/receipts/packages, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes. Every future update requires a new exact-package review and explicit approval.
 
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
-- **Public state:** 0.3.0.dev1 exact-source mirror, published after explicit approval.
+- **Public state:** 0.3.0.dev2 exact-source mirror, published after explicit approval.
 - **Release lineage:** 0.2.0 remains the latest tagged stable release.
-- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, provenance-preserving clinical evidence tensor compilation and bounded VOI action planning, bounded selected-action execution with compact receipts, reviewer-only refresh and exact source-rejoined transition validation, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched and sealed evaluators, preregistered held-out curation contracts, stage-stratified uncertainty, synthetic evaluation tests, aggregate external evaluation evidence, manifests, audit code, and the `ctdbench` scorer.
+- **Contents:** Bounded planner, typed execution core, deterministic policy replanning and hash-bound checkpoint resume, cross-stage disease/target/assay/model-system/intervention/trial/design identity ledgers, atomic multi-trial portfolio extraction, reviewer-approved endpoint mapping, mapping-gated source-disjoint non-pooled benefit-risk synthesis, bounded source-preserving ClinicalTrials.gov harmonization, ten-dimension provenance-preserving clinical evidence tensor compilation and bounded VOI action planning, bounded selected-action execution with compact receipts, reviewer-only refresh and exact source-rejoined transition validation, source capture and payload-free manifest compiler, semantic mappings, dependency-free pinned-evidence adapter and binding, stage and multi-stage program runners, matched and sealed evaluators, preregistered held-out curation contracts, stage-stratified uncertainty, synthetic evaluation tests, aggregate external evaluation evidence, manifests, audit code, and the `ctdbench` scorer.
 - **Excludes:** Raw source data, real sealed or held-out boards, curator identities/attestations/votes/adjudications, curation manifests, real clinical decision policies/action catalogs/evidence tensors/packages, real closed-loop policies/execution batches/provider requests or outcomes/receipts/reviewer refresh records/transitions, cached episode packets, label vaults, policy submissions, per-episode evaluations, hidden labels, generated trajectories, logs, credentials, local paths, or model weights.
 - **Source:** Exact commit and tree are recorded in `upload_manifest.json`.
 
@@ -288,7 +288,7 @@ python3 -m compileall agentic_drug_discovery adapters chains benchmark/src scrip
 - Repository type: Dataset
 - Repo id: `jang1563/agentic-drug-discovery-system`
 - Current visibility: public and ungated
-- Current public update: 0.3.0.dev1, published after explicit approval
+- Current public update: 0.3.0.dev2, published after explicit approval
 - Future updates require a new exact-package review and approval
 
 ## Source
