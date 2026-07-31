@@ -110,6 +110,12 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   recompilation bind the synthesis, policy, tensor, catalog, scores, gap partition, and plan.
   `ADVANCE` means evidence-workflow readiness only. Pooling, clinical acceptability, treatment
   recommendations, terminal decisions, and calibrated economic VOI claims are prohibited.
+- A clinical cohort diagnostics layer binds exact package rosters and can require accepted-state
+  hashes plus committed-ledger replay. It separates packages, programs, and synthesis-bound
+  evidence units; reports complete decision/dimension/gap/action denominators; performs matched
+  policy sensitivity only on shared evidence units; and exposes cross-unit source-hash or trial-id
+  reuse. It includes no outcome labels or performance metrics and therefore cannot estimate
+  correctness, utility, safety, policy superiority, or calibration.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -227,6 +233,9 @@ Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are 
    not coerce the current CDC and PubMed populations into one context.
 2. Use the shipped preregistration and curation contract to build a real independently curated,
    stage-stratified held-out board; no such real-board result is claimed yet.
-3. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
-4. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
+3. Join preregistered clinical package predictions to independently curated outcomes so the shipped
+   cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
+   selective risk and calibration.
+4. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
+5. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
    operator reauthorization above the shipped deterministic resume/replan control layer.

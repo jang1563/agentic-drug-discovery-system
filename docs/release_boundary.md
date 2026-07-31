@@ -24,6 +24,7 @@ This repository uses a conservative boundary so that future public or collaborat
   rationales, adjudications, curation manifests, and per-episode curation results.
 - Real clinical decision policies, action catalogs, evidence tensors, and compiled decision
   packages.
+- Real clinical cohort manifests, accepted-state bindings, package diagnostics, and cohort reports.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -41,6 +42,8 @@ These may become release assets after a separate audit:
   curator-privacy, label-leakage, and small-stratum review.
 - Compiler-generated synthetic clinical evidence decision packages after schema and provenance
   review.
+- Compiler-generated synthetic clinical cohort manifests and reports after schema, state-binding,
+  provenance-overlap, and interpretation-boundary review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -100,6 +103,15 @@ program thresholds, priorities, costs, source identities, and planned operations
 package can retain trial-level evidence lineage. Those artifacts remain outside Git and Hugging
 Face until a separate scientific, privacy, and release-boundary review approves them.
 
+The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
+schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
+synthetic matched-policy report. Real manifests can disclose selected programs and policy
+comparisons; accepted-state hashes, package diagnostics, source/trial overlap, action frequencies,
+and costs can expose program strategy and evidence lineage. Real cohort artifacts remain outside
+Git and Hugging Face until separate scientific, privacy, governance, and release-boundary review.
+The public synthetic report contains no outcomes and cannot support calibration or clinical
+performance claims.
+
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution
 batches, provider requests/outcomes, compact receipts, reviewer refresh records, before/after
@@ -125,8 +137,9 @@ external until separate scientific and release-boundary approval.
 - The public Hugging Face Dataset package is a commit-pinned subset:
   documentation, the typed execution core, the dependency-free pinned-evidence and
   local clinical-synthesis adapters and bindings, the clinical evidence tensor and bounded-VOI
-  compiler, the bounded clinical closed-loop compiler and synthetic transition, tests, schemas,
-  aggregate evidence, audit code, and the `benchmark/` scorer.
+  compiler, clinical cohort diagnostics and synthetic matched-policy report, the bounded clinical
+  closed-loop compiler and synthetic transition, tests, schemas, aggregate evidence, audit code,
+  and the `benchmark/` scorer.
 - `benchmark/` scores the separately hosted
   `jang1563/clinical-trial-decision-benchmark` dataset. Its data rows and
   Croissant metadata do not belong in the Agentic Drug Discovery System mirror.

@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_evidence_cohort_summary.schema.json",
+  "title": "Clinical evidence cohort summary and validation report",
+  "description": "Compact projection of an integrity-bound outcome-free cohort diagnostics report.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "cohort_id",
+    "manifest_fingerprint",
+    "package_validation_scope",
+    "counts",
+    "decision_counts",
+    "matched_policy_comparison_count",
+    "provenance_overlap_count",
+    "evidence_units_source_disjoint",
+    "evidence_units_trial_disjoint",
+    "outcome_calibration_status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-evidence-cohort-summary.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "cohort_id": {
+      "$ref": "#/$defs/text"
+    },
+    "manifest_fingerprint": {
+      "$ref": "#/$defs/sha256"
+    },
+    "package_validation_scope": {
+      "enum": [
+        "integrity_and_structure",
+        "integrity_structure_and_state_replay"
+      ]
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packages",
+        "programs",
+        "evidence_units",
+        "policies"
+      ],
+      "properties": {
+        "packages": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "programs": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "evidence_units": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "policies": {
+          "$ref": "#/$defs/positiveInteger"
+        }
+      }
+    },
+    "decision_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "advance",
+        "hold",
+        "defer"
+      ],
+      "properties": {
+        "advance": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "hold": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "defer": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        }
+      }
+    },
+    "matched_policy_comparison_count": {
+      "$ref": "#/$defs/nonNegativeInteger"
+    },
+    "provenance_overlap_count": {
+      "$ref": "#/$defs/nonNegativeInteger"
+    },
+    "evidence_units_source_disjoint": {
+      "type": "boolean"
+    },
+    "evidence_units_trial_disjoint": {
+      "type": "boolean"
+    },
+    "outcome_calibration_status": {
+      "const": "not_estimable_without_independent_outcomes"
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "scope",
+        "failure_codes"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "valid",
+            "invalid"
+          ]
+        },
+        "scope": {
+          "$ref": "#/$defs/text"
+        },
+        "failure_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "positiveInteger": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

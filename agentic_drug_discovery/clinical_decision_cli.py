@@ -8,6 +8,16 @@ import sys
 from pathlib import Path
 from typing import Any, Sequence, TextIO
 
+from .clinical_cohort import (
+    ClinicalCohortError,
+    clinical_cohort_manifest_from_json,
+    clinical_cohort_report_envelope,
+    clinical_cohort_report_from_json,
+    clinical_cohort_report_summary,
+    clinical_cohort_validation_report,
+    compile_clinical_cohort_report,
+    validate_clinical_cohort_report,
+)
 from .clinical_decision import (
     ClinicalDecisionError,
     clinical_decision_package_envelope,
@@ -65,6 +75,23 @@ def _package(path: str):
     )
 
 
+def _cohort_manifest(path: str):
+    return clinical_cohort_manifest_from_json(
+        _read_text(path, "clinical cohort manifest")
+    )
+
+
+def _cohort_report(path: str):
+    return clinical_cohort_report_from_json(
+        _read_text(path, "clinical cohort report")
+    )
+
+
+def _require_single_stdin(paths: Sequence[str | None]) -> None:
+    if sum(path == "-" for path in paths) > 1:
+        raise ValueError("only one input may read from stdin")
+
+
 def _print_json(value: Any, stream: TextIO = sys.stdout) -> None:
     print(json.dumps(value, indent=2, sort_keys=True), file=stream)
 
@@ -104,11 +131,80 @@ def _summarize(args: argparse.Namespace) -> int:
     return 0
 
 
+def _compile_cohort(args: argparse.Namespace) -> int:
+    _require_single_stdin((args.manifest, *args.package, *args.state))
+    manifest = _cohort_manifest(args.manifest)
+    packages = tuple(_package(path) for path in args.package)
+    states = tuple(_state(path) for path in args.state)
+    report = compile_clinical_cohort_report(
+        manifest,
+        packages,
+        states=states,
+    )
+    envelope = clinical_cohort_report_envelope(report)
+    if args.output == "-":
+        _print_json(envelope)
+        return 0
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    if not output.is_file():
+        raise OSError("clinical cohort report output was not created")
+    _print_json(
+        clinical_cohort_validation_report(
+            report,
+            scope=(
+                "integrity_aggregate_manifest_package_and_state_replay"
+                if states
+                else "integrity_aggregate_and_manifest_package_binding"
+            ),
+        )
+    )
+    return 0
+
+
+def _validate_cohort(args: argparse.Namespace) -> int:
+    if args.manifest is None and (args.package or args.state):
+        raise ValueError("--package and --state require --manifest")
+    if args.manifest is not None and not args.package:
+        raise ValueError("--manifest validation requires at least one --package")
+    paths = (args.report, args.manifest, *args.package, *args.state)
+    _require_single_stdin(paths)
+    report = _cohort_report(args.report)
+    failures: tuple[str, ...] = ()
+    scope = "integrity_and_aggregate_consistency"
+    if args.manifest is not None:
+        manifest = _cohort_manifest(args.manifest)
+        packages = tuple(_package(path) for path in args.package)
+        states = tuple(_state(path) for path in args.state)
+        failures = validate_clinical_cohort_report(
+            report,
+            manifest,
+            packages,
+            states=states,
+        )
+        scope = (
+            "integrity_aggregate_manifest_package_and_state_replay"
+            if states
+            else "integrity_aggregate_and_manifest_package_binding"
+        )
+    validation = clinical_cohort_validation_report(
+        report,
+        failures=failures,
+        scope=scope,
+    )
+    _print_json(validation)
+    return 0 if not failures else 1
+
+
+def _summarize_cohort(args: argparse.Namespace) -> int:
+    _print_json(clinical_cohort_report_summary(_cohort_report(args.report)))
+    return 0
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Compile, validate, and summarize provenance-preserving clinical "
-            "evidence decision packages."
+            "evidence decision packages and outcome-free cohort diagnostics."
         )
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -164,6 +260,86 @@ def _parser() -> argparse.ArgumentParser:
         help="Decision package JSON path, or '-' for stdin.",
     )
     summarize_parser.set_defaults(handler=_summarize)
+
+    cohort_parser = subparsers.add_parser(
+        "cohort",
+        help=(
+            "Compile outcome-free cohort diagnostics and matched policy "
+            "sensitivity from an exact package roster."
+        ),
+    )
+    cohort_parser.add_argument(
+        "--manifest",
+        required=True,
+        help="Integrity-bound cohort manifest JSON path, or '-' for stdin.",
+    )
+    cohort_parser.add_argument(
+        "--package",
+        action="append",
+        required=True,
+        help="Decision package JSON path; repeat once per manifest binding.",
+    )
+    cohort_parser.add_argument(
+        "--state",
+        action="append",
+        default=[],
+        help=(
+            "Accepted ProgramState JSON path; repeat once per program when "
+            "state_sha256 is declared in the manifest."
+        ),
+    )
+    cohort_parser.add_argument(
+        "--output",
+        required=True,
+        help="Cohort report JSON path, or '-' for stdout.",
+    )
+    cohort_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing cohort report file.",
+    )
+    cohort_parser.set_defaults(handler=_compile_cohort)
+
+    validate_cohort_parser = subparsers.add_parser(
+        "validate-cohort",
+        help=(
+            "Validate report integrity and aggregates, with optional exact "
+            "manifest/package/state replay."
+        ),
+    )
+    validate_cohort_parser.add_argument(
+        "--report",
+        required=True,
+        help="Cohort report JSON path, or '-' for stdin.",
+    )
+    validate_cohort_parser.add_argument(
+        "--manifest",
+        help="Optional integrity-bound cohort manifest JSON path.",
+    )
+    validate_cohort_parser.add_argument(
+        "--package",
+        action="append",
+        default=[],
+        help="Decision package JSON path; repeat for exact manifest replay.",
+    )
+    validate_cohort_parser.add_argument(
+        "--state",
+        action="append",
+        default=[],
+        help="Accepted ProgramState JSON path; repeat for state-bound replay.",
+    )
+    validate_cohort_parser.set_defaults(handler=_validate_cohort)
+
+    summarize_cohort_parser = subparsers.add_parser(
+        "summarize-cohort",
+        help="Emit a compact human- and machine-readable cohort summary.",
+    )
+    summarize_cohort_parser.add_argument(
+        "--report",
+        required=True,
+        help="Cohort report JSON path, or '-' for stdin.",
+    )
+    summarize_cohort_parser.set_defaults(handler=_summarize_cohort)
     return parser
 
 
@@ -173,6 +349,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return args.handler(args)
     except (
         ClinicalDecisionError,
+        ClinicalCohortError,
         ClinicalEvidenceWorkflowError,
         OSError,
         RecordParseError,

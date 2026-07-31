@@ -24,8 +24,9 @@ ingestion, tool/database adapters, scientific foundation-model interfaces,
 sealed retrospective policy evaluation, preregistered held-out evaluation
 contracts, stage-stratified uncertainty, provenance-preserving clinical
 evidence and bounded-VOI planning, a reviewer-governed clinical evidence closed
-loop, and bounded source-preserving ClinicalTrials.gov harmonization with typed
-missing-measurement gaps. No real independently curated board result is claimed.
+loop, outcome-free multi-package cohort diagnostics with matched policy
+sensitivity, and bounded source-preserving ClinicalTrials.gov harmonization with
+typed missing-measurement gaps. No real independently curated board result is claimed.
 Seven of eight planned atlases still do not have standalone public data, and
 the demonstrated continuous multi-stage program currently covers one
 disease/target slice.
@@ -52,6 +53,8 @@ adds-clinical-evidence summarize \
   --package rl_env/specs/clinical_evidence_decision_package.example.json
 adds-clinical-evidence validate \
   --package rl_env/specs/clinical_evidence_decision_package.example.json
+adds-clinical-evidence summarize-cohort \
+  --report rl_env/specs/clinical_evidence_cohort_report.example.json
 python -m pytest -q
 ```
 
@@ -71,6 +74,22 @@ adds-clinical-evidence validate \
 The compiler rejects duplicate JSON keys, non-finite numbers, uncommitted mapping or synthesis
 records, replay mismatches, and accidental output replacement. The public config schema and
 synthetic example are under `rl_env/specs/clinical_evidence_decision_config.*`.
+
+Compile diagnostics over an exact multi-package roster, optionally binding one accepted state per
+program for committed-ledger replay:
+
+```bash
+adds-clinical-evidence cohort \
+  --manifest clinical-cohort-manifest.json \
+  --package policy-a-package.json \
+  --package policy-b-package.json \
+  --state accepted-program-state.json \
+  --output clinical-cohort-report.json
+```
+
+This report separates packages, programs, and exact evidence units; compares policies only on
+shared evidence units; and reports cross-unit source-hash/trial-id reuse. It contains no outcome
+labels or performance metrics and cannot establish policy calibration.
 
 ## Core Question
 
@@ -208,14 +227,20 @@ system or full trajectory atlas described in the roadmap. Honest status:
   the after tensor. The transition remains
   evidence-workflow-only and cannot issue a provider, terminal, treatment, or acceptability
   decision.
+- **Clinical cohort diagnostics and matched policy sensitivity:** An integrity-bound manifest
+  fixes an exact package roster and can bind accepted `ProgramState` hashes for full committed-
+  ledger replay. Reports distinguish packages, programs, and synthesis-bound evidence units;
+  retain exact decision/gap/action denominators; compare policy pairs only on shared evidence;
+  and expose cross-unit source-hash and trial-id reuse. The layer includes no outcomes and makes no
+  correctness, clinical utility, safety, superiority, or calibration claim.
 - **Built & audited:** source-derived label authority plus scoped construct-validity controls;
   callable tool/DB adapters
   (ClinicalTrials.gov, openFDA, Open Targets, ChEMBL, EMA EPAR) and multi-stage flow orchestrators;
   typed bindings for Open Targets, ChEMBL, ClinicalTrials.gov, EMA, Boltz-2, and RDKit molprops;
   a dependency-free source-pinned evidence-manifest adapter, capture/compiler CLI, and
   machine-readable receipt/job/review, disease-context, preclinical, clinical provider, and
-  clinical portfolio, endpoint mapping, cross-trial synthesis, clinical evidence decision and
-  closed-loop transition,
+  clinical portfolio, endpoint mapping, cross-trial synthesis, clinical evidence decision,
+  cohort manifest/report/summary, and closed-loop transition,
   sealed-board, label-vault, policy-submission, policy-report, held-out protocol,
   curator-manifest, and stage-stratified report schemas;
   one disease/target slice (sickle cell) traversed retrospectively; an unscored
@@ -228,7 +253,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   molecular properties; contextual ClinicalTrials.gov search results; source-pinned
   ClinicalTrials.gov trial designs; reviewer-approved endpoint mapping; deterministic non-pooled
   clinical benefit-risk synthesis; provenance-preserving clinical evidence tensor compilation and
-  bounded evidence-action prioritization; bounded selected-action execution, reviewer-only
+  bounded evidence-action prioritization; matched multi-package policy sensitivity and provenance
+  overlap diagnostics; bounded selected-action execution, reviewer-only
   refresh, and exact source-rejoined decision transition; EMA
   regulatory status; and structured
   Boltz binding output; and source-pinned unmet-need and candidate functional-effect profiles have
@@ -244,8 +270,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   level reanalysis, event-level causality, live ontology-authority resolution and terminology
   validation, statistically justified pooling, soft-verifier calibration,
   a real independently curated multi-stage held-out board, candidate edit/rank loops, and
-  learned or dynamically generated replanning, operator reauthorization workflows, and policy
-  calibration remain future work. Boltz scoring needs a GPU endpoint,
+  learned or dynamically generated replanning, operator reauthorization workflows, and
+  outcome-linked policy calibration remain future work. Boltz scoring needs a GPU endpoint,
   while RDKit molprops runs locally when installed.
 - **Read the caveats first:** headline demo numbers are small-N and on one well-characterized disease;
   the 80/80 prompt result repeats the same eight assets and is a regression check, not independent
@@ -285,6 +311,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
   `docs/28_clinical_evidence_closed_loop.md` defines exact selected-action execution, compact
   provider receipts, reviewer-verifier refresh bounds, source rejoin, single-use actions, and
   before/after transition validation.
+  `docs/29_clinical_cohort_diagnostics.md` defines exact package/state rosters, evidence-unit
+  identity, package and policy strata, matched policy sensitivity, provenance-overlap reporting,
+  and the explicit no-outcome/no-calibration boundary.
   `docs/public_evidence_summary.json` is the
   aggregate claim ledger.
 - `agentic_drug_discovery/`: typed state, bounded planning, tool execution, semantic promotion,
@@ -362,6 +391,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/26_independent_heldout_evaluation.md` | Humans + agents | Preregistered cohort/label/curator contracts, curation validation, stage minima, action coverage, selective risk, and uncertainty boundaries. |
 | `docs/27_clinical_evidence_tensor_and_voi.md` | Humans + agents | Exact clinical evidence cells, policy-relative gap ontology, bounded VOI action ranking, budget behavior, provenance replay, and interpretation boundaries. |
 | `docs/28_clinical_evidence_closed_loop.md` | Humans + agents | Exact selected-action execution, compact receipts, reviewer-only refresh, source rejoin, single-use catalog behavior, and before/after validation. |
+| `docs/29_clinical_cohort_diagnostics.md` | Humans + agents | Exact package/state rosters, evidence-unit identity, matched policy sensitivity, action/gap diagnostics, provenance overlap, and calibration boundaries. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Machines + reviewers | Aggregate 4-pair/8-episode policy metrics, payload-free artifact hashes, real gate outcomes, and limitations. |
 | `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
 | `agentic_drug_discovery/` | Developers + agents | Bounded planning, typed execution, semantic promotion, multi-stage stop semantics, matched evaluation, replay, and verifier-gated transitions. |
@@ -375,7 +405,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinical_synthesis.py` | Developers + agents | Deterministic reviewed-selection compiler for source-disjoint, non-pooled trial-level benefit-risk records. |
 | `agentic_drug_discovery/clinical_decision.py` | Developers + agents | Committed-synthesis tensor compiler, typed evidence gaps, deterministic budget-aware VOI planner, strict integrity readers, and state replay. |
 | `agentic_drug_discovery/clinical_workflow.py` | Users + agents | Stable config parser, accepted-packet provenance checks, compiler wrapper, validation report, and compact decision summary. |
-| `agentic_drug_discovery/clinical_decision_cli.py` | Users + agents | JSON CLI for compiling, replay-validating, and summarizing clinical evidence packages. |
+| `agentic_drug_discovery/clinical_cohort.py` | Developers + agents | State-bindable package rosters, deterministic cohort aggregation, matched policy comparisons, strict integrity readers, and cross-unit provenance overlap. |
+| `agentic_drug_discovery/clinical_decision_cli.py` | Users + agents | JSON CLI for package and cohort compilation, replay validation, and compact summaries. |
 | `agentic_drug_discovery/clinical_closed_loop.py` | Developers + agents | State-bound selected-action batches, bounded runner integration, compact execution and refresh receipts, source-rejoined transition compilation, strict readers, and two-state replay validation. |
 | `agentic_drug_discovery/policy.py` | Developers + agents | Deterministic policy rules, queue-bound replanning, checkpoint integrity, and exact resume orchestration. |
 | `agentic_drug_discovery/sealed_evaluation.py` | Developers + agents | Role-neutral sealed boards, salted label vaults, fingerprint-bound submissions, strict envelope readers, and matched policy metrics. |
@@ -390,6 +421,10 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `rl_env/specs/clinical_evidence_decision_config.schema.json` | Machines + agents | JSON Schema for the accepted-synthesis id, policy, action catalog, and stable package identifiers consumed by `adds-clinical-evidence compile`; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_evidence_decision_summary.schema.json` | Machines + agents | JSON Schema shared by compact `summarize` output and optional state-replay validation reports. |
 | `rl_env/specs/clinical_evidence_decision_package.schema.json` | Machines + agents | JSON Schema for the integrity-bound policy, exact evidence tensor, gaps, action catalog, budget, and bounded-VOI plan; the adjacent example is synthetic. |
+| `rl_env/specs/clinical_evidence_decision_package.relaxed.example.json` | Machines + agents | Compiler-generated synthetic `ADVANCE` package over the same evidence unit for reproducible matched-policy sensitivity; no clinical judgment is implied. |
+| `rl_env/specs/clinical_evidence_cohort_manifest.schema.json` | Machines + agents | JSON Schema for an exact package roster with optional all-or-none accepted-state SHA-256 bindings; the adjacent example is synthetic. |
+| `rl_env/specs/clinical_evidence_cohort_report.schema.json` | Machines + agents | JSON Schema for package/policy strata, matched policy transitions, gap/action diagnostics, provenance overlaps, and explicit no-outcome calibration status; the adjacent example is synthetic. |
+| `rl_env/specs/clinical_evidence_cohort_summary.schema.json` | Machines + agents | JSON Schema for compact cohort summaries and optional validation status. |
 | `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json` | Machines + agents | JSON Schema for integrity-bound execution batches, compact provider/reviewer receipts, exact source rejoin, costs, gap transitions, and nested before/after decision packages; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machines + agents | JSON Schema for approved reviewer, ontology identity, and exact endpoint/safety bindings without measurements. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machines + reviewers | JSON Schema for the exact set of single-trial jobs, receipts, and mapping-bound identities. |
@@ -411,6 +446,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `tests/` | Developers + CI | Fail-closed control-plane regression tests. |
 | `tests/test_clinical_benefit_risk_synthesis.py` | Developers + reviewers | Two-source tool-to-replay synthesis and clinical decision paths plus mismatch, overlap, pooling, forgery, unbound support, safety-signal, budget, deterministic-ranking, integrity, and removal controls. |
 | `tests/test_clinical_decision_cli.py` | Users + CI | Config/schema synchronization, exact public-package reproduction, accepted-packet provenance, strict JSON, atomic output, CLI validation, and compact-summary coverage. |
+| `tests/test_clinical_cohort.py` | Users + CI | State-bound roster replay, matched policy sensitivity, provenance overlap, strict schema/readers, tamper rejection, and atomic cohort CLI coverage. |
 | `tests/test_clinical_portfolio.py` | Developers + reviewers | Multi-job/bundle extraction, schema, source-disjointness, payload removal, and atomic no-output failure controls. |
 | `benchmark/` | Users + CI | Installable scorer and tests for the linked external clinical-trial decision dataset. |
 | `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |

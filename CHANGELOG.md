@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added integrity-bound multi-package clinical cohort diagnostics. Exact manifests bind package
+  identities and can require canonical accepted-state hashes plus committed-ledger replay;
+  reports distinguish packages, programs, and synthesis-bound evidence units, retain exact
+  decision/dimension/gap/action denominators, compare policies only on shared evidence units, and
+  expose cross-unit source-hash or trial-id reuse. Strict schemas/readers, compiler-generated
+  synthetic examples, CLI compile/validate/summarize paths, and adversarial tests are included.
+  The report contains no outcomes or performance metrics and explicitly marks calibration as not
+  estimable without independent outcomes.
 - Added the `adds-clinical-evidence` compile, validate, and summarize interface over accepted-ledger
   clinical syntheses. Strict config and summary schemas, duplicate-key/non-finite rejection, exact
   mapping/synthesis packet provenance, state replay, atomic output, public-package reproduction,
