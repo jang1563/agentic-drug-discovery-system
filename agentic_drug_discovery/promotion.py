@@ -447,6 +447,45 @@ def _source_number(value: Any) -> float | None:
     return number if math.isfinite(number) else None
 
 
+_MISSING_SOURCE_MEASUREMENTS = frozenset(
+    {
+        "na",
+        "n/a",
+        "not available",
+        "not calculable",
+        "not estimable",
+        "not reached",
+        "nr",
+    }
+)
+
+
+def _source_measurement(value: Any) -> tuple[bool, float | None]:
+    if isinstance(value, str) and _normalized(value) in _MISSING_SOURCE_MEASUREMENTS:
+        return True, None
+    number = _source_number(value)
+    return number is not None, number
+
+
+def _arm_title_tokens(value: str) -> frozenset[str]:
+    tokens = [
+        token
+        for token in re.findall(r"[a-z]+|[0-9]+", value.casefold())
+        if token not in {"mg", "milligram", "milligrams"}
+    ]
+    if "on" in tokens and "treatment" in tokens:
+        tokens = [token for token in tokens if token not in {"on", "treatment"}]
+    return frozenset(tokens)
+
+
+def _compatible_arm_titles(left: str, right: str) -> bool:
+    left_tokens = _arm_title_tokens(left)
+    right_tokens = _arm_title_tokens(right)
+    if not left_tokens or not right_tokens:
+        return False
+    return left_tokens == right_tokens
+
+
 def _non_negative_int(value: Any) -> int | None:
     if not isinstance(value, int) or isinstance(value, bool) or value < 0:
         return None
@@ -2773,8 +2812,12 @@ def _map_pinned_clinical_trial_design(
             measurement = item.get("measurement")
             if not isinstance(measurement, Mapping):
                 raise ValueError("arm measurement is missing")
-            if _source_number(measurement.get("value")) is None:
-                raise ValueError("arm measurement value is not numeric")
+            measurement_valid, _ = _source_measurement(measurement.get("value"))
+            if not measurement_valid:
+                raise ValueError(
+                    "arm measurement value is neither numeric nor "
+                    "an approved missing-value marker"
+                )
             denominator = measurement.get("denominator")
             if (
                 not isinstance(denominator, int)
@@ -2836,10 +2879,10 @@ def _map_pinned_clinical_trial_design(
         ci_percent = _number(analysis.get("confidence_interval_percent"))
         ci_lower = _number(analysis.get("confidence_interval_lower"))
         ci_upper = _number(analysis.get("confidence_interval_upper"))
-        candidate_measurement = _source_number(
+        candidate_measurement_valid, candidate_measurement = _source_measurement(
             candidate_arm["measurement"].get("value")
         )
-        comparator_measurement = _source_number(
+        comparator_measurement_valid, comparator_measurement = _source_measurement(
             comparator_arm["measurement"].get("value")
         )
         if None in {
@@ -2848,10 +2891,13 @@ def _map_pinned_clinical_trial_design(
             ci_percent,
             ci_lower,
             ci_upper,
-            candidate_measurement,
-            comparator_measurement,
-        }:
+        } or not candidate_measurement_valid or not comparator_measurement_valid:
             raise ValueError("endpoint analysis contains non-numeric values")
+        arm_measurements_support_direction = (
+            candidate_measurement is None
+            or comparator_measurement is None
+            or candidate_measurement > comparator_measurement
+        )
         if (
             _normalized(str(metadata.get("effect_direction", ""))) != "benefit"
             or _normalized(str(endpoint["outcome_type"])) != "primary"
@@ -2859,13 +2905,18 @@ def _map_pinned_clinical_trial_design(
             or _normalized(str(endpoint["favorable_direction"]))
             != "higher_is_better"
             or _normalized(str(analysis.get("parameter_type", "")))
-            not in {"hazard ratio", "hazard ratio (hr)"}
-            or analysis.get("p_value_relation") not in {"lt", "le"}
+            not in {
+                "cox proportional hazard",
+                "hazard ratio",
+                "hazard ratio (hr)",
+                "hazard ratio, log",
+            }
+            or analysis.get("p_value_relation") not in {"lt", "le", "eq"}
             or not 0 < p_value <= 0.05
             or not 0 < parameter_value < 1
             or not 0 < ci_lower <= parameter_value <= ci_upper < 1
             or not 0 < ci_percent <= 100
-            or candidate_measurement <= comparator_measurement
+            or not arm_measurements_support_direction
         ):
             raise ValueError("posted primary endpoint does not prove bounded benefit")
 
@@ -2918,8 +2969,10 @@ def _map_pinned_clinical_trial_design(
                 or safety_arm_id is None
                 or safety_arm_id
                 != f"{safety['safety_id']}:arm:{source_group_id}"
-                or _normalized(str(canonical_arm.get("label", "")))
-                != _normalized(source_group_title)
+                or not _compatible_arm_titles(
+                    str(canonical_arm.get("label", "")),
+                    source_group_title,
+                )
                 or not isinstance(affected, int)
                 or isinstance(affected, bool)
                 or affected < 0
@@ -3115,6 +3168,12 @@ def _map_pinned_clinical_trial_design(
             "p_value": p_value,
             "candidate_measurement": candidate_measurement,
             "comparator_measurement": comparator_measurement,
+            "candidate_measurement_raw": candidate_arm["measurement"]["value"],
+            "comparator_measurement_raw": comparator_arm["measurement"]["value"],
+            "descriptive_arm_measurement_complete": (
+                candidate_measurement is not None
+                and comparator_measurement is not None
+            ),
             "unit": endpoint["unit"],
             "bounded_interpretation": "posted_primary_time_to_event_benefit",
         },

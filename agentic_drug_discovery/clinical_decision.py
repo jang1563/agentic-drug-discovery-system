@@ -77,6 +77,9 @@ class ClinicalEvidenceDimension(str, Enum):
     TRIAL_COUNT = "trial_count"
     BENEFIT_DIRECTION = "benefit_direction"
     BENEFIT_PRECISION = "benefit_precision"
+    DESCRIPTIVE_ARM_MEASUREMENT_COMPLETENESS = (
+        "descriptive_arm_measurement_completeness"
+    )
     SAFETY_DIRECTION = "safety_direction"
     SAFETY_EXPOSURE = "safety_exposure"
     ENDPOINT_TIMEFRAME_ALIGNMENT = "endpoint_timeframe_alignment"
@@ -96,6 +99,9 @@ class ClinicalEvidenceGapCode(str, Enum):
     BENEFIT_DIRECTION_CONFLICT = "benefit_direction_conflict"
     BENEFIT_HARM_SIGNAL = "benefit_harm_signal"
     IMPRECISE_BENEFIT_ESTIMATE = "imprecise_benefit_estimate"
+    MISSING_DESCRIPTIVE_ARM_MEASUREMENT = (
+        "missing_descriptive_arm_measurement"
+    )
     HIGHER_OBSERVED_SERIOUS_EVENT_RISK = "higher_observed_serious_event_risk"
     SAFETY_DIRECTION_CONFLICT = "safety_direction_conflict"
     INSUFFICIENT_SAFETY_EXPOSURE = "insufficient_safety_exposure"
@@ -125,6 +131,9 @@ _GAP_DIMENSIONS = {
     ),
     ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE: (
         ClinicalEvidenceDimension.BENEFIT_PRECISION
+    ),
+    ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT: (
+        ClinicalEvidenceDimension.DESCRIPTIVE_ARM_MEASUREMENT_COMPLETENESS
     ),
     ClinicalEvidenceGapCode.HIGHER_OBSERVED_SERIOUS_EVENT_RISK: (
         ClinicalEvidenceDimension.SAFETY_DIRECTION
@@ -167,6 +176,10 @@ _GAP_SUMMARIES = {
     ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE: (
         "At least one log-scale effect confidence interval is wider than the "
         "preregistered workflow threshold."
+    ),
+    ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT: (
+        "At least one selected trial has a source-reported missing descriptive "
+        "candidate or comparator arm measurement."
     ),
     ClinicalEvidenceGapCode.HIGHER_OBSERVED_SERIOUS_EVENT_RISK: (
         "At least one selected trial has a higher observed aggregate serious-"
@@ -348,8 +361,8 @@ class ClinicalEvidenceCell(SerializableRecord):
     confidence_interval_upper: float
     log_effect_ci_width: float
     benefit_direction: str
-    candidate_measurement: float
-    comparator_measurement: float
+    candidate_measurement: float | None
+    comparator_measurement: float | None
     measurement_unit: str
     endpoint_time_frame: str
     safety_time_frame: str
@@ -388,8 +401,6 @@ class ClinicalEvidenceCell(SerializableRecord):
             "confidence_interval_lower",
             "confidence_interval_upper",
             "log_effect_ci_width",
-            "candidate_measurement",
-            "comparator_measurement",
             "candidate_serious_event_risk",
             "comparator_serious_event_risk",
             "serious_event_risk_difference",
@@ -399,6 +410,14 @@ class ClinicalEvidenceCell(SerializableRecord):
                 raise TypeError(f"{field_name} must be numeric")
             if not math.isfinite(float(value)):
                 raise ValueError(f"{field_name} must be finite")
+        for field_name in ("candidate_measurement", "comparator_measurement"):
+            value = getattr(self, field_name)
+            if value is None:
+                continue
+            if not isinstance(value, (int, float)) or isinstance(value, bool):
+                raise TypeError(f"{field_name} must be numeric or null")
+            if not math.isfinite(float(value)):
+                raise ValueError(f"{field_name} must be finite when present")
         if not (
             0
             < self.confidence_interval_lower
@@ -1332,6 +1351,28 @@ def compile_clinical_evidence_tensor(
                 imprecise_cells,
             )
         )
+    incomplete_measurement_cells = tuple(
+        item
+        for item in cells
+        if item.candidate_measurement is None
+        or item.comparator_measurement is None
+    )
+    if incomplete_measurement_cells:
+        missing_measurement_count = sum(
+            item.candidate_measurement is None
+            for item in incomplete_measurement_cells
+        ) + sum(
+            item.comparator_measurement is None
+            for item in incomplete_measurement_cells
+        )
+        gaps.append(
+            _gap(
+                tensor_id,
+                ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT,
+                missing_measurement_count / (2 * len(cells)),
+                incomplete_measurement_cells,
+            )
+        )
     higher_safety_cells = tuple(
         item
         for item in cells
@@ -1464,6 +1505,29 @@ def compile_clinical_evidence_tensor(
                 "maximum_observed_log_effect_ci_width": max(widths.values()),
             },
             {"maximum_log_effect_ci_width": (policy.maximum_log_effect_ci_width)},
+            ordered_gaps,
+        ),
+        _dimension_record(
+            ClinicalEvidenceDimension.DESCRIPTIVE_ARM_MEASUREMENT_COMPLETENESS,
+            {
+                "missing_arms_by_study": {
+                    item.study_record_id: [
+                        role
+                        for role, value in (
+                            ("candidate", item.candidate_measurement),
+                            ("comparator", item.comparator_measurement),
+                        )
+                        if value is None
+                    ]
+                    for item in cells
+                    if item.candidate_measurement is None
+                    or item.comparator_measurement is None
+                },
+                "complete_study_count": (
+                    len(cells) - len(incomplete_measurement_cells)
+                ),
+            },
+            {"missing_descriptive_arm_measurements": 0},
             ordered_gaps,
         ),
         _dimension_record(

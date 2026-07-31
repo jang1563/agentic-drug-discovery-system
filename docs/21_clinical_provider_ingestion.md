@@ -66,8 +66,8 @@ The extractor verifies:
 8. Candidate-first analysis group order, p-value comparator, statistical method, analysis
    parameter, estimate, confidence interval percentage, and confidence bounds.
 9. The posted adverse-event time frame, optional description, and exact serious-event term count.
-10. Two selected adverse-event groups against exact `EG...` ids, titles, arm roles, affected
-    participant counts, and at-risk participant counts.
+10. Two selected adverse-event groups against exact `EG...` ids, bounded title equivalence, arm
+    roles, affected participant counts, and positive at-risk participant counts.
 
 Duplicate JSON keys, non-finite values, malformed source receipts, source drift, index drift, arm
 swaps, result-group swaps, adverse-event-group swaps, and typed value mismatches fail closed.
@@ -76,20 +76,35 @@ During promotion, every source candidate alias must also resolve through the acc
 unapproved aliases are rejected. A source condition must intersect the accepted disease name or
 its pre-approved identity aliases.
 
+Bounded title equivalence removes punctuation, dose-unit tokens (`mg`, `milligram`, or
+`milligrams`), and the exact `on-treatment` qualifier before requiring token-set equality. It does
+not accept arbitrary extra cohort or treatment descriptors. Serious-event term statistics may omit
+`numAffected` only for nonselected groups whose posted `numAtRisk` is zero; selected safety groups
+must retain complete nonnegative affected counts and positive at-risk counts.
+
 ## Bounded Support Rule
 
 Version 2 does not attempt arbitrary endpoint or safety interpretation. Endpoint support is
 limited to a posted primary time-to-event endpoint when all of the following hold:
 
 - the endpoint declares `higher_is_better`;
-- the candidate measurement is greater than the comparator measurement;
-- the candidate-versus-comparator analysis is a hazard ratio;
+- when both descriptive arm measurements are numeric, the candidate measurement is greater than
+  the comparator measurement; an approved source marker such as `NA`, `NR`, or `not reached`
+  remains missing and is never imputed;
+- the candidate-versus-comparator analysis uses one frozen hazard-ratio parameter alias:
+  `Hazard Ratio`, `Hazard Ratio (HR)`, `Hazard Ratio, log`, or
+  `Cox Proportional Hazard`;
 - the hazard ratio and its upper confidence bound are below `1`;
-- the p-value relation is `<` or `<=` and the typed bound is at most `0.05`.
+- the p-value relation is `<`, `<=`, or exact numeric equality and the typed value is at most
+  `0.05`.
 
 Anything outside this narrow shape returns
 `pinned_clinical_design_endpoint_not_supportive` and `DEFER`. The agent does not infer benefit from
 endpoint names, free text, registration status, or non-significance.
+
+An approved missing descriptive arm summary does not disappear downstream. The promoted endpoint
+evidence retains the raw marker, synthesis serializes the numeric field as `null`, and the evidence
+tensor emits `missing_descriptive_arm_measurement`.
 
 The safety contract separately proves only that posted aggregate serious-adverse-event participant
 counts were resolved for the same candidate and comparator arms. It does not infer attribution,

@@ -102,7 +102,7 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   trials, retains trial-level values and hashes, and prohibits automatic endpoint mapping, pooling,
   benefit-risk scoring, population comparability inference, and clinical acceptability inference.
 - A clinical evidence decision layer requires that committed synthesis to pass complete history and
-  continuity replay, then projects exact trial cells into nine ordered workflow dimensions and
+  continuity replay, then projects exact trial cells into ten ordered workflow dimensions and
   typed provenance-linked gaps. A preregistered policy and action catalog bound trial-count,
   precision, safety-exposure, alignment, action-count, cost, and minimum-VOI criteria. The
   deterministic planner ranks marginal gap coverage by declared resolution probability,

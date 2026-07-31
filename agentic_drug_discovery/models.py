@@ -1057,8 +1057,8 @@ class StudyBenefitRiskRecord(SerializableRecord):
     confidence_interval_percent: float
     confidence_interval_lower: float
     confidence_interval_upper: float
-    candidate_measurement: float
-    comparator_measurement: float
+    candidate_measurement: float | None
+    comparator_measurement: float | None
     measurement_unit: str
     endpoint_time_frame: str
     safety_time_frame: str
@@ -1097,8 +1097,6 @@ class StudyBenefitRiskRecord(SerializableRecord):
             "confidence_interval_percent",
             "confidence_interval_lower",
             "confidence_interval_upper",
-            "candidate_measurement",
-            "comparator_measurement",
             "candidate_serious_event_risk",
             "comparator_serious_event_risk",
             "serious_event_risk_difference",
@@ -1108,6 +1106,14 @@ class StudyBenefitRiskRecord(SerializableRecord):
                 raise TypeError(f"{field_name} must be numeric")
             if not math.isfinite(float(value)):
                 raise ValueError(f"{field_name} must be finite")
+        for field_name in ("candidate_measurement", "comparator_measurement"):
+            value = getattr(self, field_name)
+            if value is None:
+                continue
+            if not isinstance(value, (int, float)) or isinstance(value, bool):
+                raise TypeError(f"{field_name} must be numeric or null")
+            if not math.isfinite(float(value)):
+                raise ValueError(f"{field_name} must be finite when present")
         if self.effect_estimate <= 0:
             raise ValueError("effect_estimate must be positive")
         if not 0 < self.confidence_interval_percent <= 100:

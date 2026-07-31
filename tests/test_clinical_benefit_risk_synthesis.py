@@ -200,6 +200,7 @@ def _manifest(
     trial_id: str,
     *,
     candidate_serious_num_affected: int = 12,
+    candidate_measurement: str = "12.0",
 ) -> dict:
     original_trial_id = "NCT00000001"
     job_text = JOB.read_text(encoding="utf-8").replace(
@@ -209,6 +210,19 @@ def _manifest(
         original_trial_id, trial_id
     )
     job = json.loads(job_text)
+    if candidate_measurement != "12.0":
+        job["trial"]["arms"][0]["measurement"]["value"] = candidate_measurement
+        source = json.loads(source_text)
+        source["resultsSection"]["outcomeMeasuresModule"]["outcomeMeasures"][
+            0
+        ]["classes"][0]["categories"][0]["measurements"][0][
+            "value"
+        ] = candidate_measurement
+        source_text = json.dumps(
+            source,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
     if candidate_serious_num_affected != 12:
         job["trial"]["safety"]["arms"][0]["serious_num_affected"] = (
             candidate_serious_num_affected
@@ -249,6 +263,7 @@ def _run_clinical_trial(
     program_id: str,
     *,
     candidate_serious_num_affected: int = 12,
+    candidate_measurement: str = "12.0",
 ) -> ProgramState:
     registry = register_existing_adapters(
         ToolRegistry(clock=lambda: COMPLETED_AT),
@@ -258,6 +273,7 @@ def _run_clinical_trial(
                 candidate_serious_num_affected=(
                     candidate_serious_num_affected
                 ),
+                candidate_measurement=candidate_measurement,
             )
         ),
     )
@@ -322,8 +338,13 @@ def _run_clinical_trial(
 def _combined_state(
     *,
     second_candidate_serious_num_affected: int = 12,
+    first_candidate_measurement: str = "12.0",
 ) -> ProgramState:
-    first = _run_clinical_trial("NCT00000001", "trial-one")
+    first = _run_clinical_trial(
+        "NCT00000001",
+        "trial-one",
+        candidate_measurement=first_candidate_measurement,
+    )
     second = _run_clinical_trial(
         "NCT00000002",
         "trial-two",
@@ -1346,6 +1367,64 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             ),
             (),
         )
+
+    def test_missing_descriptive_arm_measurement_remains_a_typed_gap(self) -> None:
+        unmapped = _combined_state(first_candidate_measurement="NA")
+        mapping_result, _ = _run_mapping(unmapped, _mapping_spec())
+        self.assertIs(mapping_result.status, StageRunStatus.COMMITTED)
+        synthesis_result, _ = _run_synthesis(
+            mapping_result.final_state,
+            _spec(),
+        )
+        self.assertIs(synthesis_result.status, StageRunStatus.COMMITTED)
+        synthesis = synthesis_result.final_state.benefit_risk_syntheses[0]
+        self.assertIsNone(synthesis.studies[0].candidate_measurement)
+        self.assertEqual(
+            synthesis.studies[0].attributes["candidate_measurement_raw"],
+            "NA",
+        )
+        self.assertEqual(
+            program_state_from_dict(to_primitive(synthesis_result.final_state)),
+            synthesis_result.final_state,
+        )
+
+        package = compile_clinical_decision_package(
+            synthesis_result.final_state,
+            synthesis,
+            _decision_policy(),
+            (),
+            package_id="missing-arm-measurement-package",
+            tensor_id="missing-arm-measurement-tensor",
+            plan_id="missing-arm-measurement-plan",
+        )
+
+        self.assertIs(package.plan.decision, Decision.DEFER)
+        self.assertEqual(
+            tuple(item.code for item in package.tensor.gaps),
+            (
+                ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT,
+            ),
+        )
+        dimension = next(
+            item
+            for item in package.tensor.dimensions
+            if item.dimension
+            is ClinicalEvidenceDimension.DESCRIPTIVE_ARM_MEASUREMENT_COMPLETENESS
+        )
+        self.assertIs(dimension.status, ClinicalDimensionStatus.GAP)
+        self.assertEqual(
+            dimension.observed["missing_arms_by_study"],
+            {
+                (
+                    "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:"
+                    "study:NCT00000001"
+                ): ("candidate",)
+            },
+        )
+        schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
+        envelope = clinical_decision_package_envelope(package)
+        Draft202012Validator(schema).validate(envelope)
+        self.assertEqual(clinical_decision_package_from_dict(envelope), package)
 
     def test_gap_tensor_selects_marginal_voi_action_within_budget(self) -> None:
         package = compile_clinical_decision_package(

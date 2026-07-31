@@ -143,6 +143,25 @@ def _normalized(value: str) -> str:
     return " ".join(value.casefold().split())
 
 
+_MISSING_MEASUREMENT_VALUES = frozenset(
+    {
+        "na",
+        "n/a",
+        "not available",
+        "not calculable",
+        "not estimable",
+        "not reached",
+        "nr",
+    }
+)
+
+
+def _optional_measurement(value: Any, field_name: str) -> float | None:
+    if isinstance(value, str) and _normalized(value) in _MISSING_MEASUREMENT_VALUES:
+        return None
+    return _number(value, field_name)
+
+
 def _sha256_json(value: Any) -> str:
     encoded = json.dumps(
         to_primitive(value),
@@ -338,8 +357,12 @@ def _study_record(
     comparator_measurement = _mapping(
         comparator_arm.attributes.get("measurement"), "comparator_arm.measurement"
     )
-    candidate_value = _number(candidate_measurement.get("value"), "candidate value")
-    comparator_value = _number(
+    candidate_raw_value = candidate_measurement.get("value")
+    comparator_raw_value = comparator_measurement.get("value")
+    candidate_value = _optional_measurement(
+        candidate_raw_value, "candidate value"
+    )
+    comparator_value = _optional_measurement(
         comparator_measurement.get("value"), "comparator value"
     )
     candidate_risk = (
@@ -450,6 +473,11 @@ def _study_record(
             "safety_event_category": safety.event_category,
             "safety_reporting_status": safety.reporting_status,
             "event_term_count": safety.event_term_count,
+            "candidate_measurement_raw": candidate_raw_value,
+            "comparator_measurement_raw": comparator_raw_value,
+            "descriptive_arm_measurement_complete": (
+                candidate_value is not None and comparator_value is not None
+            ),
             "clinical_acceptability_inferred": False,
         },
     )
