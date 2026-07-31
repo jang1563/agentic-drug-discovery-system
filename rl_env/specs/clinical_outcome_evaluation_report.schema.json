@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_evaluation_report.schema.json",
+  "title": "Aggregate preregistered clinical outcome evaluation report envelope",
+  "description": "Aggregate-only calibration, classification, attrition, provenance-overlap, and matched-policy metrics without unit-level predictions or labels.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "report"],
+  "properties": {
+    "schema_version": {"const": "adds.clinical-outcome-evaluation-report.v1"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "report": {"$ref": "#/$defs/report"}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "date": {"type": "string", "format": "date"},
+    "probability": {"type": "number", "minimum": 0, "maximum": 1},
+    "optionalProbability": {
+      "oneOf": [{"$ref": "#/$defs/probability"}, {"type": "null"}]
+    },
+    "optionalSignedMetric": {
+      "oneOf": [
+        {"type": "number", "minimum": -1, "maximum": 1},
+        {"type": "null"}
+      ]
+    },
+    "status": {"enum": ["favorable", "unfavorable", "indeterminate"]},
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "policy_version", "policy_fingerprint"],
+      "properties": {
+        "policy_id": {"$ref": "#/$defs/text"},
+        "policy_version": {"$ref": "#/$defs/text"},
+        "policy_fingerprint": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_count", "total", "estimate", "lower", "upper", "confidence_level", "method"],
+      "properties": {
+        "event_count": {"type": "integer", "minimum": 0},
+        "total": {"type": "integer", "minimum": 0},
+        "estimate": {"$ref": "#/$defs/optionalProbability"},
+        "lower": {"$ref": "#/$defs/optionalProbability"},
+        "upper": {"$ref": "#/$defs/optionalProbability"},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1},
+        "method": {"const": "wilson_score"}
+      }
+    },
+    "statusCount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "count"],
+      "properties": {
+        "status": {"$ref": "#/$defs/status"},
+        "count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "confusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["true_positive", "false_positive", "true_negative", "false_negative"],
+      "properties": {
+        "true_positive": {"type": "integer", "minimum": 0},
+        "false_positive": {"type": "integer", "minimum": 0},
+        "true_negative": {"type": "integer", "minimum": 0},
+        "false_negative": {"type": "integer", "minimum": 0}
+      }
+    },
+    "calibrationBin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lower_bound",
+        "upper_bound",
+        "includes_upper_bound",
+        "unit_count",
+        "mean_predicted_probability",
+        "observed_favorable_rate",
+        "calibration_gap"
+      ],
+      "properties": {
+        "lower_bound": {"$ref": "#/$defs/probability"},
+        "upper_bound": {"$ref": "#/$defs/probability"},
+        "includes_upper_bound": {"type": "boolean"},
+        "unit_count": {"type": "integer", "minimum": 0},
+        "mean_predicted_probability": {"$ref": "#/$defs/optionalProbability"},
+        "observed_favorable_rate": {"$ref": "#/$defs/estimate"},
+        "calibration_gap": {"$ref": "#/$defs/optionalSignedMetric"}
+      }
+    },
+    "policyMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "submission_id",
+        "submission_fingerprint",
+        "total_units",
+        "evaluable_units",
+        "indeterminate_units",
+        "minimum_evaluable_units",
+        "evaluation_requirement_met",
+        "classification_threshold",
+        "mean_predicted_probability",
+        "observed_favorable_rate",
+        "predicted_favorable_rate",
+        "confusion_matrix",
+        "classification_accuracy",
+        "sensitivity",
+        "specificity",
+        "positive_predictive_value",
+        "negative_predictive_value",
+        "brier_score",
+        "calibration_in_the_large",
+        "expected_calibration_error",
+        "calibration_bins"
+      ],
+      "properties": {
+        "policy": {"$ref": "#/$defs/policy"},
+        "submission_id": {"$ref": "#/$defs/text"},
+        "submission_fingerprint": {"$ref": "#/$defs/sha256"},
+        "total_units": {"type": "integer", "minimum": 1},
+        "evaluable_units": {"type": "integer", "minimum": 0},
+        "indeterminate_units": {"type": "integer", "minimum": 0},
+        "minimum_evaluable_units": {"type": "integer", "minimum": 1},
+        "evaluation_requirement_met": {"type": "boolean"},
+        "classification_threshold": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "mean_predicted_probability": {"$ref": "#/$defs/optionalProbability"},
+        "observed_favorable_rate": {"$ref": "#/$defs/estimate"},
+        "predicted_favorable_rate": {"$ref": "#/$defs/estimate"},
+        "confusion_matrix": {"$ref": "#/$defs/confusion"},
+        "classification_accuracy": {"$ref": "#/$defs/estimate"},
+        "sensitivity": {"$ref": "#/$defs/estimate"},
+        "specificity": {"$ref": "#/$defs/estimate"},
+        "positive_predictive_value": {"$ref": "#/$defs/estimate"},
+        "negative_predictive_value": {"$ref": "#/$defs/estimate"},
+        "brier_score": {"$ref": "#/$defs/optionalProbability"},
+        "calibration_in_the_large": {"$ref": "#/$defs/optionalSignedMetric"},
+        "expected_calibration_error": {"$ref": "#/$defs/optionalProbability"},
+        "calibration_bins": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "#/$defs/calibrationBin"}
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_a",
+        "policy_b",
+        "shared_units",
+        "shared_evaluable_units",
+        "shared_indeterminate_units",
+        "mean_brier_a",
+        "mean_brier_b",
+        "mean_brier_difference_b_minus_a",
+        "policy_a_lower_brier_units",
+        "equal_brier_units",
+        "policy_b_lower_brier_units",
+        "classification_disagreement_units"
+      ],
+      "properties": {
+        "policy_a": {"$ref": "#/$defs/policy"},
+        "policy_b": {"$ref": "#/$defs/policy"},
+        "shared_units": {"type": "integer", "minimum": 1},
+        "shared_evaluable_units": {"type": "integer", "minimum": 0},
+        "shared_indeterminate_units": {"type": "integer", "minimum": 0},
+        "mean_brier_a": {"$ref": "#/$defs/optionalProbability"},
+        "mean_brier_b": {"$ref": "#/$defs/optionalProbability"},
+        "mean_brier_difference_b_minus_a": {"$ref": "#/$defs/optionalSignedMetric"},
+        "policy_a_lower_brier_units": {"type": "integer", "minimum": 0},
+        "equal_brier_units": {"type": "integer", "minimum": 0},
+        "policy_b_lower_brier_units": {"type": "integer", "minimum": 0},
+        "classification_disagreement_units": {"type": "integer", "minimum": 0}
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "Submitted favorable-outcome probabilities are separate forecasts bound to packages; package ADVANCE, HOLD, and DEFER decisions are not scored as clinical outcomes."},
+        {"const": "Indeterminate outcomes are retained in attrition counts and excluded from binary performance and calibration denominators."},
+        {"const": "Wilson intervals quantify finite evaluable-unit uncertainty only and do not adjust for cross-unit dependence, outcome adjudication uncertainty, or repeated policies on the same unit."},
+        {"const": "Calibration bins, expected calibration error, and Brier scores are descriptive for the preregistered target and window; they do not prove transportability or policy superiority."},
+        {"const": "Novel post-deadline source hashes prevent exact baseline artifact reuse but do not establish causal independence, absence of bias, or complete outcome ascertainment."},
+        {"const": "Aggregate evaluation does not establish treatment efficacy, safety, clinical utility, regulatory acceptability, or a treatment recommendation."}
+      ],
+      "items": false,
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "protocol_fingerprint",
+        "cohort_id",
+        "cohort_report_fingerprint",
+        "outcome_manifest_fingerprint",
+        "method_id",
+        "generated_on",
+        "outcome_unit_count",
+        "evaluable_outcome_unit_count",
+        "indeterminate_outcome_unit_count",
+        "submission_count",
+        "endpoint_status_counts",
+        "safety_status_counts",
+        "composite_status_counts",
+        "policy_summaries",
+        "matched_policy_comparisons",
+        "baseline_outcome_source_overlap_count",
+        "outcome_cross_unit_source_overlap_count",
+        "outcome_cross_unit_trial_overlap_count",
+        "outcome_units_source_disjoint",
+        "outcome_units_trial_disjoint",
+        "aggregate_outcomes_included",
+        "unit_level_predictions_included",
+        "unit_level_outcomes_included",
+        "package_decisions_scored_as_outcomes",
+        "calibration_status",
+        "limitations"
+      ],
+      "properties": {
+        "protocol_id": {"$ref": "#/$defs/text"},
+        "protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "cohort_id": {"$ref": "#/$defs/text"},
+        "cohort_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "outcome_manifest_fingerprint": {"$ref": "#/$defs/sha256"},
+        "method_id": {"const": "adds.preregistered-clinical-outcome-evaluation.v1"},
+        "generated_on": {"$ref": "#/$defs/date"},
+        "outcome_unit_count": {"type": "integer", "minimum": 1},
+        "evaluable_outcome_unit_count": {"type": "integer", "minimum": 0},
+        "indeterminate_outcome_unit_count": {"type": "integer", "minimum": 0},
+        "submission_count": {"type": "integer", "minimum": 1},
+        "endpoint_status_counts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/statusCount"}
+        },
+        "safety_status_counts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/statusCount"}
+        },
+        "composite_status_counts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/statusCount"}
+        },
+        "policy_summaries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/policyMetrics"}
+        },
+        "matched_policy_comparisons": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/comparison"}
+        },
+        "baseline_outcome_source_overlap_count": {"const": 0},
+        "outcome_cross_unit_source_overlap_count": {"type": "integer", "minimum": 0},
+        "outcome_cross_unit_trial_overlap_count": {"type": "integer", "minimum": 0},
+        "outcome_units_source_disjoint": {"type": "boolean"},
+        "outcome_units_trial_disjoint": {"type": "boolean"},
+        "aggregate_outcomes_included": {"const": true},
+        "unit_level_predictions_included": {"const": false},
+        "unit_level_outcomes_included": {"const": false},
+        "package_decisions_scored_as_outcomes": {"const": false},
+        "calibration_status": {
+          "enum": [
+            "preregistered_outcome_calibration_estimable",
+            "partially_estimable",
+            "not_estimable_insufficient_evaluable_units"
+          ]
+        },
+        "limitations": {"$ref": "#/$defs/limitations"}
+      }
+    }
+  }
+}

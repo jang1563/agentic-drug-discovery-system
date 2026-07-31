@@ -1,0 +1,48 @@
+{
+  "integrity_sha256": "4eb4017716925adbb565f86624f8e83f04c0535305615376b0e08e552047b5dd",
+  "manifest": {
+    "assessments": [
+      {
+        "adjudication_sha256": "5b78c9c90502fb7db4560e8da80898ee25264896a4502d207bd12ef7b0da31be",
+        "adjudicator_independent": true,
+        "assessment_date": "2025-01-30",
+        "candidate_id": "CHEMBL_TEST",
+        "composite_status": "favorable",
+        "conflict_free": true,
+        "disease_id": "MONDO_TEST",
+        "endpoint_assessment_sha256": "b3094043bb51b920d25c78bf61b7547fea02c15c6ec2e462cefba493314c988c",
+        "endpoint_family": "progression_free_survival",
+        "endpoint_mapping_id": "CHEMBL_TEST:MONDO_TEST:pfs-map:v1",
+        "endpoint_status": "favorable",
+        "evidence_unit_id": "d2475391c08d8671c20b69a9cd9fcbf9623fc81f9b63e2fa0451562d7dfe0b66",
+        "independent_curator_count": 2,
+        "intervention_id": "CHEMBL_TEST",
+        "policy_blinded": true,
+        "program_id": "benefit-risk-program",
+        "safety_assessment_sha256": "f791f60bdcc3849fc1c5f70e8b7b5a996a2f669cedf3b2863e55ed24ee917917",
+        "safety_status": "favorable",
+        "sources": [
+          {
+            "available_on": "2025-01-10",
+            "domains": [
+              "endpoint",
+              "safety"
+            ],
+            "source_content_sha256": "e9186f1e6004541a9d1321bea2f693125fe9cc09091b9abca1f082f8c3c40a2f",
+            "source_id": "synthetic-post-cutoff-clinical-source",
+            "source_version": "2025-01-10",
+            "trial_id": "NCT00000001"
+          }
+        ],
+        "stage": "regulatory_postmarket"
+      }
+    ],
+    "cohort_report_fingerprint": "fbb96d09fad8cbe8e38443d2907e95b94a38f639a1dfa66d65d0d6411fa37872",
+    "curator_roster_commitment": "ad10fd719e9334a69696e755431ea4e1737ac07157a5d8161b3cc24264559af8",
+    "frozen_on": "2025-01-31",
+    "manifest_id": "synthetic-clinical-outcomes:v1",
+    "protocol_fingerprint": "69bf56014455a8818b370818683a2a27662c671194c9f7e825c317535dceb156",
+    "protocol_id": "synthetic-clinical-outcome-evaluation"
+  },
+  "schema_version": "adds.clinical-outcome-manifest.v1"
+}

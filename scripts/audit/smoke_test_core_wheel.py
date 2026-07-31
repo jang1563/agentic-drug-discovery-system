@@ -666,13 +666,17 @@ def main() -> int:
                         "from agentic_drug_discovery import ("
                         "CLINICAL_COHORT_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_CLOSED_LOOP_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_REPORT_SCHEMA_VERSION, "
                         "clinical_cohort_manifest_from_json, "
                         "clinical_cohort_report_from_json, "
+                        "clinical_outcome_protocol_from_json, "
+                        "clinical_outcome_report_from_json, "
                         "compile_clinical_evidence_transition, "
                         "compile_clinical_cohort_report, "
                         "compile_clinical_execution_batch, "
                         "clinical_evidence_transition_from_json, "
                         "evaluate_policy_submission, "
+                        "evaluate_clinical_outcomes, "
                         "execute_clinical_evidence_batch, "
                         "policy_evaluation_report_from_json, "
                         "policy_evaluation_submission_from_json, "
@@ -684,14 +688,19 @@ def main() -> int:
                         "'adds.clinical-evidence-closed-loop-transition.v1'; "
                         "assert CLINICAL_COHORT_REPORT_SCHEMA_VERSION == "
                         "'adds.clinical-evidence-cohort-report.v1'; "
+                        "assert CLINICAL_OUTCOME_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-evaluation-report.v1'; "
                         "assert all(callable(item) for item in ("
                         "clinical_cohort_manifest_from_json, "
                         "clinical_cohort_report_from_json, "
+                        "clinical_outcome_protocol_from_json, "
+                        "clinical_outcome_report_from_json, "
                         "compile_clinical_cohort_report, "
                         "compile_clinical_evidence_transition, "
                         "compile_clinical_execution_batch, "
                         "clinical_evidence_transition_from_json, "
                         "evaluate_policy_submission, "
+                        "evaluate_clinical_outcomes, "
                         "execute_clinical_evidence_batch, "
                         "policy_evaluation_report_from_json, "
                         "policy_evaluation_submission_from_json, "
@@ -1448,7 +1457,7 @@ def main() -> int:
 
     if public_api.stdout.strip() != "public-api-ok":
         return fail(
-            "sealed evaluation, clinical cohort, and closed-loop APIs were not importable "
+            "sealed evaluation, clinical cohort/outcome, and closed-loop APIs were not importable "
             "from the wheel"
         )
 
@@ -1456,7 +1465,7 @@ def main() -> int:
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
         "CDC MMWR, NCBI PubMed, ChEMBL activity, PubMed disease-model, and "
         "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
-        "plus sealed evaluation, clinical cohort, and closed-loop API smoke tests "
+        "plus sealed evaluation, clinical cohort/outcome, and closed-loop API smoke tests "
         f"completed for {wheels[0].name}"
     )
     return 0

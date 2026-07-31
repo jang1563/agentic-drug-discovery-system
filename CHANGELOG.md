@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added preregistered clinical outcome evaluation over exact outcome-free cohort reports. Frozen
+  policy submissions bind favorable composite benefit-risk probabilities to package and
+  evidence-unit hashes before the outcome deadline; evaluator-only manifests retain independently
+  curated endpoint/safety labels and post-deadline source provenance. Aggregate reports preserve
+  indeterminate attrition, Wilson intervals, threshold metrics, Brier score, fixed-bin calibration,
+  matched policy comparisons, and provenance-overlap counts without exposing unit-level labels or
+  scoring package workflow decisions as clinical outcomes. Strict schemas/readers, synchronized
+  synthetic artifacts, CLI evaluate/validate/summarize paths, and leakage/tamper controls are
+  included. No real outcome board or calibration claim is added.
 - Added integrity-bound multi-package clinical cohort diagnostics. Exact manifests bind package
   identities and can require canonical accepted-state hashes plus committed-ledger replay;
   reports distinguish packages, programs, and synthesis-bound evidence units, retain exact

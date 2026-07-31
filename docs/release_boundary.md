@@ -25,6 +25,8 @@ This repository uses a conservative boundary so that future public or collaborat
 - Real clinical decision policies, action catalogs, evidence tensors, and compiled decision
   packages.
 - Real clinical cohort manifests, accepted-state bindings, package diagnostics, and cohort reports.
+- Real clinical prediction submissions, clinical outcome manifests, unit-level endpoint/safety
+  labels, source-level outcome assessments, curator materials, and per-unit evaluation results.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -44,6 +46,9 @@ These may become release assets after a separate audit:
   review.
 - Compiler-generated synthetic clinical cohort manifests and reports after schema, state-binding,
   provenance-overlap, and interpretation-boundary review.
+- Preregistered synthetic clinical outcome protocols, package-bound prediction submissions,
+  evaluator-style synthetic outcome manifests, and aggregate reports after cutoff, provenance,
+  privacy, metric, and interpretation-boundary review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -111,6 +116,15 @@ and costs can expose program strategy and evidence lineage. Real cohort artifact
 Git and Hugging Face until separate scientific, privacy, governance, and release-boundary review.
 The public synthetic report contains no outcomes and cannot support calibration or clinical
 performance claims.
+
+The preregistered clinical outcome layer ships implementation, strict protocol/submission/
+manifest/report/summary schemas, deterministic replay, documentation, tests, and synthetic
+artifacts. A real submission can expose program forecasts and policy behavior; a real outcome
+manifest can expose selected programs, endpoint and safety labels, source lineage, assessment
+timing, and evaluator governance. Real submissions, manifests, curator materials, and unit-level
+scores remain outside Git and Hugging Face. Only separately reviewed aggregate reports may be
+released. The checked-in one-unit result verifies contract execution and cannot establish
+calibration, discrimination, clinical utility, efficacy, safety, or policy superiority.
 
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution

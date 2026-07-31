@@ -116,6 +116,15 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   policy sensitivity only on shared evidence units; and exposes cross-unit source-hash or trial-id
   reuse. It includes no outcome labels or performance metrics and therefore cannot estimate
   correctness, utility, safety, policy superiority, or calibration.
+- A preregistered clinical outcome layer binds favorable composite benefit-risk probabilities to
+  exact package and evidence-unit hashes before a fixed deadline. A public protocol commits the
+  outcome definition, endpoint/safety harmonization rules, curator roster, outcome window,
+  threshold, bins, confidence level, and minimum evaluable units. Evaluator-only manifests require
+  independently curated endpoint and safety assessments backed by post-deadline source hashes;
+  aggregate reports retain attrition, Wilson intervals, Brier/calibration/threshold metrics,
+  matched policy comparisons, and provenance-overlap counts without unit-level labels. Package
+  workflow decisions are not scored as outcomes. The public example is synthetic and does not
+  establish calibration, utility, efficacy, safety, or policy superiority.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;

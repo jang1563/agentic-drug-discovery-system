@@ -23,6 +23,18 @@ from .clinical_decision import (
     clinical_decision_package_envelope,
     clinical_decision_package_from_json,
 )
+from .clinical_outcome_evaluation import (
+    ClinicalOutcomeEvaluationError,
+    clinical_outcome_evaluation_summary,
+    clinical_outcome_manifest_from_json,
+    clinical_outcome_protocol_from_json,
+    clinical_outcome_report_envelope,
+    clinical_outcome_report_from_json,
+    clinical_outcome_validation_summary,
+    clinical_prediction_submission_from_json,
+    evaluate_clinical_outcomes,
+    validate_clinical_outcome_evaluation_report,
+)
 from .clinical_workflow import (
     ClinicalEvidenceWorkflowError,
     clinical_decision_config_from_json,
@@ -84,6 +96,30 @@ def _cohort_manifest(path: str):
 def _cohort_report(path: str):
     return clinical_cohort_report_from_json(
         _read_text(path, "clinical cohort report")
+    )
+
+
+def _outcome_protocol(path: str):
+    return clinical_outcome_protocol_from_json(
+        _read_text(path, "clinical outcome protocol")
+    )
+
+
+def _prediction_submission(path: str):
+    return clinical_prediction_submission_from_json(
+        _read_text(path, "clinical prediction submission")
+    )
+
+
+def _outcome_manifest(path: str):
+    return clinical_outcome_manifest_from_json(
+        _read_text(path, "clinical outcome manifest")
+    )
+
+
+def _outcome_report(path: str):
+    return clinical_outcome_report_from_json(
+        _read_text(path, "clinical outcome evaluation report")
     )
 
 
@@ -200,11 +236,101 @@ def _summarize_cohort(args: argparse.Namespace) -> int:
     return 0
 
 
+def _evaluate_outcomes(args: argparse.Namespace) -> int:
+    _require_single_stdin(
+        (
+            args.protocol,
+            args.cohort_report,
+            *args.submission,
+            args.outcomes,
+        )
+    )
+    protocol = _outcome_protocol(args.protocol)
+    cohort_report = _cohort_report(args.cohort_report)
+    submissions = tuple(_prediction_submission(path) for path in args.submission)
+    outcome_manifest = _outcome_manifest(args.outcomes)
+    report = evaluate_clinical_outcomes(
+        protocol,
+        cohort_report,
+        submissions,
+        outcome_manifest,
+    )
+    envelope = clinical_outcome_report_envelope(report)
+    if args.output == "-":
+        _print_json(envelope)
+        return 0
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    if not output.is_file():
+        raise OSError("clinical outcome report output was not created")
+    _print_json(
+        clinical_outcome_validation_summary(
+            report,
+            scope="full_protocol_cohort_submission_and_outcome_replay",
+        )
+    )
+    return 0
+
+
+def _validate_outcomes(args: argparse.Namespace) -> int:
+    replay_paths = (
+        args.protocol,
+        args.cohort_report,
+        args.outcomes,
+    )
+    replay_requested = any(path is not None for path in replay_paths) or bool(
+        args.submission
+    )
+    if replay_requested and (
+        any(path is None for path in replay_paths) or not args.submission
+    ):
+        raise ValueError(
+            "full outcome replay requires --protocol, --cohort-report, "
+            "--submission, and --outcomes"
+        )
+    _require_single_stdin(
+        (
+            args.report,
+            args.protocol,
+            args.cohort_report,
+            *args.submission,
+            args.outcomes,
+        )
+    )
+    report = _outcome_report(args.report)
+    failures: tuple[str, ...] = ()
+    scope = "integrity_and_aggregate_consistency"
+    if replay_requested:
+        assert args.protocol is not None
+        assert args.cohort_report is not None
+        assert args.outcomes is not None
+        failures = validate_clinical_outcome_evaluation_report(
+            report,
+            _outcome_protocol(args.protocol),
+            _cohort_report(args.cohort_report),
+            tuple(_prediction_submission(path) for path in args.submission),
+            _outcome_manifest(args.outcomes),
+        )
+        scope = "full_protocol_cohort_submission_and_outcome_replay"
+    validation = clinical_outcome_validation_summary(
+        report,
+        failures=failures,
+        scope=scope,
+    )
+    _print_json(validation)
+    return 0 if not failures else 1
+
+
+def _summarize_outcomes(args: argparse.Namespace) -> int:
+    _print_json(clinical_outcome_evaluation_summary(_outcome_report(args.report)))
+    return 0
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Compile, validate, and summarize provenance-preserving clinical "
-            "evidence decision packages and outcome-free cohort diagnostics."
+            "evidence packages, outcome-free cohort diagnostics, and "
+            "preregistered aggregate outcome evaluations."
         )
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -340,6 +466,89 @@ def _parser() -> argparse.ArgumentParser:
         help="Cohort report JSON path, or '-' for stdin.",
     )
     summarize_cohort_parser.set_defaults(handler=_summarize_cohort)
+
+    outcome_parser = subparsers.add_parser(
+        "evaluate-outcomes",
+        help=(
+            "Evaluate package-bound probability forecasts against frozen, "
+            "post-deadline clinical outcomes."
+        ),
+    )
+    outcome_parser.add_argument(
+        "--protocol",
+        required=True,
+        help="Preregistered clinical outcome protocol JSON path, or '-' for stdin.",
+    )
+    outcome_parser.add_argument(
+        "--cohort-report",
+        required=True,
+        help="Outcome-free clinical cohort report JSON path.",
+    )
+    outcome_parser.add_argument(
+        "--submission",
+        action="append",
+        required=True,
+        help="Frozen policy prediction submission; repeat once per cohort policy.",
+    )
+    outcome_parser.add_argument(
+        "--outcomes",
+        required=True,
+        help="Evaluator-only clinical outcome manifest JSON path.",
+    )
+    outcome_parser.add_argument(
+        "--output",
+        required=True,
+        help="Aggregate clinical outcome report JSON path, or '-' for stdout.",
+    )
+    outcome_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing aggregate report file.",
+    )
+    outcome_parser.set_defaults(handler=_evaluate_outcomes)
+
+    validate_outcome_parser = subparsers.add_parser(
+        "validate-outcomes",
+        help=(
+            "Validate aggregate outcome report integrity, with optional full "
+            "private-input replay."
+        ),
+    )
+    validate_outcome_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate clinical outcome report JSON path, or '-' for stdin.",
+    )
+    validate_outcome_parser.add_argument(
+        "--protocol",
+        help="Preregistered protocol JSON for full replay.",
+    )
+    validate_outcome_parser.add_argument(
+        "--cohort-report",
+        help="Outcome-free clinical cohort report JSON for full replay.",
+    )
+    validate_outcome_parser.add_argument(
+        "--submission",
+        action="append",
+        default=[],
+        help="Prediction submission JSON; repeat once per policy for full replay.",
+    )
+    validate_outcome_parser.add_argument(
+        "--outcomes",
+        help="Evaluator-only outcome manifest JSON for full replay.",
+    )
+    validate_outcome_parser.set_defaults(handler=_validate_outcomes)
+
+    summarize_outcome_parser = subparsers.add_parser(
+        "summarize-outcomes",
+        help="Emit compact aggregate calibration and paired-policy metrics.",
+    )
+    summarize_outcome_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate clinical outcome report JSON path, or '-' for stdin.",
+    )
+    summarize_outcome_parser.set_defaults(handler=_summarize_outcomes)
     return parser
 
 
@@ -350,6 +559,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     except (
         ClinicalDecisionError,
         ClinicalCohortError,
+        ClinicalOutcomeEvaluationError,
         ClinicalEvidenceWorkflowError,
         OSError,
         RecordParseError,

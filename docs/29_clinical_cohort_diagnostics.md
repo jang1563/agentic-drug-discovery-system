@@ -170,7 +170,9 @@ performance_metrics_included = false
 outcome_calibration_status = not_estimable_without_independent_outcomes
 ```
 
-The next research step is to preregister an independent clinical-program board, map each package's
-workflow prediction into a sealed submission before outcomes are exposed, and evaluate exact and
-selective risk with the existing held-out protocol. Cohort diagnostics then become an auditable
-explanatory layer for observed policy behavior rather than a substitute for evaluation.
+`docs/30_preregistered_clinical_outcome_evaluation.md` implements the next layer. It keeps workflow
+decisions separate from clinical forecasts, binds favorable composite benefit-risk probabilities
+to exact packages before outcome access, and evaluates only against post-deadline, independently
+curated endpoint and safety assessments. Cohort diagnostics remain the auditable explanatory layer
+for policy behavior; the outcome evaluator supplies aggregate calibration and paired sensitivity
+without publishing unit-level labels.

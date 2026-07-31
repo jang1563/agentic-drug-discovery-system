@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_manifest.schema.json",
+  "title": "Evaluator-only clinical outcome manifest envelope",
+  "description": "Integrity-bound endpoint and safety assessments with post-deadline source provenance and independent-curation commitments. Real manifests remain outside public releases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "manifest"],
+  "properties": {
+    "schema_version": {"const": "adds.clinical-outcome-manifest.v1"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "manifest": {"$ref": "#/$defs/manifest"}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "date": {"type": "string", "format": "date"},
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "status": {"enum": ["favorable", "unfavorable", "indeterminate"]},
+    "domain": {"enum": ["endpoint", "safety"]},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "source_version", "source_content_sha256", "available_on", "domains", "trial_id"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/text"},
+        "source_version": {"$ref": "#/$defs/text"},
+        "source_content_sha256": {"$ref": "#/$defs/sha256"},
+        "available_on": {"$ref": "#/$defs/date"},
+        "domains": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/domain"}
+        },
+        "trial_id": {
+          "oneOf": [
+            {"$ref": "#/$defs/text"},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_unit_id",
+        "program_id",
+        "disease_id",
+        "candidate_id",
+        "intervention_id",
+        "endpoint_mapping_id",
+        "endpoint_family",
+        "stage",
+        "assessment_date",
+        "endpoint_status",
+        "safety_status",
+        "composite_status",
+        "sources",
+        "endpoint_assessment_sha256",
+        "safety_assessment_sha256",
+        "adjudication_sha256",
+        "independent_curator_count",
+        "policy_blinded",
+        "conflict_free",
+        "adjudicator_independent"
+      ],
+      "properties": {
+        "evidence_unit_id": {"$ref": "#/$defs/sha256"},
+        "program_id": {"$ref": "#/$defs/text"},
+        "disease_id": {"$ref": "#/$defs/text"},
+        "candidate_id": {"$ref": "#/$defs/text"},
+        "intervention_id": {"$ref": "#/$defs/text"},
+        "endpoint_mapping_id": {"$ref": "#/$defs/text"},
+        "endpoint_family": {"$ref": "#/$defs/text"},
+        "stage": {"$ref": "#/$defs/stage"},
+        "assessment_date": {"$ref": "#/$defs/date"},
+        "endpoint_status": {"$ref": "#/$defs/status"},
+        "safety_status": {"$ref": "#/$defs/status"},
+        "composite_status": {"$ref": "#/$defs/status"},
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/source"}
+        },
+        "endpoint_assessment_sha256": {"$ref": "#/$defs/sha256"},
+        "safety_assessment_sha256": {"$ref": "#/$defs/sha256"},
+        "adjudication_sha256": {"$ref": "#/$defs/sha256"},
+        "independent_curator_count": {"type": "integer", "minimum": 1},
+        "policy_blinded": {"const": true},
+        "conflict_free": {"const": true},
+        "adjudicator_independent": {"const": true}
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_id",
+        "protocol_id",
+        "protocol_fingerprint",
+        "cohort_report_fingerprint",
+        "curator_roster_commitment",
+        "frozen_on",
+        "assessments"
+      ],
+      "properties": {
+        "manifest_id": {"$ref": "#/$defs/text"},
+        "protocol_id": {"$ref": "#/$defs/text"},
+        "protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "cohort_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "curator_roster_commitment": {"$ref": "#/$defs/sha256"},
+        "frozen_on": {"$ref": "#/$defs/date"},
+        "assessments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/assessment"}
+        }
+      }
+    }
+  }
+}

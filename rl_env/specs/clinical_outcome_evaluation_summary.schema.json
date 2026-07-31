@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_evaluation_summary.schema.json",
+  "title": "Compact clinical outcome evaluation summary",
+  "description": "Human- and machine-readable aggregate projection of a preregistered clinical outcome report.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "protocol_id",
+    "cohort_id",
+    "outcome_units",
+    "calibration_status",
+    "policy_summaries",
+    "matched_policy_comparison_count",
+    "outcome_units_source_disjoint",
+    "outcome_units_trial_disjoint",
+    "unit_level_outcomes_included"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.clinical-outcome-evaluation-summary.v1"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "protocol_id": {"$ref": "#/$defs/text"},
+    "cohort_id": {"$ref": "#/$defs/text"},
+    "outcome_units": {"$ref": "#/$defs/outcomeUnits"},
+    "calibration_status": {
+      "enum": [
+        "preregistered_outcome_calibration_estimable",
+        "partially_estimable",
+        "not_estimable_insufficient_evaluable_units"
+      ]
+    },
+    "policy_summaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/policySummary"}
+    },
+    "matched_policy_comparison_count": {"type": "integer", "minimum": 0},
+    "outcome_units_source_disjoint": {"type": "boolean"},
+    "outcome_units_trial_disjoint": {"type": "boolean"},
+    "unit_level_outcomes_included": {"const": false}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "optionalProbability": {
+      "oneOf": [
+        {"type": "number", "minimum": 0, "maximum": 1},
+        {"type": "null"}
+      ]
+    },
+    "optionalSignedMetric": {
+      "oneOf": [
+        {"type": "number", "minimum": -1, "maximum": 1},
+        {"type": "null"}
+      ]
+    },
+    "estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_count", "total", "estimate", "lower", "upper", "confidence_level", "method"],
+      "properties": {
+        "event_count": {"type": "integer", "minimum": 0},
+        "total": {"type": "integer", "minimum": 0},
+        "estimate": {"$ref": "#/$defs/optionalProbability"},
+        "lower": {"$ref": "#/$defs/optionalProbability"},
+        "upper": {"$ref": "#/$defs/optionalProbability"},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1},
+        "method": {"const": "wilson_score"}
+      }
+    },
+    "outcomeUnits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "evaluable", "indeterminate"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 1},
+        "evaluable": {"type": "integer", "minimum": 0},
+        "indeterminate": {"type": "integer", "minimum": 0}
+      }
+    },
+    "policySummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "policy_version",
+        "policy_fingerprint",
+        "evaluable_units",
+        "evaluation_requirement_met",
+        "brier_score",
+        "classification_accuracy",
+        "calibration_in_the_large",
+        "expected_calibration_error"
+      ],
+      "properties": {
+        "policy_id": {"$ref": "#/$defs/text"},
+        "policy_version": {"$ref": "#/$defs/text"},
+        "policy_fingerprint": {"$ref": "#/$defs/sha256"},
+        "evaluable_units": {"type": "integer", "minimum": 0},
+        "evaluation_requirement_met": {"type": "boolean"},
+        "brier_score": {"$ref": "#/$defs/optionalProbability"},
+        "classification_accuracy": {"$ref": "#/$defs/estimate"},
+        "calibration_in_the_large": {"$ref": "#/$defs/optionalSignedMetric"},
+        "expected_calibration_error": {"$ref": "#/$defs/optionalProbability"}
+      }
+    }
+  }
+}

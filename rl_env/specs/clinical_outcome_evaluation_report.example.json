@@ -1,0 +1,419 @@
+{
+  "integrity_sha256": "3044ef7ac7f0406f1be8c7fc033ba61d0f2c112f8b48f30015d0de16dc7007ce",
+  "report": {
+    "aggregate_outcomes_included": true,
+    "baseline_outcome_source_overlap_count": 0,
+    "calibration_status": "preregistered_outcome_calibration_estimable",
+    "cohort_id": "synthetic-clinical-policy-sensitivity",
+    "cohort_report_fingerprint": "fbb96d09fad8cbe8e38443d2907e95b94a38f639a1dfa66d65d0d6411fa37872",
+    "composite_status_counts": [
+      {
+        "count": 1,
+        "status": "favorable"
+      },
+      {
+        "count": 0,
+        "status": "unfavorable"
+      },
+      {
+        "count": 0,
+        "status": "indeterminate"
+      }
+    ],
+    "endpoint_status_counts": [
+      {
+        "count": 1,
+        "status": "favorable"
+      },
+      {
+        "count": 0,
+        "status": "unfavorable"
+      },
+      {
+        "count": 0,
+        "status": "indeterminate"
+      }
+    ],
+    "evaluable_outcome_unit_count": 1,
+    "generated_on": "2025-01-31",
+    "indeterminate_outcome_unit_count": 0,
+    "limitations": [
+      "Submitted favorable-outcome probabilities are separate forecasts bound to packages; package ADVANCE, HOLD, and DEFER decisions are not scored as clinical outcomes.",
+      "Indeterminate outcomes are retained in attrition counts and excluded from binary performance and calibration denominators.",
+      "Wilson intervals quantify finite evaluable-unit uncertainty only and do not adjust for cross-unit dependence, outcome adjudication uncertainty, or repeated policies on the same unit.",
+      "Calibration bins, expected calibration error, and Brier scores are descriptive for the preregistered target and window; they do not prove transportability or policy superiority.",
+      "Novel post-deadline source hashes prevent exact baseline artifact reuse but do not establish causal independence, absence of bias, or complete outcome ascertainment.",
+      "Aggregate evaluation does not establish treatment efficacy, safety, clinical utility, regulatory acceptability, or a treatment recommendation."
+    ],
+    "matched_policy_comparisons": [
+      {
+        "classification_disagreement_units": 1,
+        "equal_brier_units": 0,
+        "mean_brier_a": 0.49,
+        "mean_brier_b": 0.04,
+        "mean_brier_difference_b_minus_a": -0.45,
+        "policy_a": {
+          "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+          "policy_id": "synthetic-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "policy_a_lower_brier_units": 0,
+        "policy_b": {
+          "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+          "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "policy_b_lower_brier_units": 1,
+        "shared_evaluable_units": 1,
+        "shared_indeterminate_units": 0,
+        "shared_units": 1
+      }
+    ],
+    "method_id": "adds.preregistered-clinical-outcome-evaluation.v1",
+    "outcome_cross_unit_source_overlap_count": 0,
+    "outcome_cross_unit_trial_overlap_count": 0,
+    "outcome_manifest_fingerprint": "4eb4017716925adbb565f86624f8e83f04c0535305615376b0e08e552047b5dd",
+    "outcome_unit_count": 1,
+    "outcome_units_source_disjoint": true,
+    "outcome_units_trial_disjoint": true,
+    "package_decisions_scored_as_outcomes": false,
+    "policy_summaries": [
+      {
+        "brier_score": 0.49,
+        "calibration_bins": [
+          {
+            "calibration_gap": null,
+            "includes_upper_bound": false,
+            "lower_bound": 0.0,
+            "mean_predicted_probability": null,
+            "observed_favorable_rate": {
+              "confidence_level": 0.95,
+              "estimate": null,
+              "event_count": 0,
+              "lower": null,
+              "method": "wilson_score",
+              "total": 0,
+              "upper": null
+            },
+            "unit_count": 0,
+            "upper_bound": 0.25
+          },
+          {
+            "calibration_gap": -0.7,
+            "includes_upper_bound": false,
+            "lower_bound": 0.25,
+            "mean_predicted_probability": 0.3,
+            "observed_favorable_rate": {
+              "confidence_level": 0.95,
+              "estimate": 1.0,
+              "event_count": 1,
+              "lower": 0.20654931437723745,
+              "method": "wilson_score",
+              "total": 1,
+              "upper": 1.0
+            },
+            "unit_count": 1,
+            "upper_bound": 0.5
+          },
+          {
+            "calibration_gap": null,
+            "includes_upper_bound": false,
+            "lower_bound": 0.5,
+            "mean_predicted_probability": null,
+            "observed_favorable_rate": {
+              "confidence_level": 0.95,
+              "estimate": null,
+              "event_count": 0,
+              "lower": null,
+              "method": "wilson_score",
+              "total": 0,
+              "upper": null
+            },
+            "unit_count": 0,
+            "upper_bound": 0.75
+          },
+          {
+            "calibration_gap": null,
+            "includes_upper_bound": true,
+            "lower_bound": 0.75,
+            "mean_predicted_probability": null,
+            "observed_favorable_rate": {
+              "confidence_level": 0.95,
+              "estimate": null,
+              "event_count": 0,
+              "lower": null,
+              "method": "wilson_score",
+              "total": 0,
+              "upper": null
+            },
+            "unit_count": 0,
+            "upper_bound": 1.0
+          }
+        ],
+        "calibration_in_the_large": -0.7,
+        "classification_accuracy": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "event_count": 0,
+          "lower": 0.0,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 0.7934506856227626
+        },
+        "classification_threshold": 0.5,
+        "confusion_matrix": {
+          "false_negative": 1,
+          "false_positive": 0,
+          "true_negative": 0,
+          "true_positive": 0
+        },
+        "evaluable_units": 1,
+        "evaluation_requirement_met": true,
+        "expected_calibration_error": 0.7,
+        "indeterminate_units": 0,
+        "mean_predicted_probability": 0.3,
+        "minimum_evaluable_units": 1,
+        "negative_predictive_value": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "event_count": 0,
+          "lower": 0.0,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 0.7934506856227626
+        },
+        "observed_favorable_rate": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "event_count": 1,
+          "lower": 0.20654931437723745,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 1.0
+        },
+        "policy": {
+          "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+          "policy_id": "synthetic-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "positive_predictive_value": {
+          "confidence_level": 0.95,
+          "estimate": null,
+          "event_count": 0,
+          "lower": null,
+          "method": "wilson_score",
+          "total": 0,
+          "upper": null
+        },
+        "predicted_favorable_rate": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "event_count": 0,
+          "lower": 0.0,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 0.7934506856227626
+        },
+        "sensitivity": {
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "event_count": 0,
+          "lower": 0.0,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 0.7934506856227626
+        },
+        "specificity": {
+          "confidence_level": 0.95,
+          "estimate": null,
+          "event_count": 0,
+          "lower": null,
+          "method": "wilson_score",
+          "total": 0,
+          "upper": null
+        },
+        "submission_fingerprint": "2670d6b3e88bf713d2a997e5f213f63e204afb6ed56bce3fabfb50a2f3ce0722",
+        "submission_id": "synthetic-clinical-workflow-policy:submission:v1",
+        "total_units": 1
+      },
+      {
+        "brier_score": 0.04,
+        "calibration_bins": [
+          {
+            "calibration_gap": null,
+            "includes_upper_bound": false,
+            "lower_bound": 0.0,
+            "mean_predicted_probability": null,
+            "observed_favorable_rate": {
+              "confidence_level": 0.95,
+              "estimate": null,
+              "event_count": 0,
+              "lower": null,
+              "method": "wilson_score",
+              "total": 0,
+              "upper": null
+            },
+            "unit_count": 0,
+            "upper_bound": 0.25
+          },
+          {
+            "calibration_gap": null,
+            "includes_upper_bound": false,
+            "lower_bound": 0.25,
+            "mean_predicted_probability": null,
+            "observed_favorable_rate": {
+              "confidence_level": 0.95,
+              "estimate": null,
+              "event_count": 0,
+              "lower": null,
+              "method": "wilson_score",
+              "total": 0,
+              "upper": null
+            },
+            "unit_count": 0,
+            "upper_bound": 0.5
+          },
+          {
+            "calibration_gap": null,
+            "includes_upper_bound": false,
+            "lower_bound": 0.5,
+            "mean_predicted_probability": null,
+            "observed_favorable_rate": {
+              "confidence_level": 0.95,
+              "estimate": null,
+              "event_count": 0,
+              "lower": null,
+              "method": "wilson_score",
+              "total": 0,
+              "upper": null
+            },
+            "unit_count": 0,
+            "upper_bound": 0.75
+          },
+          {
+            "calibration_gap": -0.2,
+            "includes_upper_bound": true,
+            "lower_bound": 0.75,
+            "mean_predicted_probability": 0.8,
+            "observed_favorable_rate": {
+              "confidence_level": 0.95,
+              "estimate": 1.0,
+              "event_count": 1,
+              "lower": 0.20654931437723745,
+              "method": "wilson_score",
+              "total": 1,
+              "upper": 1.0
+            },
+            "unit_count": 1,
+            "upper_bound": 1.0
+          }
+        ],
+        "calibration_in_the_large": -0.2,
+        "classification_accuracy": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "event_count": 1,
+          "lower": 0.20654931437723745,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 1.0
+        },
+        "classification_threshold": 0.5,
+        "confusion_matrix": {
+          "false_negative": 0,
+          "false_positive": 0,
+          "true_negative": 0,
+          "true_positive": 1
+        },
+        "evaluable_units": 1,
+        "evaluation_requirement_met": true,
+        "expected_calibration_error": 0.2,
+        "indeterminate_units": 0,
+        "mean_predicted_probability": 0.8,
+        "minimum_evaluable_units": 1,
+        "negative_predictive_value": {
+          "confidence_level": 0.95,
+          "estimate": null,
+          "event_count": 0,
+          "lower": null,
+          "method": "wilson_score",
+          "total": 0,
+          "upper": null
+        },
+        "observed_favorable_rate": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "event_count": 1,
+          "lower": 0.20654931437723745,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 1.0
+        },
+        "policy": {
+          "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+          "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "positive_predictive_value": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "event_count": 1,
+          "lower": 0.20654931437723745,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 1.0
+        },
+        "predicted_favorable_rate": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "event_count": 1,
+          "lower": 0.20654931437723745,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 1.0
+        },
+        "sensitivity": {
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "event_count": 1,
+          "lower": 0.20654931437723745,
+          "method": "wilson_score",
+          "total": 1,
+          "upper": 1.0
+        },
+        "specificity": {
+          "confidence_level": 0.95,
+          "estimate": null,
+          "event_count": 0,
+          "lower": null,
+          "method": "wilson_score",
+          "total": 0,
+          "upper": null
+        },
+        "submission_fingerprint": "8b0de8e2fb70ce0faf452ad06ecb8df63acb0a4d5ae0dcf4fe205c0127cc1c79",
+        "submission_id": "synthetic-relaxed-clinical-workflow-policy:submission:v1",
+        "total_units": 1
+      }
+    ],
+    "protocol_fingerprint": "69bf56014455a8818b370818683a2a27662c671194c9f7e825c317535dceb156",
+    "protocol_id": "synthetic-clinical-outcome-evaluation",
+    "safety_status_counts": [
+      {
+        "count": 1,
+        "status": "favorable"
+      },
+      {
+        "count": 0,
+        "status": "unfavorable"
+      },
+      {
+        "count": 0,
+        "status": "indeterminate"
+      }
+    ],
+    "submission_count": 2,
+    "unit_level_outcomes_included": false,
+    "unit_level_predictions_included": false
+  },
+  "schema_version": "adds.clinical-outcome-evaluation-report.v1"
+}
