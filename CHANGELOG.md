@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Extended the strict ClinicalTrials.gov harmonization boundary for source-preserving registry
+  variants: exact numeric p-values, a frozen hazard-ratio alias set, approved missing descriptive
+  arm markers, dose-unit and `on-treatment` safety-title qualifiers, and sparse omitted affected
+  counts only in nonselected zero-risk groups. Missing arm summaries remain `null` with the raw
+  source marker retained and now produce a tenth typed evidence dimension and the
+  `missing_descriptive_arm_measurement` workflow gap. Unsupported aliases, qualifiers, selected
+  zero-risk safety groups, imputation, pooling, and clinical acceptability inference still fail
+  closed.
+
 ## 0.3.0.dev1 - 2026-07-26
 
 - Added a bounded clinical evidence closed loop over the existing execution core. Exact

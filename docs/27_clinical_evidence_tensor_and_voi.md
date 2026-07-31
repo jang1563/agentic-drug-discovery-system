@@ -40,13 +40,14 @@ Each `ClinicalEvidenceCell` retains one selected trial's:
 
 - trial, design, endpoint, safety, and synthesis study identities;
 - hazard ratio, confidence interval, and log-scale interval width;
-- candidate and comparator endpoint measurements, unit, and time frame;
+- candidate and comparator endpoint measurements, including source-reported missing values, unit,
+  and time frame;
 - serious-event affected/at-risk counts, observed risks, and unadjusted risk difference;
 - benefit and observed safety direction labels;
 - exact source evidence IDs and source-content SHA-256 values;
 - endpoint and safety record fingerprints.
 
-The tensor evaluates nine ordered dimensions:
+The tensor evaluates ten ordered dimensions:
 
 | Dimension | Workflow criterion |
 | --- | --- |
@@ -54,6 +55,7 @@ The tensor evaluates nine ordered dimensions:
 | Trial count | Meets the preregistered minimum independent-trial count. |
 | Benefit direction | Every trial's interval is entirely in the declared favorable direction. |
 | Benefit precision | Every log-scale interval width is at or below the policy threshold. |
+| Descriptive arm measurement completeness | Every selected candidate and comparator arm has a source-reported numeric summary. |
 | Safety direction | No trial has higher observed aggregate serious-event risk and directions agree. |
 | Safety exposure | Each candidate and comparator arm meets the minimum participant count. |
 | Endpoint time frame | Exact strings are identical across selected trials. |
@@ -73,6 +75,7 @@ event-risk gaps are marked as `blocking_signal`; all gaps block workflow advance
 Gap mass is a bounded deterministic priority input:
 
 - count and exposure gaps use normalized shortfall;
+- missing descriptive arm summaries use the fraction of selected arm summaries that are missing;
 - interval-width gaps use normalized threshold exceedance;
 - direction conflicts, unfavorable signals, and exact-string mismatches use `1.0`.
 

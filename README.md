@@ -159,7 +159,7 @@ in the roadmap. Honest status:
   population comparability, and clinical acceptability inference are prohibited by typed records
   and a replay-time continuity verifier.
 - **Clinical evidence tensor and bounded VOI planning:** A committed synthesis can be recompiled
-  into exact per-trial endpoint/safety cells, nine policy-relative evidence dimensions, and
+  into exact per-trial endpoint/safety cells, ten policy-relative evidence dimensions, and
   provenance-linked gap records. A preregistered action catalog supplies gap-resolution
   probability, decision relevance, and maximum cost; deterministic marginal VOI ranking selects a
   bounded evidence-acquisition batch against the live budget ledger. Integrity fingerprints bind

@@ -1,5 +1,5 @@
 {
-  "integrity_sha256": "a0656758418b15ef38b947e37dbd8781aeeb722b2dd64084ccf15cb9ca4926ea",
+  "integrity_sha256": "5cdf65b91e5947377af574e92c17a42787af1b0e8b26ba2dbb5e1ae655177dfb",
   "package": {
     "action_catalog": [
       {
@@ -92,7 +92,7 @@
       "targeted_gap_ids": [
         "synthetic-clinical-evidence-tensor:gap:insufficient_safety_exposure"
       ],
-      "tensor_fingerprint": "bcd1a7f1e2ed1a36f48dd8b45280e972d7999b26c0f0767d92aff20fb17ee6e5",
+      "tensor_fingerprint": "dbb664dc1f398d470187500edcda91c8817813086d5a67aa138c7c3a649a22dd",
       "tensor_id": "synthetic-clinical-evidence-tensor",
       "terminal_decision_issued": false,
       "untargeted_gap_ids": [
@@ -276,8 +276,20 @@
         },
         {
           "criterion": {
-            "consistent_direction_required": true,
-            "higher_observed_serious_event_risk_trials": 0
+            "missing_descriptive_arm_measurements": 0
+          },
+          "dimension": "descriptive_arm_measurement_completeness",
+          "gap_ids": [],
+          "observed": {
+            "missing_arms_by_study": {},
+            "complete_study_count": 2
+          },
+          "status": "satisfied"
+        },
+        {
+          "criterion": {
+            "higher_observed_serious_event_risk_trials": 0,
+            "consistent_direction_required": true
           },
           "dimension": "safety_direction",
           "gap_ids": [],
@@ -336,17 +348,17 @@
           "status": "satisfied"
         },
         {
-          "criterion": {
-            "identical_across_trials": true
-          },
           "dimension": "measurement_unit_alignment",
-          "gap_ids": [],
+          "status": "satisfied",
           "observed": {
             "measurement_units": [
               "months"
             ]
           },
-          "status": "satisfied"
+          "criterion": {
+            "identical_across_trials": true
+          },
+          "gap_ids": []
         }
       ],
       "disease_id": "MONDO_TEST",
@@ -447,7 +459,7 @@
         "clinical-design-NCT00000002:v0:clinical-design:evidence:trial-safety-identity"
       ],
       "stage": "regulatory_postmarket",
-      "synthesis_fingerprint": "8567419f16492d80c3fba208a4df06192b1f67fffa3d072d4eff551b6f9912c4",
+      "synthesis_fingerprint": "c060931764903094373c18d8aa3381b189e1d78507d3e38603e77c084baf0e41",
       "synthesis_id": "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1",
       "tensor_id": "synthetic-clinical-evidence-tensor"
     }

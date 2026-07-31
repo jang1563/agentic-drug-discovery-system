@@ -214,6 +214,44 @@ def _normalized(value: str) -> str:
     return " ".join(value.casefold().split())
 
 
+def _arm_title_tokens(value: str) -> frozenset[str]:
+    tokens = [
+        token
+        for token in re.findall(r"[a-z]+|[0-9]+", value.casefold())
+        if token not in {"mg", "milligram", "milligrams"}
+    ]
+    if "on" in tokens and "treatment" in tokens:
+        tokens = [token for token in tokens if token not in {"on", "treatment"}]
+    return frozenset(tokens)
+
+
+def _compatible_arm_titles(left: str, right: str) -> bool:
+    left_tokens = _arm_title_tokens(left)
+    right_tokens = _arm_title_tokens(right)
+    if not left_tokens or not right_tokens:
+        return False
+    return left_tokens == right_tokens
+
+
+_MISSING_MEASUREMENT_VALUES = frozenset(
+    {
+        "na",
+        "n/a",
+        "not available",
+        "not calculable",
+        "not estimable",
+        "not reached",
+        "nr",
+    }
+)
+
+
+def _optional_measurement_decimal(value: str, field_name: str) -> Decimal | None:
+    if _normalized(value) in _MISSING_MEASUREMENT_VALUES:
+        return None
+    return _decimal(value, field_name)
+
+
 def _text_list(value: Any, field_name: str) -> list[str]:
     result = [
         _text(item, f"{field_name}[{index}]")
@@ -478,8 +516,10 @@ def _normalize_safety(value: Any, arms: Sequence[Mapping[str, Any]]) -> dict[str
             or canonical["role"] != item["role"]
             or item["safety_arm_id"]
             != f"{safety_id}:arm:{item['source_group_id']}"
-            or _normalized(canonical["source_group_title"])
-            != _normalized(item["source_group_title"])
+            or not _compatible_arm_titles(
+                canonical["source_group_title"],
+                item["source_group_title"],
+            )
         ):
             raise ValueError("safety arm mapping conflicts with the selected design arm")
     return {
@@ -978,8 +1018,17 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
     if source_analysis_values != expected_analysis:
         raise ValueError("ClinicalTrials.gov statistical analysis mismatch")
     candidate, comparator = trial["arms"]
-    candidate_value = _decimal(candidate["measurement"]["value"], "candidate measurement")
-    comparator_value = _decimal(comparator["measurement"]["value"], "comparator measurement")
+    candidate_value = _optional_measurement_decimal(
+        candidate["measurement"]["value"], "candidate measurement"
+    )
+    comparator_value = _optional_measurement_decimal(
+        comparator["measurement"]["value"], "comparator measurement"
+    )
+    arm_measurements_support_direction = (
+        candidate_value is None
+        or comparator_value is None
+        or candidate_value > comparator_value
+    )
     parameter = Decimal(str(expected_analysis["parameter_value"]))
     ci_upper = Decimal(str(expected_analysis["confidence_interval_upper"]))
     if (
@@ -988,12 +1037,17 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         or _normalized(endpoint["outcome_type"]) != "primary"
         or _normalized(endpoint["reporting_status"]) != "posted"
         or _normalized(expected_analysis["parameter_type"])
-        not in {"hazard ratio", "hazard ratio (hr)"}
-        or expected_analysis["p_value_relation"] not in {"lt", "le"}
+        not in {
+            "cox proportional hazard",
+            "hazard ratio",
+            "hazard ratio (hr)",
+            "hazard ratio, log",
+        }
+        or expected_analysis["p_value_relation"] not in {"lt", "le", "eq"}
         or not 0 < Decimal(str(expected_analysis["p_value"])) <= Decimal("0.05")
         or not 0 < parameter < 1
         or not ci_upper < 1
-        or not candidate_value > comparator_value
+        or not arm_measurements_support_direction
     ):
         raise ValueError("ClinicalTrials.gov endpoint fails the bounded benefit rule")
 
@@ -1029,6 +1083,9 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         if not source_stats:
             raise ValueError("ClinicalTrials.gov serious event has no arm statistics")
         event_group_ids: set[str] = set()
+        selected_safety_group_ids = {
+            item["source_group_id"] for item in safety["arms"]
+        }
         for stat_index, raw_stat in enumerate(source_stats):
             source_stat = _mapping(
                 raw_stat,
@@ -1050,14 +1107,28 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
                     "ClinicalTrials.gov serious-event arm statistics are ambiguous"
                 )
             event_group_ids.add(group_id)
-            _non_negative_int(
-                source_stat.get("numAffected"),
-                "ClinicalTrials.gov serious-event numAffected",
-            )
-            _positive_int(
+            at_risk = _non_negative_int(
                 source_stat.get("numAtRisk"),
                 "ClinicalTrials.gov serious-event numAtRisk",
             )
+            raw_affected = source_stat.get("numAffected")
+            if at_risk == 0 and raw_affected is None:
+                affected = 0
+            else:
+                affected = _non_negative_int(
+                    raw_affected,
+                    "ClinicalTrials.gov serious-event numAffected",
+                )
+            if affected > at_risk:
+                raise ValueError(
+                    "ClinicalTrials.gov serious-event affected count "
+                    "exceeds at-risk count"
+                )
+            if group_id in selected_safety_group_ids and at_risk == 0:
+                raise ValueError(
+                    "selected ClinicalTrials.gov serious-event arm "
+                    "must have positive at-risk count"
+                )
     source_event_groups: dict[str, Mapping[str, Any]] = {}
     for raw_group in _sequence(
         adverse_events.get("eventGroups"),

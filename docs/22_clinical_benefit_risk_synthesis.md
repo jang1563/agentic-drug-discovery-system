@@ -52,7 +52,8 @@ Each `StudyBenefitRiskRecord` retains:
 
 - exact trial, design, endpoint, and safety IDs;
 - endpoint family, hazard ratio, confidence level, and confidence interval;
-- candidate and comparator source measurements and unit;
+- candidate and comparator source measurements and unit, with approved source missing-value
+  markers represented as `null` while the raw marker remains in record attributes;
 - candidate and comparator serious-event affected and at-risk counts;
 - both observed serious-event risks and their unadjusted absolute difference;
 - bounded direction labels derived from the confidence interval and observed risk difference;
@@ -120,6 +121,8 @@ synthesis commit bypass, unrelated derived support, and removal from committed h
 ## Current Limitations
 
 - v1 supports only explicitly selected hazard-ratio endpoints.
+- Source-reported missing descriptive arm summaries remain typed gaps; they are not imputed from
+  the hazard ratio or confidence interval.
 - Serious-event data are posted aggregate participant counts, not adjudicated event-level causality.
 - Ontology identities are reviewer-declared and ledger-preserved; live ontology-authority lookup,
   synonym resolution, and terminology-version validation are not implemented.

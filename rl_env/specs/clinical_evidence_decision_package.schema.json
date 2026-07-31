@@ -88,6 +88,7 @@
         "trial_count",
         "benefit_direction",
         "benefit_precision",
+        "descriptive_arm_measurement_completeness",
         "safety_direction",
         "safety_exposure",
         "endpoint_timeframe_alignment",
@@ -109,6 +110,7 @@
         "benefit_direction_conflict",
         "benefit_harm_signal",
         "imprecise_benefit_estimate",
+        "missing_descriptive_arm_measurement",
         "higher_observed_serious_event_risk",
         "safety_direction_conflict",
         "insufficient_safety_exposure",
@@ -303,10 +305,16 @@
           ]
         },
         "candidate_measurement": {
-          "type": "number"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "comparator_measurement": {
-          "type": "number"
+          "type": [
+            "number",
+            "null"
+          ]
         },
         "measurement_unit": {
           "$ref": "#/$defs/text"
@@ -544,8 +552,8 @@
         },
         "dimensions": {
           "type": "array",
-          "minItems": 9,
-          "maxItems": 9,
+          "minItems": 10,
+          "maxItems": 10,
           "items": {
             "$ref": "#/$defs/dimensionRecord"
           }

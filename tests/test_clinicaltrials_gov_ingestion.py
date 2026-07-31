@@ -326,6 +326,130 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         self.assertNotIn("resultsection", encoded)
         self.assertNotIn("raw_payload", encoded)
 
+    def test_bounded_registry_harmonization_preserves_source_values(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        job = clinical_job()
+        outcome = source["resultsSection"]["outcomeMeasuresModule"][
+            "outcomeMeasures"
+        ][0]
+        outcome["classes"][0]["categories"][0]["measurements"][0][
+            "value"
+        ] = "NA"
+        job["trial"]["arms"][0]["measurement"]["value"] = "NA"
+        analysis = outcome["analyses"][0]
+        analysis["pValue"] = "0.01"
+        analysis["paramType"] = "Cox Proportional Hazard"
+        job_analysis = job["trial"]["endpoint"]["analysis"]
+        job_analysis["p_value_relation"] = "eq"
+        job_analysis["parameter_type"] = "Cox Proportional Hazard"
+        outcome["groups"][0]["title"] = "Test Drug 100mg"
+        job["trial"]["arms"][0]["source_group_title"] = "Test Drug 100mg"
+        source_safety = source["resultsSection"]["adverseEventsModule"]
+        source_safety["eventGroups"][0][
+            "title"
+        ] = "Test Drug 100 mg (On-treatment)"
+        job["trial"]["safety"]["arms"][0][
+            "source_group_title"
+        ] = "Test Drug 100 mg (On-treatment)"
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        extracted = extract_clinicaltrials_gov_ingestion_job(
+            job,
+            clinical_bundle(payload=payload),
+        )
+        metadata = extracted["records"][0]["metadata"]
+
+        self.assertEqual(metadata["arms"][0]["measurement"]["value"], "NA")
+        self.assertEqual(
+            metadata["endpoint"]["analysis"]["p_value_relation"], "eq"
+        )
+        self.assertEqual(
+            metadata["endpoint"]["analysis"]["parameter_type"],
+            "Cox Proportional Hazard",
+        )
+        self.assertEqual(
+            metadata["safety"]["arms"][0]["source_group_title"],
+            "Test Drug 100 mg (On-treatment)",
+        )
+
+    def test_bounded_registry_harmonization_rejects_unfrozen_variants(self) -> None:
+        cases = []
+
+        arbitrary_measurement_source = json.loads(SOURCE.read_text())
+        arbitrary_measurement_job = clinical_job()
+        arbitrary_measurement_source["resultsSection"][
+            "outcomeMeasuresModule"
+        ]["outcomeMeasures"][0]["classes"][0]["categories"][0][
+            "measurements"
+        ][0]["value"] = "pending review"
+        arbitrary_measurement_job["trial"]["arms"][0]["measurement"][
+            "value"
+        ] = "pending review"
+        cases.append(
+            (
+                "arbitrary-measurement",
+                arbitrary_measurement_source,
+                arbitrary_measurement_job,
+            )
+        )
+
+        unrelated_safety_source = json.loads(SOURCE.read_text())
+        unrelated_safety_job = clinical_job()
+        unrelated_safety_source["resultsSection"]["adverseEventsModule"][
+            "eventGroups"
+        ][0]["title"] = "Unrelated Cohort"
+        unrelated_safety_job["trial"]["safety"]["arms"][0][
+            "source_group_title"
+        ] = "Unrelated Cohort"
+        cases.append(
+            (
+                "unrelated-safety-title",
+                unrelated_safety_source,
+                unrelated_safety_job,
+            )
+        )
+
+        unapproved_qualifier_source = json.loads(SOURCE.read_text())
+        unapproved_qualifier_job = clinical_job()
+        unapproved_qualifier_source["resultsSection"][
+            "adverseEventsModule"
+        ]["eventGroups"][0]["title"] = "Test Drug Exploratory Cohort"
+        unapproved_qualifier_job["trial"]["safety"]["arms"][0][
+            "source_group_title"
+        ] = "Test Drug Exploratory Cohort"
+        cases.append(
+            (
+                "unapproved-safety-title-qualifier",
+                unapproved_qualifier_source,
+                unapproved_qualifier_job,
+            )
+        )
+
+        unsupported_effect_source = json.loads(SOURCE.read_text())
+        unsupported_effect_job = clinical_job()
+        unsupported_effect_source["resultsSection"][
+            "outcomeMeasuresModule"
+        ]["outcomeMeasures"][0]["analyses"][0]["paramType"] = "Odds Ratio"
+        unsupported_effect_job["trial"]["endpoint"]["analysis"][
+            "parameter_type"
+        ] = "Odds Ratio"
+        cases.append(
+            (
+                "unsupported-effect-alias",
+                unsupported_effect_source,
+                unsupported_effect_job,
+            )
+        )
+
+        for name, source, job in cases:
+            with self.subTest(name=name):
+                payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+                with self.assertRaises(ValueError):
+                    extract_clinicaltrials_gov_ingestion_job(
+                        job,
+                        clinical_bundle(payload=payload),
+                    )
+
     def test_source_identity_arm_and_analysis_mismatches_fail_closed(self) -> None:
         cases = []
 
@@ -403,6 +527,55 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
             extracted["records"][0]["metadata"]["safety"]["event_term_count"],
             0,
         )
+
+    def test_unselected_zero_risk_safety_groups_allow_sparse_zero_counts(
+        self,
+    ) -> None:
+        source = json.loads(SOURCE.read_text())
+        source_safety = source["resultsSection"]["adverseEventsModule"]
+        source_safety["eventGroups"].append(
+            {
+                "id": "EG002",
+                "title": "Post-treatment Follow-up",
+                "seriousNumAffected": 0,
+                "seriousNumAtRisk": 0,
+            }
+        )
+        for event in source_safety["seriousEvents"]:
+            event["stats"].append({"groupId": "EG002", "numAtRisk": 0})
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        extracted = extract_clinicaltrials_gov_ingestion_job(
+            clinical_job(),
+            clinical_bundle(payload=payload),
+        )
+
+        self.assertEqual(
+            extracted["records"][0]["metadata"]["safety"]["event_term_count"],
+            2,
+        )
+
+    def test_selected_zero_risk_safety_group_still_fails(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        source_safety = source["resultsSection"]["adverseEventsModule"]
+        source_safety["eventGroups"][0]["seriousNumAffected"] = 0
+        source_safety["eventGroups"][0]["seriousNumAtRisk"] = 0
+        for event in source_safety["seriousEvents"]:
+            stat = next(
+                item for item in event["stats"] if item["groupId"] == "EG000"
+            )
+            stat["numAtRisk"] = 0
+            stat.pop("numAffected", None)
+        job = clinical_job()
+        job["trial"]["safety"]["arms"][0]["serious_num_affected"] = 0
+        job["trial"]["safety"]["arms"][0]["serious_num_at_risk"] = 1
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        with self.assertRaisesRegex(ValueError, "selected ClinicalTrials.gov"):
+            extract_clinicaltrials_gov_ingestion_job(
+                job,
+                clinical_bundle(payload=payload),
+            )
 
     def test_committed_design_rejects_role_rebinding_and_endpoint_support_removal(
         self,
