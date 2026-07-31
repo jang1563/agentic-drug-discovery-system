@@ -1,6 +1,6 @@
 # Public Release Readiness Plan
 
-Status: 0.3.0.dev1 public development release active after exact-package approval
+Status: 0.3.0.dev2 public development release active after exact-package approval
 Release posture: GitHub and Hugging Face public; publish refreshes only from reviewed Git commits after all blocking gates pass
 Target surface: public GitHub repository with a commit-pinned Hugging Face Dataset mirror
 

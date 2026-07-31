@@ -118,7 +118,7 @@ external until separate scientific and release-boundary approval.
 
 ## GitHub and Hugging Face Split
 
-- The approved 0.3.0.dev1 release is public on GitHub and Hugging Face.
+- The approved 0.3.0.dev2 release is public on GitHub and Hugging Face.
 - The GitHub release contains the full sanitized code surface:
   adapters, chains, verifiers, the typed `agentic_drug_discovery/` core,
   governance docs, automation, tests, and `benchmark/`.

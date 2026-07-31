@@ -1,7 +1,7 @@
 # Public Launch Checklist
 
 This checklist is the human-readable companion to `release_decision_packet.json`.
-It records the approved and published 0.3.0.dev1 public development release.
+It records the approved and published 0.3.0.dev2 public development release.
 The 0.2.0 tag remains the latest stable release, and every future public update
 requires a new exact-package review and explicit human approval.
 Scientific anchors: `docs/12_scd_vertical_slice.md`,
@@ -28,10 +28,10 @@ preregistration and stage-stratified uncertainty are in
 
 | Surface | Current state | Publication record |
 | --- | --- | --- |
-| GitHub | 0.3.0.dev1 public baseline on `main` | Approved content published through PR 16 at `5a39af737879126973777b5df897d18a76011b07` |
-| Hugging Face | 0.3.0.dev1 public, ungated exact-source mirror | Initial approved upload `3cb6d21055b481ca01124e7ff91c84a41a6f1489`; 169 files |
+| GitHub | 0.3.0.dev2 public baseline on `main` | Approved content published through PR 18 at `ea9cc3575fa687a3f05b6e0f9bf81a85413e5436` |
+| Hugging Face | 0.3.0.dev2 public, ungated exact-source mirror | Initial approved upload `8125fcfdb4984045948c2ffacb37c2c6f0c3ae70`; 169 files |
 
-Machine status is `public_released_after_human_approval`. The 0.3.0.dev1 public
+Machine status is `public_released_after_human_approval`. The 0.3.0.dev2 public
 development release was approved after its exact candidate commit, tree,
 release audits, GitHub PR, validated Hugging Face package, and human/visual QA
 were presented.
@@ -140,6 +140,23 @@ were presented.
 - [x] The approved candidate was merged and uploaded, and the anonymous Hub snapshot passed exact
   file/hash validation.
 
+## 0.3.0.dev2 Publication Record
+
+- [x] The strict ClinicalTrials.gov provider accepts only the frozen exact-p-value,
+  hazard-ratio-alias, missing-value, arm-title, and sparse zero-risk variants.
+- [x] Missing descriptive arm summaries retain their raw source marker, serialize as `null`, and
+  produce a typed tenth tensor dimension and provenance-linked workflow gap.
+- [x] Unsupported effect aliases, title qualifiers, arbitrary missing markers, selected zero-risk
+  safety groups, imputation, pooling, and clinical acceptability inference remain fail-closed.
+- [x] The final implementation passed 250 core tests, 89 subtests, 11 benchmark tests, Ruff,
+  compileall, wheel isolation, release-boundary audits, and exact schema/example replay.
+- [x] Nine frozen external ClinicalTrials.gov snapshots passed the final provider contract; their
+  raw bytes, reviewer jobs, and cohort artifacts remain outside both public surfaces.
+- [x] PR 18 passed the GitHub release audit and merged approved content commit
+  `ea9cc3575fa687a3f05b6e0f9bf81a85413e5436`.
+- [x] The 169-file Hub package was built from that exact commit and validated before upload.
+- [x] The owner explicitly approved this GitHub and Hugging Face update on 2026-07-31.
+
 ## Required Local Commands
 
 ```bash
@@ -168,4 +185,4 @@ audit is green for the exact commit, and the owner explicitly approves that
 commit and its Hugging Face package.
 
 If any release-boundary check regresses, hold the future candidate and leave the
-0.3.0.dev1 public baseline unchanged until the issue is fixed.
+0.3.0.dev2 public baseline unchanged until the issue is fixed.
