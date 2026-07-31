@@ -40,6 +40,38 @@ disease/target slice.
 | Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed or held-out boards, curator identities/attestations/votes/adjudications, real clinical decision policies/action catalogs/evidence tensors/packages, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
 
+## Quick Start
+
+Install the core and test dependencies, then run the deterministic fixture and the public clinical
+package reader:
+
+```bash
+python -m pip install -e ".[test]"
+adds-bounded-agent-demo | python -m json.tool
+adds-clinical-evidence summarize \
+  --package rl_env/specs/clinical_evidence_decision_package.example.json
+adds-clinical-evidence validate \
+  --package rl_env/specs/clinical_evidence_decision_package.example.json
+python -m pytest -q
+```
+
+Compile a new package from a serialized `ProgramState` that already contains an accepted-packet
+clinical synthesis:
+
+```bash
+adds-clinical-evidence compile \
+  --state accepted-program-state.json \
+  --config clinical-decision-config.json \
+  --output clinical-decision-package.json
+adds-clinical-evidence validate \
+  --package clinical-decision-package.json \
+  --state accepted-program-state.json
+```
+
+The compiler rejects duplicate JSON keys, non-finite numbers, uncommitted mapping or synthesis
+records, replay mismatches, and accidental output replacement. The public config schema and
+synthetic example are under `rl_env/specs/clinical_evidence_decision_config.*`.
+
 ## Core Question
 
 Can a long-horizon discovery process be represented as an agentic environment where:
@@ -342,6 +374,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Developers + agents | Strict reviewer-approved mapping parser, exact ledger compiler, fingerprints, and continuity recompilation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Developers + agents | Deterministic reviewed-selection compiler for source-disjoint, non-pooled trial-level benefit-risk records. |
 | `agentic_drug_discovery/clinical_decision.py` | Developers + agents | Committed-synthesis tensor compiler, typed evidence gaps, deterministic budget-aware VOI planner, strict integrity readers, and state replay. |
+| `agentic_drug_discovery/clinical_workflow.py` | Users + agents | Stable config parser, accepted-packet provenance checks, compiler wrapper, validation report, and compact decision summary. |
+| `agentic_drug_discovery/clinical_decision_cli.py` | Users + agents | JSON CLI for compiling, replay-validating, and summarizing clinical evidence packages. |
 | `agentic_drug_discovery/clinical_closed_loop.py` | Developers + agents | State-bound selected-action batches, bounded runner integration, compact execution and refresh receipts, source-rejoined transition compilation, strict readers, and two-state replay validation. |
 | `agentic_drug_discovery/policy.py` | Developers + agents | Deterministic policy rules, queue-bound replanning, checkpoint integrity, and exact resume orchestration. |
 | `agentic_drug_discovery/sealed_evaluation.py` | Developers + agents | Role-neutral sealed boards, salted label vaults, fingerprint-bound submissions, strict envelope readers, and matched policy metrics. |
@@ -353,6 +387,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `rl_env/specs/discovery_context_identity.schema.json` | Machines + agents | JSON Schema for evidence-backed disease, assay, and model-system records. |
 | `rl_env/specs/clinical_intervention_identity.schema.json` | Machines + agents | JSON Schema for evidence-backed clinical intervention, trial, and atomic design records. |
 | `rl_env/specs/clinical_benefit_risk_synthesis.schema.json` | Machines + agents | JSON Schema for reviewed multi-trial endpoint/safety selections with no supplied measurements. |
+| `rl_env/specs/clinical_evidence_decision_config.schema.json` | Machines + agents | JSON Schema for the accepted-synthesis id, policy, action catalog, and stable package identifiers consumed by `adds-clinical-evidence compile`; the adjacent example is synthetic. |
+| `rl_env/specs/clinical_evidence_decision_summary.schema.json` | Machines + agents | JSON Schema shared by compact `summarize` output and optional state-replay validation reports. |
 | `rl_env/specs/clinical_evidence_decision_package.schema.json` | Machines + agents | JSON Schema for the integrity-bound policy, exact evidence tensor, gaps, action catalog, budget, and bounded-VOI plan; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json` | Machines + agents | JSON Schema for integrity-bound execution batches, compact provider/reviewer receipts, exact source rejoin, costs, gap transitions, and nested before/after decision packages; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machines + agents | JSON Schema for approved reviewer, ontology identity, and exact endpoint/safety bindings without measurements. |
@@ -374,6 +410,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `rl_env/specs/clinicaltrials_gov_ingestion_job.schema.json` | Machines + reviewers | JSON Schema for exact registry, arm, population, endpoint, measurement, analysis, and serious-adverse-event review fields. |
 | `tests/` | Developers + CI | Fail-closed control-plane regression tests. |
 | `tests/test_clinical_benefit_risk_synthesis.py` | Developers + reviewers | Two-source tool-to-replay synthesis and clinical decision paths plus mismatch, overlap, pooling, forgery, unbound support, safety-signal, budget, deterministic-ranking, integrity, and removal controls. |
+| `tests/test_clinical_decision_cli.py` | Users + CI | Config/schema synchronization, exact public-package reproduction, accepted-packet provenance, strict JSON, atomic output, CLI validation, and compact-summary coverage. |
 | `tests/test_clinical_portfolio.py` | Developers + reviewers | Multi-job/bundle extraction, schema, source-disjointness, payload removal, and atomic no-output failure controls. |
 | `benchmark/` | Users + CI | Installable scorer and tests for the linked external clinical-trial decision dataset. |
 | `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |

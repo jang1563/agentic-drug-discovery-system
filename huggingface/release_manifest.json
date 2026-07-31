@@ -112,6 +112,7 @@
     "tests/test_preclinical_provider_pair.py",
     "tests/test_clinicaltrials_gov_ingestion.py",
     "tests/test_clinical_benefit_risk_synthesis.py",
+    "tests/test_clinical_decision_cli.py",
     "tests/test_clinical_portfolio.py",
     "tests/fixtures/clinicaltrials_gov_study.synthetic.json",
     "huggingface/README.md",

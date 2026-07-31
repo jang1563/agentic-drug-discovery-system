@@ -109,6 +109,9 @@ This card describes the approved public 0.3.0.dev2 exact-source mirror for the A
   selecting source-ledger trials for cross-trial harmonization.
 - Inspect `rl_env/specs/clinical_evidence_decision_package.schema.json` and its compiler-generated
   synthetic example before producing or consuming policy-bound evidence tensors or action plans.
+- Inspect `rl_env/specs/clinical_evidence_decision_config.schema.json` and its synthetic example,
+  then use `adds-clinical-evidence` to compile, validate, or summarize a package without importing
+  internal dataclasses.
 - Inspect `rl_env/specs/clinical_endpoint_mapping.schema.json` and
   `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` before approving an endpoint family or
   assembling an exact multi-trial source bundle.
@@ -213,6 +216,8 @@ outside both public release surfaces.
 | `rl_env/specs/ncbi_pubmed_disease_model_ingestion_job.schema.json` | Machine-readable PubMed in-vivo exposure, endpoint, model, candidate, and lineage contract. |
 | `rl_env/specs/clinicaltrials_gov_ingestion_job.schema.json` | Machine-readable exact study, arm, population, endpoint, measurement, analysis, and serious-adverse-event contract. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machine-readable exact set of single-trial jobs, receipts, identities, and approved mapping bindings. |
+| `rl_env/specs/clinical_evidence_decision_config.schema.json` | Machine-readable accepted-synthesis, policy, action-catalog, and output-identity compiler contract; the adjacent example is synthetic. |
+| `rl_env/specs/clinical_evidence_decision_summary.schema.json` | Machine-readable compact package summary and optional state-replay validation-report contract. |
 | `tests/test_target_identity_continuity.py` | Namespace rebinding/collision, broken candidate link, and matched target-symbol coverage. |
 | `tests/test_context_identity_continuity.py` | Disease/model rebinding, assay collision, unknown-candidate evidence, and strict example parsing. |
 | `tests/test_clinical_identity_continuity.py` | Intervention rebinding, trial collision, unknown-intervention linkage, support removal, and strict example parsing. |
@@ -225,6 +230,7 @@ outside both public release surfaces.
 | `tests/test_clinicaltrials_gov_ingestion.py` | Strict registry extraction, payload removal, atomic promotion, continuity attacks, and matched mismatch coverage. |
 | `tests/test_clinical_benefit_risk_synthesis.py` | Two-source tool-to-replay synthesis plus mismatch, overlap, pooling, forgery, unbound-support, direct-commit, and removal controls. |
 | `tests/test_clinical_portfolio.py` | Exact-set portfolio extraction, source chronology/disjointness, strict schemas, payload removal, and atomic CLI failure controls. |
+| `tests/test_clinical_decision_cli.py` | Exact package reproduction, accepted-packet provenance, strict config parsing, atomic CLI output, replay validation, and compact summary coverage. |
 | `tests/test_sealed_evaluation.py` | Synthetic board determinism, commitment, submission, confidence, schema, leakage, and baseline-policy coverage. |
 | `tests/` | Dependency-free planning, multi-stage stopping, mapping, evaluation, execution, replay, and transition regression tests. |
 | `benchmark/` | Installable `ctdbench` scorer and tests. |

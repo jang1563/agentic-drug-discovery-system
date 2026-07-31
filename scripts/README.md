@@ -19,5 +19,9 @@ Script groups:
   The registered `clinical_synthesis.register_endpoint_mapping` tool commits a reviewed ontology
   binding, and `clinical_synthesis.harmonize_benefit_risk` accepts only that exact mapping before
   recompiling all measurements and provenance from committed trial-design state.
+- `adds-clinical-evidence` is installed from
+  `agentic_drug_discovery.clinical_decision_cli`. It compiles a decision package only from a
+  synthesis present in accepted packet history, validates integrity with optional state replay,
+  and emits a compact JSON summary for people and automation.
 
 Execution and sync wrappers are kept outside Git until they are sanitized for a specific release target. Scripts should avoid embedding secrets, machine-specific paths, or local account names.

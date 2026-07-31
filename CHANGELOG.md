@@ -4,6 +4,13 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added the `adds-clinical-evidence` compile, validate, and summarize interface over accepted-ledger
+  clinical syntheses. Strict config and summary schemas, duplicate-key/non-finite rejection, exact
+  mapping/synthesis packet provenance, state replay, atomic output, public-package reproduction,
+  and isolated-wheel CLI coverage make the clinical tensor/VOI path usable without constructing
+  internal dataclasses. Root `pytest -q` now discovers both core and benchmark tests, and runtime
+  `__version__` is synchronized with package metadata.
+
 ## 0.3.0.dev2 - 2026-07-31
 
 - Extended the strict ClinicalTrials.gov harmonization boundary for source-preserving registry

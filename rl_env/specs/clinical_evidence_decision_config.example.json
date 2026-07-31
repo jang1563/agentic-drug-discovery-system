@@ -1,0 +1,76 @@
+{
+  "schema_version": "adds.clinical-evidence-decision-config.v1",
+  "synthesis_id": "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1",
+  "package_id": "synthetic-clinical-evidence-decision-package",
+  "tensor_id": "synthetic-clinical-evidence-tensor",
+  "plan_id": "synthetic-clinical-evidence-plan",
+  "policy": {
+    "policy_id": "synthetic-clinical-workflow-policy",
+    "version": "1",
+    "registered_on": "2025-01-01",
+    "minimum_independent_trials": 3,
+    "maximum_log_effect_ci_width": 0.6,
+    "minimum_safety_participants_per_arm": 100,
+    "max_planned_actions": 2,
+    "max_planned_cost": 0.25,
+    "minimum_bounded_voi": 0.05,
+    "workflow_scope": "evidence_workflow_only",
+    "require_all_trials_benefit": true,
+    "require_consistent_safety_direction": true,
+    "prohibit_higher_observed_serious_event_risk": true,
+    "require_aligned_endpoint_timeframes": true,
+    "require_aligned_safety_timeframes": true,
+    "require_aligned_measurement_units": true,
+    "automatic_pooling_prohibited": true,
+    "clinical_acceptability_inference_prohibited": true,
+    "terminal_decisions_prohibited": true,
+    "metadata": {
+      "payload_class": "synthetic",
+      "clinical_use": "prohibited"
+    }
+  },
+  "action_catalog": [
+    {
+      "action_id": "query-independent-trial",
+      "action_type": "query_database",
+      "tool_id": "clinical_trial_portfolio",
+      "operation": "find_source_disjoint_trial",
+      "purpose": "Find one additional source-disjoint eligible trial.",
+      "targeted_gap_codes": [
+        "insufficient_independent_trials"
+      ],
+      "expected_gap_resolution_probability": 0.8,
+      "decision_relevance": 0.9,
+      "max_cost": 0.2,
+      "arguments": {
+        "candidate_id": "CHEMBL_TEST",
+        "disease_id": "MONDO_TEST",
+        "endpoint_family": "progression_free_survival"
+      },
+      "metadata": {
+        "payload_class": "synthetic"
+      }
+    },
+    {
+      "action_id": "retrieve-safety-followup",
+      "action_type": "retrieve_evidence",
+      "tool_id": "clinical_registry_followup",
+      "operation": "retrieve_posted_safety_update",
+      "purpose": "Retrieve a later posted aggregate safety follow-up.",
+      "targeted_gap_codes": [
+        "higher_observed_serious_event_risk",
+        "insufficient_safety_exposure"
+      ],
+      "expected_gap_resolution_probability": 0.7,
+      "decision_relevance": 0.8,
+      "max_cost": 0.1,
+      "arguments": {
+        "candidate_id": "CHEMBL_TEST",
+        "disease_id": "MONDO_TEST"
+      },
+      "metadata": {
+        "payload_class": "synthetic"
+      }
+    }
+  ]
+}
