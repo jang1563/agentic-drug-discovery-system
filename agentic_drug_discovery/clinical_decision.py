@@ -2235,6 +2235,40 @@ def _parse_action_option(
     )
 
 
+def clinical_decision_policy_from_dict(
+    value: Any,
+    path: str = "clinical_decision_policy",
+) -> ClinicalDecisionPolicy:
+    """Parse one strict, fail-closed clinical evidence policy."""
+
+    return _parse_policy(value, path)
+
+
+def clinical_evidence_action_option_from_dict(
+    value: Any,
+    path: str = "clinical_evidence_action_option",
+) -> ClinicalEvidenceActionOption:
+    """Parse one strict action-catalog entry."""
+
+    return _parse_action_option(value, path)
+
+
+def clinical_evidence_action_catalog_from_dict(
+    value: Any,
+    path: str = "clinical_evidence_action_catalog",
+) -> tuple[ClinicalEvidenceActionOption, ...]:
+    """Parse an action catalog and reject ambiguous duplicate action ids."""
+
+    catalog = tuple(
+        _parse_action_option(item, f"{path}[{index}]")
+        for index, item in enumerate(_parse_sequence(value, path))
+    )
+    action_ids = tuple(item.action_id for item in catalog)
+    if len(action_ids) != len(set(action_ids)):
+        raise RecordParseError(f"{path} action ids must be unique")
+    return catalog
+
+
 def _parse_action_selection(
     value: Any,
     path: str,

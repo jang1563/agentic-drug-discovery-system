@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_dependence_manifest.schema.json",
+  "title": "Clinical Outcome Dependence Manifest",
+  "description": "Evaluator-only, preregistered assignments of exact clinical evidence units to dependence clusters. Real manifests remain outside public releases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "manifest"],
+  "properties": {
+    "schema_version": {"const": "adds.clinical-outcome-dependence-manifest.v1"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_id",
+        "registered_on",
+        "cohort_report_fingerprint",
+        "construction_policy_sha256",
+        "independence_attestation_sha256",
+        "assignments"
+      ],
+      "properties": {
+        "manifest_id": {"type": "string", "minLength": 1},
+        "registered_on": {"type": "string", "format": "date"},
+        "cohort_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "construction_policy_sha256": {"$ref": "#/$defs/sha256"},
+        "independence_attestation_sha256": {"$ref": "#/$defs/sha256"},
+        "assignments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidence_unit_id",
+              "cluster_id",
+              "assignment_basis_sha256"
+            ],
+            "properties": {
+              "evidence_unit_id": {"$ref": "#/$defs/sha256"},
+              "cluster_id": {"$ref": "#/$defs/sha256"},
+              "assignment_basis_sha256": {"$ref": "#/$defs/sha256"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

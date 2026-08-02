@@ -1,0 +1,27 @@
+{
+  "integrity_sha256": "8b0de8e2fb70ce0faf452ad06ecb8df63acb0a4d5ae0dcf4fe205c0127cc1c79",
+  "schema_version": "adds.clinical-prediction-submission.v1",
+  "submission": {
+    "cohort_report_fingerprint": "fbb96d09fad8cbe8e38443d2907e95b94a38f639a1dfa66d65d0d6411fa37872",
+    "metadata": {
+      "forecast_scope": "synthetic package-bound probability"
+    },
+    "policy": {
+      "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+      "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+      "policy_version": "1"
+    },
+    "predictions": [
+      {
+        "evidence_unit_id": "d2475391c08d8671c20b69a9cd9fcbf9623fc81f9b63e2fa0451562d7dfe0b66",
+        "favorable_probability": 0.8,
+        "package_id": "synthetic-clinical-evidence-decision-package-relaxed",
+        "package_integrity_sha256": "f3cc2fcdc269fdbc50c9f65c38e04ea579d97e257d73cb3869114078b6b7611f"
+      }
+    ],
+    "protocol_fingerprint": "69bf56014455a8818b370818683a2a27662c671194c9f7e825c317535dceb156",
+    "protocol_id": "synthetic-clinical-outcome-evaluation",
+    "submission_id": "synthetic-relaxed-clinical-workflow-policy:submission:v1",
+    "submitted_on": "2025-01-04"
+  }
+}

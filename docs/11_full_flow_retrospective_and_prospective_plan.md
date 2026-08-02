@@ -107,8 +107,10 @@ standalone and integrated atlases across M2–M6 remain unbuilt. To reach full f
 3. **Flow orchestrator (`chains/`)** — given a disease/target seed, assemble the
    ordered episode chain across stages and let the agent traverse it, carrying
    state/evidence/uncertainty across handoffs.
-4. **Calibration layer** — conformal / RCPS / calibration cards so per-stage
-   confidence and false-accept are bounded (prerequisite for prospective mode).
+4. **Calibration layer** — outcome-free clinical cohort diagnostics and matched
+   policy sensitivity are implemented with accepted-state binding and provenance-overlap checks.
+   Independent outcomes, conformal / RCPS guarantees, and calibration cards are still required so
+   per-stage confidence and false-accept can be bounded before prospective mode.
 
 ## Implemented first proof: thin vertical slice
 
@@ -128,7 +130,7 @@ slice rather than the full M2–M6 system:
 ```
 Track A (A1–A6): source-derived labels + scoped controls + retrospective risk analysis       [audited locally]
   -> Track B: live agent loop + thin SCD vertical slice                                       [audited locally]
-  -> refresh cutoff-safe replay + calibration before any scored prospective use               [next]
+  -> join cohort diagnostics to independent held-out outcomes and calibrate before scored use  [next]
   -> widen stages (M2–M6) and diseases/targets; refresh loop for live sources
 ```
 

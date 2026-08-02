@@ -738,7 +738,10 @@ def _wilson_interval(
         )
         / denominator
     )
-    return max(0.0, center - margin), min(1.0, center + margin)
+    return (
+        round(max(0.0, center - margin), 12),
+        round(min(1.0, center + margin), 12),
+    )
 
 
 @dataclass(frozen=True, slots=True)

@@ -4,6 +4,61 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added deterministic informative-evaluability and residual-dependence stress simulation for
+  clustered clinical outcome boards. Exact synthetic dependence blocks can span nominal clusters,
+  while separate favorable/unfavorable evaluability probabilities induce analytic
+  population-versus-evaluable estimand shifts. The same aggregate CR1 estimates are evaluated
+  under nominal and oracle dependence-closed cluster assignments against both targets. Strict
+  protocols, reports, summaries, schemas, replay, bounded work, CLI paths, and adversarial tests
+  preserve informative-selection, hidden-linkage, and combined signatures without unit/replicate
+  records, automatic gate selection, hidden-link detection, or missing-data correction.
+- Added deterministic prospective design simulation for clustered clinical outcome boards. Public
+  protocols freeze stage-by-endpoint cluster sizes, prevalence, ICC, MCAR evaluability, fixed
+  prediction patterns, candidate cluster gates, Monte Carlo precision, and RNG streams. The
+  beta-binomial Polya-urn generator has analytic targets for all eight additive outcome metrics
+  and calls the production CR1 diagnostic/estimator for every replicate, with an IID
+  unit-as-cluster reference. Aggregate reports retain bias, RMSE, empirical and reported
+  uncertainty, interval width, Wilson-bounded coverage/yield, and fail-closed status counts while
+  excluding replicate/unit records and automatic gate selection. Strict schemas/readers, exact
+  replay, bounded workload, CLI paths, synchronized synthetic results, and high-ICC
+  undercoverage/floor/dominance/attrition tests are included. No real board threshold is selected.
+- Added dependence-aware uncertainty for preregistered clinical outcome evaluation. A public
+  protocol binds the exact outcome protocol, cohort report, private dependence-manifest commitment,
+  cluster construction, confidence level, cluster floor, dominance threshold, fixed
+  stage-by-endpoint strata, and additive metrics before submissions. Evaluator-only assignments
+  must cover the exact unit roster and cannot split known shared program, baseline trial/source, or
+  outcome trial/source links. The evaluator fully replays and fingerprints the later base outcome
+  report. Aggregate CR1 policy and paired-Brier intervals fail closed when clusters are
+  insufficient or dominant, or when cluster uncertainty rounds to zero at the 12-decimal
+  reporting precision; strict schemas/readers, privacy-preserving reports, CLI paths, synthetic
+  CR1 math, and chronology/leakage/tamper tests are included. The one-cluster public example
+  intentionally emits no interval and adds no performance claim.
+  Wilson bounds are serialized at the established 12-decimal metric precision so report hashes
+  replay consistently across supported Python runtimes.
+- Added preregistered clinical outcome evaluation over exact outcome-free cohort reports. Frozen
+  policy submissions bind favorable composite benefit-risk probabilities to package and
+  evidence-unit hashes before the outcome deadline; evaluator-only manifests retain independently
+  curated endpoint/safety labels and post-deadline source provenance. Aggregate reports preserve
+  indeterminate attrition, Wilson intervals, threshold metrics, Brier score, fixed-bin calibration,
+  matched policy comparisons, and provenance-overlap counts without exposing unit-level labels or
+  scoring package workflow decisions as clinical outcomes. Strict schemas/readers, synchronized
+  synthetic artifacts, CLI evaluate/validate/summarize paths, and leakage/tamper controls are
+  included. No real outcome board or calibration claim is added.
+- Added integrity-bound multi-package clinical cohort diagnostics. Exact manifests bind package
+  identities and can require canonical accepted-state hashes plus committed-ledger replay;
+  reports distinguish packages, programs, and synthesis-bound evidence units, retain exact
+  decision/dimension/gap/action denominators, compare policies only on shared evidence units, and
+  expose cross-unit source-hash or trial-id reuse. Strict schemas/readers, compiler-generated
+  synthetic examples, CLI compile/validate/summarize paths, and adversarial tests are included.
+  The report contains no outcomes or performance metrics and explicitly marks calibration as not
+  estimable without independent outcomes.
+- Added the `adds-clinical-evidence` compile, validate, and summarize interface over accepted-ledger
+  clinical syntheses. Strict config and summary schemas, duplicate-key/non-finite rejection, exact
+  mapping/synthesis packet provenance, state replay, atomic output, public-package reproduction,
+  and isolated-wheel CLI coverage make the clinical tensor/VOI path usable without constructing
+  internal dataclasses. Root `pytest -q` now discovers both core and benchmark tests, and runtime
+  `__version__` is synchronized with package metadata.
+
 ## 0.3.0.dev2 - 2026-07-31
 
 - Extended the strict ClinicalTrials.gov harmonization boundary for source-preserving registry

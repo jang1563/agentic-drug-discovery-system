@@ -1,0 +1,4327 @@
+{
+  "integrity_sha256": "e90fb34e047ea70121c6de7fa26888e7003f140e347faf5950bcb6731985fee6",
+  "report": {
+    "aggregate_simulation_only": true,
+    "automatic_gate_selection_included": false,
+    "confidence_level": 0.95,
+    "coverage_target": 0.87,
+    "iid_reference_method_id": "adds.iid-unit-normal-reference.v1",
+    "limitations": [
+      "The report is a synthetic prospective design analysis; it contains no real clinical outcomes and does not validate a deployed policy or evidence board.",
+      "The beta-binomial Polya-urn generator assumes independent top-level clusters, exchangeable binary outcomes within each cluster, and one declared marginal prevalence and intracluster correlation per scenario.",
+      "Evaluability is missing completely at random in this v1 generator; informative missingness, adjudication error, cross-cluster dependence, and multi-way dependence require separate stress scenarios or methods.",
+      "Prediction patterns are fixed before simulated outcomes and are intended to exercise additive estimators, paired covariance, and clipping; they do not model clinical discrimination or policy learning.",
+      "Empirical coverage and interval-yield estimates have finite Monte Carlo error; the report retains Wilson bounds and evaluates design targets against their lower bounds.",
+      "Passing a candidate gate under declared scenarios is not a universal cluster minimum or dominance threshold and does not automatically approve an uncertainty protocol.",
+      "The IID unit-as-cluster interval is a diagnostic reference only and is not an acceptable replacement when dependence clusters are present.",
+      "Aggregate simulation results do not establish treatment efficacy, safety, clinical utility, policy superiority, transportability, or regulatory acceptability."
+    ],
+    "minimum_interval_yield": 0.8,
+    "monte_carlo_confidence_level": 0.95,
+    "protocol_fingerprint": "29ebd6e0590535b0211912c0cbac8fc1770739f02e2c57f7d7889f774941bb26",
+    "protocol_id": "synthetic-prospective-cluster-design",
+    "real_clinical_outcomes_included": false,
+    "replicate_level_records_included": false,
+    "replicates": 300,
+    "rng_method_id": "adds.mt19937-polya-urn.v1",
+    "scenario_results": [
+      {
+        "gate_performance": [
+          {
+            "all_metric_coverage_targets_met": false,
+            "all_metric_yield_targets_met": true,
+            "coverage_target": 0.87,
+            "design_target_met": false,
+            "diagnostic_interval_eligibility": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "diagnostic_status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "gate": {
+              "gate_id": "exploratory-g08-share40",
+              "maximum_evaluable_cluster_fraction": 0.4,
+              "minimum_evaluable_clusters": 8
+            },
+            "metric_performance": [
+              {
+                "bias": 0.000416670028,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 274,
+                  "lower": 0.876044041306,
+                  "rate": 0.913333333333,
+                  "total_count": 300,
+                  "upper": 0.940171102482
+                },
+                "covered_interval_count": 274,
+                "empirical_standard_deviation": 0.081336663458,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.350416670028,
+                "mean_interval_width": 0.310984430532,
+                "mean_reported_standard_error": 0.079334220676,
+                "mean_se_to_empirical_sd_ratio": 0.975380809873,
+                "metric": "observed_favorable_rate",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.081202058227,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.35
+              },
+              {
+                "bias": 0.001046024309,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 286,
+                  "lower": 0.923202639772,
+                  "rate": 0.953333333333,
+                  "total_count": 300,
+                  "upper": 0.972001066318
+                },
+                "covered_interval_count": 286,
+                "empirical_standard_deviation": 0.028696651145,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.301046024309,
+                "mean_interval_width": 0.122580224282,
+                "mean_reported_standard_error": 0.031271039991,
+                "mean_se_to_empirical_sd_ratio": 1.089710427638,
+                "metric": "policy_a_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.028667873328,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.3
+              },
+              {
+                "bias": 0.000963764354,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 286,
+                  "lower": 0.923202639772,
+                  "rate": 0.953333333333,
+                  "total_count": 300,
+                  "upper": 0.972001066318
+                },
+                "covered_interval_count": 286,
+                "empirical_standard_deviation": 0.032913576811,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.340963764354,
+                "mean_interval_width": 0.138558959725,
+                "mean_reported_standard_error": 0.035347322915,
+                "mean_se_to_empirical_sd_ratio": 1.073943531509,
+                "metric": "policy_b_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.032872805911,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.34
+              },
+              {
+                "bias": -0.000411299774,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 270,
+                  "lower": 0.860833537615,
+                  "rate": 0.9,
+                  "total_count": 300,
+                  "upper": 0.929052085405
+                },
+                "covered_interval_count": 270,
+                "empirical_standard_deviation": 0.081705744095,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.149588700226,
+                "mean_interval_width": 0.31438219627,
+                "mean_reported_standard_error": 0.080201013577,
+                "mean_se_to_empirical_sd_ratio": 0.981583540611,
+                "metric": "policy_a_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.081570491133,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.15
+              },
+              {
+                "bias": -0.000411299774,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 270,
+                  "lower": 0.860833537615,
+                  "rate": 0.9,
+                  "total_count": 300,
+                  "upper": 0.929052085405
+                },
+                "covered_interval_count": 270,
+                "empirical_standard_deviation": 0.081705744095,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.249588700226,
+                "mean_interval_width": 0.31438219627,
+                "mean_reported_standard_error": 0.080201013577,
+                "mean_se_to_empirical_sd_ratio": 0.981583540611,
+                "metric": "policy_b_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.081570491133,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.25
+              },
+              {
+                "bias": -0.002073189959,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.065793128467,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.497926810041,
+                "mean_interval_width": 0.272717816085,
+                "mean_reported_standard_error": 0.069572149855,
+                "mean_se_to_empirical_sd_ratio": 1.057437934265,
+                "metric": "policy_a_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.065716092024,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.5
+              },
+              {
+                "bias": -0.000241009928,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 288,
+                  "lower": 0.931395787961,
+                  "rate": 0.96,
+                  "total_count": 300,
+                  "upper": 0.976972678512
+                },
+                "covered_interval_count": 288,
+                "empirical_standard_deviation": 0.065415128371,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.424758990072,
+                "mean_interval_width": 0.279679585238,
+                "mean_reported_standard_error": 0.071348144008,
+                "mean_se_to_empirical_sd_ratio": 1.090697913231,
+                "metric": "policy_b_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.065306456869,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.425
+              },
+              {
+                "bias": -8.2259955e-05,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 270,
+                  "lower": 0.860833537615,
+                  "rate": 0.9,
+                  "total_count": 300,
+                  "upper": 0.929052085405
+                },
+                "covered_interval_count": 270,
+                "empirical_standard_deviation": 0.016341148819,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.039917740045,
+                "mean_interval_width": 0.062876439254,
+                "mean_reported_standard_error": 0.016040202715,
+                "mean_se_to_empirical_sd_ratio": 0.981583540586,
+                "metric": "brier_difference_b_minus_a",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.016314098227,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.04
+              }
+            ],
+            "minimum_interval_yield": 0.8,
+            "replicate_count": 300
+          },
+          {
+            "all_metric_coverage_targets_met": false,
+            "all_metric_yield_targets_met": true,
+            "coverage_target": 0.87,
+            "design_target_met": false,
+            "diagnostic_interval_eligibility": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "diagnostic_status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "gate": {
+              "gate_id": "balanced-g12-share25",
+              "maximum_evaluable_cluster_fraction": 0.25,
+              "minimum_evaluable_clusters": 12
+            },
+            "metric_performance": [
+              {
+                "bias": 0.000416670028,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 274,
+                  "lower": 0.876044041306,
+                  "rate": 0.913333333333,
+                  "total_count": 300,
+                  "upper": 0.940171102482
+                },
+                "covered_interval_count": 274,
+                "empirical_standard_deviation": 0.081336663458,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.350416670028,
+                "mean_interval_width": 0.310984430532,
+                "mean_reported_standard_error": 0.079334220676,
+                "mean_se_to_empirical_sd_ratio": 0.975380809873,
+                "metric": "observed_favorable_rate",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.081202058227,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.35
+              },
+              {
+                "bias": 0.001046024309,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 286,
+                  "lower": 0.923202639772,
+                  "rate": 0.953333333333,
+                  "total_count": 300,
+                  "upper": 0.972001066318
+                },
+                "covered_interval_count": 286,
+                "empirical_standard_deviation": 0.028696651145,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.301046024309,
+                "mean_interval_width": 0.122580224282,
+                "mean_reported_standard_error": 0.031271039991,
+                "mean_se_to_empirical_sd_ratio": 1.089710427638,
+                "metric": "policy_a_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.028667873328,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.3
+              },
+              {
+                "bias": 0.000963764354,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 286,
+                  "lower": 0.923202639772,
+                  "rate": 0.953333333333,
+                  "total_count": 300,
+                  "upper": 0.972001066318
+                },
+                "covered_interval_count": 286,
+                "empirical_standard_deviation": 0.032913576811,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.340963764354,
+                "mean_interval_width": 0.138558959725,
+                "mean_reported_standard_error": 0.035347322915,
+                "mean_se_to_empirical_sd_ratio": 1.073943531509,
+                "metric": "policy_b_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.032872805911,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.34
+              },
+              {
+                "bias": -0.000411299774,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 270,
+                  "lower": 0.860833537615,
+                  "rate": 0.9,
+                  "total_count": 300,
+                  "upper": 0.929052085405
+                },
+                "covered_interval_count": 270,
+                "empirical_standard_deviation": 0.081705744095,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.149588700226,
+                "mean_interval_width": 0.31438219627,
+                "mean_reported_standard_error": 0.080201013577,
+                "mean_se_to_empirical_sd_ratio": 0.981583540611,
+                "metric": "policy_a_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.081570491133,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.15
+              },
+              {
+                "bias": -0.000411299774,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 270,
+                  "lower": 0.860833537615,
+                  "rate": 0.9,
+                  "total_count": 300,
+                  "upper": 0.929052085405
+                },
+                "covered_interval_count": 270,
+                "empirical_standard_deviation": 0.081705744095,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.249588700226,
+                "mean_interval_width": 0.31438219627,
+                "mean_reported_standard_error": 0.080201013577,
+                "mean_se_to_empirical_sd_ratio": 0.981583540611,
+                "metric": "policy_b_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.081570491133,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.25
+              },
+              {
+                "bias": -0.002073189959,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.065793128467,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.497926810041,
+                "mean_interval_width": 0.272717816085,
+                "mean_reported_standard_error": 0.069572149855,
+                "mean_se_to_empirical_sd_ratio": 1.057437934265,
+                "metric": "policy_a_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.065716092024,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.5
+              },
+              {
+                "bias": -0.000241009928,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 288,
+                  "lower": 0.931395787961,
+                  "rate": 0.96,
+                  "total_count": 300,
+                  "upper": 0.976972678512
+                },
+                "covered_interval_count": 288,
+                "empirical_standard_deviation": 0.065415128371,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.424758990072,
+                "mean_interval_width": 0.279679585238,
+                "mean_reported_standard_error": 0.071348144008,
+                "mean_se_to_empirical_sd_ratio": 1.090697913231,
+                "metric": "policy_b_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.065306456869,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.425
+              },
+              {
+                "bias": -8.2259955e-05,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 270,
+                  "lower": 0.860833537615,
+                  "rate": 0.9,
+                  "total_count": 300,
+                  "upper": 0.929052085405
+                },
+                "covered_interval_count": 270,
+                "empirical_standard_deviation": 0.016341148819,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.039917740045,
+                "mean_interval_width": 0.062876439254,
+                "mean_reported_standard_error": 0.016040202715,
+                "mean_se_to_empirical_sd_ratio": 0.981583540586,
+                "metric": "brier_difference_b_minus_a",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.016314098227,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.04
+              }
+            ],
+            "minimum_interval_yield": 0.8,
+            "replicate_count": 300
+          }
+        ],
+        "iid_metric_performance": [
+          {
+            "bias": 0.000416670028,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 272,
+              "lower": 0.868414602983,
+              "rate": 0.906666666667,
+              "total_count": 300,
+              "upper": 0.934635780421
+            },
+            "covered_interval_count": 272,
+            "empirical_standard_deviation": 0.081336663458,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.350416670028,
+            "mean_interval_width": 0.283437688915,
+            "mean_reported_standard_error": 0.072306861542,
+            "mean_se_to_empirical_sd_ratio": 0.888982390817,
+            "metric": "observed_favorable_rate",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.081202058227,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.35
+          },
+          {
+            "bias": 0.001046024309,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 293,
+              "lower": 0.952628027732,
+              "rate": 0.976666666667,
+              "total_count": 300,
+              "upper": 0.988652339701
+            },
+            "covered_interval_count": 293,
+            "empirical_standard_deviation": 0.028696651145,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.301046024309,
+            "mean_interval_width": 0.136155614176,
+            "mean_reported_standard_error": 0.034734213294,
+            "mean_se_to_empirical_sd_ratio": 1.210392568753,
+            "metric": "policy_a_brier_score",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.028667873328,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.3
+          },
+          {
+            "bias": 0.000963764354,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 293,
+              "lower": 0.952628027732,
+              "rate": 0.976666666667,
+              "total_count": 300,
+              "upper": 0.988652339701
+            },
+            "covered_interval_count": 293,
+            "empirical_standard_deviation": 0.032913576811,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.340963764354,
+            "mean_interval_width": 0.157086370185,
+            "mean_reported_standard_error": 0.040073789984,
+            "mean_se_to_empirical_sd_ratio": 1.217545884305,
+            "metric": "policy_b_brier_score",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.032872805911,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.34
+          },
+          {
+            "bias": -0.000411299774,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 279,
+              "lower": 0.895363989574,
+              "rate": 0.93,
+              "total_count": 300,
+              "upper": 0.953763055173
+            },
+            "covered_interval_count": 279,
+            "empirical_standard_deviation": 0.081705744095,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.149588700226,
+            "mean_interval_width": 0.31423594253,
+            "mean_reported_standard_error": 0.080163703264,
+            "mean_se_to_empirical_sd_ratio": 0.981126898138,
+            "metric": "policy_a_calibration_in_the_large",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.081570491133,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.15
+          },
+          {
+            "bias": -0.000411299774,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 279,
+              "lower": 0.895363989574,
+              "rate": 0.93,
+              "total_count": 300,
+              "upper": 0.953763055173
+            },
+            "covered_interval_count": 279,
+            "empirical_standard_deviation": 0.081705744095,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.249588700226,
+            "mean_interval_width": 0.31423594253,
+            "mean_reported_standard_error": 0.080163703264,
+            "mean_se_to_empirical_sd_ratio": 0.981126898138,
+            "metric": "policy_b_calibration_in_the_large",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.081570491133,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.25
+          },
+          {
+            "bias": -0.002073189959,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 292,
+              "lower": 0.948271057049,
+              "rate": 0.973333333333,
+              "total_count": 300,
+              "upper": 0.986426930191
+            },
+            "covered_interval_count": 292,
+            "empirical_standard_deviation": 0.065793128467,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.497926810041,
+            "mean_interval_width": 0.299329747154,
+            "mean_reported_standard_error": 0.076361032528,
+            "mean_se_to_empirical_sd_ratio": 1.160623218674,
+            "metric": "policy_a_classification_accuracy",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.065716092024,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.5
+          },
+          {
+            "bias": -0.000241009928,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 290,
+              "lower": 0.939738174196,
+              "rate": 0.966666666667,
+              "total_count": 300,
+              "upper": 0.981795052661
+            },
+            "covered_interval_count": 290,
+            "empirical_standard_deviation": 0.065415128371,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.424758990072,
+            "mean_interval_width": 0.295826861837,
+            "mean_reported_standard_error": 0.075467422915,
+            "mean_se_to_empirical_sd_ratio": 1.153669262666,
+            "metric": "policy_b_classification_accuracy",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.065306456869,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.425
+          },
+          {
+            "bias": -8.2259955e-05,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 279,
+              "lower": 0.895363989574,
+              "rate": 0.93,
+              "total_count": 300,
+              "upper": 0.953763055173
+            },
+            "covered_interval_count": 279,
+            "empirical_standard_deviation": 0.016341148819,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.039917740045,
+            "mean_interval_width": 0.062847188506,
+            "mean_reported_standard_error": 0.016032740653,
+            "mean_se_to_empirical_sd_ratio": 0.98112689815,
+            "metric": "brier_difference_b_minus_a",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.016314098227,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.04
+          }
+        ],
+        "iid_reference_method_id": "adds.iid-unit-normal-reference.v1",
+        "replicate_diagnostics": {
+          "maximum_evaluable_cluster_count": 12,
+          "maximum_evaluable_units": 48,
+          "maximum_largest_evaluable_cluster_fraction": 0.108108108108,
+          "mean_evaluable_cluster_count": 12.0,
+          "mean_evaluable_units": 43.203333333333,
+          "mean_largest_evaluable_cluster_fraction": 0.092793408023,
+          "minimum_evaluable_cluster_count": 12,
+          "minimum_evaluable_units": 37,
+          "no_evaluable_replicates": 0,
+          "replicate_count": 300
+        },
+        "rng_stream_sha256": "3689a11ead6a0de285d98577a18f00ccfe631429c9ce4d7a294d0e4600e84f95",
+        "scenario": {
+          "classification_threshold": 0.5,
+          "cluster_sizes": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "endpoint_family": "composite_benefit_risk",
+          "evaluable_probability": 0.9,
+          "favorable_prevalence": 0.35,
+          "intracluster_correlation": 0.1,
+          "policy_a_probability_pattern": [
+            0.2,
+            0.4,
+            0.6,
+            0.8
+          ],
+          "policy_b_probability_pattern": [
+            0.3,
+            0.5,
+            0.7,
+            0.9
+          ],
+          "scenario_id": "balanced-12-moderate-icc",
+          "stage": "clinical_strategy"
+        },
+        "structure": {
+          "cluster_count": 12,
+          "cluster_size_coefficient_of_variation": 0.0,
+          "effective_cluster_count": 12.0,
+          "maximum_cluster_fraction": 0.083333333333,
+          "maximum_cluster_size": 4,
+          "mean_cluster_size": 4.0,
+          "minimum_cluster_size": 4,
+          "total_units": 48
+        }
+      },
+      {
+        "gate_performance": [
+          {
+            "all_metric_coverage_targets_met": true,
+            "all_metric_yield_targets_met": true,
+            "coverage_target": 0.87,
+            "design_target_met": true,
+            "diagnostic_interval_eligibility": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "diagnostic_status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "gate": {
+              "gate_id": "exploratory-g08-share40",
+              "maximum_evaluable_cluster_fraction": 0.4,
+              "minimum_evaluable_clusters": 8
+            },
+            "metric_performance": [
+              {
+                "bias": 0.002972977791,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 282,
+                  "lower": 0.907160554847,
+                  "rate": 0.94,
+                  "total_count": 300,
+                  "upper": 0.961713630475
+                },
+                "covered_interval_count": 282,
+                "empirical_standard_deviation": 0.040262068228,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.152972977791,
+                "mean_interval_width": 0.160534174737,
+                "mean_reported_standard_error": 0.040973908366,
+                "mean_se_to_empirical_sd_ratio": 1.017680168191,
+                "metric": "observed_favorable_rate",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.040304705529,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.15
+              },
+              {
+                "bias": -5.339543e-06,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 287,
+                  "lower": 0.927282534366,
+                  "rate": 0.956666666667,
+                  "total_count": 300,
+                  "upper": 0.974503551916
+                },
+                "covered_interval_count": 287,
+                "empirical_standard_deviation": 0.019480050003,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.219994660457,
+                "mean_interval_width": 0.08462048688,
+                "mean_reported_standard_error": 0.021587255569,
+                "mean_se_to_empirical_sd_ratio": 1.108172492662,
+                "metric": "policy_a_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.019447556885,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.22
+              },
+              {
+                "bias": -0.000570329192,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 288,
+                  "lower": 0.931395787961,
+                  "rate": 0.96,
+                  "total_count": 300,
+                  "upper": 0.976972678512
+                },
+                "covered_interval_count": 288,
+                "empirical_standard_deviation": 0.016867205835,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.269429670808,
+                "mean_interval_width": 0.073382826192,
+                "mean_reported_standard_error": 0.018720452715,
+                "mean_se_to_empirical_sd_ratio": 1.109872784985,
+                "metric": "policy_b_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.016848725945,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.27
+              },
+              {
+                "bias": -0.002824948244,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.041181473894,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.197175051756,
+                "mean_interval_width": 0.163424182581,
+                "mean_reported_standard_error": 0.04169060857,
+                "mean_se_to_empirical_sd_ratio": 1.012363197036,
+                "metric": "policy_a_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.041209720682,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.2
+              },
+              {
+                "bias": -0.002824948244,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.041181473894,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.297175051756,
+                "mean_interval_width": 0.163424182581,
+                "mean_reported_standard_error": 0.04169060857,
+                "mean_se_to_empirical_sd_ratio": 1.012363197036,
+                "metric": "policy_b_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.041209720682,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.3
+              },
+              {
+                "bias": -0.000839701669,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.036743103496,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.674160298331,
+                "mean_interval_width": 0.155957205184,
+                "mean_reported_standard_error": 0.039785732395,
+                "mean_se_to_empirical_sd_ratio": 1.08280816288,
+                "metric": "policy_a_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.036691423629,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.675
+              },
+              {
+                "bias": 0.002633981354,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 293,
+                  "lower": 0.952628027732,
+                  "rate": 0.976666666667,
+                  "total_count": 300,
+                  "upper": 0.988652339701
+                },
+                "covered_interval_count": 293,
+                "empirical_standard_deviation": 0.036684463796,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.502633981354,
+                "mean_interval_width": 0.156963652407,
+                "mean_reported_standard_error": 0.040042483853,
+                "mean_se_to_empirical_sd_ratio": 1.091537934851,
+                "metric": "policy_b_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.036717869067,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.5
+              },
+              {
+                "bias": -0.000564989649,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.008236294779,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.049435010351,
+                "mean_interval_width": 0.032684836516,
+                "mean_reported_standard_error": 0.008338121714,
+                "mean_se_to_empirical_sd_ratio": 1.012363197012,
+                "metric": "brier_difference_b_minus_a",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.008241944136,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.05
+              }
+            ],
+            "minimum_interval_yield": 0.8,
+            "replicate_count": 300
+          },
+          {
+            "all_metric_coverage_targets_met": true,
+            "all_metric_yield_targets_met": true,
+            "coverage_target": 0.87,
+            "design_target_met": true,
+            "diagnostic_interval_eligibility": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "diagnostic_status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "gate": {
+              "gate_id": "balanced-g12-share25",
+              "maximum_evaluable_cluster_fraction": 0.25,
+              "minimum_evaluable_clusters": 12
+            },
+            "metric_performance": [
+              {
+                "bias": 0.002972977791,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 282,
+                  "lower": 0.907160554847,
+                  "rate": 0.94,
+                  "total_count": 300,
+                  "upper": 0.961713630475
+                },
+                "covered_interval_count": 282,
+                "empirical_standard_deviation": 0.040262068228,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.152972977791,
+                "mean_interval_width": 0.160534174737,
+                "mean_reported_standard_error": 0.040973908366,
+                "mean_se_to_empirical_sd_ratio": 1.017680168191,
+                "metric": "observed_favorable_rate",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.040304705529,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.15
+              },
+              {
+                "bias": -5.339543e-06,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 287,
+                  "lower": 0.927282534366,
+                  "rate": 0.956666666667,
+                  "total_count": 300,
+                  "upper": 0.974503551916
+                },
+                "covered_interval_count": 287,
+                "empirical_standard_deviation": 0.019480050003,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.219994660457,
+                "mean_interval_width": 0.08462048688,
+                "mean_reported_standard_error": 0.021587255569,
+                "mean_se_to_empirical_sd_ratio": 1.108172492662,
+                "metric": "policy_a_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.019447556885,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.22
+              },
+              {
+                "bias": -0.000570329192,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 288,
+                  "lower": 0.931395787961,
+                  "rate": 0.96,
+                  "total_count": 300,
+                  "upper": 0.976972678512
+                },
+                "covered_interval_count": 288,
+                "empirical_standard_deviation": 0.016867205835,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.269429670808,
+                "mean_interval_width": 0.073382826192,
+                "mean_reported_standard_error": 0.018720452715,
+                "mean_se_to_empirical_sd_ratio": 1.109872784985,
+                "metric": "policy_b_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.016848725945,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.27
+              },
+              {
+                "bias": -0.002824948244,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.041181473894,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.197175051756,
+                "mean_interval_width": 0.163424182581,
+                "mean_reported_standard_error": 0.04169060857,
+                "mean_se_to_empirical_sd_ratio": 1.012363197036,
+                "metric": "policy_a_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.041209720682,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.2
+              },
+              {
+                "bias": -0.002824948244,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.041181473894,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.297175051756,
+                "mean_interval_width": 0.163424182581,
+                "mean_reported_standard_error": 0.04169060857,
+                "mean_se_to_empirical_sd_ratio": 1.012363197036,
+                "metric": "policy_b_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.041209720682,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.3
+              },
+              {
+                "bias": -0.000839701669,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.036743103496,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.674160298331,
+                "mean_interval_width": 0.155957205184,
+                "mean_reported_standard_error": 0.039785732395,
+                "mean_se_to_empirical_sd_ratio": 1.08280816288,
+                "metric": "policy_a_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.036691423629,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.675
+              },
+              {
+                "bias": 0.002633981354,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 293,
+                  "lower": 0.952628027732,
+                  "rate": 0.976666666667,
+                  "total_count": 300,
+                  "upper": 0.988652339701
+                },
+                "covered_interval_count": 293,
+                "empirical_standard_deviation": 0.036684463796,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.502633981354,
+                "mean_interval_width": 0.156963652407,
+                "mean_reported_standard_error": 0.040042483853,
+                "mean_se_to_empirical_sd_ratio": 1.091537934851,
+                "metric": "policy_b_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.036717869067,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.5
+              },
+              {
+                "bias": -0.000564989649,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 283,
+                  "lower": 0.911134041978,
+                  "rate": 0.943333333333,
+                  "total_count": 300,
+                  "upper": 0.964322523537
+                },
+                "covered_interval_count": 283,
+                "empirical_standard_deviation": 0.008236294779,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.049435010351,
+                "mean_interval_width": 0.032684836516,
+                "mean_reported_standard_error": 0.008338121714,
+                "mean_se_to_empirical_sd_ratio": 1.012363197012,
+                "metric": "brier_difference_b_minus_a",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.008241944136,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.05
+              }
+            ],
+            "minimum_interval_yield": 0.8,
+            "replicate_count": 300
+          }
+        ],
+        "iid_metric_performance": [
+          {
+            "bias": 0.002972977791,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 275,
+              "lower": 0.879878398036,
+              "rate": 0.916666666667,
+              "total_count": 300,
+              "upper": 0.942919125944
+            },
+            "covered_interval_count": 275,
+            "empirical_standard_deviation": 0.040262068228,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.152972977791,
+            "mean_interval_width": 0.150981701213,
+            "mean_reported_standard_error": 0.038516447854,
+            "mean_se_to_empirical_sd_ratio": 0.956643549355,
+            "metric": "observed_favorable_rate",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.040304705529,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.15
+          },
+          {
+            "bias": -5.339543e-06,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 296,
+              "lower": 0.966224469747,
+              "rate": 0.986666666667,
+              "total_count": 300,
+              "upper": 0.994803038261
+            },
+            "covered_interval_count": 296,
+            "empirical_standard_deviation": 0.019480050003,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.219994660457,
+            "mean_interval_width": 0.0977362592,
+            "mean_reported_standard_error": 0.024933177337,
+            "mean_se_to_empirical_sd_ratio": 1.27993394951,
+            "metric": "policy_a_brier_score",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.019447556885,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.22
+          },
+          {
+            "bias": -0.000570329192,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 299,
+              "lower": 0.981363306305,
+              "rate": 0.996666666667,
+              "total_count": 300,
+              "upper": 0.999411342278
+            },
+            "covered_interval_count": 299,
+            "empirical_standard_deviation": 0.016867205835,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.269429670808,
+            "mean_interval_width": 0.100372305556,
+            "mean_reported_standard_error": 0.025605650499,
+            "mean_se_to_empirical_sd_ratio": 1.518073043602,
+            "metric": "policy_b_brier_score",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.016848725945,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.27
+          },
+          {
+            "bias": -0.002824948244,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 287,
+              "lower": 0.927282534366,
+              "rate": 0.956666666667,
+              "total_count": 300,
+              "upper": 0.974503551916
+            },
+            "covered_interval_count": 287,
+            "empirical_standard_deviation": 0.041181473894,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.197175051756,
+            "mean_interval_width": 0.179215713229,
+            "mean_reported_standard_error": 0.045719134291,
+            "mean_se_to_empirical_sd_ratio": 1.110186935239,
+            "metric": "policy_a_calibration_in_the_large",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.041209720682,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.2
+          },
+          {
+            "bias": -0.002824948244,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 287,
+              "lower": 0.927282534366,
+              "rate": 0.956666666667,
+              "total_count": 300,
+              "upper": 0.974503551916
+            },
+            "covered_interval_count": 287,
+            "empirical_standard_deviation": 0.041181473894,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.297175051756,
+            "mean_interval_width": 0.179215713229,
+            "mean_reported_standard_error": 0.045719134291,
+            "mean_se_to_empirical_sd_ratio": 1.110186935239,
+            "metric": "policy_b_calibration_in_the_large",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.041209720682,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.3
+          },
+          {
+            "bias": -0.000839701669,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 297,
+              "lower": 0.971016506638,
+              "rate": 0.99,
+              "total_count": 300,
+              "upper": 0.996593381562
+            },
+            "covered_interval_count": 297,
+            "empirical_standard_deviation": 0.036743103496,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.674160298331,
+            "mean_interval_width": 0.198362254331,
+            "mean_reported_standard_error": 0.050603545753,
+            "mean_se_to_empirical_sd_ratio": 1.377225681508,
+            "metric": "policy_a_classification_accuracy",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.036691423629,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.675
+          },
+          {
+            "bias": 0.002633981354,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 297,
+              "lower": 0.971016506638,
+              "rate": 0.99,
+              "total_count": 300,
+              "upper": 0.996593381562
+            },
+            "covered_interval_count": 297,
+            "empirical_standard_deviation": 0.036684463796,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.502633981354,
+            "mean_interval_width": 0.211783467519,
+            "mean_reported_standard_error": 0.054027387541,
+            "mean_se_to_empirical_sd_ratio": 1.47275936324,
+            "metric": "policy_b_classification_accuracy",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.036717869067,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.5
+          },
+          {
+            "bias": -0.000564989649,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 287,
+              "lower": 0.927282534366,
+              "rate": 0.956666666667,
+              "total_count": 300,
+              "upper": 0.974503551916
+            },
+            "covered_interval_count": 287,
+            "empirical_standard_deviation": 0.008236294779,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.049435010351,
+            "mean_interval_width": 0.035843142646,
+            "mean_reported_standard_error": 0.009143826858,
+            "mean_se_to_empirical_sd_ratio": 1.110186935188,
+            "metric": "brier_difference_b_minus_a",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.008241944136,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.05
+          }
+        ],
+        "iid_reference_method_id": "adds.iid-unit-normal-reference.v1",
+        "replicate_diagnostics": {
+          "maximum_evaluable_cluster_count": 24,
+          "maximum_evaluable_units": 93,
+          "maximum_largest_evaluable_cluster_fraction": 0.051948051948,
+          "mean_evaluable_cluster_count": 23.993333333333,
+          "mean_evaluable_units": 86.256666666667,
+          "mean_largest_evaluable_cluster_fraction": 0.0464254563,
+          "minimum_evaluable_cluster_count": 23,
+          "minimum_evaluable_units": 77,
+          "no_evaluable_replicates": 0,
+          "replicate_count": 300
+        },
+        "rng_stream_sha256": "2c3fcfefad14a7bbd8ae742f6e76f4e38611912de7681f04cfc6c8c4b776fdb5",
+        "scenario": {
+          "classification_threshold": 0.5,
+          "cluster_sizes": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "endpoint_family": "composite_benefit_risk",
+          "evaluable_probability": 0.9,
+          "favorable_prevalence": 0.15,
+          "intracluster_correlation": 0.05,
+          "policy_a_probability_pattern": [
+            0.1,
+            0.2,
+            0.4,
+            0.7
+          ],
+          "policy_b_probability_pattern": [
+            0.2,
+            0.3,
+            0.5,
+            0.8
+          ],
+          "scenario_id": "balanced-24-low-prevalence",
+          "stage": "clinical_strategy"
+        },
+        "structure": {
+          "cluster_count": 24,
+          "cluster_size_coefficient_of_variation": 0.0,
+          "effective_cluster_count": 24.0,
+          "maximum_cluster_fraction": 0.041666666667,
+          "maximum_cluster_size": 4,
+          "mean_cluster_size": 4.0,
+          "minimum_cluster_size": 4,
+          "total_units": 96
+        }
+      },
+      {
+        "gate_performance": [
+          {
+            "all_metric_coverage_targets_met": false,
+            "all_metric_yield_targets_met": true,
+            "coverage_target": 0.87,
+            "design_target_met": false,
+            "diagnostic_interval_eligibility": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "diagnostic_status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "gate": {
+              "gate_id": "exploratory-g08-share40",
+              "maximum_evaluable_cluster_fraction": 0.4,
+              "minimum_evaluable_clusters": 8
+            },
+            "metric_performance": [
+              {
+                "bias": -0.000963654248,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 252,
+                  "lower": 0.794256325151,
+                  "rate": 0.84,
+                  "total_count": 300,
+                  "upper": 0.877146454416
+                },
+                "covered_interval_count": 252,
+                "empirical_standard_deviation": 0.07978025778,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.249036345752,
+                "mean_interval_width": 0.25603322358,
+                "mean_reported_standard_error": 0.065345808882,
+                "mean_se_to_empirical_sd_ratio": 0.819072420926,
+                "metric": "observed_favorable_rate",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.079653009124,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.25
+              },
+              {
+                "bias": 0.001757001585,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 259,
+                  "lower": 0.819844587002,
+                  "rate": 0.863333333333,
+                  "total_count": 300,
+                  "upper": 0.897634853908
+                },
+                "covered_interval_count": 259,
+                "empirical_standard_deviation": 0.02900370603,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.279257001585,
+                "mean_interval_width": 0.096460536056,
+                "mean_reported_standard_error": 0.024607731779,
+                "mean_se_to_empirical_sd_ratio": 0.84843405024,
+                "metric": "policy_a_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.029008584388,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.2775
+              },
+              {
+                "bias": 0.002263456598,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 258,
+                  "lower": 0.816168387649,
+                  "rate": 0.86,
+                  "total_count": 300,
+                  "upper": 0.894728673069
+                },
+                "covered_interval_count": 258,
+                "empirical_standard_deviation": 0.029465712167,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.329763456598,
+                "mean_interval_width": 0.100072665936,
+                "mean_reported_standard_error": 0.025529210415,
+                "mean_se_to_empirical_sd_ratio": 0.866403984072,
+                "metric": "policy_b_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.029503513948,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.3275
+              },
+              {
+                "bias": 0.002532275065,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 254,
+                  "lower": 0.801533942942,
+                  "rate": 0.846666666667,
+                  "total_count": 300,
+                  "upper": 0.883033597009
+                },
+                "covered_interval_count": 254,
+                "empirical_standard_deviation": 0.08071809673,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.202532275065,
+                "mean_interval_width": 0.26154266331,
+                "mean_reported_standard_error": 0.06672129319,
+                "mean_se_to_empirical_sd_ratio": 0.826596462169,
+                "metric": "policy_a_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.080623231885,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.2
+              },
+              {
+                "bias": 0.002532275065,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 254,
+                  "lower": 0.801533942942,
+                  "rate": 0.846666666667,
+                  "total_count": 300,
+                  "upper": 0.883033597009
+                },
+                "covered_interval_count": 254,
+                "empirical_standard_deviation": 0.08071809673,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.302532275065,
+                "mean_interval_width": 0.26154266331,
+                "mean_reported_standard_error": 0.06672129319,
+                "mean_se_to_empirical_sd_ratio": 0.826596462169,
+                "metric": "policy_b_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.080623231885,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.3
+              },
+              {
+                "bias": -0.004305142867,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 268,
+                  "lower": 0.853296711683,
+                  "rate": 0.893333333333,
+                  "total_count": 300,
+                  "upper": 0.923424150954
+                },
+                "covered_interval_count": 268,
+                "empirical_standard_deviation": 0.060538442773,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.495694857133,
+                "mean_interval_width": 0.214338274087,
+                "mean_reported_standard_error": 0.054679135887,
+                "mean_se_to_empirical_sd_ratio": 0.903213452187,
+                "metric": "policy_a_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.060590601293,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.5
+              },
+              {
+                "bias": -0.004305142867,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 268,
+                  "lower": 0.853296711683,
+                  "rate": 0.893333333333,
+                  "total_count": 300,
+                  "upper": 0.923424150954
+                },
+                "covered_interval_count": 268,
+                "empirical_standard_deviation": 0.060538442773,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.495694857133,
+                "mean_interval_width": 0.214338274087,
+                "mean_reported_standard_error": 0.054679135887,
+                "mean_se_to_empirical_sd_ratio": 0.903213452187,
+                "metric": "policy_b_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.060590601293,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.5
+              },
+              {
+                "bias": 0.000506455013,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 254,
+                  "lower": 0.801533942942,
+                  "rate": 0.846666666667,
+                  "total_count": 300,
+                  "upper": 0.883033597009
+                },
+                "covered_interval_count": 254,
+                "empirical_standard_deviation": 0.016143619346,
+                "interval_count": 300,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 300,
+                  "lower": 0.987357028775,
+                  "rate": 1.0,
+                  "total_count": 300,
+                  "upper": 1.0
+                },
+                "mean_estimate": 0.050506455013,
+                "mean_interval_width": 0.052308532662,
+                "mean_reported_standard_error": 0.013344258638,
+                "mean_se_to_empirical_sd_ratio": 0.826596462169,
+                "metric": "brier_difference_b_minus_a",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.016124646377,
+                "status_counts": [
+                  {
+                    "count": 300,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.05
+              }
+            ],
+            "minimum_interval_yield": 0.8,
+            "replicate_count": 300
+          },
+          {
+            "all_metric_coverage_targets_met": false,
+            "all_metric_yield_targets_met": false,
+            "coverage_target": 0.87,
+            "design_target_met": false,
+            "diagnostic_interval_eligibility": {
+              "confidence_level": 0.95,
+              "event_count": 5,
+              "lower": 0.007139477351,
+              "rate": 0.016666666667,
+              "total_count": 300,
+              "upper": 0.038415394833
+            },
+            "diagnostic_status_counts": [
+              {
+                "count": 5,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 1,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 294,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "gate": {
+              "gate_id": "balanced-g12-share25",
+              "maximum_evaluable_cluster_fraction": 0.25,
+              "minimum_evaluable_clusters": 12
+            },
+            "metric_performance": [
+              {
+                "bias": -0.000963654248,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 4,
+                  "lower": 0.375534629763,
+                  "rate": 0.8,
+                  "total_count": 5,
+                  "upper": 0.963775891368
+                },
+                "covered_interval_count": 4,
+                "empirical_standard_deviation": 0.07978025778,
+                "interval_count": 5,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.007139477351,
+                  "rate": 0.016666666667,
+                  "total_count": 300,
+                  "upper": 0.038415394833
+                },
+                "mean_estimate": 0.249036345752,
+                "mean_interval_width": 0.256815521618,
+                "mean_reported_standard_error": 0.065515367538,
+                "mean_se_to_empirical_sd_ratio": 0.821197741911,
+                "metric": "observed_favorable_rate",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.079653009124,
+                "status_counts": [
+                  {
+                    "count": 5,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 1,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 294,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.25
+              },
+              {
+                "bias": 0.001757001585,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.565517535217,
+                  "rate": 1.0,
+                  "total_count": 5,
+                  "upper": 1.0
+                },
+                "covered_interval_count": 5,
+                "empirical_standard_deviation": 0.02900370603,
+                "interval_count": 5,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.007139477351,
+                  "rate": 0.016666666667,
+                  "total_count": 300,
+                  "upper": 0.038415394833
+                },
+                "mean_estimate": 0.279257001585,
+                "mean_interval_width": 0.096910712941,
+                "mean_reported_standard_error": 0.024722574931,
+                "mean_se_to_empirical_sd_ratio": 0.852393652916,
+                "metric": "policy_a_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.029008584388,
+                "status_counts": [
+                  {
+                    "count": 5,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 1,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 294,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.2775
+              },
+              {
+                "bias": 0.002263456598,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.565517535217,
+                  "rate": 1.0,
+                  "total_count": 5,
+                  "upper": 1.0
+                },
+                "covered_interval_count": 5,
+                "empirical_standard_deviation": 0.029465712167,
+                "interval_count": 5,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.007139477351,
+                  "rate": 0.016666666667,
+                  "total_count": 300,
+                  "upper": 0.038415394833
+                },
+                "mean_estimate": 0.329763456598,
+                "mean_interval_width": 0.105742973743,
+                "mean_reported_standard_error": 0.02697574409,
+                "mean_se_to_empirical_sd_ratio": 0.915496083621,
+                "metric": "policy_b_brier_score",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.029503513948,
+                "status_counts": [
+                  {
+                    "count": 5,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 1,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 294,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.3275
+              },
+              {
+                "bias": 0.002532275065,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 4,
+                  "lower": 0.375534629763,
+                  "rate": 0.8,
+                  "total_count": 5,
+                  "upper": 0.963775891368
+                },
+                "covered_interval_count": 4,
+                "empirical_standard_deviation": 0.08071809673,
+                "interval_count": 5,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.007139477351,
+                  "rate": 0.016666666667,
+                  "total_count": 300,
+                  "upper": 0.038415394833
+                },
+                "mean_estimate": 0.202532275065,
+                "mean_interval_width": 0.263827392327,
+                "mean_reported_standard_error": 0.067304142935,
+                "mean_se_to_empirical_sd_ratio": 0.833817268513,
+                "metric": "policy_a_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.080623231885,
+                "status_counts": [
+                  {
+                    "count": 5,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 1,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 294,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.2
+              },
+              {
+                "bias": 0.002532275065,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 4,
+                  "lower": 0.375534629763,
+                  "rate": 0.8,
+                  "total_count": 5,
+                  "upper": 0.963775891368
+                },
+                "covered_interval_count": 4,
+                "empirical_standard_deviation": 0.08071809673,
+                "interval_count": 5,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.007139477351,
+                  "rate": 0.016666666667,
+                  "total_count": 300,
+                  "upper": 0.038415394833
+                },
+                "mean_estimate": 0.302532275065,
+                "mean_interval_width": 0.263827392327,
+                "mean_reported_standard_error": 0.067304142935,
+                "mean_se_to_empirical_sd_ratio": 0.833817268513,
+                "metric": "policy_b_calibration_in_the_large",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.080623231885,
+                "status_counts": [
+                  {
+                    "count": 5,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 1,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 294,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.3
+              },
+              {
+                "bias": -0.004305142867,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.565517535217,
+                  "rate": 1.0,
+                  "total_count": 5,
+                  "upper": 1.0
+                },
+                "covered_interval_count": 5,
+                "empirical_standard_deviation": 0.060538442773,
+                "interval_count": 5,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.007139477351,
+                  "rate": 0.016666666667,
+                  "total_count": 300,
+                  "upper": 0.038415394833
+                },
+                "mean_estimate": 0.495694857133,
+                "mean_interval_width": 0.204636069286,
+                "mean_reported_standard_error": 0.052204038161,
+                "mean_se_to_empirical_sd_ratio": 0.862328724853,
+                "metric": "policy_a_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.060590601293,
+                "status_counts": [
+                  {
+                    "count": 5,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 1,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 294,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.5
+              },
+              {
+                "bias": -0.004305142867,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.565517535217,
+                  "rate": 1.0,
+                  "total_count": 5,
+                  "upper": 1.0
+                },
+                "covered_interval_count": 5,
+                "empirical_standard_deviation": 0.060538442773,
+                "interval_count": 5,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.007139477351,
+                  "rate": 0.016666666667,
+                  "total_count": 300,
+                  "upper": 0.038415394833
+                },
+                "mean_estimate": 0.495694857133,
+                "mean_interval_width": 0.204636069286,
+                "mean_reported_standard_error": 0.052204038161,
+                "mean_se_to_empirical_sd_ratio": 0.862328724853,
+                "metric": "policy_b_classification_accuracy",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.060590601293,
+                "status_counts": [
+                  {
+                    "count": 5,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 1,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 294,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.5
+              },
+              {
+                "bias": 0.000506455013,
+                "coverage": {
+                  "confidence_level": 0.95,
+                  "event_count": 4,
+                  "lower": 0.375534629763,
+                  "rate": 0.8,
+                  "total_count": 5,
+                  "upper": 0.963775891368
+                },
+                "covered_interval_count": 4,
+                "empirical_standard_deviation": 0.016143619346,
+                "interval_count": 5,
+                "interval_yield": {
+                  "confidence_level": 0.95,
+                  "event_count": 5,
+                  "lower": 0.007139477351,
+                  "rate": 0.016666666667,
+                  "total_count": 300,
+                  "upper": 0.038415394833
+                },
+                "mean_estimate": 0.050506455013,
+                "mean_interval_width": 0.052765478465,
+                "mean_reported_standard_error": 0.013460828587,
+                "mean_se_to_empirical_sd_ratio": 0.833817268513,
+                "metric": "brier_difference_b_minus_a",
+                "point_estimate_count": 300,
+                "replicate_count": 300,
+                "root_mean_squared_error": 0.016124646377,
+                "status_counts": [
+                  {
+                    "count": 5,
+                    "status": "cluster_robust_interval_computed"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_no_evaluable_units"
+                  },
+                  {
+                    "count": 1,
+                    "status": "not_estimable_insufficient_clusters"
+                  },
+                  {
+                    "count": 294,
+                    "status": "not_estimable_dominant_cluster"
+                  },
+                  {
+                    "count": 0,
+                    "status": "not_estimable_zero_cluster_variance"
+                  }
+                ],
+                "true_value": 0.05
+              }
+            ],
+            "minimum_interval_yield": 0.8,
+            "replicate_count": 300
+          }
+        ],
+        "iid_metric_performance": [
+          {
+            "bias": -0.000963654248,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 252,
+              "lower": 0.794256325151,
+              "rate": 0.84,
+              "total_count": 300,
+              "upper": 0.877146454416
+            },
+            "covered_interval_count": 252,
+            "empirical_standard_deviation": 0.07978025778,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.249036345752,
+            "mean_interval_width": 0.227113336512,
+            "mean_reported_standard_error": 0.057943840187,
+            "mean_se_to_empirical_sd_ratio": 0.726292967701,
+            "metric": "observed_favorable_rate",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.079653009124,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.25
+          },
+          {
+            "bias": 0.001757001585,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 286,
+              "lower": 0.923202639772,
+              "rate": 0.953333333333,
+              "total_count": 300,
+              "upper": 0.972001066318
+            },
+            "covered_interval_count": 286,
+            "empirical_standard_deviation": 0.02900370603,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.279257001585,
+            "mean_interval_width": 0.117780927019,
+            "mean_reported_standard_error": 0.030046706967,
+            "mean_se_to_empirical_sd_ratio": 1.035960953953,
+            "metric": "policy_a_brier_score",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.029008584388,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.2775
+          },
+          {
+            "bias": 0.002263456598,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 287,
+              "lower": 0.927282534366,
+              "rate": 0.956666666667,
+              "total_count": 300,
+              "upper": 0.974503551916
+            },
+            "covered_interval_count": 287,
+            "empirical_standard_deviation": 0.029465712167,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.329763456598,
+            "mean_interval_width": 0.1296905296,
+            "mean_reported_standard_error": 0.033084926719,
+            "mean_se_to_empirical_sd_ratio": 1.122828001967,
+            "metric": "policy_b_brier_score",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.029503513948,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.3275
+          },
+          {
+            "bias": 0.002532275065,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 265,
+              "lower": 0.842066856676,
+              "rate": 0.883333333333,
+              "total_count": 300,
+              "upper": 0.914906865385
+            },
+            "covered_interval_count": 265,
+            "empirical_standard_deviation": 0.08071809673,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.202532275065,
+            "mean_interval_width": 0.257374359848,
+            "mean_reported_standard_error": 0.065657930931,
+            "mean_se_to_empirical_sd_ratio": 0.813422684514,
+            "metric": "policy_a_calibration_in_the_large",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.080623231885,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.2
+          },
+          {
+            "bias": 0.002532275065,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 265,
+              "lower": 0.842066856676,
+              "rate": 0.883333333333,
+              "total_count": 300,
+              "upper": 0.914906865385
+            },
+            "covered_interval_count": 265,
+            "empirical_standard_deviation": 0.08071809673,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.302532275065,
+            "mean_interval_width": 0.257374359848,
+            "mean_reported_standard_error": 0.065657930931,
+            "mean_se_to_empirical_sd_ratio": 0.813422684514,
+            "metric": "policy_b_calibration_in_the_large",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.080623231885,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.3
+          },
+          {
+            "bias": -0.004305142867,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 287,
+              "lower": 0.927282534366,
+              "rate": 0.956666666667,
+              "total_count": 300,
+              "upper": 0.974503551916
+            },
+            "covered_interval_count": 287,
+            "empirical_standard_deviation": 0.060538442773,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.495694857133,
+            "mean_interval_width": 0.266724544337,
+            "mean_reported_standard_error": 0.068043225906,
+            "mean_se_to_empirical_sd_ratio": 1.123967231221,
+            "metric": "policy_a_classification_accuracy",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.060590601293,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.5
+          },
+          {
+            "bias": -0.004305142867,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 287,
+              "lower": 0.927282534366,
+              "rate": 0.956666666667,
+              "total_count": 300,
+              "upper": 0.974503551916
+            },
+            "covered_interval_count": 287,
+            "empirical_standard_deviation": 0.060538442773,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.495694857133,
+            "mean_interval_width": 0.266724544337,
+            "mean_reported_standard_error": 0.068043225906,
+            "mean_se_to_empirical_sd_ratio": 1.123967231221,
+            "metric": "policy_b_classification_accuracy",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.060590601293,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.5
+          },
+          {
+            "bias": 0.000506455013,
+            "coverage": {
+              "confidence_level": 0.95,
+              "event_count": 265,
+              "lower": 0.842066856676,
+              "rate": 0.883333333333,
+              "total_count": 300,
+              "upper": 0.914906865385
+            },
+            "covered_interval_count": 265,
+            "empirical_standard_deviation": 0.016143619346,
+            "interval_count": 300,
+            "interval_yield": {
+              "confidence_level": 0.95,
+              "event_count": 300,
+              "lower": 0.987357028775,
+              "rate": 1.0,
+              "total_count": 300,
+              "upper": 1.0
+            },
+            "mean_estimate": 0.050506455013,
+            "mean_interval_width": 0.05147487197,
+            "mean_reported_standard_error": 0.013131586186,
+            "mean_se_to_empirical_sd_ratio": 0.813422684502,
+            "metric": "brier_difference_b_minus_a",
+            "point_estimate_count": 300,
+            "replicate_count": 300,
+            "root_mean_squared_error": 0.016124646377,
+            "status_counts": [
+              {
+                "count": 300,
+                "status": "cluster_robust_interval_computed"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_no_evaluable_units"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_insufficient_clusters"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_dominant_cluster"
+              },
+              {
+                "count": 0,
+                "status": "not_estimable_zero_cluster_variance"
+              }
+            ],
+            "true_value": 0.05
+          }
+        ],
+        "iid_reference_method_id": "adds.iid-unit-normal-reference.v1",
+        "replicate_diagnostics": {
+          "maximum_evaluable_cluster_count": 12,
+          "maximum_evaluable_units": 60,
+          "maximum_largest_evaluable_cluster_fraction": 0.384615384615,
+          "mean_evaluable_cluster_count": 11.996666666667,
+          "mean_evaluable_units": 54.31,
+          "mean_largest_evaluable_cluster_fraction": 0.313227911658,
+          "minimum_evaluable_cluster_count": 11,
+          "minimum_evaluable_units": 43,
+          "no_evaluable_replicates": 0,
+          "replicate_count": 300
+        },
+        "rng_stream_sha256": "aa630ca6e433729407d2285f3da669162b3a9a3d856df8a411ff6db937d0037d",
+        "scenario": {
+          "classification_threshold": 0.5,
+          "cluster_sizes": [
+            20,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "endpoint_family": "postmarket_safety",
+          "evaluable_probability": 0.85,
+          "favorable_prevalence": 0.25,
+          "intracluster_correlation": 0.1,
+          "policy_a_probability_pattern": [
+            0.15,
+            0.35,
+            0.55,
+            0.75
+          ],
+          "policy_b_probability_pattern": [
+            0.25,
+            0.45,
+            0.65,
+            0.85
+          ],
+          "scenario_id": "imbalanced-12-moderate-icc",
+          "stage": "regulatory_postmarket"
+        },
+        "structure": {
+          "cluster_count": 12,
+          "cluster_size_coefficient_of_variation": 0.829156197589,
+          "effective_cluster_count": 7.111111111111,
+          "maximum_cluster_fraction": 0.3125,
+          "maximum_cluster_size": 20,
+          "mean_cluster_size": 5.333333333333,
+          "minimum_cluster_size": 4,
+          "total_units": 64
+        }
+      }
+    ],
+    "simulation_method_id": "adds.prospective-clinical-outcome-design.beta-binomial.v1",
+    "uncertainty_method_id": "adds.cluster-robust-clinical-outcome-uncertainty.cr1.v1",
+    "unit_level_records_included": false
+  },
+  "schema_version": "adds.clinical-outcome-design-simulation-report.v1"
+}

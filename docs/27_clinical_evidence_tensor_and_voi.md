@@ -136,6 +136,9 @@ non-finite values, unsupported schema versions, and integrity mismatches.
 
 Public machine contracts:
 
+- `rl_env/specs/clinical_evidence_decision_config.schema.json`
+- `rl_env/specs/clinical_evidence_decision_config.example.json`
+- `rl_env/specs/clinical_evidence_decision_summary.schema.json`
 - `rl_env/specs/clinical_evidence_decision_package.schema.json`
 - `rl_env/specs/clinical_evidence_decision_package.example.json`
 
@@ -161,6 +164,27 @@ package = compile_clinical_decision_package(
 The caller must supply a preregistered policy and action catalog. The compiler does not invent
 clinical thresholds, resolution probabilities, relevance values, tools, or costs.
 
+## Stable CLI
+
+`adds-clinical-evidence` exposes the same contracts without requiring callers to assemble internal
+dataclasses:
+
+```bash
+adds-clinical-evidence summarize --package decision-package.json
+adds-clinical-evidence validate --package decision-package.json
+adds-clinical-evidence compile \
+  --state accepted-program-state.json \
+  --config decision-config.json \
+  --output decision-package.json
+adds-clinical-evidence validate \
+  --package decision-package.json \
+  --state accepted-program-state.json
+```
+
+Integrity-only validation checks the strict envelope. Supplying `--state` additionally recompiles
+the package and requires the selected synthesis and endpoint mapping to occur as exact updates in
+accepted packet history. Compile output is atomic and is not replaced without `--force`.
+
 ## Current Limitations
 
 - Hazard-ratio benefit endpoints and posted aggregate serious-event counts inherit the v1
@@ -170,7 +194,8 @@ clinical thresholds, resolution probabilities, relevance values, tools, or costs
 - Expected gap-resolution probabilities and decision relevance require external calibration.
 - Action selection is deterministic marginal greedy prioritization, not a causal, Bayesian, or
   health-economic VOI analysis.
-- Selected actions are planning records; provider execution and post-action synthesis refresh are
-  not yet connected into an automatic closed loop.
+- Selected-action execution and reviewer-gated synthesis refresh are available through the bounded
+  `clinical_closed_loop` API. The CLI intentionally does not invoke live providers or automate the
+  required reviewer refresh.
 - Population transportability, risk of bias, multiplicity, follow-up adjustment, censoring,
   exposure time, competing risks, and event-level causality are not inferred.

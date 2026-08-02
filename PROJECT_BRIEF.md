@@ -110,6 +110,44 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   recompilation bind the synthesis, policy, tensor, catalog, scores, gap partition, and plan.
   `ADVANCE` means evidence-workflow readiness only. Pooling, clinical acceptability, treatment
   recommendations, terminal decisions, and calibrated economic VOI claims are prohibited.
+- A clinical cohort diagnostics layer binds exact package rosters and can require accepted-state
+  hashes plus committed-ledger replay. It separates packages, programs, and synthesis-bound
+  evidence units; reports complete decision/dimension/gap/action denominators; performs matched
+  policy sensitivity only on shared evidence units; and exposes cross-unit source-hash or trial-id
+  reuse. It includes no outcome labels or performance metrics and therefore cannot estimate
+  correctness, utility, safety, policy superiority, or calibration.
+- A preregistered clinical outcome layer binds favorable composite benefit-risk probabilities to
+  exact package and evidence-unit hashes before a fixed deadline. A public protocol commits the
+  outcome definition, endpoint/safety harmonization rules, curator roster, outcome window,
+  threshold, bins, confidence level, and minimum evaluable units. Evaluator-only manifests require
+  independently curated endpoint and safety assessments backed by post-deadline source hashes;
+  aggregate reports retain attrition, Wilson intervals, Brier/calibration/threshold metrics,
+  matched policy comparisons, and provenance-overlap counts without unit-level labels. Package
+  workflow decisions are not scored as outcomes. The public example is synthetic and does not
+  establish calibration, utility, efficacy, safety, or policy superiority.
+- A dependence-aware uncertainty layer adds a second preregistered protocol and an evaluator-only
+  exact unit-to-cluster manifest. It requires full outcome-report replay, exact roster coverage,
+  and closure of known shared program, baseline trial/source, and outcome trial/source links before
+  computing aggregate CR1 intervals for additive policy metrics overall and within fixed
+  stage-by-endpoint strata, plus overall paired Brier differences. Insufficient or dominant
+  clusters, and cluster uncertainty that rounds to zero at the reporting precision, produce
+  explicit no-interval states. Public reports never expose unit assignments or cluster-level
+  results, and a computed interval is not a validated coverage or superiority claim.
+- A prospective clustered-board design layer freezes synthetic stage-by-endpoint cluster-size,
+  prevalence, ICC, MCAR evaluability, prediction-pattern, candidate-gate, seed, and Monte Carlo
+  commitments. Its beta-binomial Polya urn has analytic truths for all additive outcome metrics
+  and invokes the production CR1 diagnostic/estimator plus an explicit IID reference on every
+  replicate. Aggregate reports preserve bias, RMSE, empirical and reported uncertainty, interval
+  width, Wilson-bounded coverage/yield, and all no-interval statuses without replicate/unit
+  records. Candidate gates are screened against declared lower-bound targets but never selected
+  automatically, and the synthetic example does not justify a real-board threshold.
+- An informative-evaluability and residual-dependence stress layer partitions nominal clusters
+  into exact synthetic dependence blocks and assigns separate favorable/unfavorable evaluability
+  probabilities. Analytic population and evaluable truths are compared against the same estimates
+  under nominal and oracle dependence-closed CR1 analysis. Aggregate reports expose estimand drift,
+  standard-error calibration, coverage, yield, and fail-closed states without unit/replicate
+  records. Oracle closure neither discovers hidden links nor identifies or corrects a population
+  estimand.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -227,6 +265,13 @@ Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are 
    not coerce the current CDC and PubMed populations into one context.
 2. Use the shipped preregistration and curation contract to build a real independently curated,
    stage-stratified held-out board; no such real-board result is claimed yet.
-3. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
-4. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
+3. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, and residual-dependence ranges
+   for a real multi-program clinical board; extend the shipped stress simulator with correction
+   sensitivity, prevalence heterogeneity, cluster loss, and non-nested dependence before selecting
+   stage-by-endpoint gates.
+4. Join preregistered clinical package predictions to independently curated outcomes so the shipped
+   cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
+   selective risk and calibration.
+5. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
+6. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
    operator reauthorization above the shipped deterministic resume/replan control layer.

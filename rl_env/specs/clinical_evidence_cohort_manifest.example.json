@@ -1,0 +1,23 @@
+{
+  "integrity_sha256": "f035cf86dc2496a9fbc35a154e30434f097ec6814484de5ffe1a62876a2536fa",
+  "manifest": {
+    "analysis_scope": "workflow_behavior_diagnostics",
+    "cohort_id": "synthetic-clinical-policy-sensitivity",
+    "cohort_specification_sha256": "597b742dba4c4868cb8bc5ab81cf75465831aaf2836ade0266e03c2d16eb4061",
+    "package_bindings": [
+      {
+        "integrity_sha256": "5cdf65b91e5947377af574e92c17a42787af1b0e8b26ba2dbb5e1ae655177dfb",
+        "package_id": "synthetic-clinical-evidence-decision-package",
+        "program_id": "benefit-risk-program",
+        "state_sha256": null
+      },
+      {
+        "integrity_sha256": "f3cc2fcdc269fdbc50c9f65c38e04ea579d97e257d73cb3869114078b6b7611f",
+        "package_id": "synthetic-clinical-evidence-decision-package-relaxed",
+        "program_id": "benefit-risk-program",
+        "state_sha256": null
+      }
+    ]
+  },
+  "schema_version": "adds.clinical-evidence-cohort-manifest.v1"
+}
