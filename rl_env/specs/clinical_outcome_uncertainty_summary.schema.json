@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_uncertainty_summary.schema.json",
+  "title": "Clinical Outcome Uncertainty Summary",
+  "description": "Compact aggregate projection of cluster diagnostics, selected CR1 uncertainty metrics, and optional replay-validation status.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "uncertainty_protocol_id",
+    "outcome_protocol_id",
+    "cohort_id",
+    "cluster_status",
+    "outcome_units",
+    "clusters",
+    "known_dependence_link_count",
+    "policy_summaries",
+    "strata",
+    "stratum_count",
+    "matched_policy_comparisons",
+    "matched_policy_comparison_count",
+    "aggregate_outcomes_included",
+    "cluster_assignments_included",
+    "unit_level_predictions_included",
+    "unit_level_outcomes_included",
+    "ece_cluster_interval_included",
+    "policy_superiority_test_included"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.clinical-outcome-uncertainty-summary.v1"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "uncertainty_protocol_id": {"type": "string", "minLength": 1},
+    "outcome_protocol_id": {"type": "string", "minLength": 1},
+    "cohort_id": {"type": "string", "minLength": 1},
+    "cluster_status": {"$ref": "#/$defs/status"},
+    "outcome_units": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "evaluable", "indeterminate"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 1},
+        "evaluable": {"type": "integer", "minimum": 0},
+        "indeterminate": {"type": "integer", "minimum": 0}
+      }
+    },
+    "clusters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "evaluable",
+        "without_evaluable_units",
+        "largest_evaluable_size",
+        "largest_evaluable_fraction",
+        "effective_evaluable_count",
+        "minimum_required",
+        "maximum_allowed_fraction",
+        "requirement_met"
+      ],
+      "properties": {
+        "total": {"type": "integer", "minimum": 1},
+        "evaluable": {"type": "integer", "minimum": 0},
+        "without_evaluable_units": {"type": "integer", "minimum": 0},
+        "largest_evaluable_size": {"type": "integer", "minimum": 0},
+        "largest_evaluable_fraction": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+        "effective_evaluable_count": {"type": ["number", "null"], "minimum": 1.0},
+        "minimum_required": {"type": "integer", "minimum": 2},
+        "maximum_allowed_fraction": {"type": "number", "exclusiveMinimum": 0.0, "exclusiveMaximum": 1.0},
+        "requirement_met": {"type": "boolean"}
+      }
+    },
+    "known_dependence_link_count": {"type": "integer", "minimum": 0},
+    "policy_summaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/policy_summary"}
+    },
+    "strata": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "stratum_id",
+          "stage",
+          "endpoint_family",
+          "cluster_status",
+          "outcome_units",
+          "clusters",
+          "policy_summaries"
+        ],
+        "properties": {
+          "stratum_id": {"$ref": "#/$defs/sha256"},
+          "stage": {"$ref": "#/$defs/stage"},
+          "endpoint_family": {"type": "string", "minLength": 1},
+          "cluster_status": {"$ref": "#/$defs/status"},
+          "outcome_units": {"$ref": "#/$defs/outcome_units"},
+          "clusters": {"$ref": "#/$defs/clusters"},
+          "policy_summaries": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/policy_summary"}
+          }
+        }
+      }
+    },
+    "stratum_count": {"type": "integer", "minimum": 1},
+    "matched_policy_comparisons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "policy_a",
+          "policy_b",
+          "shared_outcome_units",
+          "brier_difference_b_minus_a"
+        ],
+        "properties": {
+          "policy_a": {"$ref": "#/$defs/policy_identity"},
+          "policy_b": {"$ref": "#/$defs/policy_identity"},
+          "shared_outcome_units": {"$ref": "#/$defs/outcome_units"},
+          "brier_difference_b_minus_a": {"$ref": "#/$defs/estimate"}
+        }
+      }
+    },
+    "matched_policy_comparison_count": {"type": "integer", "minimum": 0},
+    "aggregate_outcomes_included": {"const": true},
+    "cluster_assignments_included": {"const": false},
+    "unit_level_predictions_included": {"const": false},
+    "unit_level_outcomes_included": {"const": false},
+    "ece_cluster_interval_included": {"const": false},
+    "policy_superiority_test_included": {"const": false},
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "scope", "failure_codes"],
+      "properties": {
+        "status": {"enum": ["valid", "invalid"]},
+        "scope": {"type": "string", "minLength": 1},
+        "failure_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "status": {
+      "enum": [
+        "cluster_robust_interval_computed",
+        "not_estimable_no_evaluable_units",
+        "not_estimable_insufficient_clusters",
+        "not_estimable_dominant_cluster",
+        "not_estimable_zero_cluster_variance"
+      ]
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "outcome_units": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "evaluable", "indeterminate"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 1},
+        "evaluable": {"type": "integer", "minimum": 0},
+        "indeterminate": {"type": "integer", "minimum": 0}
+      }
+    },
+    "clusters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "evaluable",
+        "without_evaluable_units",
+        "largest_evaluable_size",
+        "largest_evaluable_fraction",
+        "effective_evaluable_count",
+        "minimum_required",
+        "maximum_allowed_fraction",
+        "requirement_met"
+      ],
+      "properties": {
+        "total": {"type": "integer", "minimum": 1},
+        "evaluable": {"type": "integer", "minimum": 0},
+        "without_evaluable_units": {"type": "integer", "minimum": 0},
+        "largest_evaluable_size": {"type": "integer", "minimum": 0},
+        "largest_evaluable_fraction": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+        "effective_evaluable_count": {"type": ["number", "null"], "minimum": 1.0},
+        "minimum_required": {"type": "integer", "minimum": 2},
+        "maximum_allowed_fraction": {"type": "number", "exclusiveMinimum": 0.0, "exclusiveMaximum": 1.0},
+        "requirement_met": {"type": "boolean"}
+      }
+    },
+    "policy_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "policy_version", "policy_fingerprint"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "policy_version": {"type": "string", "minLength": 1},
+        "policy_fingerprint": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "policy_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "policy_version",
+        "policy_fingerprint",
+        "observed_favorable_rate",
+        "brier_score",
+        "calibration_in_the_large",
+        "classification_accuracy"
+      ],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "policy_version": {"type": "string", "minLength": 1},
+        "policy_fingerprint": {"$ref": "#/$defs/sha256"},
+        "observed_favorable_rate": {"$ref": "#/$defs/estimate"},
+        "brier_score": {"$ref": "#/$defs/estimate"},
+        "calibration_in_the_large": {"$ref": "#/$defs/estimate"},
+        "classification_accuracy": {"$ref": "#/$defs/estimate"}
+      }
+    },
+    "estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "estimate",
+        "standard_error",
+        "lower",
+        "upper",
+        "confidence_level",
+        "unit_count",
+        "cluster_count",
+        "status"
+      ],
+      "properties": {
+        "estimate": {"type": ["number", "null"], "minimum": -1.0, "maximum": 1.0},
+        "standard_error": {"type": ["number", "null"], "minimum": 0.0},
+        "lower": {"type": ["number", "null"], "minimum": -1.0, "maximum": 1.0},
+        "upper": {"type": ["number", "null"], "minimum": -1.0, "maximum": 1.0},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1.0},
+        "unit_count": {"type": "integer", "minimum": 0},
+        "cluster_count": {"type": "integer", "minimum": 0},
+        "status": {"$ref": "#/$defs/status"}
+      }
+    }
+  }
+}

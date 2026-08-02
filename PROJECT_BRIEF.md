@@ -125,6 +125,14 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   matched policy comparisons, and provenance-overlap counts without unit-level labels. Package
   workflow decisions are not scored as outcomes. The public example is synthetic and does not
   establish calibration, utility, efficacy, safety, or policy superiority.
+- A dependence-aware uncertainty layer adds a second preregistered protocol and an evaluator-only
+  exact unit-to-cluster manifest. It requires full outcome-report replay, exact roster coverage,
+  and closure of known shared program, baseline trial/source, and outcome trial/source links before
+  computing aggregate CR1 intervals for additive policy metrics overall and within fixed
+  stage-by-endpoint strata, plus overall paired Brier differences. Insufficient or dominant
+  clusters, and cluster uncertainty that rounds to zero at the reporting precision, produce
+  explicit no-interval states. Public reports never expose unit assignments or cluster-level
+  results, and a computed interval is not a validated coverage or superiority claim.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;

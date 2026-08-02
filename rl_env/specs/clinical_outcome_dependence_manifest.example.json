@@ -1,0 +1,18 @@
+{
+  "integrity_sha256": "3fd7c1f41ffb66cbfcc3a5d2962ecb955c431a9f4f28d9713271d8fd0ed54f48",
+  "manifest": {
+    "assignments": [
+      {
+        "assignment_basis_sha256": "4ecfa21ab04fbe0039867143afc072dd0805cc67b94a745ef4a8c015804daf38",
+        "cluster_id": "ac9b1b272c03173a328cfcfb9f017e6dcc906e08bec0fcfbc3232abb03fc3115",
+        "evidence_unit_id": "d2475391c08d8671c20b69a9cd9fcbf9623fc81f9b63e2fa0451562d7dfe0b66"
+      }
+    ],
+    "cohort_report_fingerprint": "fbb96d09fad8cbe8e38443d2907e95b94a38f639a1dfa66d65d0d6411fa37872",
+    "construction_policy_sha256": "5cf26abd69d5798f4f17723538ae845869511c0e2fca7c23823ba503570db8b9",
+    "independence_attestation_sha256": "4a255c664141b56ecc7a2abf1a0e6e966aa165554bb2ed053951989a098d28f8",
+    "manifest_id": "synthetic-clinical-outcome-dependence:v1",
+    "registered_on": "2025-01-03"
+  },
+  "schema_version": "adds.clinical-outcome-dependence-manifest.v1"
+}

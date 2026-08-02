@@ -14,7 +14,7 @@ The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
-  `docs/11_*` through `docs/30_*`, the payload-free preclinical, clinical provider, and sealed
+  `docs/11_*` through `docs/31_*`, the payload-free preclinical, clinical provider, and sealed
   policy-evaluation snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and
   this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
@@ -34,6 +34,10 @@ The public GitHub surface includes:
   compiler-generated synthetic protocol/submission/manifest/report examples, aggregate summaries,
   tests, and documentation. Real submissions, outcome manifests, unit-level endpoint/safety labels,
   source assessments, curator material, and per-unit scores remain excluded.
+- The dependence-aware outcome-uncertainty surface is limited to implementation, strict
+  schemas/readers, public protocol and aggregate-report examples, tests, and documentation. Real
+  dependence manifests, unit-to-cluster assignments, cluster-level diagnostics, and unit-level
+  metric contributions remain evaluator-only.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 
@@ -53,6 +57,8 @@ The following stay outside Git unless a separate audited release package explici
   diagnostics, evidence tensors, action catalogs, compiled packages, and cohort reports.
 - Real clinical prediction submissions, outcome manifests, unit-level endpoint/safety labels,
   source assessments, curator materials, and per-unit clinical outcome evaluations.
+- Real clinical outcome dependence manifests, unit-to-cluster assignments, cluster-level results,
+  and unit-level uncertainty contributions.
 - Local working notes, imported research packs, private opportunity records, and machine-specific source maps.
 - Scheduler logs, root-level run outputs, generated caches, Python bytecode, and large experiment directories.
 - Credentials, API tokens, `.env*`, key material, local account names, absolute local paths, and internal compute-location breadcrumbs.

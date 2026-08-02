@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_uncertainty_protocol.schema.json",
+  "title": "Clinical Outcome Uncertainty Protocol",
+  "description": "Public preregistration binding an outcome board and private dependence-manifest commitment to fixed CR1 uncertainty rules.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "protocol"],
+  "properties": {
+    "schema_version": {"const": "adds.clinical-outcome-uncertainty-protocol.v1"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "version",
+        "registered_on",
+        "outcome_protocol_id",
+        "outcome_protocol_fingerprint",
+        "cohort_report_fingerprint",
+        "dependence_manifest_fingerprint",
+        "confidence_level",
+        "minimum_clusters_overall",
+        "minimum_clusters_per_stratum",
+        "maximum_evaluable_cluster_fraction",
+        "method_id",
+        "finite_cluster_correction_required",
+        "paired_cluster_covariance_required",
+        "stratification_dimensions",
+        "metadata"
+      ],
+      "properties": {
+        "protocol_id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "registered_on": {"type": "string", "format": "date"},
+        "outcome_protocol_id": {"type": "string", "minLength": 1},
+        "outcome_protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "cohort_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "dependence_manifest_fingerprint": {"$ref": "#/$defs/sha256"},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1.0},
+        "minimum_clusters_overall": {"type": "integer", "minimum": 2},
+        "minimum_clusters_per_stratum": {"type": "integer", "minimum": 2},
+        "maximum_evaluable_cluster_fraction": {"type": "number", "exclusiveMinimum": 0.0, "exclusiveMaximum": 1.0},
+        "method_id": {"const": "adds.cluster-robust-clinical-outcome-uncertainty.cr1.v1"},
+        "finite_cluster_correction_required": {"const": true},
+        "paired_cluster_covariance_required": {"const": true},
+        "stratification_dimensions": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "stage"},
+            {"const": "endpoint_family"}
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "metadata": {"type": "object"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

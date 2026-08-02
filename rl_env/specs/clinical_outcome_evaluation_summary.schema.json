@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_evaluation_summary.schema.json",
   "title": "Compact clinical outcome evaluation summary",
-  "description": "Human- and machine-readable aggregate projection of a preregistered clinical outcome report.",
+  "description": "Human- and machine-readable aggregate projection of a preregistered clinical outcome report with optional replay-validation status.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -39,7 +39,21 @@
     "matched_policy_comparison_count": {"type": "integer", "minimum": 0},
     "outcome_units_source_disjoint": {"type": "boolean"},
     "outcome_units_trial_disjoint": {"type": "boolean"},
-    "unit_level_outcomes_included": {"const": false}
+    "unit_level_outcomes_included": {"const": false},
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "scope", "failure_codes"],
+      "properties": {
+        "status": {"enum": ["valid", "invalid"]},
+        "scope": {"$ref": "#/$defs/text"},
+        "failure_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        }
+      }
+    }
   },
   "$defs": {
     "text": {"type": "string", "minLength": 1},

@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_uncertainty_report.schema.json",
+  "title": "Clinical Outcome Uncertainty Report",
+  "description": "Aggregate-only CR1 cluster-robust uncertainty over a fully replayed clinical outcome report.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "report"],
+  "properties": {
+    "schema_version": {"const": "adds.clinical-outcome-uncertainty-report.v1"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uncertainty_protocol_id",
+        "uncertainty_protocol_fingerprint",
+        "outcome_protocol_id",
+        "outcome_protocol_fingerprint",
+        "cohort_id",
+        "cohort_report_fingerprint",
+        "outcome_report_fingerprint",
+        "outcome_manifest_fingerprint",
+        "dependence_manifest_fingerprint",
+        "method_id",
+        "generated_on",
+        "known_dependence_link_count",
+        "overall_cluster_diagnostic",
+        "policy_summaries",
+        "stratum_summaries",
+        "matched_policy_comparisons",
+        "aggregate_outcomes_included",
+        "cluster_assignments_included",
+        "unit_level_predictions_included",
+        "unit_level_outcomes_included",
+        "ece_cluster_interval_included",
+        "policy_superiority_test_included",
+        "limitations"
+      ],
+      "properties": {
+        "uncertainty_protocol_id": {"type": "string", "minLength": 1},
+        "uncertainty_protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "outcome_protocol_id": {"type": "string", "minLength": 1},
+        "outcome_protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "cohort_id": {"type": "string", "minLength": 1},
+        "cohort_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "outcome_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "outcome_manifest_fingerprint": {"$ref": "#/$defs/sha256"},
+        "dependence_manifest_fingerprint": {"$ref": "#/$defs/sha256"},
+        "method_id": {"const": "adds.cluster-robust-clinical-outcome-uncertainty.cr1.v1"},
+        "generated_on": {"type": "string", "format": "date"},
+        "known_dependence_link_count": {"type": "integer", "minimum": 0},
+        "overall_cluster_diagnostic": {"$ref": "#/$defs/cluster_diagnostic"},
+        "policy_summaries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/policy_metrics"}
+        },
+        "stratum_summaries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/stratum"}
+        },
+        "matched_policy_comparisons": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/matched"}
+        },
+        "aggregate_outcomes_included": {"const": true},
+        "cluster_assignments_included": {"const": false},
+        "unit_level_predictions_included": {"const": false},
+        "unit_level_outcomes_included": {"const": false},
+        "ece_cluster_interval_included": {"const": false},
+        "policy_superiority_test_included": {"const": false},
+        "limitations": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "Cluster assignments are preregistered evaluator commitments; hashes and known-overlap checks do not prove that clusters are mutually independent."},
+            {"const": "CR1 intervals allow arbitrary dependence within declared clusters but rely on asymptotic independence, bounded influence, and adequate count across clusters."},
+            {"const": "Intervals are withheld when evaluable clusters are too few, one cluster exceeds the preregistered share limit, or observed cluster uncertainty is zero at the 12-decimal reporting precision."},
+            {"const": "Stage-by-endpoint strata are fixed from package identity before outcome access; small strata remain visible as attrition and are not pooled post hoc."},
+            {"const": "Paired policy intervals preserve shared units and cluster covariance; repeated policies are not treated as independent clinical observations."},
+            {"const": "No cluster-robust interval is reported for fixed-bin expected calibration error, which is retained only in the bound base outcome report."},
+            {"const": "Aggregate uncertainty does not establish calibration transportability, policy superiority, treatment efficacy, safety, clinical utility, or acceptability."}
+          ],
+          "minItems": 7,
+          "maxItems": 7
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "status": {
+      "enum": [
+        "cluster_robust_interval_computed",
+        "not_estimable_no_evaluable_units",
+        "not_estimable_insufficient_clusters",
+        "not_estimable_dominant_cluster",
+        "not_estimable_zero_cluster_variance"
+      ]
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "policy_version", "policy_fingerprint"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "policy_version": {"type": "string", "minLength": 1},
+        "policy_fingerprint": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "estimate",
+        "standard_error",
+        "lower",
+        "upper",
+        "confidence_level",
+        "unit_count",
+        "cluster_count",
+        "status"
+      ],
+      "properties": {
+        "estimate": {"type": ["number", "null"], "minimum": -1.0, "maximum": 1.0},
+        "standard_error": {"type": ["number", "null"], "minimum": 0.0},
+        "lower": {"type": ["number", "null"], "minimum": -1.0, "maximum": 1.0},
+        "upper": {"type": ["number", "null"], "minimum": -1.0, "maximum": 1.0},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1.0},
+        "unit_count": {"type": "integer", "minimum": 0},
+        "cluster_count": {"type": "integer", "minimum": 0},
+        "status": {"$ref": "#/$defs/status"}
+      }
+    },
+    "cluster_diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_units",
+        "evaluable_units",
+        "indeterminate_units",
+        "cluster_count",
+        "evaluable_cluster_count",
+        "clusters_without_evaluable_units",
+        "largest_evaluable_cluster_size",
+        "largest_evaluable_cluster_fraction",
+        "effective_evaluable_cluster_count",
+        "minimum_required_clusters",
+        "maximum_allowed_cluster_fraction",
+        "requirement_met",
+        "status"
+      ],
+      "properties": {
+        "total_units": {"type": "integer", "minimum": 1},
+        "evaluable_units": {"type": "integer", "minimum": 0},
+        "indeterminate_units": {"type": "integer", "minimum": 0},
+        "cluster_count": {"type": "integer", "minimum": 1},
+        "evaluable_cluster_count": {"type": "integer", "minimum": 0},
+        "clusters_without_evaluable_units": {"type": "integer", "minimum": 0},
+        "largest_evaluable_cluster_size": {"type": "integer", "minimum": 0},
+        "largest_evaluable_cluster_fraction": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+        "effective_evaluable_cluster_count": {"type": ["number", "null"], "minimum": 1.0},
+        "minimum_required_clusters": {"type": "integer", "minimum": 2},
+        "maximum_allowed_cluster_fraction": {"type": "number", "exclusiveMinimum": 0.0, "exclusiveMaximum": 1.0},
+        "requirement_met": {"type": "boolean"},
+        "status": {"$ref": "#/$defs/status"}
+      }
+    },
+    "policy_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "submission_id",
+        "submission_fingerprint",
+        "total_units",
+        "evaluable_units",
+        "indeterminate_units",
+        "observed_favorable_rate",
+        "brier_score",
+        "calibration_in_the_large",
+        "classification_accuracy"
+      ],
+      "properties": {
+        "policy": {"$ref": "#/$defs/policy"},
+        "submission_id": {"type": "string", "minLength": 1},
+        "submission_fingerprint": {"$ref": "#/$defs/sha256"},
+        "total_units": {"type": "integer", "minimum": 1},
+        "evaluable_units": {"type": "integer", "minimum": 0},
+        "indeterminate_units": {"type": "integer", "minimum": 0},
+        "observed_favorable_rate": {"$ref": "#/$defs/estimate"},
+        "brier_score": {"$ref": "#/$defs/estimate"},
+        "calibration_in_the_large": {"$ref": "#/$defs/estimate"},
+        "classification_accuracy": {"$ref": "#/$defs/estimate"}
+      }
+    },
+    "matched": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_a",
+        "policy_b",
+        "shared_units",
+        "shared_evaluable_units",
+        "shared_indeterminate_units",
+        "brier_difference_b_minus_a"
+      ],
+      "properties": {
+        "policy_a": {"$ref": "#/$defs/policy"},
+        "policy_b": {"$ref": "#/$defs/policy"},
+        "shared_units": {"type": "integer", "minimum": 1},
+        "shared_evaluable_units": {"type": "integer", "minimum": 0},
+        "shared_indeterminate_units": {"type": "integer", "minimum": 0},
+        "brier_difference_b_minus_a": {"$ref": "#/$defs/estimate"}
+      }
+    },
+    "stratum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stratum_id",
+        "stage",
+        "endpoint_family",
+        "cluster_diagnostic",
+        "policy_summaries"
+      ],
+      "properties": {
+        "stratum_id": {"$ref": "#/$defs/sha256"},
+        "stage": {"$ref": "#/$defs/stage"},
+        "endpoint_family": {"type": "string", "minLength": 1},
+        "cluster_diagnostic": {"$ref": "#/$defs/cluster_diagnostic"},
+        "policy_summaries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/policy_metrics"}
+        }
+      }
+    }
+  }
+}

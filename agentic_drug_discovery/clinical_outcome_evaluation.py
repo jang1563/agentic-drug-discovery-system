@@ -567,7 +567,10 @@ def _wilson_interval(
         * math.sqrt(estimate * (1 - estimate) / total + z_squared / (4 * total * total))
         / denominator
     )
-    return max(0.0, center - margin), min(1.0, center + margin)
+    return (
+        _round_metric(max(0.0, center - margin)),
+        _round_metric(min(1.0, center + margin)),
+    )
 
 
 def _binomial_estimate(

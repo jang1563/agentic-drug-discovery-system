@@ -27,6 +27,8 @@ This repository uses a conservative boundary so that future public or collaborat
 - Real clinical cohort manifests, accepted-state bindings, package diagnostics, and cohort reports.
 - Real clinical prediction submissions, clinical outcome manifests, unit-level endpoint/safety
   labels, source-level outcome assessments, curator materials, and per-unit evaluation results.
+- Real clinical outcome dependence manifests, unit-to-cluster assignments, cluster-level results,
+  and unit-level uncertainty contributions.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -49,6 +51,9 @@ These may become release assets after a separate audit:
 - Preregistered synthetic clinical outcome protocols, package-bound prediction submissions,
   evaluator-style synthetic outcome manifests, and aggregate reports after cutoff, provenance,
   privacy, metric, and interpretation-boundary review.
+- Preregistered synthetic uncertainty protocols, evaluator-style synthetic dependence manifests,
+  and aggregate cluster-robust reports after dependence, small-cluster, privacy, and interpretation
+  review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -126,6 +131,16 @@ scores remain outside Git and Hugging Face. Only separately reviewed aggregate r
 released. The checked-in one-unit result verifies contract execution and cannot establish
 calibration, discrimination, clinical utility, efficacy, safety, or policy superiority.
 
+The dependence-aware clinical outcome uncertainty layer ships implementation, a public frozen
+protocol, strict dependence-manifest/report/summary schemas and readers, deterministic replay,
+documentation, tests, and synthetic artifacts. Real dependence manifests can reveal selected
+program relationships, shared evidence lineages, and unit-to-cluster assignments; cluster-level
+results and unit-level metric contributions can permit reconstruction attacks. They remain
+evaluator-only. Public reports contain only aggregate diagnostics and CR1 intervals, fail closed
+for insufficient or dominant clusters, or cluster uncertainty that rounds to zero at the reporting
+precision, and do not claim validated coverage or policy superiority. The checked-in one-cluster
+example intentionally emits no interval.
+
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution
 batches, provider requests/outcomes, compact receipts, reviewer refresh records, before/after
@@ -152,7 +167,8 @@ external until separate scientific and release-boundary approval.
   documentation, the typed execution core, the dependency-free pinned-evidence and
   local clinical-synthesis adapters and bindings, the clinical evidence tensor and bounded-VOI
   compiler, clinical cohort diagnostics and synthetic matched-policy report, the bounded clinical
-  closed-loop compiler and synthetic transition, tests, schemas, aggregate evidence, audit code,
+  closed-loop compiler and synthetic transition, dependence-aware clinical outcome uncertainty
+  protocols and aggregate synthetic reports, tests, schemas, aggregate evidence, audit code,
   and the `benchmark/` scorer.
 - `benchmark/` scores the separately hosted
   `jang1563/clinical-trial-decision-benchmark` dataset. Its data rows and

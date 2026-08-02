@@ -4,6 +4,19 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added dependence-aware uncertainty for preregistered clinical outcome evaluation. A public
+  protocol binds the exact outcome protocol, cohort report, private dependence-manifest commitment,
+  cluster construction, confidence level, cluster floor, dominance threshold, fixed
+  stage-by-endpoint strata, and additive metrics before submissions. Evaluator-only assignments
+  must cover the exact unit roster and cannot split known shared program, baseline trial/source, or
+  outcome trial/source links. The evaluator fully replays and fingerprints the later base outcome
+  report. Aggregate CR1 policy and paired-Brier intervals fail closed when clusters are
+  insufficient or dominant, or when cluster uncertainty rounds to zero at the 12-decimal
+  reporting precision; strict schemas/readers, privacy-preserving reports, CLI paths, synthetic
+  CR1 math, and chronology/leakage/tamper tests are included. The one-cluster public example
+  intentionally emits no interval and adds no performance claim.
+  Wilson bounds are serialized at the established 12-decimal metric precision so report hashes
+  replay consistently across supported Python runtimes.
 - Added preregistered clinical outcome evaluation over exact outcome-free cohort reports. Frozen
   policy submissions bind favorable composite benefit-risk probabilities to package and
   evidence-unit hashes before the outcome deadline; evaluator-only manifests retain independently

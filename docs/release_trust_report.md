@@ -1,6 +1,6 @@
 # Release Trust Report
 
-Last reviewed: 2026-07-31
+Last reviewed: 2026-08-02
 
 This report summarizes what the public GitHub repository and Hugging Face Dataset mirror are intended to prove, what they do not prove, and which files machines should inspect first. The 0.3.0.dev2 evidence-governed execution, held-out evaluation, clinical planning, closed-loop, and bounded registry-harmonization update is the current public development release after exact-package approval; 0.2.0 remains the latest tagged stable release.
 
@@ -29,6 +29,7 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | Clinical evidence gaps and bounded actions are provenance- and budget-bound. | `docs/27_clinical_evidence_tensor_and_voi.md`, `agentic_drug_discovery/clinical_decision.py`, `rl_env/specs/clinical_evidence_decision_package.schema.json`, `tests/test_clinical_benefit_risk_synthesis.py` | A committed synthesis is replayed into exact trial cells, ordered workflow dimensions, typed provenance-linked gaps, and a deterministic action plan. Policy, tensor, catalog, scores, gap partition, and budget are integrity-bound. `ADVANCE` is evidence-workflow readiness only; gap mass and bounded VOI are uncalibrated heuristics, selected actions do not resolve evidence, and no treatment, clinical acceptability, terminal, pooling, or economic-VOI claim is made. |
 | Multi-package clinical workflow behavior is cohort- and provenance-bound. | `docs/29_clinical_cohort_diagnostics.md`, `agentic_drug_discovery/clinical_cohort.py`, `rl_env/specs/clinical_evidence_cohort_manifest.schema.json`, `rl_env/specs/clinical_evidence_cohort_report.schema.json`, `tests/test_clinical_cohort.py` | Exact manifests bind package identities and can bind accepted-state hashes for committed-ledger replay. Reports distinguish packages, programs, and synthesis-bound evidence units; preserve exact denominators; compare policies only on shared evidence; and expose cross-unit source/trial reuse. The public example is synthetic and includes no outcomes or performance metrics, so correctness, utility, safety, superiority, and calibration are not estimable. |
 | Clinical outcome forecasts are preregistered, cutoff-safe, and aggregate-only after evaluation. | `docs/30_preregistered_clinical_outcome_evaluation.md`, `agentic_drug_discovery/clinical_outcome_evaluation.py`, `rl_env/specs/clinical_outcome_evaluation_protocol.schema.json`, `rl_env/specs/clinical_outcome_evaluation_report.schema.json`, `tests/test_clinical_outcome_evaluation.py` | Public protocols bind the exact outcome-free cohort, deadline, outcome/harmonization definitions, curator-roster commitment, and metric policy. Frozen probabilities bind exact packages; evaluator manifests require post-deadline endpoint/safety provenance; reports retain attrition, Brier/calibration/threshold metrics, Wilson intervals, paired comparisons, and overlap counts without unit labels. Workflow decisions are not scored as outcomes. The one-unit synthetic example proves contract execution only and cannot establish calibration, utility, efficacy, safety, or policy superiority. |
+| Clinical outcome uncertainty preserves declared dependence without exposing assignments. | `docs/31_cluster_robust_clinical_outcome_uncertainty.md`, `agentic_drug_discovery/clinical_outcome_uncertainty.py`, `rl_env/specs/clinical_outcome_uncertainty_protocol.schema.json`, `rl_env/specs/clinical_outcome_uncertainty_report.schema.json`, `tests/test_clinical_outcome_uncertainty.py` | A public protocol binds the exact outcome protocol, cohort report, and private dependence-manifest commitment before submissions; the evaluator later fully replays and fingerprints the base outcome report. Exact roster coverage and known shared program, baseline trial/source, and outcome trial/source links fail closed if split. Public reports retain aggregate CR1 diagnostics and additive-metric intervals overall and by fixed stage-by-endpoint strata, while assignments and cluster-level results remain external. Insufficient or dominant clusters, and cluster uncertainty that rounds to zero at reporting precision, emit no interval. The one-cluster synthetic example proves contract behavior only; computed intervals do not establish validated coverage or policy superiority. |
 | Clinical evidence actions close the loop only through committed source rejoin. | `docs/28_clinical_evidence_closed_loop.md`, `agentic_drug_discovery/clinical_closed_loop.py`, `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json`, `tests/test_clinical_benefit_risk_synthesis.py` | Selected actions compile into exact state-bound calls and compact payload-free receipts. Reviewer-only verifier runs append refreshed mappings and syntheses. An attempted action is consumed, and a gap can resolve only when a successful targeted receipt promotes evidence whose exact source hash enters the after tensor. The public control is synthetic; it proves execution, provenance, budget, and replay invariants, not provider truth, action efficacy, clinical utility, calibrated VOI, or a treatment decision. |
 | Multi-trial portfolio ingestion and endpoint mapping are exact-set and replay-bound. | `docs/23_clinical_portfolio_endpoint_mapping.md`, `docs/retrospective_policy_evaluation_snapshot.json`, `agentic_drug_discovery/clinical_portfolio.py`, `agentic_drug_discovery/clinical_endpoint_mapping.py`, `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json`, `rl_env/specs/clinical_endpoint_mapping.schema.json`, `tests/test_clinical_portfolio.py` | Every declared single-trial job and external bundle must verify before payload-free output. A reviewer-approved mapping retains exact endpoint/safety fingerprints and source hashes, and synthesis must reference it. A real external PALOMA exact set executed under this contract, while the public package retains only aggregate outcomes and hashes; the portfolio review, authority payloads, full state, and per-episode artifacts are not release-approved. |
 | Planning is bounded before required calls spend budget. | `agentic_drug_discovery/planning.py`, `tests/test_agent_loop.py` | Preflight covers state/version, stage, contracts, chronology, duplicate requests, steps, and declared cost. It does not prove that a chosen tool plan is scientifically optimal. |
@@ -140,6 +141,9 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 96. `docs/30_preregistered_clinical_outcome_evaluation.md`
 97. `agentic_drug_discovery/clinical_outcome_evaluation.py`
 98. `tests/test_clinical_outcome_evaluation.py`
+99. `docs/31_cluster_robust_clinical_outcome_uncertainty.md`
+100. `agentic_drug_discovery/clinical_outcome_uncertainty.py`
+101. `tests/test_clinical_outcome_uncertainty.py`
 
 ## Machine Anchors
 
@@ -175,6 +179,7 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | `agentic_drug_discovery/clinical_decision.py` | Exact evidence tensor, typed gap, bounded-VOI action plan, integrity reader, and committed-state recompilation contracts. |
 | `agentic_drug_discovery/clinical_cohort.py` | Exact package/state rosters, evidence-unit identity, deterministic package/policy strata, matched policy sensitivity, provenance-overlap reporting, strict readers, and report replay. |
 | `agentic_drug_discovery/clinical_outcome_evaluation.py` | Preregistered cohort/cutoff commitments, exact package-bound probability submissions, post-deadline endpoint/safety provenance, aggregate calibration and threshold metrics, paired policy comparison, strict readers, and full private-input replay. |
+| `agentic_drug_discovery/clinical_outcome_uncertainty.py` | Frozen dependence commitments, exact assignment coverage, known-overlap closure, CR1 policy/stratum/paired intervals, fail-closed diagnostics, strict readers, and full private-input replay. |
 | `agentic_drug_discovery/clinical_closed_loop.py` | State-bound execution batches, compact provider/reviewer receipts, source-rejoined before/after transition compilation, and two-state validation. |
 | `agentic_drug_discovery/ingestion_cli.py` | Machine-readable `capture`, disease-context, preclinical, clinical extraction, and `compile` commands for the external source path. |
 | `agentic_drug_discovery/bounded_demo.py` | Dependency-free planner-to-transition fixture with machine-readable output. |
@@ -205,6 +210,13 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | `rl_env/specs/clinical_evidence_cohort_report.schema.json` | Machine schema for package/policy diagnostics, matched transitions, actions, gaps, provenance overlap, and calibration status. |
 | `rl_env/specs/clinical_evidence_cohort_report.example.json` | Compiler-generated synthetic HOLD-to-ADVANCE policy sensitivity report without outcomes or performance metrics. |
 | `rl_env/specs/clinical_evidence_cohort_summary.schema.json` | Machine schema for compact cohort summaries and optional validation status. |
+| `rl_env/specs/clinical_outcome_dependence_manifest.schema.json` | Evaluator-only machine schema for exact unit-to-cluster assignments and dependence-basis commitments. |
+| `rl_env/specs/clinical_outcome_dependence_manifest.example.json` | Synthetic one-cluster dependence assignment used only to prove contract behavior. |
+| `rl_env/specs/clinical_outcome_uncertainty_protocol.schema.json` | Public machine schema for dependence construction, confidence, cluster floor, dominance, strata, and metric commitments. |
+| `rl_env/specs/clinical_outcome_uncertainty_protocol.example.json` | Synthetic frozen uncertainty protocol bound to the public outcome artifacts. |
+| `rl_env/specs/clinical_outcome_uncertainty_report.schema.json` | Public machine schema for aggregate cluster diagnostics and CR1 policy, stratum, and paired intervals. |
+| `rl_env/specs/clinical_outcome_uncertainty_report.example.json` | Synthetic one-cluster report with explicit no-interval states. |
+| `rl_env/specs/clinical_outcome_uncertainty_summary.schema.json` | Machine schema for compact uncertainty and replay-validation status. |
 | `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json` | Machine schema for selected-action execution, compact receipts, reviewer refresh, exact source rejoin, and nested before/after packages. |
 | `rl_env/specs/clinical_evidence_closed_loop_transition.example.json` | Compiler-generated synthetic HOLD-to-ADVANCE evidence-workflow transition. |
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machine schema for reviewer approval, ontology identity, and exact ordered endpoint/safety bindings. |
@@ -246,6 +258,7 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | `tests/test_target_identity_continuity.py` | Namespace rebinding/collision, candidate-link, and matched target-symbol continuity coverage. |
 | `tests/test_context_identity_continuity.py` | Disease/model rebinding, assay namespace collision, unknown-candidate evidence, and strict schema-example coverage. |
 | `tests/test_clinical_identity_continuity.py` | Intervention rebinding, trial namespace collision, unknown-intervention linkage, support removal, and strict schema-example coverage. |
+| `tests/test_clinical_outcome_uncertainty.py` | CR1 and paired-covariance math, fixed strata, chronology, exact coverage, known-overlap closure, non-estimable states, privacy, strict readers, and atomic CLI coverage. |
 | `scripts/audit/github_release_file_audit.py` | Fail-closed scan for required files, forbidden paths, large files, secrets, and machine-local breadcrumbs. |
 | `scripts/audit/validate_hf_release_package.py` | Dataset-card/manifest validation plus exact built-package file, hash, source-commit, and source-tree checks. |
 | `scripts/audit/validate_public_launch_packet.py` | Launch packet and public-state metadata validation. |
@@ -280,7 +293,8 @@ GitHub-only. The Hub subset contains the dependency-free pinned-evidence adapter
 bounded planner, semantic mappings, stage and program runners, matched and sealed evaluators, typed execution
 core, source capture/compiler code, target, discovery-context, clinical-intervention, and ingestion
 schemas, ChEMBL functional-activity and PubMed disease-model extractors, tests, documentation,
-ClinicalTrials.gov endpoint/safety trial-design extractor, aggregate evidence, audit code, and the `benchmark/`
+ClinicalTrials.gov endpoint/safety trial-design extractor, dependence-aware clinical outcome
+uncertainty protocols and aggregate synthetic reports, aggregate evidence, audit code, and the `benchmark/`
 scorer. Raw
 source bundles, real provider review jobs, and ingestion runs are not included.
 

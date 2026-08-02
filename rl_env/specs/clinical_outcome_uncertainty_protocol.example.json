@@ -1,0 +1,27 @@
+{
+  "integrity_sha256": "280001a5287941ce36f5f3c52a9bb123c537500d63903d111fd7f0f7267eb315",
+  "protocol": {
+    "cohort_report_fingerprint": "fbb96d09fad8cbe8e38443d2907e95b94a38f639a1dfa66d65d0d6411fa37872",
+    "confidence_level": 0.95,
+    "dependence_manifest_fingerprint": "3fd7c1f41ffb66cbfcc3a5d2962ecb955c431a9f4f28d9713271d8fd0ed54f48",
+    "finite_cluster_correction_required": true,
+    "maximum_evaluable_cluster_fraction": 0.5,
+    "metadata": {
+      "dataset_scope": "synthetic one-unit fail-closed contract test"
+    },
+    "method_id": "adds.cluster-robust-clinical-outcome-uncertainty.cr1.v1",
+    "minimum_clusters_overall": 2,
+    "minimum_clusters_per_stratum": 2,
+    "outcome_protocol_fingerprint": "69bf56014455a8818b370818683a2a27662c671194c9f7e825c317535dceb156",
+    "outcome_protocol_id": "synthetic-clinical-outcome-evaluation",
+    "paired_cluster_covariance_required": true,
+    "protocol_id": "synthetic-clinical-outcome-uncertainty",
+    "registered_on": "2025-01-03",
+    "stratification_dimensions": [
+      "stage",
+      "endpoint_family"
+    ],
+    "version": "1.0.0"
+  },
+  "schema_version": "adds.clinical-outcome-uncertainty-protocol.v1"
+}

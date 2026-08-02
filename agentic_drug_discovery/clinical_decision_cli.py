@@ -35,6 +35,17 @@ from .clinical_outcome_evaluation import (
     evaluate_clinical_outcomes,
     validate_clinical_outcome_evaluation_report,
 )
+from .clinical_outcome_uncertainty import (
+    ClinicalOutcomeUncertaintyError,
+    clinical_outcome_dependence_manifest_from_json,
+    clinical_outcome_uncertainty_protocol_from_json,
+    clinical_outcome_uncertainty_report_envelope,
+    clinical_outcome_uncertainty_report_from_json,
+    clinical_outcome_uncertainty_summary,
+    clinical_outcome_uncertainty_validation_summary,
+    evaluate_clinical_outcome_uncertainty,
+    validate_clinical_outcome_uncertainty_report,
+)
 from .clinical_workflow import (
     ClinicalEvidenceWorkflowError,
     clinical_decision_config_from_json,
@@ -120,6 +131,24 @@ def _outcome_manifest(path: str):
 def _outcome_report(path: str):
     return clinical_outcome_report_from_json(
         _read_text(path, "clinical outcome evaluation report")
+    )
+
+
+def _dependence_manifest(path: str):
+    return clinical_outcome_dependence_manifest_from_json(
+        _read_text(path, "clinical outcome dependence manifest")
+    )
+
+
+def _uncertainty_protocol(path: str):
+    return clinical_outcome_uncertainty_protocol_from_json(
+        _read_text(path, "clinical outcome uncertainty protocol")
+    )
+
+
+def _uncertainty_report(path: str):
+    return clinical_outcome_uncertainty_report_from_json(
+        _read_text(path, "clinical outcome uncertainty report")
     )
 
 
@@ -325,12 +354,117 @@ def _summarize_outcomes(args: argparse.Namespace) -> int:
     return 0
 
 
+def _evaluate_uncertainty(args: argparse.Namespace) -> int:
+    _require_single_stdin(
+        (
+            args.uncertainty_protocol,
+            args.dependence_manifest,
+            args.outcome_protocol,
+            args.cohort_report,
+            *args.submission,
+            args.outcomes,
+            args.outcome_report,
+        )
+    )
+    report = evaluate_clinical_outcome_uncertainty(
+        _uncertainty_protocol(args.uncertainty_protocol),
+        _dependence_manifest(args.dependence_manifest),
+        _outcome_protocol(args.outcome_protocol),
+        _cohort_report(args.cohort_report),
+        tuple(_prediction_submission(path) for path in args.submission),
+        _outcome_manifest(args.outcomes),
+        _outcome_report(args.outcome_report),
+    )
+    envelope = clinical_outcome_uncertainty_report_envelope(report)
+    if args.output == "-":
+        _print_json(envelope)
+        return 0
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    if not output.is_file():
+        raise OSError("clinical outcome uncertainty report output was not created")
+    _print_json(
+        clinical_outcome_uncertainty_validation_summary(
+            report,
+            scope="full_dependence_and_private_outcome_replay",
+        )
+    )
+    return 0
+
+
+def _validate_uncertainty(args: argparse.Namespace) -> int:
+    replay_paths = (
+        args.uncertainty_protocol,
+        args.dependence_manifest,
+        args.outcome_protocol,
+        args.cohort_report,
+        args.outcomes,
+        args.outcome_report,
+    )
+    replay_requested = any(path is not None for path in replay_paths) or bool(
+        args.submission
+    )
+    if replay_requested and (
+        any(path is None for path in replay_paths) or not args.submission
+    ):
+        raise ValueError(
+            "full uncertainty replay requires --uncertainty-protocol, "
+            "--dependence-manifest, --outcome-protocol, --cohort-report, "
+            "--submission, --outcomes, and --outcome-report"
+        )
+    _require_single_stdin(
+        (
+            args.report,
+            args.uncertainty_protocol,
+            args.dependence_manifest,
+            args.outcome_protocol,
+            args.cohort_report,
+            *args.submission,
+            args.outcomes,
+            args.outcome_report,
+        )
+    )
+    report = _uncertainty_report(args.report)
+    failures: tuple[str, ...] = ()
+    scope = "integrity_and_aggregate_consistency"
+    if replay_requested:
+        assert args.uncertainty_protocol is not None
+        assert args.dependence_manifest is not None
+        assert args.outcome_protocol is not None
+        assert args.cohort_report is not None
+        assert args.outcomes is not None
+        assert args.outcome_report is not None
+        failures = validate_clinical_outcome_uncertainty_report(
+            report,
+            _uncertainty_protocol(args.uncertainty_protocol),
+            _dependence_manifest(args.dependence_manifest),
+            _outcome_protocol(args.outcome_protocol),
+            _cohort_report(args.cohort_report),
+            tuple(_prediction_submission(path) for path in args.submission),
+            _outcome_manifest(args.outcomes),
+            _outcome_report(args.outcome_report),
+        )
+        scope = "full_dependence_and_private_outcome_replay"
+    _print_json(
+        clinical_outcome_uncertainty_validation_summary(
+            report,
+            failures=failures,
+            scope=scope,
+        )
+    )
+    return 0 if not failures else 1
+
+
+def _summarize_uncertainty(args: argparse.Namespace) -> int:
+    _print_json(clinical_outcome_uncertainty_summary(_uncertainty_report(args.report)))
+    return 0
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Compile, validate, and summarize provenance-preserving clinical "
             "evidence packages, outcome-free cohort diagnostics, and "
-            "preregistered aggregate outcome evaluations."
+            "preregistered aggregate outcome and cluster-aware uncertainty evaluations."
         )
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -549,6 +683,98 @@ def _parser() -> argparse.ArgumentParser:
         help="Aggregate clinical outcome report JSON path, or '-' for stdin.",
     )
     summarize_outcome_parser.set_defaults(handler=_summarize_outcomes)
+
+    uncertainty_parser = subparsers.add_parser(
+        "evaluate-uncertainty",
+        help=(
+            "Evaluate cluster-robust uncertainty over a frozen aggregate "
+            "clinical outcome report."
+        ),
+    )
+    uncertainty_parser.add_argument(
+        "--uncertainty-protocol",
+        required=True,
+        help="Preregistered uncertainty protocol JSON path, or '-' for stdin.",
+    )
+    uncertainty_parser.add_argument(
+        "--dependence-manifest",
+        required=True,
+        help="Evaluator-only dependence manifest JSON path.",
+    )
+    uncertainty_parser.add_argument(
+        "--outcome-protocol",
+        required=True,
+        help="Bound clinical outcome protocol JSON path.",
+    )
+    uncertainty_parser.add_argument(
+        "--cohort-report",
+        required=True,
+        help="Bound outcome-free clinical cohort report JSON path.",
+    )
+    uncertainty_parser.add_argument(
+        "--submission",
+        action="append",
+        required=True,
+        help="Frozen prediction submission; repeat once per cohort policy.",
+    )
+    uncertainty_parser.add_argument(
+        "--outcomes",
+        required=True,
+        help="Evaluator-only clinical outcome manifest JSON path.",
+    )
+    uncertainty_parser.add_argument(
+        "--outcome-report",
+        required=True,
+        help="Reproducible aggregate clinical outcome report JSON path.",
+    )
+    uncertainty_parser.add_argument(
+        "--output",
+        required=True,
+        help="Aggregate uncertainty report JSON path, or '-' for stdout.",
+    )
+    uncertainty_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing aggregate uncertainty report.",
+    )
+    uncertainty_parser.set_defaults(handler=_evaluate_uncertainty)
+
+    validate_uncertainty_parser = subparsers.add_parser(
+        "validate-uncertainty",
+        help=(
+            "Validate uncertainty-report integrity, with optional full "
+            "dependence and private-outcome replay."
+        ),
+    )
+    validate_uncertainty_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate uncertainty report JSON path, or '-' for stdin.",
+    )
+    validate_uncertainty_parser.add_argument("--uncertainty-protocol")
+    validate_uncertainty_parser.add_argument("--dependence-manifest")
+    validate_uncertainty_parser.add_argument("--outcome-protocol")
+    validate_uncertainty_parser.add_argument("--cohort-report")
+    validate_uncertainty_parser.add_argument(
+        "--submission",
+        action="append",
+        default=[],
+        help="Prediction submission JSON; repeat once per policy for full replay.",
+    )
+    validate_uncertainty_parser.add_argument("--outcomes")
+    validate_uncertainty_parser.add_argument("--outcome-report")
+    validate_uncertainty_parser.set_defaults(handler=_validate_uncertainty)
+
+    summarize_uncertainty_parser = subparsers.add_parser(
+        "summarize-uncertainty",
+        help="Emit compact cluster diagnostics and aggregate uncertainty metrics.",
+    )
+    summarize_uncertainty_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate uncertainty report JSON path, or '-' for stdin.",
+    )
+    summarize_uncertainty_parser.set_defaults(handler=_summarize_uncertainty)
     return parser
 
 
@@ -560,6 +786,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ClinicalDecisionError,
         ClinicalCohortError,
         ClinicalOutcomeEvaluationError,
+        ClinicalOutcomeUncertaintyError,
         ClinicalEvidenceWorkflowError,
         OSError,
         RecordParseError,

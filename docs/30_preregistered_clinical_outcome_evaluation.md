@@ -162,7 +162,9 @@ forecasts. Its Brier and calibration values demonstrate deterministic computatio
 fixture cannot establish calibration, discrimination, clinical utility, or policy superiority,
 even though its development protocol sets a minimum of one so every code path is executable.
 
-The real research milestone is a preregistered, source-audited, multi-program board with enough
-evaluable units per stage and endpoint family to estimate calibration under cluster-aware
-uncertainty. Protocol registration and submissions must occur before outcome access; real outcome
-manifests and per-unit scores remain under independent evaluator control.
+`docs/31_cluster_robust_clinical_outcome_uncertainty.md` implements the dependence-aware analysis
+contract: preregistered evaluator-only cluster assignments, known-overlap closure, stage-by-endpoint
+diagnostics, CR1 intervals for additive metrics, and paired Brier covariance. Its public example
+fails closed because one cluster cannot support an interval. The real milestone remains a
+prospectively designed multi-program board; real outcome/dependence manifests and unit scores stay
+under independent evaluator control.

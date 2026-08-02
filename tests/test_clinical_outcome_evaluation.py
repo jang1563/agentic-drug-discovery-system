@@ -37,6 +37,7 @@ from agentic_drug_discovery import (
     clinical_outcome_report_envelope,
     clinical_outcome_report_from_dict,
     clinical_outcome_report_from_json,
+    clinical_outcome_validation_summary,
     clinical_prediction_submission_envelope,
     clinical_prediction_submission_from_dict,
     clinical_prediction_submission_from_json,
@@ -225,8 +226,14 @@ class ClinicalOutcomeEvaluationTests(unittest.TestCase):
             Draft202012Validator(schemas[1]).validate(submission)
         Draft202012Validator(schemas[2]).validate(outcome_example)
         Draft202012Validator(schemas[3]).validate(report_example)
-        Draft202012Validator(schemas[4]).validate(
-            clinical_outcome_evaluation_summary(self.report)
+        summary_validator = Draft202012Validator(schemas[4])
+        summary_validator.validate(clinical_outcome_evaluation_summary(self.report))
+        summary_validator.validate(clinical_outcome_validation_summary(self.report))
+        summary_validator.validate(
+            clinical_outcome_validation_summary(
+                self.report,
+                failures=("synthetic_replay_failure",),
+            )
         )
 
         self.assertEqual(
