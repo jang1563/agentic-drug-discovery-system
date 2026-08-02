@@ -1,6 +1,7 @@
 ---
 pretty_name: Agentic Drug Discovery System
 license: apache-2.0
+viewer: false
 language:
   - en
 tags:

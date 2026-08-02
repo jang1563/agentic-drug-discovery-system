@@ -26,6 +26,7 @@ EXPECTED_GITATTRIBUTES = """*.7z filter=lfs diff=lfs merge=lfs -text
 REQUIRED_CARD_FIELDS = {
     "pretty_name": "Agentic Drug Discovery System",
     "license": "apache-2.0",
+    "viewer": "false",
 }
 
 REQUIRED_MANIFEST_VALUES = {
