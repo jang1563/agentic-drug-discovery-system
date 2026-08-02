@@ -133,6 +133,14 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   clusters, and cluster uncertainty that rounds to zero at the reporting precision, produce
   explicit no-interval states. Public reports never expose unit assignments or cluster-level
   results, and a computed interval is not a validated coverage or superiority claim.
+- A prospective clustered-board design layer freezes synthetic stage-by-endpoint cluster-size,
+  prevalence, ICC, MCAR evaluability, prediction-pattern, candidate-gate, seed, and Monte Carlo
+  commitments. Its beta-binomial Polya urn has analytic truths for all additive outcome metrics
+  and invokes the production CR1 diagnostic/estimator plus an explicit IID reference on every
+  replicate. Aggregate reports preserve bias, RMSE, empirical and reported uncertainty, interval
+  width, Wilson-bounded coverage/yield, and all no-interval statuses without replicate/unit
+  records. Candidate gates are screened against declared lower-bound targets but never selected
+  automatically, and the synthetic example does not justify a real-board threshold.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -250,9 +258,12 @@ Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are 
    not coerce the current CDC and PubMed populations into one context.
 2. Use the shipped preregistration and curation contract to build a real independently curated,
    stage-stratified held-out board; no such real-board result is claimed yet.
-3. Join preregistered clinical package predictions to independently curated outcomes so the shipped
+3. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, and residual-dependence ranges
+   for a real multi-program clinical board; extend the shipped simulator to stress informative
+   missingness and select stage-by-endpoint gates before submissions.
+4. Join preregistered clinical package predictions to independently curated outcomes so the shipped
    cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
    selective risk and calibration.
-4. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
-5. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
+5. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
+6. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
    operator reauthorization above the shipped deterministic resume/replan control layer.

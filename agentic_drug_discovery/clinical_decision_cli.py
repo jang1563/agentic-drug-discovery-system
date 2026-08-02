@@ -35,6 +35,16 @@ from .clinical_outcome_evaluation import (
     evaluate_clinical_outcomes,
     validate_clinical_outcome_evaluation_report,
 )
+from .clinical_outcome_design_simulation import (
+    ClinicalOutcomeDesignSimulationError,
+    clinical_outcome_design_protocol_from_json,
+    clinical_outcome_design_report_envelope,
+    clinical_outcome_design_report_from_json,
+    clinical_outcome_design_simulation_summary,
+    clinical_outcome_design_simulation_validation_summary,
+    simulate_clinical_outcome_uncertainty_design,
+    validate_clinical_outcome_design_simulation_report,
+)
 from .clinical_outcome_uncertainty import (
     ClinicalOutcomeUncertaintyError,
     clinical_outcome_dependence_manifest_from_json,
@@ -149,6 +159,18 @@ def _uncertainty_protocol(path: str):
 def _uncertainty_report(path: str):
     return clinical_outcome_uncertainty_report_from_json(
         _read_text(path, "clinical outcome uncertainty report")
+    )
+
+
+def _design_protocol(path: str):
+    return clinical_outcome_design_protocol_from_json(
+        _read_text(path, "clinical outcome design simulation protocol")
+    )
+
+
+def _design_report(path: str):
+    return clinical_outcome_design_report_from_json(
+        _read_text(path, "clinical outcome design simulation report")
     )
 
 
@@ -459,12 +481,59 @@ def _summarize_uncertainty(args: argparse.Namespace) -> int:
     return 0
 
 
+def _simulate_uncertainty_design(args: argparse.Namespace) -> int:
+    report = simulate_clinical_outcome_uncertainty_design(
+        _design_protocol(args.protocol)
+    )
+    envelope = clinical_outcome_design_report_envelope(report)
+    if args.output == "-":
+        _print_json(envelope)
+        return 0
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    if not output.is_file():
+        raise OSError("clinical outcome design simulation output was not created")
+    _print_json(
+        clinical_outcome_design_simulation_validation_summary(
+            report,
+            scope="full_protocol_and_seeded_simulation_replay",
+        )
+    )
+    return 0
+
+
+def _validate_uncertainty_design(args: argparse.Namespace) -> int:
+    _require_single_stdin((args.report, args.protocol))
+    report = _design_report(args.report)
+    failures: tuple[str, ...] = ()
+    scope = "integrity_and_aggregate_consistency"
+    if args.protocol is not None:
+        failures = validate_clinical_outcome_design_simulation_report(
+            report,
+            _design_protocol(args.protocol),
+        )
+        scope = "full_protocol_and_seeded_simulation_replay"
+    _print_json(
+        clinical_outcome_design_simulation_validation_summary(
+            report,
+            failures=failures,
+            scope=scope,
+        )
+    )
+    return 0 if not failures else 1
+
+
+def _summarize_uncertainty_design(args: argparse.Namespace) -> int:
+    _print_json(clinical_outcome_design_simulation_summary(_design_report(args.report)))
+    return 0
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Compile, validate, and summarize provenance-preserving clinical "
             "evidence packages, outcome-free cohort diagnostics, and "
-            "preregistered aggregate outcome and cluster-aware uncertainty evaluations."
+            "preregistered aggregate outcome, cluster-aware uncertainty, and "
+            "prospective uncertainty-design simulations."
         )
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -775,6 +844,59 @@ def _parser() -> argparse.ArgumentParser:
         help="Aggregate uncertainty report JSON path, or '-' for stdin.",
     )
     summarize_uncertainty_parser.set_defaults(handler=_summarize_uncertainty)
+
+    simulate_design_parser = subparsers.add_parser(
+        "simulate-uncertainty-design",
+        help=(
+            "Run deterministic prospective coverage and interval-yield simulations "
+            "for candidate cluster gates."
+        ),
+    )
+    simulate_design_parser.add_argument(
+        "--protocol",
+        required=True,
+        help="Prospective design simulation protocol JSON path, or '-' for stdin.",
+    )
+    simulate_design_parser.add_argument(
+        "--output",
+        required=True,
+        help="Aggregate design simulation report JSON path, or '-' for stdout.",
+    )
+    simulate_design_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing design simulation report.",
+    )
+    simulate_design_parser.set_defaults(handler=_simulate_uncertainty_design)
+
+    validate_design_parser = subparsers.add_parser(
+        "validate-uncertainty-design",
+        help=(
+            "Validate aggregate design-report integrity, with optional full "
+            "protocol and seeded simulation replay."
+        ),
+    )
+    validate_design_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate design simulation report JSON path, or '-' for stdin.",
+    )
+    validate_design_parser.add_argument(
+        "--protocol",
+        help="Design simulation protocol JSON for full deterministic replay.",
+    )
+    validate_design_parser.set_defaults(handler=_validate_uncertainty_design)
+
+    summarize_design_parser = subparsers.add_parser(
+        "summarize-uncertainty-design",
+        help="Emit compact coverage, width, attrition, and candidate-gate results.",
+    )
+    summarize_design_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate design simulation report JSON path, or '-' for stdin.",
+    )
+    summarize_design_parser.set_defaults(handler=_summarize_uncertainty_design)
     return parser
 
 
@@ -786,6 +908,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ClinicalDecisionError,
         ClinicalCohortError,
         ClinicalOutcomeEvaluationError,
+        ClinicalOutcomeDesignSimulationError,
         ClinicalOutcomeUncertaintyError,
         ClinicalEvidenceWorkflowError,
         OSError,

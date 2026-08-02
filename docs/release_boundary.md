@@ -29,6 +29,8 @@ This repository uses a conservative boundary so that future public or collaborat
   labels, source-level outcome assessments, curator materials, and per-unit evaluation results.
 - Real clinical outcome dependence manifests, unit-to-cluster assignments, cluster-level results,
   and unit-level uncertainty contributions.
+- Real clinical outcome design scenarios, pilot parameter elicitation, replicate-level simulation
+  records, and non-public gate-selection deliberations.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -54,6 +56,8 @@ These may become release assets after a separate audit:
 - Preregistered synthetic uncertainty protocols, evaluator-style synthetic dependence manifests,
   and aggregate cluster-robust reports after dependence, small-cluster, privacy, and interpretation
   review.
+- Synthetic prospective clustered-board design protocols and aggregate reports after parameter,
+  workload, replay, Monte Carlo precision, privacy, and no-automatic-selection review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -140,6 +144,13 @@ evaluator-only. Public reports contain only aggregate diagnostics and CR1 interv
 for insufficient or dominant clusters, or cluster uncertainty that rounds to zero at the reporting
 precision, and do not claim validated coverage or policy superiority. The checked-in one-cluster
 example intentionally emits no interval.
+
+The prospective clustered-board design layer ships implementation, strict protocol/report/summary
+schemas, bounded deterministic replay, documentation, tests, and aggregate synthetic examples.
+Real scenario ranges can reveal expected program counts, attrition, prevalence, dependence, and
+internal acceptance criteria; replicate records and gate deliberations can expose unreleased study
+plans. They remain outside Git and Hugging Face. Public examples contain fixed synthetic
+parameters and aggregate Monte Carlo results only, and no candidate gate is selected automatically.
 
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution

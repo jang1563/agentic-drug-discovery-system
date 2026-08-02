@@ -165,9 +165,14 @@ mathematical and no-pooling regression test, not performance evidence.
 These sources motivate the design but do not validate this repository's synthetic board or select
 a universal minimum cluster count.
 
-## Next Research Milestone
+## Prospective Design Layer
 
-The next step is prospective board design rather than another metric: register a multi-program
-cohort, define dependence clusters before forecasts, simulate coverage under plausible cluster
-sizes and outcome prevalence, and choose stage-by-endpoint sample targets from those simulations.
-Only then should the evaluator open a real outcome window and publish aggregate intervals.
+`docs/32_prospective_clinical_outcome_design_simulation.md` now implements the next synthetic
+research step: deterministic beta-binomial coverage, interval-yield, imbalance, prevalence, ICC,
+and candidate-gate simulation that calls the production CR1 estimator directly. Its checked-in
+results are design diagnostics, not a selected universal threshold.
+
+The remaining milestone is to elicit outcome-blind scenario ranges for a real multi-program board,
+stress informative missingness and residual dependence, select stage-by-endpoint targets from a
+higher-precision simulation, and transfer those values into a public uncertainty protocol before
+forecasts are accepted.

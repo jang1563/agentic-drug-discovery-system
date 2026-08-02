@@ -38,6 +38,10 @@ The public GitHub surface includes:
   schemas/readers, public protocol and aggregate-report examples, tests, and documentation. Real
   dependence manifests, unit-to-cluster assignments, cluster-level diagnostics, and unit-level
   metric contributions remain evaluator-only.
+- The prospective clustered-board design surface is limited to bounded implementation, strict
+  protocol/report/summary schemas and readers, aggregate synthetic examples, tests, and
+  documentation. Real scenario ranges, pilot elicitation, replicate records, and gate-selection
+  deliberations remain excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 
@@ -59,6 +63,8 @@ The following stay outside Git unless a separate audited release package explici
   source assessments, curator materials, and per-unit clinical outcome evaluations.
 - Real clinical outcome dependence manifests, unit-to-cluster assignments, cluster-level results,
   and unit-level uncertainty contributions.
+- Real clinical outcome design scenarios, pilot parameter elicitation, replicate-level simulation
+  records, and non-public gate-selection deliberations.
 - Local working notes, imported research packs, private opportunity records, and machine-specific source maps.
 - Scheduler logs, root-level run outputs, generated caches, Python bytecode, and large experiment directories.
 - Credentials, API tokens, `.env*`, key material, local account names, absolute local paths, and internal compute-location breadcrumbs.

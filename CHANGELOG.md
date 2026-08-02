@@ -4,6 +4,16 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added deterministic prospective design simulation for clustered clinical outcome boards. Public
+  protocols freeze stage-by-endpoint cluster sizes, prevalence, ICC, MCAR evaluability, fixed
+  prediction patterns, candidate cluster gates, Monte Carlo precision, and RNG streams. The
+  beta-binomial Polya-urn generator has analytic targets for all eight additive outcome metrics
+  and calls the production CR1 diagnostic/estimator for every replicate, with an IID
+  unit-as-cluster reference. Aggregate reports retain bias, RMSE, empirical and reported
+  uncertainty, interval width, Wilson-bounded coverage/yield, and fail-closed status counts while
+  excluding replicate/unit records and automatic gate selection. Strict schemas/readers, exact
+  replay, bounded workload, CLI paths, synchronized synthetic results, and high-ICC
+  undercoverage/floor/dominance/attrition tests are included. No real board threshold is selected.
 - Added dependence-aware uncertainty for preregistered clinical outcome evaluation. A public
   protocol binds the exact outcome protocol, cohort report, private dependence-manifest commitment,
   cluster construction, confidence level, cluster floor, dominance threshold, fixed
