@@ -708,6 +708,7 @@ def main() -> int:
                         "CLINICAL_OUTCOME_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_DESIGN_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_PATTERN_MIXTURE_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_PATTERN_MIXTURE_UNCERTAINTY_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_STRESS_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION, "
                         "clinical_cohort_manifest_from_json, "
@@ -717,6 +718,8 @@ def main() -> int:
                         "clinical_outcome_design_report_from_json, "
                         "clinical_outcome_pattern_mixture_protocol_from_json, "
                         "clinical_outcome_pattern_mixture_report_from_json, "
+                        "clinical_outcome_pattern_mixture_uncertainty_protocol_from_json, "
+                        "clinical_outcome_pattern_mixture_uncertainty_report_from_json, "
                         "clinical_outcome_stress_protocol_from_json, "
                         "clinical_outcome_stress_report_from_json, "
                         "clinical_outcome_protocol_from_json, "
@@ -731,6 +734,7 @@ def main() -> int:
                         "evaluate_clinical_outcomes, "
                         "evaluate_clinical_outcome_uncertainty, "
                         "analyze_clinical_outcome_pattern_mixture, "
+                        "analyze_clinical_outcome_pattern_mixture_uncertainty, "
                         "simulate_clinical_outcome_uncertainty_design, "
                         "simulate_clinical_outcome_stress, "
                         "execute_clinical_evidence_batch, "
@@ -742,6 +746,7 @@ def main() -> int:
                         "validate_clinical_outcome_uncertainty_report, "
                         "validate_clinical_outcome_design_simulation_report, "
                         "validate_clinical_outcome_pattern_mixture_report, "
+                        "validate_clinical_outcome_pattern_mixture_uncertainty_report, "
                         "validate_clinical_outcome_stress_simulation_report"
                         "); "
                         "assert CLINICAL_CLOSED_LOOP_SCHEMA_VERSION == "
@@ -754,6 +759,8 @@ def main() -> int:
                         "'adds.clinical-outcome-design-simulation-report.v1'; "
                         "assert CLINICAL_OUTCOME_PATTERN_MIXTURE_REPORT_SCHEMA_VERSION == "
                         "'adds.clinical-outcome-pattern-mixture-report.v1'; "
+                        "assert CLINICAL_OUTCOME_PATTERN_MIXTURE_UNCERTAINTY_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-pattern-mixture-uncertainty-report.v1'; "
                         "assert CLINICAL_OUTCOME_STRESS_REPORT_SCHEMA_VERSION == "
                         "'adds.clinical-outcome-stress-simulation-report.v1'; "
                         "assert CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION == "
@@ -766,6 +773,8 @@ def main() -> int:
                         "clinical_outcome_design_report_from_json, "
                         "clinical_outcome_pattern_mixture_protocol_from_json, "
                         "clinical_outcome_pattern_mixture_report_from_json, "
+                        "clinical_outcome_pattern_mixture_uncertainty_protocol_from_json, "
+                        "clinical_outcome_pattern_mixture_uncertainty_report_from_json, "
                         "clinical_outcome_stress_protocol_from_json, "
                         "clinical_outcome_stress_report_from_json, "
                         "clinical_outcome_protocol_from_json, "
@@ -780,6 +789,7 @@ def main() -> int:
                         "evaluate_clinical_outcomes, "
                         "evaluate_clinical_outcome_uncertainty, "
                         "analyze_clinical_outcome_pattern_mixture, "
+                        "analyze_clinical_outcome_pattern_mixture_uncertainty, "
                         "simulate_clinical_outcome_uncertainty_design, "
                         "simulate_clinical_outcome_stress, "
                         "execute_clinical_evidence_batch, "
@@ -791,6 +801,7 @@ def main() -> int:
                         "validate_clinical_outcome_uncertainty_report, "
                         "validate_clinical_outcome_design_simulation_report, "
                         "validate_clinical_outcome_pattern_mixture_report, "
+                        "validate_clinical_outcome_pattern_mixture_uncertainty_report, "
                         "validate_clinical_outcome_stress_simulation_report"
                         ")); "
                         "print('public-api-ok')"
@@ -1542,16 +1553,16 @@ def main() -> int:
 
     if public_api.stdout.strip() != "public-api-ok":
         return fail(
-            "sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture, and "
-            "closed-loop APIs were not importable from the wheel"
+            "sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture/"
+            "pattern-mixture-uncertainty, and closed-loop APIs were not importable from the wheel"
         )
 
     print(
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
         "CDC MMWR, NCBI PubMed, ChEMBL activity, PubMed disease-model, and "
         "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
-        "plus sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture, and "
-        "closed-loop API smoke tests "
+        "plus sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture/"
+        "pattern-mixture-uncertainty, and closed-loop API smoke tests "
         f"completed for {wheels[0].name}"
     )
     return 0

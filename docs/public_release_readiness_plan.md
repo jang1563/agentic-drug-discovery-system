@@ -50,6 +50,11 @@ The public GitHub surface includes:
   implementation, strict protocol/report/summary schemas and readers, aggregate synthetic
   examples, tests, and documentation. Real log-IMOR elicitation, prediction-stratum working
   records, latent outcomes, and correction-selection deliberations remain excluded.
+- The pattern-mixture sampling-uncertainty surface is limited to exact stress/protocol/report-bound
+  implementation, strict protocol/report/summary schemas and readers, aggregate synthetic
+  cluster-jackknife examples, tests, and documentation. Real dependence manifests, cluster
+  influence records, elicited log-IMOR ranges, and replicate- or cluster-level results remain
+  excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 

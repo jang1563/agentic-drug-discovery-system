@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added dependence-closed delete-one-cluster jackknife uncertainty around every fixed point of the
+  preregistered binary log-IMOR pattern-mixture curve. A second protocol binds the exact stress
+  protocol, sensitivity protocol, and point report before replaying the complete nonlinear
+  estimator. Aggregate reports separate model-functional coverage from truth-aligned population
+  recovery, retain Wilson and continuous Monte Carlo bounds, compare nominal with declared
+  dependence-closed clusters, and fail closed for inadequate cluster structure or leave-one-out
+  support. The synthetic study shows hidden-linkage undercoverage and recovery after oracle
+  closure without inferring dependence, selecting a clinical log-IMOR range, or exposing
+  unit-, cluster-, or replicate-level records.
 - Added preregistered prediction-stratified binary log-IMOR pattern-mixture sensitivity analysis.
   Exact stress-protocol binding reuses the deterministic outcome/evaluability streams while
   operational grid estimates consume only aggregate total/evaluable/favorable counts within fixed

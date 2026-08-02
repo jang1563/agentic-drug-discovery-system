@@ -65,6 +65,7 @@
       "bounded clinical selected-action execution with compact payload-free receipts, reviewer-only verifier refresh, single-use action ids, exact source-rejoined gap transitions, strict two-state validation, and a compiler-generated synthetic example",
       "role-neutral cutoff-safe sealed evaluation contracts, externally separated labels and commitments, strict policy submissions, aggregate policy comparison, and synthetic fail-closed tests",
       "preregistered held-out cohort, label, curator-roster, outcome-window, stage-minimum, and metric contracts; evaluator-only independent curation validation; aggregate Wilson intervals, action coverage, selective risk, and synthetic fail-closed tests",
+      "preregistered package-bound clinical outcome evaluation, dependence-audited CR1 uncertainty, clustered-board design simulation, informative-evaluability and residual-dependence stress analysis, binary log-IMOR pattern-mixture sensitivity, and dependence-closed cluster-jackknife calibration with aggregate synthetic evidence and explicit claim boundaries",
       "eight-stage provider-backed program fixture with one cumulative execution ledger, typed identity continuity through regulatory review, and exact accepted-packet replay",
       "benchmark/ scorer and tests for the separately hosted clinical-trial decision dataset",
       "audit scripts and GitHub Actions release audit"
@@ -84,6 +85,7 @@
       "credentials and key material",
       "machine-local paths",
       "model weights",
+      "real pattern-mixture sampling-uncertainty protocols, dependence manifests, cluster influence records, elicited log-IMOR ranges, and replicate- or cluster-level results",
       "pooled meta-analysis, benefit-risk scores, clinical acceptability judgments, or treatment recommendations"
     ]
   },
@@ -187,6 +189,7 @@
     "docs/32_prospective_clinical_outcome_design_simulation.md",
     "docs/33_informative_evaluability_and_dependence_stress.md",
     "docs/34_preregistered_pattern_mixture_sensitivity.md",
+    "docs/35_dependence_closed_pattern_mixture_uncertainty.md",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
@@ -200,6 +203,7 @@
     "agentic_drug_discovery/heldout_evaluation.py",
     "agentic_drug_discovery/clinical_decision.py",
     "agentic_drug_discovery/clinical_outcome_pattern_mixture.py",
+    "agentic_drug_discovery/clinical_outcome_pattern_mixture_uncertainty.py",
     "agentic_drug_discovery/clinical_closed_loop.py",
     "adapters/pinned_evidence_adapter.py",
     "adapters/clinical_synthesis_adapter.py",
@@ -212,6 +216,9 @@
     "rl_env/specs/clinical_evidence_closed_loop_transition.schema.json",
     "rl_env/specs/clinical_outcome_pattern_mixture_protocol.schema.json",
     "rl_env/specs/clinical_outcome_pattern_mixture_report.schema.json",
+    "rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_protocol.schema.json",
+    "rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_report.schema.json",
+    "rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_summary.schema.json",
     "rl_env/specs/clinical_evidence_closed_loop_transition.example.json",
     "rl_env/specs/clinical_endpoint_mapping.schema.json",
     "rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json",
@@ -233,6 +240,7 @@
     "tests/test_sealed_evaluation.py",
     "tests/test_heldout_evaluation.py",
     "tests/test_clinical_outcome_pattern_mixture.py",
+    "tests/test_clinical_outcome_pattern_mixture_uncertainty.py",
     "scripts/audit/validate_policy_evaluation_snapshot.py",
     "tests/",
     "benchmark/"

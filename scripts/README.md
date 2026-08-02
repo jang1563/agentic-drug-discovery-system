@@ -20,8 +20,11 @@ Script groups:
   binding, and `clinical_synthesis.harmonize_benefit_risk` accepts only that exact mapping before
   recompiling all measurements and provenance from committed trial-design state.
 - `adds-clinical-evidence` is installed from
-  `agentic_drug_discovery.clinical_decision_cli`. It compiles a decision package only from a
-  synthesis present in accepted packet history, validates integrity with optional state replay,
-  and emits a compact JSON summary for people and automation.
+  `agentic_drug_discovery.clinical_decision_cli`. It compiles and validates decision packages and
+  cohort diagnostics, then exposes atomic analyze/validate/summarize command trios for package-
+  bound outcomes, CR1 uncertainty, prospective design, informative-evaluability stress, binary
+  log-IMOR pattern-mixture sensitivity, and dependence-closed cluster-jackknife calibration.
+  Validation commands perform exact bound replay; summary commands emit compact JSON for people
+  and automation.
 
 Execution and sync wrappers are kept outside Git until they are sanitized for a specific release target. Scripts should avoid embedding secrets, machine-specific paths, or local account names.

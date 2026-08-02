@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
-  "as_of_date": "2026-08-02",
+  "as_of_date": "2026-08-03",
   "purpose": "Aggregate-only claim ledger for the public research artifact",
   "provenance": {
     "source_commit": "See upload_manifest.json for each Hugging Face build",
@@ -195,12 +195,50 @@
     "real_board_validation": false,
     "scope": "Prediction-stratified binary log-IMOR recovery diagnostic under exact synthetic evaluability and dependence scenarios"
   },
+  "clinical_pattern_mixture_uncertainty_synthetic": {
+    "synthetic_only": true,
+    "uncertainty_protocol_fingerprint": "9152583c61349513987ef45d6553d9e2157b723dcc57e9640a26d8d4c498bea4",
+    "uncertainty_report_fingerprint": "931b7bb9cc06f1949085e9763bb2f93671a8a29547c1036cc31d0245cc02b045",
+    "stress_protocol_fingerprint": "1d195038b03855af77d96c1ee9f98cc28c8671ae89e678c9e199423162fb53f1",
+    "pattern_mixture_protocol_fingerprint": "0ff618274428cdd9db271b0f361bfa18c9334852bbcbc3f4bc0af1405f2ea3e2",
+    "pattern_mixture_report_fingerprint": "6a9376fb5c64fb449ee0972ea95430db780dfa6d830bf065b5996cb71092094f",
+    "replicates_per_scenario": 1000,
+    "scenario_count": 3,
+    "dependence_closed_grid_metric_cells": 240,
+    "all_preregistered_research_targets_met": true,
+    "coverage_target": 0.87,
+    "minimum_dependence_closed_model_functional_coverage_lower": 0.874464643411,
+    "hidden_linkage_nominal_minimum_coverage_lower_range": [
+      0.830759928423,
+      0.83287629787
+    ],
+    "dependence_closed_standard_error_calibration_ratio_range": [
+      0.94450326421,
+      1.018672399552
+    ],
+    "hidden_linkage_anchor_coverage_gain_range": [
+      0.054,
+      0.06
+    ],
+    "hidden_linkage_anchor_standard_error_ratio_range": [
+      1.239623771263,
+      1.254565979018
+    ],
+    "interval_yield": 1.0,
+    "interval_yield_wilson_lower": 0.996173241514,
+    "automatic_dependence_closure_included": false,
+    "identification_and_sampling_uncertainty_combined": false,
+    "population_coverage_interpretable_away_from_true_shift": false,
+    "real_board_validation": false,
+    "scope": "Delete-one-cluster sampling calibration for fixed binary log-IMOR model functionals under exact synthetic dependence blocks"
+  },
   "limitations": [
     "Aggregate results are not substitutes for released per-record evidence or independent replication",
     "Repeated observations on a fixed slice are not independent samples",
     "The SCD slice is one disease and eight assets after one gold reconciliation",
     "Target-ID cross-stage evidence is label-adjacent and evaluated on the same constructed set",
     "No result is clinical validation, an approval prediction, or autonomous discovery capability evidence",
-    "Pattern-mixture point-envelope inclusion is not a sampling-coverage guarantee and the public log-IMOR grid is not elicited for a real clinical board"
+    "Pattern-mixture point-envelope inclusion is not a sampling-coverage guarantee and the public log-IMOR grid is not elicited for a real clinical board",
+    "Pattern-mixture cluster-jackknife passage assumes evaluator-declared synthetic dependence blocks and does not discover or validate real clinical dependence"
   ]
 }

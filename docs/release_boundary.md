@@ -68,6 +68,10 @@ These may become release assets after a separate audit:
 - Preregistered synthetic prediction-stratified binary pattern-mixture protocols and aggregate
   reports after exact stress binding, log-IMOR grid, sparse-support, recovery, identification,
   replay, privacy, and no-automatic-selection review.
+- Preregistered synthetic pattern-mixture cluster-jackknife protocols and aggregate reports after
+  exact stress/protocol/report binding, all-grid calibration, Monte Carlo precision,
+  nominal/dependence-closed comparison, fail-closed support, privacy, and no-automatic-closure
+  review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -77,7 +81,8 @@ The GitHub repo should be treated as a sanitized executable control plane and pr
 The scientific claim anchors are `docs/12_scd_vertical_slice.md`,
 `docs/13_target_id_governance_node.md`,
 `docs/33_informative_evaluability_and_dependence_stress.md`,
-`docs/34_preregistered_pattern_mixture_sensitivity.md`, and
+`docs/34_preregistered_pattern_mixture_sensitivity.md`,
+`docs/35_dependence_closed_pattern_mixture_uncertainty.md`, and
 `docs/public_evidence_summary.json`. The sealed policy-evaluation aggregate is separately anchored
 by `docs/25_cutoff_safe_policy_evaluation.md` and
 `docs/retrospective_policy_evaluation_snapshot.json`;
@@ -178,6 +183,13 @@ working records and latent outcomes remain outside Git and Hugging Face. Point s
 envelopes are neither sampling intervals nor confidence sets, and synthetic target passage does
 not validate a real board or missingness range.
 
+The pattern-mixture sampling-uncertainty layer ships an exact stress/protocol/report-bound
+protocol, aggregate report and summary schemas, strict readers, deterministic replay, tests, and a
+synthetic cluster-jackknife calibration study. Real dependence manifests, log-IMOR elicitation,
+cluster influence working records, and replicate-level intervals remain outside Git and Hugging
+Face. Public output contains no unit or cluster roster, never discovers dependence automatically,
+and keeps fixed-assumption sampling intervals separate from identification uncertainty.
+
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution
 batches, provider requests/outcomes, compact receipts, reviewer refresh records, before/after
@@ -206,7 +218,8 @@ external until separate scientific and release-boundary approval.
   compiler, clinical cohort diagnostics and synthetic matched-policy report, the bounded clinical
   closed-loop compiler and synthetic transition, dependence-aware clinical outcome uncertainty
   protocols, informative-evaluability stress analysis, prediction-stratified pattern-mixture
-  sensitivity, aggregate synthetic reports, tests, schemas, aggregate evidence, audit code, and
+  sensitivity and dependence-closed cluster-jackknife calibration, aggregate synthetic reports,
+  tests, schemas, aggregate evidence, audit code, and
   the `benchmark/` scorer.
 - `benchmark/` scores the separately hosted
   `jang1563/clinical-trial-decision-benchmark` dataset. Its data rows and

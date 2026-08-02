@@ -65,6 +65,16 @@ from .clinical_outcome_pattern_mixture import (
     clinical_outcome_pattern_mixture_validation_summary,
     validate_clinical_outcome_pattern_mixture_report,
 )
+from .clinical_outcome_pattern_mixture_uncertainty import (
+    ClinicalOutcomePatternMixtureUncertaintyError,
+    analyze_clinical_outcome_pattern_mixture_uncertainty,
+    clinical_outcome_pattern_mixture_uncertainty_protocol_from_json,
+    clinical_outcome_pattern_mixture_uncertainty_report_envelope,
+    clinical_outcome_pattern_mixture_uncertainty_report_from_json,
+    clinical_outcome_pattern_mixture_uncertainty_summary,
+    clinical_outcome_pattern_mixture_uncertainty_validation_summary,
+    validate_clinical_outcome_pattern_mixture_uncertainty_report,
+)
 from .clinical_outcome_uncertainty import (
     ClinicalOutcomeUncertaintyError,
     clinical_outcome_dependence_manifest_from_json,
@@ -215,6 +225,18 @@ def _pattern_mixture_protocol(path: str):
 def _pattern_mixture_report(path: str):
     return clinical_outcome_pattern_mixture_report_from_json(
         _read_text(path, "clinical outcome pattern-mixture report")
+    )
+
+
+def _pattern_mixture_uncertainty_protocol(path: str):
+    return clinical_outcome_pattern_mixture_uncertainty_protocol_from_json(
+        _read_text(path, "clinical outcome pattern-mixture uncertainty protocol")
+    )
+
+
+def _pattern_mixture_uncertainty_report(path: str):
+    return clinical_outcome_pattern_mixture_uncertainty_report_from_json(
+        _read_text(path, "clinical outcome pattern-mixture uncertainty report")
     )
 
 
@@ -668,6 +690,79 @@ def _summarize_pattern_mixture(args: argparse.Namespace) -> int:
     _print_json(
         clinical_outcome_pattern_mixture_summary(
             _pattern_mixture_report(args.report)
+        )
+    )
+    return 0
+
+
+def _analyze_pattern_mixture_uncertainty(args: argparse.Namespace) -> int:
+    _require_single_stdin(
+        (args.protocol, args.pattern_mixture_protocol, args.stress_protocol)
+    )
+    report = analyze_clinical_outcome_pattern_mixture_uncertainty(
+        _pattern_mixture_uncertainty_protocol(args.protocol),
+        _pattern_mixture_protocol(args.pattern_mixture_protocol),
+        _stress_protocol(args.stress_protocol),
+    )
+    envelope = clinical_outcome_pattern_mixture_uncertainty_report_envelope(report)
+    if args.output == "-":
+        _print_json(envelope)
+        return 0
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    if not output.is_file():
+        raise OSError(
+            "clinical outcome pattern-mixture uncertainty output was not created"
+        )
+    _print_json(
+        clinical_outcome_pattern_mixture_uncertainty_validation_summary(
+            report,
+            scope="full_protocol_and_seeded_stress_replay",
+        )
+    )
+    return 0
+
+
+def _validate_pattern_mixture_uncertainty(args: argparse.Namespace) -> int:
+    replay_inputs = (
+        args.protocol,
+        args.pattern_mixture_protocol,
+        args.stress_protocol,
+    )
+    if any(item is not None for item in replay_inputs) and not all(
+        item is not None for item in replay_inputs
+    ):
+        raise ValueError(
+            "full pattern-mixture uncertainty replay requires --protocol, "
+            "--pattern-mixture-protocol, and --stress-protocol"
+        )
+    _require_single_stdin((args.report, *replay_inputs))
+    report = _pattern_mixture_uncertainty_report(args.report)
+    failures: tuple[str, ...] = ()
+    scope = "integrity_and_aggregate_consistency"
+    if args.protocol is not None:
+        assert args.pattern_mixture_protocol is not None
+        assert args.stress_protocol is not None
+        failures = validate_clinical_outcome_pattern_mixture_uncertainty_report(
+            report,
+            _pattern_mixture_uncertainty_protocol(args.protocol),
+            _pattern_mixture_protocol(args.pattern_mixture_protocol),
+            _stress_protocol(args.stress_protocol),
+        )
+        scope = "full_protocol_and_seeded_stress_replay"
+    _print_json(
+        clinical_outcome_pattern_mixture_uncertainty_validation_summary(
+            report,
+            failures=failures,
+            scope=scope,
+        )
+    )
+    return 0 if not failures else 1
+
+
+def _summarize_pattern_mixture_uncertainty(args: argparse.Namespace) -> int:
+    _print_json(
+        clinical_outcome_pattern_mixture_uncertainty_summary(
+            _pattern_mixture_uncertainty_report(args.report)
         )
     )
     return 0
@@ -1164,6 +1259,83 @@ def _parser() -> argparse.ArgumentParser:
     summarize_pattern_mixture_parser.set_defaults(
         handler=_summarize_pattern_mixture
     )
+
+    pattern_uncertainty_parser = subparsers.add_parser(
+        "analyze-pattern-mixture-uncertainty",
+        help=(
+            "Add nominal and dependence-closed delete-one-cluster jackknife "
+            "intervals to a bound pattern-mixture sensitivity study."
+        ),
+    )
+    pattern_uncertainty_parser.add_argument(
+        "--protocol",
+        required=True,
+        help="Pattern-mixture uncertainty protocol JSON path, or '-' for stdin.",
+    )
+    pattern_uncertainty_parser.add_argument(
+        "--pattern-mixture-protocol",
+        required=True,
+        help="Bound pattern-mixture protocol JSON path, or '-' for stdin.",
+    )
+    pattern_uncertainty_parser.add_argument(
+        "--stress-protocol",
+        required=True,
+        help="Bound stress simulation protocol JSON path, or '-' for stdin.",
+    )
+    pattern_uncertainty_parser.add_argument(
+        "--output",
+        required=True,
+        help="Aggregate pattern-mixture uncertainty report path, or '-' for stdout.",
+    )
+    pattern_uncertainty_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing pattern-mixture uncertainty report.",
+    )
+    pattern_uncertainty_parser.set_defaults(
+        handler=_analyze_pattern_mixture_uncertainty
+    )
+
+    validate_pattern_uncertainty_parser = subparsers.add_parser(
+        "validate-pattern-mixture-uncertainty",
+        help=(
+            "Validate pattern-mixture uncertainty integrity, with optional "
+            "complete seeded replay."
+        ),
+    )
+    validate_pattern_uncertainty_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate pattern-mixture uncertainty report path, or '-' for stdin.",
+    )
+    validate_pattern_uncertainty_parser.add_argument(
+        "--protocol",
+        help="Pattern-mixture uncertainty protocol for complete replay.",
+    )
+    validate_pattern_uncertainty_parser.add_argument(
+        "--pattern-mixture-protocol",
+        help="Bound pattern-mixture protocol for complete replay.",
+    )
+    validate_pattern_uncertainty_parser.add_argument(
+        "--stress-protocol",
+        help="Bound stress simulation protocol for complete replay.",
+    )
+    validate_pattern_uncertainty_parser.set_defaults(
+        handler=_validate_pattern_mixture_uncertainty
+    )
+
+    summarize_pattern_uncertainty_parser = subparsers.add_parser(
+        "summarize-pattern-mixture-uncertainty",
+        help="Emit compact jackknife calibration and dependence-closure comparisons.",
+    )
+    summarize_pattern_uncertainty_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate pattern-mixture uncertainty report path, or '-' for stdin.",
+    )
+    summarize_pattern_uncertainty_parser.set_defaults(
+        handler=_summarize_pattern_mixture_uncertainty
+    )
     return parser
 
 
@@ -1178,6 +1350,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ClinicalOutcomeDesignSimulationError,
         ClinicalOutcomeStressSimulationError,
         ClinicalOutcomePatternMixtureError,
+        ClinicalOutcomePatternMixtureUncertaintyError,
         ClinicalOutcomeUncertaintyError,
         ClinicalEvidenceWorkflowError,
         OSError,

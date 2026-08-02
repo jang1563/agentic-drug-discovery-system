@@ -101,11 +101,11 @@ envelope contains the fixed population truth. This rate is descriptive. Each env
 the missingness assumption and contains no sampling-uncertainty interval, so its inclusion rate is
 not expected to equal the nominal confidence level and is not a pass/fail criterion.
 
-The report instead gates the Monte Carlo mean sensitivity curve and separately reports recovery
+The v1 report instead gates the Monte Carlo mean sensitivity curve and separately reports recovery
 bias. Wilson bounds apply to simulation rates, not to the continuous bias or mean-envelope-width
-gates; those continuous gates do not yet carry Monte Carlo confidence bounds. Adding both
-Monte Carlo precision bounds and cluster-robust sampling intervals around sensitivity-adjusted
-estimates is future work.
+gates in this artifact. The fingerprint-bound follow-on in
+`docs/35_dependence_closed_pattern_mixture_uncertainty.md` now adds Monte Carlo bias bounds and
+dependence-closed cluster-jackknife sampling intervals without changing this v1 claim boundary.
 
 ## Public Synthetic Study
 
@@ -187,15 +187,10 @@ adds-clinical-evidence summarize-pattern-mixture \
 These references motivate the parameterization and claim boundary. They do not validate this
 repository's synthetic grid, prediction strata, thresholds, or scenario probabilities.
 
-## Next Research Step
+## Follow-On Research
 
-The next empirical layer is outcome-blind scenario elicitation and a real-data feasibility study:
-
-1. define clinically interpretable anchors for log-IMOR ranges before outcome access;
-2. add dependence-closed cluster jackknife or delta-method sampling intervals around every grid
-   estimate;
-3. add Monte Carlo uncertainty bounds for continuous recovery-bias and envelope-width gates;
-4. test stratum-specific and partially pooled log-IMOR assumptions;
-5. add structured block loss and non-nested dependence scenarios; and
-6. run a locked multi-program ClinicalTrials.gov/PubMed board with independent endpoint and safety
-   adjudication.
+The immediate sampling-uncertainty milestone is implemented and documented in
+`docs/35_dependence_closed_pattern_mixture_uncertainty.md`. Remaining work is outcome-blind
+log-IMOR elicitation, unequal-cluster and multi-way-dependence methods, stratum-specific or partially
+pooled sensitivity assumptions, and a locked multi-program endpoint/safety board with independent
+adjudication.

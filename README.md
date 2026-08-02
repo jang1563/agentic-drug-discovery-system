@@ -33,6 +33,8 @@ deterministic informative-evaluability and residual-dependence stress analysis t
 population/evaluable targets and nominal/dependence-closed clustering,
 preregistered prediction-stratified binary log-IMOR sensitivity analysis that separates
 evaluable calibration, truth-aligned recovery, and population identification,
+fingerprint-bound nominal/dependence-closed delete-one-cluster jackknife calibration around every
+fixed log-IMOR model functional,
 and bounded source-preserving
 ClinicalTrials.gov harmonization with typed missing-measurement gaps. No real
 independently curated clinical outcome result is claimed.
@@ -74,6 +76,8 @@ adds-clinical-evidence summarize-uncertainty-stress \
   --report rl_env/specs/clinical_outcome_stress_simulation_report.example.json
 adds-clinical-evidence summarize-pattern-mixture \
   --report rl_env/specs/clinical_outcome_pattern_mixture_report.example.json
+adds-clinical-evidence summarize-pattern-mixture-uncertainty \
+  --report rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_report.example.json
 python -m pytest -q
 ```
 
@@ -197,6 +201,22 @@ The prediction-stratified binary log-IMOR analysis uses only observable total/ev
 counts for operational grid estimates. Synthetic truth is retained only for aggregate recovery
 diagnostics. Point-envelope inclusion is descriptive, not confidence coverage; no missingness
 range is learned or selected from hidden outcomes.
+
+Add sampling uncertainty at every fixed grid assumption while comparing nominal and declared
+dependence-closed resampling units:
+
+```bash
+adds-clinical-evidence analyze-pattern-mixture-uncertainty \
+  --protocol rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_protocol.example.json \
+  --pattern-mixture-protocol rl_env/specs/clinical_outcome_pattern_mixture_protocol.example.json \
+  --stress-protocol rl_env/specs/clinical_outcome_stress_simulation_protocol.example.json \
+  --output clinical-outcome-pattern-mixture-uncertainty-report.json
+```
+
+The public synthetic report reproduces the prior point curve exactly, retains Monte Carlo bounds
+for continuous bias and width summaries, and shows hidden-linkage undercoverage under nominal
+clustering with recovery after dependence closure. It never infers the closure or combines the
+sampling interval with the identifying-assumption grid into one confidence set.
 
 ## Core Question
 
@@ -380,6 +400,13 @@ system or full trajectory atlas described in the roadmap. Honest status:
   calibration, evaluator-only truth-aligned recovery, and mean-curve population identification;
   sparse or single-class reference strata fail closed. The point envelope contains no sampling
   interval and no real range is selected automatically.
+- **Dependence-closed pattern-mixture sampling uncertainty:** A second protocol binds the exact
+  stress protocol, sensitivity protocol, and point report before adding delete-one-cluster
+  jackknife intervals to every fixed log-IMOR model functional. Nominal and declared
+  dependence-closed modes are compared; continuous bias/width summaries carry Monte Carlo bounds;
+  cluster-count, enrolled-unit dominance, leave-one-out support, and rounded-zero variance fail
+  closed. Synthetic oracle closure is never discovered automatically and is not a real-board
+  coverage guarantee.
 - **Built & audited:** source-derived label authority plus scoped construct-validity controls;
   callable tool/DB adapters
   (ClinicalTrials.gov, openFDA, Open Targets, ChEMBL, EMA EPAR) and multi-stage flow orchestrators;
@@ -390,7 +417,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   cohort manifest/report/summary, clinical outcome protocol/prediction/outcome/report/summary,
   clinical outcome dependence/uncertainty protocol/report/summary, prospective clustered-board
   design protocol/report/summary, informative-evaluability/dependence stress
-  protocol/report/summary, pattern-mixture sensitivity protocol/report/summary, and
+  protocol/report/summary, pattern-mixture sensitivity protocol/report/summary,
+  pattern-mixture cluster-jackknife protocol/report/summary, and
   closed-loop transition,
   sealed-board, label-vault, policy-submission, policy-report, held-out protocol,
   curator-manifest, and stage-stratified report schemas;
@@ -481,6 +509,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
   `docs/34_preregistered_pattern_mixture_sensitivity.md` defines the binary log-IMOR parameter,
   prediction-stratum observability contract, matched recovery gates, point-envelope interpretation,
   aggregate public results, and the no-automatic-range-selection boundary.
+  `docs/35_dependence_closed_pattern_mixture_uncertainty.md` defines fixed-assumption model
+  functionals, delete-one-cluster variance, all-grid calibration gates, nominal/closed comparison,
+  Monte Carlo precision bounds, and the no-automatic-closure boundary.
   `docs/public_evidence_summary.json` is the
   aggregate claim ledger.
 - `agentic_drug_discovery/`: typed state, bounded planning, tool execution, semantic promotion,
@@ -564,6 +595,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/32_prospective_clinical_outcome_design_simulation.md` | Humans + agents | Beta-binomial design scenarios, analytic truths, CR1/IID coverage comparison, Monte Carlo target checks, and gate-selection boundaries. |
 | `docs/33_informative_evaluability_and_dependence_stress.md` | Humans + agents | Outcome-dependent evaluability, analytic estimand shifts, residual dependence blocks, nominal/oracle-closure CR1 comparison, and correction boundaries. |
 | `docs/34_preregistered_pattern_mixture_sensitivity.md` | Humans + agents | Prediction-stratified binary log-IMOR sensitivity, observable aggregate inputs, matched estimand/recovery gates, public synthetic results, and claim boundaries. |
+| `docs/35_dependence_closed_pattern_mixture_uncertainty.md` | Humans + agents | Conditional sampling intervals across fixed log-IMOR assumptions, dependence-closed jackknife calibration, Monte Carlo precision, public synthetic results, and claim boundaries. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Machines + reviewers | Aggregate 4-pair/8-episode policy metrics, payload-free artifact hashes, real gate outcomes, and limitations. |
 | `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
 | `agentic_drug_discovery/` | Developers + agents | Bounded planning, typed execution, semantic promotion, multi-stage stop semantics, matched evaluation, replay, and verifier-gated transitions. |
@@ -583,7 +615,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinical_outcome_design_simulation.py` | Developers + evaluators | Bounded deterministic beta-binomial simulation, analytic metric truths, production-estimator parity, IID diagnostics, candidate-gate evaluation, strict readers, and replay. |
 | `agentic_drug_discovery/clinical_outcome_stress_simulation.py` | Developers + evaluators | Bounded block-Polya simulation, analytic population/evaluable truths, nominal/dependence-closed CR1 comparison, strict claim boundaries, readers, summaries, and replay. |
 | `agentic_drug_discovery/clinical_outcome_pattern_mixture.py` | Developers + evaluators | Exact stress-bound binary log-IMOR grids, prediction-stratified aggregate estimators, matched calibration/recovery/identification diagnostics, strict readers, summaries, and replay. |
-| `agentic_drug_discovery/clinical_decision_cli.py` | Users + agents | JSON CLI for package/cohort compilation, outcome and uncertainty evaluation, prospective design, stress, and pattern-mixture simulation, full replay validation, and compact summaries. |
+| `agentic_drug_discovery/clinical_outcome_pattern_mixture_uncertainty.py` | Developers + evaluators | Exact point-report binding, nominal/dependence-closed delete-one-cluster jackknife inference, model-functional coverage, Monte Carlo bounds, fail-closed statuses, strict readers, summaries, and replay. |
+| `agentic_drug_discovery/clinical_decision_cli.py` | Users + agents | JSON CLI for package/cohort compilation, outcome and uncertainty evaluation, prospective design, stress, pattern-mixture, and cluster-jackknife simulation, full replay validation, and compact summaries. |
 | `agentic_drug_discovery/clinical_closed_loop.py` | Developers + agents | State-bound selected-action batches, bounded runner integration, compact execution and refresh receipts, source-rejoined transition compilation, strict readers, and two-state replay validation. |
 | `agentic_drug_discovery/policy.py` | Developers + agents | Deterministic policy rules, queue-bound replanning, checkpoint integrity, and exact resume orchestration. |
 | `agentic_drug_discovery/sealed_evaluation.py` | Developers + agents | Role-neutral sealed boards, salted label vaults, fingerprint-bound submissions, strict envelope readers, and matched policy metrics. |
@@ -620,6 +653,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `rl_env/specs/clinical_outcome_pattern_mixture_protocol.schema.json` | Machines + reviewers | JSON Schema for exact stress binding, binary log-IMOR grid, analyzability, mean-envelope width, bias, method, and metadata commitments; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_outcome_pattern_mixture_report.schema.json` | Machines + reviewers | JSON Schema for aggregate prediction-stratified grid curves, estimand bias, recovery, point-envelope inclusion, fail-closed support, and fixed claim boundaries; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_outcome_pattern_mixture_summary.schema.json` | Humans + machines | JSON Schema for compact log-IMOR, analyzability, matched recovery, identification, and claim-boundary diagnostics. |
+| `rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_protocol.schema.json` | Machines + reviewers | JSON Schema for exact stress/protocol/report binding, fixed analysis modes, cluster gates, coverage/yield/SE targets, and the preregistered closure anchor; the adjacent example is synthetic. |
+| `rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_report.schema.json` | Machines + reviewers | JSON Schema for aggregate grid-level model-functional coverage, population recovery, Monte Carlo bounds, jackknife diagnostics, closure comparisons, and fixed claim boundaries; the adjacent example is synthetic. |
+| `rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_summary.schema.json` | Humans + machines | JSON Schema for compact all-grid calibration, truth-aligned coverage, dependence-closure response, and claim-boundary diagnostics. |
 | `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json` | Machines + agents | JSON Schema for integrity-bound execution batches, compact provider/reviewer receipts, exact source rejoin, costs, gap transitions, and nested before/after decision packages; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machines + agents | JSON Schema for approved reviewer, ontology identity, and exact endpoint/safety bindings without measurements. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machines + reviewers | JSON Schema for the exact set of single-trial jobs, receipts, and mapping-bound identities. |
@@ -647,6 +683,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `tests/test_clinical_outcome_design_simulation.py` | Users + evaluators + CI | Analytic truths, exact seeded replay, ICC undercoverage stress, floor/dominance/attrition states, strict bounds/readers, privacy, schemas, and atomic simulation CLI coverage. |
 | `tests/test_clinical_outcome_stress_simulation.py` | Users + evaluators + CI | Analytic estimand shifts, informative-selection bias, hidden-linkage undercoverage, oracle-closure recovery, combined stress, exact partitions, strict readers, privacy, schemas, and atomic CLI coverage. |
 | `tests/test_clinical_outcome_pattern_mixture.py` | Users + evaluators + CI | Binary log-IMOR recovery, grid-exclusion controls, MCAR, sparse-stratum failure, exact binding/replay, strict readers, privacy, schemas, and atomic CLI coverage. |
+| `tests/test_clinical_outcome_pattern_mixture_uncertainty.py` | Users + evaluators + CI | All-grid jackknife calibration, hidden-linkage repair, independent-mode equivalence, model-functional/population separation, Monte Carlo bounds, fail-closed states, exact replay, privacy, schemas, and CLI coverage. |
 | `tests/test_clinical_portfolio.py` | Developers + reviewers | Multi-job/bundle extraction, schema, source-disjointness, payload removal, and atomic no-output failure controls. |
 | `benchmark/` | Users + CI | Installable scorer and tests for the linked external clinical-trial decision dataset. |
 | `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |

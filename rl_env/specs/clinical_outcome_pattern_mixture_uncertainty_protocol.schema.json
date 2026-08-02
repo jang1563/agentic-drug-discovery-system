@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_protocol.schema.json",
+  "title": "Clinical Outcome Pattern-Mixture Uncertainty Protocol",
+  "description": "Preregistered nominal-versus-dependence-closed cluster-jackknife calibration protocol bound to exact stress and pattern-mixture artifacts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "protocol"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-outcome-pattern-mixture-uncertainty-protocol.v1"
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "version",
+        "registered_on",
+        "stress_protocol_fingerprint",
+        "pattern_mixture_protocol_fingerprint",
+        "pattern_mixture_report_fingerprint",
+        "analysis_modes",
+        "confidence_level",
+        "monte_carlo_confidence_level",
+        "coverage_tolerance",
+        "minimum_interval_yield",
+        "minimum_clusters",
+        "maximum_cluster_unit_fraction",
+        "maximum_standard_error_calibration_deviation",
+        "closure_anchor_metric",
+        "minimum_hidden_linkage_coverage_gain",
+        "minimum_hidden_linkage_standard_error_ratio",
+        "method_id",
+        "metadata"
+      ],
+      "properties": {
+        "protocol_id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "registered_on": {"type": "string", "format": "date"},
+        "stress_protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "pattern_mixture_protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "pattern_mixture_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "analysis_modes": {
+          "const": ["nominal_clusters", "dependence_closed_clusters"]
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0.5,
+          "exclusiveMaximum": 1.0
+        },
+        "monte_carlo_confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0.5,
+          "exclusiveMaximum": 1.0
+        },
+        "coverage_tolerance": {
+          "type": "number",
+          "minimum": 0.0,
+          "exclusiveMaximum": 1.0
+        },
+        "minimum_interval_yield": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0
+        },
+        "minimum_clusters": {"type": "integer", "minimum": 3},
+        "maximum_cluster_unit_fraction": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "exclusiveMaximum": 1.0
+        },
+        "maximum_standard_error_calibration_deviation": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0
+        },
+        "closure_anchor_metric": {
+          "enum": [
+            "observed_favorable_rate",
+            "policy_a_brier_score",
+            "policy_b_brier_score",
+            "policy_a_calibration_in_the_large",
+            "policy_b_calibration_in_the_large",
+            "policy_a_classification_accuracy",
+            "policy_b_classification_accuracy",
+            "brier_difference_b_minus_a"
+          ]
+        },
+        "minimum_hidden_linkage_coverage_gain": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "minimum_hidden_linkage_standard_error_ratio": {
+          "type": "number",
+          "minimum": 1.0,
+          "maximum": 4.0
+        },
+        "method_id": {
+          "const": "adds.pattern-mixture.dependence-block-delete-one-jackknife.v1"
+        },
+        "metadata": {"type": "object"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
