@@ -31,6 +31,10 @@ This repository uses a conservative boundary so that future public or collaborat
   and unit-level uncertainty contributions.
 - Real clinical outcome design scenarios, pilot parameter elicitation, replicate-level simulation
   records, and non-public gate-selection deliberations.
+- Real clinical outcome stress scenarios, missingness-model elicitation, hidden-dependence working
+  records, replicate-level simulation records, and correction-selection deliberations.
+- Real clinical outcome sensitivity protocols, log-IMOR elicitation, prediction-stratum working
+  records, latent outcomes, and correction-selection deliberations.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -61,6 +65,9 @@ These may become release assets after a separate audit:
 - Synthetic informative-evaluability and dependence-closure stress protocols and aggregate reports
   after exact-partition, analytic-truth, replay, workload, privacy, and
   no-automatic-correction review.
+- Preregistered synthetic prediction-stratified binary pattern-mixture protocols and aggregate
+  reports after exact stress binding, log-IMOR grid, sparse-support, recovery, identification,
+  replay, privacy, and no-automatic-selection review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
@@ -68,7 +75,9 @@ These may become release assets after a separate audit:
 The GitHub repo should be treated as a sanitized executable control plane and protocol layer. Full episode banks, evaluator references, raw snapshots, working notes, and run outputs stay outside Git until an explicit release packaging step creates a separate audited artifact.
 
 The scientific claim anchors are `docs/12_scd_vertical_slice.md`,
-`docs/13_target_id_governance_node.md`, and
+`docs/13_target_id_governance_node.md`,
+`docs/33_informative_evaluability_and_dependence_stress.md`,
+`docs/34_preregistered_pattern_mixture_sensitivity.md`, and
 `docs/public_evidence_summary.json`. The sealed policy-evaluation aggregate is separately anchored
 by `docs/25_cutoff_safe_policy_evaluation.md` and
 `docs/retrospective_policy_evaluation_snapshot.json`;
@@ -155,6 +164,20 @@ internal acceptance criteria; replicate records and gate deliberations can expos
 plans. They remain outside Git and Hugging Face. Public examples contain fixed synthetic
 parameters and aggregate Monte Carlo results only, and no candidate gate is selected automatically.
 
+The informative-evaluability and dependence-closure stress layer ships bounded implementation,
+strict protocol/report/summary schemas, deterministic replay, documentation, tests, and aggregate
+synthetic examples. Real missingness-model elicitation, hidden-dependence working records,
+replicate records, and correction-selection deliberations remain outside Git and Hugging Face.
+Public examples compare declared population and evaluable estimands and do not select a correction
+automatically.
+
+The prediction-stratified binary pattern-mixture layer ships a stress-bound protocol, aggregate
+report and summary schemas, strict readers, deterministic replay, tests, and a synthetic recovery
+study. Real log-IMOR ranges require outcome-blind clinical elicitation. Real prediction-stratum
+working records and latent outcomes remain outside Git and Hugging Face. Point sensitivity
+envelopes are neither sampling intervals nor confidence sets, and synthetic target passage does
+not validate a real board or missingness range.
+
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution
 batches, provider requests/outcomes, compact receipts, reviewer refresh records, before/after
@@ -182,8 +205,9 @@ external until separate scientific and release-boundary approval.
   local clinical-synthesis adapters and bindings, the clinical evidence tensor and bounded-VOI
   compiler, clinical cohort diagnostics and synthetic matched-policy report, the bounded clinical
   closed-loop compiler and synthetic transition, dependence-aware clinical outcome uncertainty
-  protocols and aggregate synthetic reports, tests, schemas, aggregate evidence, audit code,
-  and the `benchmark/` scorer.
+  protocols, informative-evaluability stress analysis, prediction-stratified pattern-mixture
+  sensitivity, aggregate synthetic reports, tests, schemas, aggregate evidence, audit code, and
+  the `benchmark/` scorer.
 - `benchmark/` scores the separately hosted
   `jang1563/clinical-trial-decision-benchmark` dataset. Its data rows and
   Croissant metadata do not belong in the Agentic Drug Discovery System mirror.

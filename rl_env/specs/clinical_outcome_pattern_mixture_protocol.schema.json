@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_pattern_mixture_protocol.schema.json",
+  "title": "Clinical Outcome Pattern-Mixture Protocol",
+  "description": "Preregistered prediction-stratified binary log-IMOR sensitivity protocol bound to an exact clinical outcome stress protocol.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "protocol"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-outcome-pattern-mixture-protocol.v1"
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "version",
+        "registered_on",
+        "stress_protocol_fingerprint",
+        "log_imor_grid",
+        "monte_carlo_confidence_level",
+        "minimum_analyzable_rate",
+        "maximum_mean_identification_width",
+        "maximum_absolute_bias",
+        "method_id",
+        "metadata"
+      ],
+      "properties": {
+        "protocol_id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "registered_on": {"type": "string", "format": "date"},
+        "stress_protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "log_imor_grid": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 33,
+          "uniqueItems": true,
+          "items": {
+            "type": "number",
+            "minimum": -8.0,
+            "maximum": 8.0
+          }
+        },
+        "monte_carlo_confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0.5,
+          "exclusiveMaximum": 1.0
+        },
+        "minimum_analyzable_rate": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0
+        },
+        "maximum_mean_identification_width": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 2.0
+        },
+        "maximum_absolute_bias": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 2.0
+        },
+        "method_id": {
+          "const": "adds.pattern-mixture.binary-log-imor-prediction-stratified.v1"
+        },
+        "metadata": {"type": "object"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

@@ -148,6 +148,12 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   standard-error calibration, coverage, yield, and fail-closed states without unit/replicate
   records. Oracle closure neither discovers hidden links nor identifies or corrects a population
   estimand.
+- A preregistered pattern-mixture layer binds a prediction-stratified binary log-IMOR grid to the
+  exact stress protocol. Observable total/evaluable/favorable counts generate model-implied
+  population metrics across the fixed grid. Aggregate matched diagnostics separately test
+  evaluable calibration, evaluator-only truth-aligned recovery, and mean-curve population
+  identification; unsupported reference strata fail closed. Point-envelope inclusion is not
+  treated as sampling coverage, and no real missingness range is learned automatically.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -265,10 +271,10 @@ Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are 
    not coerce the current CDC and PubMed populations into one context.
 2. Use the shipped preregistration and curation contract to build a real independently curated,
    stage-stratified held-out board; no such real-board result is claimed yet.
-3. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, and residual-dependence ranges
-   for a real multi-program clinical board; extend the shipped stress simulator with correction
-   sensitivity, prevalence heterogeneity, cluster loss, and non-nested dependence before selecting
-   stage-by-endpoint gates.
+3. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, residual-dependence, and
+   log-IMOR ranges for a real multi-program clinical board. The first pattern-mixture correction
+   sensitivity layer is shipped; cluster-aware sampling intervals, prevalence heterogeneity,
+   cluster loss, and non-nested dependence remain before stage-by-endpoint gate selection.
 4. Join preregistered clinical package predictions to independently curated outcomes so the shipped
    cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
    selective risk and calibration.

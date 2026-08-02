@@ -14,7 +14,7 @@ The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
-  `docs/11_*` through `docs/31_*`, the payload-free preclinical, clinical provider, and sealed
+  `docs/11_*` through `docs/34_*`, the payload-free preclinical, clinical provider, and sealed
   policy-evaluation snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and
   this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
@@ -46,6 +46,10 @@ The public GitHub surface includes:
   implementation, strict protocol/report/summary schemas and readers, aggregate synthetic
   examples, tests, and documentation. Real missingness-model elicitation, hidden-dependence
   working records, replicate records, and correction-selection deliberations remain excluded.
+- The prediction-stratified binary pattern-mixture surface is limited to exact stress-bound
+  implementation, strict protocol/report/summary schemas and readers, aggregate synthetic
+  examples, tests, and documentation. Real log-IMOR elicitation, prediction-stratum working
+  records, latent outcomes, and correction-selection deliberations remain excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 
@@ -71,6 +75,8 @@ The following stay outside Git unless a separate audited release package explici
   records, and non-public gate-selection deliberations.
 - Real clinical outcome stress scenarios, missingness-model elicitation, hidden-dependence working
   records, replicate-level simulation records, and correction-selection deliberations.
+- Real clinical outcome sensitivity protocols, log-IMOR elicitation, prediction-stratum working
+  records, latent outcomes, and correction-selection deliberations.
 - Local working notes, imported research packs, private opportunity records, and machine-specific source maps.
 - Scheduler logs, root-level run outputs, generated caches, Python bytecode, and large experiment directories.
 - Credentials, API tokens, `.env*`, key material, local account names, absolute local paths, and internal compute-location breadcrumbs.

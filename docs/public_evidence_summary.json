@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
-  "as_of_date": "2026-07-12",
+  "as_of_date": "2026-08-02",
   "purpose": "Aggregate-only claim ledger for the public research artifact",
   "provenance": {
     "source_commit": "See upload_manifest.json for each Hugging Face build",
@@ -171,11 +171,36 @@
     "current_recommendation_claim": false,
     "source_refresh_required": true
   },
+  "clinical_pattern_mixture_synthetic": {
+    "synthetic_only": true,
+    "stress_protocol_fingerprint": "1d195038b03855af77d96c1ee9f98cc28c8671ae89e678c9e199423162fb53f1",
+    "stress_report_fingerprint": "e9fc814c2432434bb3b7b739fa35abd55177116fe6086bfb30a386dc920ef19d",
+    "pattern_mixture_protocol_fingerprint": "0ff618274428cdd9db271b0f361bfa18c9334852bbcbc3f4bc0af1405f2ea3e2",
+    "pattern_mixture_report_fingerprint": "6a9376fb5c64fb449ee0972ea95430db780dfa6d830bf065b5996cb71092094f",
+    "replicates_per_scenario": 1000,
+    "scenario_count": 3,
+    "all_preregistered_aggregate_research_targets_met": true,
+    "informative_scenario_true_log_imor": -2.397895272798,
+    "informative_scenario_true_imor": 0.090909090909,
+    "informative_naive_population_favorable_rate_bias_range": [
+      0.164663202706,
+      0.165347670346
+    ],
+    "informative_naive_evaluable_absolute_bias_maximum": 0.003855315813,
+    "informative_truth_aligned_population_absolute_bias_maximum": 0.001117388503,
+    "point_envelope_is_sampling_coverage": false,
+    "continuous_gate_monte_carlo_confidence_bounds_included": false,
+    "operational_grid_uses_latent_truth": false,
+    "real_log_imor_range_elicited": false,
+    "real_board_validation": false,
+    "scope": "Prediction-stratified binary log-IMOR recovery diagnostic under exact synthetic evaluability and dependence scenarios"
+  },
   "limitations": [
     "Aggregate results are not substitutes for released per-record evidence or independent replication",
     "Repeated observations on a fixed slice are not independent samples",
     "The SCD slice is one disease and eight assets after one gold reconciliation",
     "Target-ID cross-stage evidence is label-adjacent and evaluated on the same constructed set",
-    "No result is clinical validation, an approval prediction, or autonomous discovery capability evidence"
+    "No result is clinical validation, an approval prediction, or autonomous discovery capability evidence",
+    "Pattern-mixture point-envelope inclusion is not a sampling-coverage guarantee and the public log-IMOR grid is not elicited for a real clinical board"
   ]
 }

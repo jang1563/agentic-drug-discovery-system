@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added preregistered prediction-stratified binary log-IMOR pattern-mixture sensitivity analysis.
+  Exact stress-protocol binding reuses the deterministic outcome/evaluability streams while
+  operational grid estimates consume only aggregate total/evaluable/favorable counts within fixed
+  policy-prediction strata. Reports separate naive population drift, evaluable calibration,
+  evaluator-only truth-aligned recovery, and mean-curve population identification; empty or
+  single-class reference strata fail closed. Strict schemas/readers, exact replay, bounded work,
+  CLI paths, synchronized 1,000-replicate examples, grid-exclusion controls, and explicit
+  no-sampling-coverage/no-automatic-range-selection boundaries are included.
 - Added deterministic informative-evaluability and residual-dependence stress simulation for
   clustered clinical outcome boards. Exact synthetic dependence blocks can span nominal clusters,
   while separate favorable/unfavorable evaluability probabilities induce analytic

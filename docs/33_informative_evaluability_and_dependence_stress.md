@@ -212,14 +212,17 @@ parameters or imply that the oracle block partition is observable in practice.
 
 ## Next Research Step
 
-The next methodological layer should move from diagnosis to preregistered sensitivity analysis:
+`docs/34_preregistered_pattern_mixture_sensitivity.md` implements the first methodological layer
+that moves from diagnosis to preregistered sensitivity analysis. It adds a prediction-stratified
+binary log-IMOR grid, exact stress-protocol binding, matched population/evaluable recovery checks,
+and aggregate-only replay. The remaining work is:
 
-1. add a selection-model or pattern-mixture sensitivity grid that does not require using latent
-   labels in an operational correction;
-2. add inverse-probability-weighted and augmented estimators only when their observability,
+1. elicit clinically defensible sensitivity ranges before access to real outcomes;
+2. add cluster-aware sampling intervals around sensitivity-adjusted estimates;
+3. add inverse-probability-weighted and augmented estimators only when their observability,
    positivity, nuisance-model, and cluster-robust variance contracts are explicit;
-3. stress block-level cluster loss and structured prevalence heterogeneity;
-4. add non-nested or multi-way dependence scenarios rather than representing every structure as
+4. stress block-level cluster loss and structured prevalence heterogeneity;
+5. add non-nested or multi-way dependence scenarios rather than representing every structure as
    one oracle partition;
-5. require recovery tests to distinguish population-target identification assumptions from
-   evaluable-target calibration.
+6. move the preregistered contracts onto a locked real multi-program board with independent
+   endpoint and safety adjudication.
