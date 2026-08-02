@@ -195,12 +195,16 @@ or select a universal gate.
 
 ## Next Research Step
 
-Before a real outcome window opens:
+The first missingness and residual-dependence stress layer is now executable in
+`docs/33_informative_evaluability_and_dependence_stress.md`. It separates population from
+evaluable targets and nominal from oracle dependence-closed CR1 analysis.
+
+Before a real outcome window opens, the remaining design work is:
 
 1. Elicit plausible prevalence, ICC, evaluability, and cluster-size ranges from outcome-blind
    pilot evidence and the private dependence-manifest construction process.
-2. Add stress scenarios for informative missingness, prevalence heterogeneity, cluster loss, and
-   plausible cross-cluster leakage.
+2. Extend the executable stress layer to prevalence heterogeneity, cluster loss, non-nested
+   dependence, and correction-method sensitivity.
 3. Increase Monte Carlo replicates until target decisions are stable at the declared Wilson
    precision.
 4. Document why the chosen gate balances interval reliability and reportable-board yield for each

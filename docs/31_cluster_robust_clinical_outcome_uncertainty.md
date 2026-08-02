@@ -172,7 +172,11 @@ research step: deterministic beta-binomial coverage, interval-yield, imbalance, 
 and candidate-gate simulation that calls the production CR1 estimator directly. Its checked-in
 results are design diagnostics, not a selected universal threshold.
 
+`docs/33_informative_evaluability_and_dependence_stress.md` now adds outcome-dependent
+evaluability, exact synthetic cross-nominal dependence blocks, separate population/evaluable
+targets, and nominal versus oracle dependence-closed CR1 analysis.
+
 The remaining milestone is to elicit outcome-blind scenario ranges for a real multi-program board,
-stress informative missingness and residual dependence, select stage-by-endpoint targets from a
-higher-precision simulation, and transfer those values into a public uncertainty protocol before
+add correction-method sensitivity, prevalence heterogeneity, cluster loss, and non-nested
+dependence, then select stage-by-endpoint targets from a higher-precision simulation before
 forecasts are accepted.

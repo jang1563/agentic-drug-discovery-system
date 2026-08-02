@@ -10,7 +10,6 @@ import os
 import subprocess
 import sys
 import tempfile
-import venv
 from pathlib import Path
 
 
@@ -50,9 +49,11 @@ def main() -> int:
     clean_env = os.environ.copy()
     clean_env.pop("PYTHONPATH", None)
     with tempfile.TemporaryDirectory(prefix="agentic-core-wheel-smoke-") as temp_dir:
-        env_dir = Path(temp_dir) / "venv"
-        scripts_dir = env_dir / ("Scripts" if os.name == "nt" else "bin")
-        python = scripts_dir / ("python.exe" if os.name == "nt" else "python")
+        install_root = Path(temp_dir) / "wheel-site"
+        scripts_dir = install_root / ("Scripts" if os.name == "nt" else "bin")
+        python_command = (sys.executable, "-S")
+        clean_env["PYTHONPATH"] = str(install_root)
+        clean_env["PYTHONNOUSERSITE"] = "1"
         demo = scripts_dir / (
             "adds-control-plane-demo.exe"
             if os.name == "nt"
@@ -71,6 +72,28 @@ def main() -> int:
             if os.name == "nt"
             else "adds-pinned-ingestion"
         )
+        if os.name == "nt":
+            demo_command = (*python_command, "-m", "agentic_drug_discovery.demo")
+            bounded_demo_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.bounded_demo",
+            )
+            replay_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.replay_cli",
+            )
+            ingestion_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.ingestion_cli",
+            )
+        else:
+            demo_command = (*python_command, str(demo))
+            bounded_demo_command = (*python_command, str(bounded_demo))
+            replay_command = (*python_command, str(replay))
+            ingestion_command = (*python_command, str(ingestion))
 
         burden_source = Path(temp_dir) / "burden.json"
         gap_source = Path(temp_dir) / "gap.json"
@@ -650,17 +673,33 @@ def main() -> int:
         )
 
         try:
-            venv.EnvBuilder(with_pip=True, clear=True).create(env_dir)
+            # Install only the wheel into a source-disjoint, site-disabled runtime.
             subprocess.run(
-                [str(python), "-m", "pip", "install", "--no-deps", str(wheels[0])],
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--disable-pip-version-check",
+                    "--no-index",
+                    "--no-deps",
+                    "--target",
+                    str(install_root),
+                    str(wheels[0]),
+                ],
                 check=True,
                 capture_output=True,
                 text=True,
                 env=clean_env,
             )
+            for console_script in (demo, bounded_demo, replay, ingestion):
+                if not console_script.is_file():
+                    return fail(
+                        f"wheel console script is missing: {console_script.name}"
+                    )
             public_api = subprocess.run(
                 [
-                    str(python),
+                    *python_command,
                     "-c",
                     (
                         "from agentic_drug_discovery import ("
@@ -668,12 +707,15 @@ def main() -> int:
                         "CLINICAL_CLOSED_LOOP_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_DESIGN_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_STRESS_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION, "
                         "clinical_cohort_manifest_from_json, "
                         "clinical_cohort_report_from_json, "
                         "clinical_outcome_dependence_manifest_from_json, "
                         "clinical_outcome_design_protocol_from_json, "
                         "clinical_outcome_design_report_from_json, "
+                        "clinical_outcome_stress_protocol_from_json, "
+                        "clinical_outcome_stress_report_from_json, "
                         "clinical_outcome_protocol_from_json, "
                         "clinical_outcome_report_from_json, "
                         "clinical_outcome_uncertainty_protocol_from_json, "
@@ -686,6 +728,7 @@ def main() -> int:
                         "evaluate_clinical_outcomes, "
                         "evaluate_clinical_outcome_uncertainty, "
                         "simulate_clinical_outcome_uncertainty_design, "
+                        "simulate_clinical_outcome_stress, "
                         "execute_clinical_evidence_batch, "
                         "policy_evaluation_report_from_json, "
                         "policy_evaluation_submission_from_json, "
@@ -693,7 +736,8 @@ def main() -> int:
                         "sealed_evaluation_vault_from_json, "
                         "validate_clinical_evidence_transition, "
                         "validate_clinical_outcome_uncertainty_report, "
-                        "validate_clinical_outcome_design_simulation_report"
+                        "validate_clinical_outcome_design_simulation_report, "
+                        "validate_clinical_outcome_stress_simulation_report"
                         "); "
                         "assert CLINICAL_CLOSED_LOOP_SCHEMA_VERSION == "
                         "'adds.clinical-evidence-closed-loop-transition.v1'; "
@@ -703,6 +747,8 @@ def main() -> int:
                         "'adds.clinical-outcome-evaluation-report.v1'; "
                         "assert CLINICAL_OUTCOME_DESIGN_REPORT_SCHEMA_VERSION == "
                         "'adds.clinical-outcome-design-simulation-report.v1'; "
+                        "assert CLINICAL_OUTCOME_STRESS_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-stress-simulation-report.v1'; "
                         "assert CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION == "
                         "'adds.clinical-outcome-uncertainty-report.v1'; "
                         "assert all(callable(item) for item in ("
@@ -711,6 +757,8 @@ def main() -> int:
                         "clinical_outcome_dependence_manifest_from_json, "
                         "clinical_outcome_design_protocol_from_json, "
                         "clinical_outcome_design_report_from_json, "
+                        "clinical_outcome_stress_protocol_from_json, "
+                        "clinical_outcome_stress_report_from_json, "
                         "clinical_outcome_protocol_from_json, "
                         "clinical_outcome_report_from_json, "
                         "clinical_outcome_uncertainty_protocol_from_json, "
@@ -723,6 +771,7 @@ def main() -> int:
                         "evaluate_clinical_outcomes, "
                         "evaluate_clinical_outcome_uncertainty, "
                         "simulate_clinical_outcome_uncertainty_design, "
+                        "simulate_clinical_outcome_stress, "
                         "execute_clinical_evidence_batch, "
                         "policy_evaluation_report_from_json, "
                         "policy_evaluation_submission_from_json, "
@@ -730,7 +779,8 @@ def main() -> int:
                         "sealed_evaluation_vault_from_json, "
                         "validate_clinical_evidence_transition, "
                         "validate_clinical_outcome_uncertainty_report, "
-                        "validate_clinical_outcome_design_simulation_report"
+                        "validate_clinical_outcome_design_simulation_report, "
+                        "validate_clinical_outcome_stress_simulation_report"
                         ")); "
                         "print('public-api-ok')"
                     ),
@@ -742,7 +792,7 @@ def main() -> int:
                 env=clean_env,
             )
             completed = subprocess.run(
-                [str(demo)],
+                demo_command,
                 cwd=temp_dir,
                 check=True,
                 capture_output=True,
@@ -750,7 +800,7 @@ def main() -> int:
                 env=clean_env,
             )
             bounded = subprocess.run(
-                [str(bounded_demo)],
+                bounded_demo_command,
                 cwd=temp_dir,
                 check=True,
                 capture_output=True,
@@ -759,7 +809,7 @@ def main() -> int:
             )
             bundle = subprocess.run(
                 [
-                    str(python),
+                    *python_command,
                     "-c",
                     (
                         "from agentic_drug_discovery import ReplayBundle, "
@@ -778,7 +828,7 @@ def main() -> int:
                 env=clean_env,
             )
             replayed = subprocess.run(
-                [str(replay)],
+                replay_command,
                 cwd=temp_dir,
                 input=bundle.stdout,
                 check=True,
@@ -802,7 +852,7 @@ def main() -> int:
             ):
                 subprocess.run(
                     [
-                        str(ingestion),
+                        *ingestion_command,
                         "capture",
                         "--input-file",
                         str(source_path),
@@ -827,7 +877,7 @@ def main() -> int:
                 )
             ingested = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "compile",
                     "--job",
                     str(job_path),
@@ -848,7 +898,7 @@ def main() -> int:
             )
             subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "capture",
                     "--input-file",
                     str(mmwr_source),
@@ -875,7 +925,7 @@ def main() -> int:
             )
             mmwr_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-cdc-mmwr",
                     "--job",
                     str(mmwr_job_path),
@@ -892,7 +942,7 @@ def main() -> int:
             )
             subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "capture",
                     "--input-file",
                     str(pubmed_source),
@@ -919,7 +969,7 @@ def main() -> int:
             )
             pubmed_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-ncbi-pubmed",
                     "--job",
                     str(pubmed_job_path),
@@ -956,7 +1006,7 @@ def main() -> int:
                     source_id = f"chembl-{resource}-{identifier}"
                 subprocess.run(
                     [
-                        str(ingestion),
+                        *ingestion_command,
                         "capture",
                         "--input-file",
                         str(chembl_source_paths[resource]),
@@ -982,7 +1032,7 @@ def main() -> int:
                     env=clean_env,
                 )
             chembl_extract_args = [
-                str(ingestion),
+                *ingestion_command,
                 "extract-chembl-activity",
                 "--job",
                 str(chembl_job_path),
@@ -1002,7 +1052,7 @@ def main() -> int:
             )
             subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "capture",
                     "--input-file",
                     str(disease_model_source),
@@ -1029,7 +1079,7 @@ def main() -> int:
             )
             disease_model_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-ncbi-pubmed-disease-model",
                     "--job",
                     str(disease_model_job_path),
@@ -1060,7 +1110,7 @@ def main() -> int:
             ):
                 subprocess.run(
                     [
-                        str(ingestion),
+                        *ingestion_command,
                         "capture",
                         "--input-file",
                         str(source_path),
@@ -1087,7 +1137,7 @@ def main() -> int:
                 )
             clinical_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-clinicaltrials-gov",
                     "--job",
                     str(clinical_job_path),
@@ -1104,7 +1154,7 @@ def main() -> int:
             )
             clinical_portfolio_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-clinicaltrials-gov-portfolio",
                     "--job",
                     str(clinical_portfolio_path),
@@ -1481,7 +1531,7 @@ def main() -> int:
 
     if public_api.stdout.strip() != "public-api-ok":
         return fail(
-            "sealed evaluation, clinical cohort/outcome/uncertainty/design, and "
+            "sealed evaluation, clinical cohort/outcome/uncertainty/design/stress, and "
             "closed-loop APIs were not importable from the wheel"
         )
 
@@ -1489,7 +1539,7 @@ def main() -> int:
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
         "CDC MMWR, NCBI PubMed, ChEMBL activity, PubMed disease-model, and "
         "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
-        "plus sealed evaluation, clinical cohort/outcome/uncertainty/design, and "
+        "plus sealed evaluation, clinical cohort/outcome/uncertainty/design/stress, and "
         "closed-loop API smoke tests "
         f"completed for {wheels[0].name}"
     )

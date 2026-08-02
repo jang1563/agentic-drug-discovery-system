@@ -1114,13 +1114,15 @@ class ClinicalOutcomeDesignSimulationReport(SerializableRecord):
         return _sha256(self)
 
 
-def _metric_truths(
-    scenario: ClinicalOutcomeDesignScenario,
+def _metric_truths_for_prevalence(
+    prevalence: float,
+    classification_threshold: float,
+    policy_a_probability_pattern: Sequence[float],
+    policy_b_probability_pattern: Sequence[float],
 ) -> dict[ClinicalOutcomeDesignMetric, float]:
-    prevalence = scenario.favorable_prevalence
-    threshold = scenario.classification_threshold
-    pattern_a = scenario.policy_a_probability_pattern
-    pattern_b = scenario.policy_b_probability_pattern
+    threshold = classification_threshold
+    pattern_a = policy_a_probability_pattern
+    pattern_b = policy_b_probability_pattern
     pattern_length = len(pattern_a)
 
     def average(values: Sequence[float]) -> float:
@@ -1172,6 +1174,17 @@ def _metric_truths(
             paired_difference
         ),
     }
+
+
+def _metric_truths(
+    scenario: ClinicalOutcomeDesignScenario,
+) -> dict[ClinicalOutcomeDesignMetric, float]:
+    return _metric_truths_for_prevalence(
+        scenario.favorable_prevalence,
+        scenario.classification_threshold,
+        scenario.policy_a_probability_pattern,
+        scenario.policy_b_probability_pattern,
+    )
 
 
 class _MetricAccumulator:

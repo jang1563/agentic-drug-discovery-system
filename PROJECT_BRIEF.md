@@ -141,6 +141,13 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   width, Wilson-bounded coverage/yield, and all no-interval statuses without replicate/unit
   records. Candidate gates are screened against declared lower-bound targets but never selected
   automatically, and the synthetic example does not justify a real-board threshold.
+- An informative-evaluability and residual-dependence stress layer partitions nominal clusters
+  into exact synthetic dependence blocks and assigns separate favorable/unfavorable evaluability
+  probabilities. Analytic population and evaluable truths are compared against the same estimates
+  under nominal and oracle dependence-closed CR1 analysis. Aggregate reports expose estimand drift,
+  standard-error calibration, coverage, yield, and fail-closed states without unit/replicate
+  records. Oracle closure neither discovers hidden links nor identifies or corrects a population
+  estimand.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -259,8 +266,9 @@ Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are 
 2. Use the shipped preregistration and curation contract to build a real independently curated,
    stage-stratified held-out board; no such real-board result is claimed yet.
 3. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, and residual-dependence ranges
-   for a real multi-program clinical board; extend the shipped simulator to stress informative
-   missingness and select stage-by-endpoint gates before submissions.
+   for a real multi-program clinical board; extend the shipped stress simulator with correction
+   sensitivity, prevalence heterogeneity, cluster loss, and non-nested dependence before selecting
+   stage-by-endpoint gates.
 4. Join preregistered clinical package predictions to independently curated outcomes so the shipped
    cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
    selective risk and calibration.

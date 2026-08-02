@@ -45,6 +45,16 @@ from .clinical_outcome_design_simulation import (
     simulate_clinical_outcome_uncertainty_design,
     validate_clinical_outcome_design_simulation_report,
 )
+from .clinical_outcome_stress_simulation import (
+    ClinicalOutcomeStressSimulationError,
+    clinical_outcome_stress_protocol_from_json,
+    clinical_outcome_stress_report_envelope,
+    clinical_outcome_stress_report_from_json,
+    clinical_outcome_stress_simulation_summary,
+    clinical_outcome_stress_simulation_validation_summary,
+    simulate_clinical_outcome_stress,
+    validate_clinical_outcome_stress_simulation_report,
+)
 from .clinical_outcome_uncertainty import (
     ClinicalOutcomeUncertaintyError,
     clinical_outcome_dependence_manifest_from_json,
@@ -171,6 +181,18 @@ def _design_protocol(path: str):
 def _design_report(path: str):
     return clinical_outcome_design_report_from_json(
         _read_text(path, "clinical outcome design simulation report")
+    )
+
+
+def _stress_protocol(path: str):
+    return clinical_outcome_stress_protocol_from_json(
+        _read_text(path, "clinical outcome stress simulation protocol")
+    )
+
+
+def _stress_report(path: str):
+    return clinical_outcome_stress_report_from_json(
+        _read_text(path, "clinical outcome stress simulation report")
     )
 
 
@@ -524,6 +546,50 @@ def _validate_uncertainty_design(args: argparse.Namespace) -> int:
 
 def _summarize_uncertainty_design(args: argparse.Namespace) -> int:
     _print_json(clinical_outcome_design_simulation_summary(_design_report(args.report)))
+    return 0
+
+
+def _simulate_uncertainty_stress(args: argparse.Namespace) -> int:
+    report = simulate_clinical_outcome_stress(_stress_protocol(args.protocol))
+    envelope = clinical_outcome_stress_report_envelope(report)
+    if args.output == "-":
+        _print_json(envelope)
+        return 0
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    if not output.is_file():
+        raise OSError("clinical outcome stress simulation output was not created")
+    _print_json(
+        clinical_outcome_stress_simulation_validation_summary(
+            report,
+            scope="full_protocol_and_seeded_simulation_replay",
+        )
+    )
+    return 0
+
+
+def _validate_uncertainty_stress(args: argparse.Namespace) -> int:
+    _require_single_stdin((args.report, args.protocol))
+    report = _stress_report(args.report)
+    failures: tuple[str, ...] = ()
+    scope = "integrity_and_aggregate_consistency"
+    if args.protocol is not None:
+        failures = validate_clinical_outcome_stress_simulation_report(
+            report,
+            _stress_protocol(args.protocol),
+        )
+        scope = "full_protocol_and_seeded_simulation_replay"
+    _print_json(
+        clinical_outcome_stress_simulation_validation_summary(
+            report,
+            failures=failures,
+            scope=scope,
+        )
+    )
+    return 0 if not failures else 1
+
+
+def _summarize_uncertainty_stress(args: argparse.Namespace) -> int:
+    _print_json(clinical_outcome_stress_simulation_summary(_stress_report(args.report)))
     return 0
 
 
@@ -897,6 +963,61 @@ def _parser() -> argparse.ArgumentParser:
         help="Aggregate design simulation report JSON path, or '-' for stdin.",
     )
     summarize_design_parser.set_defaults(handler=_summarize_uncertainty_design)
+
+    simulate_stress_parser = subparsers.add_parser(
+        "simulate-uncertainty-stress",
+        help=(
+            "Run deterministic informative-evaluability and dependence-closure "
+            "stress simulations."
+        ),
+    )
+    simulate_stress_parser.add_argument(
+        "--protocol",
+        required=True,
+        help="Prospective stress simulation protocol JSON path, or '-' for stdin.",
+    )
+    simulate_stress_parser.add_argument(
+        "--output",
+        required=True,
+        help="Aggregate stress simulation report JSON path, or '-' for stdout.",
+    )
+    simulate_stress_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing stress simulation report.",
+    )
+    simulate_stress_parser.set_defaults(handler=_simulate_uncertainty_stress)
+
+    validate_stress_parser = subparsers.add_parser(
+        "validate-uncertainty-stress",
+        help=(
+            "Validate aggregate stress-report integrity, with optional full "
+            "protocol and seeded simulation replay."
+        ),
+    )
+    validate_stress_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate stress simulation report JSON path, or '-' for stdin.",
+    )
+    validate_stress_parser.add_argument(
+        "--protocol",
+        help="Stress simulation protocol JSON for full deterministic replay.",
+    )
+    validate_stress_parser.set_defaults(handler=_validate_uncertainty_stress)
+
+    summarize_stress_parser = subparsers.add_parser(
+        "summarize-uncertainty-stress",
+        help=(
+            "Emit compact estimand-shift and dependence-closure stress comparisons."
+        ),
+    )
+    summarize_stress_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate stress simulation report JSON path, or '-' for stdin.",
+    )
+    summarize_stress_parser.set_defaults(handler=_summarize_uncertainty_stress)
     return parser
 
 
@@ -909,6 +1030,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ClinicalCohortError,
         ClinicalOutcomeEvaluationError,
         ClinicalOutcomeDesignSimulationError,
+        ClinicalOutcomeStressSimulationError,
         ClinicalOutcomeUncertaintyError,
         ClinicalEvidenceWorkflowError,
         OSError,

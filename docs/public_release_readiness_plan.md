@@ -42,6 +42,10 @@ The public GitHub surface includes:
   protocol/report/summary schemas and readers, aggregate synthetic examples, tests, and
   documentation. Real scenario ranges, pilot elicitation, replicate records, and gate-selection
   deliberations remain excluded.
+- The informative-evaluability and dependence-closure stress surface is limited to bounded
+  implementation, strict protocol/report/summary schemas and readers, aggregate synthetic
+  examples, tests, and documentation. Real missingness-model elicitation, hidden-dependence
+  working records, replicate records, and correction-selection deliberations remain excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 
@@ -65,6 +69,8 @@ The following stay outside Git unless a separate audited release package explici
   and unit-level uncertainty contributions.
 - Real clinical outcome design scenarios, pilot parameter elicitation, replicate-level simulation
   records, and non-public gate-selection deliberations.
+- Real clinical outcome stress scenarios, missingness-model elicitation, hidden-dependence working
+  records, replicate-level simulation records, and correction-selection deliberations.
 - Local working notes, imported research packs, private opportunity records, and machine-specific source maps.
 - Scheduler logs, root-level run outputs, generated caches, Python bytecode, and large experiment directories.
 - Credentials, API tokens, `.env*`, key material, local account names, absolute local paths, and internal compute-location breadcrumbs.

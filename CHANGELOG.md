@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added deterministic informative-evaluability and residual-dependence stress simulation for
+  clustered clinical outcome boards. Exact synthetic dependence blocks can span nominal clusters,
+  while separate favorable/unfavorable evaluability probabilities induce analytic
+  population-versus-evaluable estimand shifts. The same aggregate CR1 estimates are evaluated
+  under nominal and oracle dependence-closed cluster assignments against both targets. Strict
+  protocols, reports, summaries, schemas, replay, bounded work, CLI paths, and adversarial tests
+  preserve informative-selection, hidden-linkage, and combined signatures without unit/replicate
+  records, automatic gate selection, hidden-link detection, or missing-data correction.
 - Added deterministic prospective design simulation for clustered clinical outcome boards. Public
   protocols freeze stage-by-endpoint cluster sizes, prevalence, ICC, MCAR evaluability, fixed
   prediction patterns, candidate cluster gates, Monte Carlo precision, and RNG streams. The

@@ -58,6 +58,9 @@ These may become release assets after a separate audit:
   review.
 - Synthetic prospective clustered-board design protocols and aggregate reports after parameter,
   workload, replay, Monte Carlo precision, privacy, and no-automatic-selection review.
+- Synthetic informative-evaluability and dependence-closure stress protocols and aggregate reports
+  after exact-partition, analytic-truth, replay, workload, privacy, and
+  no-automatic-correction review.
 - Reproducible dataset cards pointing to external archives.
 
 ## Current Policy
