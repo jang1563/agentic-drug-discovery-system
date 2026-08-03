@@ -1,0 +1,420 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_pattern_mixture_influence_report.schema.json",
+  "title": "Clinical Outcome Pattern-Mixture Influence Calibration Report",
+  "description": "Integrity-bound aggregate comparison of delete-one normal, delete-one Student-t, unequal delete-mj Student-t, and experimental Webb multiplier intervals.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "report"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-outcome-pattern-mixture-influence-calibration-report.v1"
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "report": {"$ref": "#/$defs/report"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nullableNumber": {"type": ["number", "null"]},
+    "probability": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+    "metric": {
+      "enum": [
+        "observed_favorable_rate",
+        "policy_a_brier_score",
+        "policy_b_brier_score",
+        "policy_a_calibration_in_the_large",
+        "policy_b_calibration_in_the_large",
+        "policy_a_classification_accuracy",
+        "policy_b_classification_accuracy",
+        "brier_difference_b_minus_a"
+      ]
+    },
+    "method": {
+      "enum": [
+        "delete_one_normal",
+        "delete_one_student_t",
+        "delete_mj_student_t",
+        "delete_mj_webb_multiplier"
+      ]
+    },
+    "methodOrder": {
+      "const": [
+        "delete_one_normal",
+        "delete_one_student_t",
+        "delete_mj_student_t",
+        "delete_mj_webb_multiplier"
+      ]
+    },
+    "rate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_count",
+        "total_count",
+        "rate",
+        "lower",
+        "upper",
+        "confidence_level"
+      ],
+      "properties": {
+        "event_count": {"type": "integer", "minimum": 0},
+        "total_count": {"type": "integer", "minimum": 0},
+        "rate": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+        "lower": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+        "upper": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0.5,
+          "exclusiveMaximum": 1.0
+        }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cluster_count",
+        "total_units",
+        "minimum_cluster_size",
+        "maximum_cluster_size",
+        "mean_cluster_size",
+        "cluster_size_coefficient_of_variation",
+        "maximum_cluster_fraction",
+        "effective_cluster_count"
+      ],
+      "properties": {
+        "cluster_count": {"type": "integer", "minimum": 1},
+        "total_units": {"type": "integer", "minimum": 1},
+        "minimum_cluster_size": {"type": "integer", "minimum": 1},
+        "maximum_cluster_size": {"type": "integer", "minimum": 1},
+        "mean_cluster_size": {"type": "number", "exclusiveMinimum": 0.0},
+        "cluster_size_coefficient_of_variation": {"type": "number", "minimum": 0.0},
+        "maximum_cluster_fraction": {"$ref": "#/$defs/probability"},
+        "effective_cluster_count": {"type": "number", "exclusiveMinimum": 0.0}
+      }
+    },
+    "statusCount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "count"],
+      "properties": {
+        "status": {
+          "enum": [
+            "computed",
+            "insufficient_simulation_clusters",
+            "empty_reference_stratum",
+            "degenerate_reference_stratum",
+            "leave_one_out_empty_reference_stratum",
+            "leave_one_out_degenerate_reference_stratum",
+            "zero_resampling_variance",
+            "invalid_multiplier_dispersion"
+          ]
+        },
+        "count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "metric",
+        "log_imor",
+        "informative_missingness_odds_ratio",
+        "model_functional_true_value",
+        "replicate_count",
+        "point_estimate_count",
+        "interval_count",
+        "covered_count",
+        "interval_yield",
+        "model_functional_coverage",
+        "prior_pattern_mixture_mean_estimate",
+        "mean_estimate",
+        "mean_minus_prior_pattern_mixture",
+        "model_functional_bias",
+        "empirical_standard_deviation",
+        "monte_carlo_bias_lower",
+        "monte_carlo_bias_upper",
+        "monte_carlo_absolute_bias_upper",
+        "root_mean_squared_reported_standard_error",
+        "mean_reported_standard_error",
+        "mean_interval_width",
+        "interval_width_empirical_standard_deviation",
+        "mean_interval_width_monte_carlo_lower",
+        "mean_interval_width_monte_carlo_upper",
+        "standard_error_to_empirical_sd_ratio",
+        "maximum_absolute_bias",
+        "coverage_target",
+        "minimum_interval_yield",
+        "standard_error_calibration_lower",
+        "standard_error_calibration_upper",
+        "bias_target_met",
+        "interval_yield_target_met",
+        "coverage_target_met",
+        "standard_error_calibration_target_met",
+        "calibration_target_met",
+        "status_counts"
+      ],
+      "properties": {
+        "method": {"$ref": "#/$defs/method"},
+        "metric": {"$ref": "#/$defs/metric"},
+        "log_imor": {"type": "number"},
+        "informative_missingness_odds_ratio": {"type": "number", "exclusiveMinimum": 0.0},
+        "model_functional_true_value": {"type": "number"},
+        "replicate_count": {"type": "integer", "minimum": 1},
+        "point_estimate_count": {"type": "integer", "minimum": 0},
+        "interval_count": {"type": "integer", "minimum": 0},
+        "covered_count": {"type": "integer", "minimum": 0},
+        "interval_yield": {"$ref": "#/$defs/rate"},
+        "model_functional_coverage": {"$ref": "#/$defs/rate"},
+        "prior_pattern_mixture_mean_estimate": {"$ref": "#/$defs/nullableNumber"},
+        "mean_estimate": {"$ref": "#/$defs/nullableNumber"},
+        "mean_minus_prior_pattern_mixture": {"$ref": "#/$defs/nullableNumber"},
+        "model_functional_bias": {"$ref": "#/$defs/nullableNumber"},
+        "empirical_standard_deviation": {"type": ["number", "null"], "minimum": 0.0},
+        "monte_carlo_bias_lower": {"$ref": "#/$defs/nullableNumber"},
+        "monte_carlo_bias_upper": {"$ref": "#/$defs/nullableNumber"},
+        "monte_carlo_absolute_bias_upper": {"type": ["number", "null"], "minimum": 0.0},
+        "root_mean_squared_reported_standard_error": {"type": ["number", "null"], "minimum": 0.0},
+        "mean_reported_standard_error": {"type": ["number", "null"], "minimum": 0.0},
+        "mean_interval_width": {"type": ["number", "null"], "minimum": 0.0},
+        "interval_width_empirical_standard_deviation": {"type": ["number", "null"], "minimum": 0.0},
+        "mean_interval_width_monte_carlo_lower": {"type": ["number", "null"], "minimum": 0.0},
+        "mean_interval_width_monte_carlo_upper": {"type": ["number", "null"], "minimum": 0.0},
+        "standard_error_to_empirical_sd_ratio": {"type": ["number", "null"], "minimum": 0.0},
+        "maximum_absolute_bias": {"type": "number", "minimum": 0.0},
+        "coverage_target": {"$ref": "#/$defs/probability"},
+        "minimum_interval_yield": {"$ref": "#/$defs/probability"},
+        "standard_error_calibration_lower": {"type": "number", "minimum": 0.0},
+        "standard_error_calibration_upper": {"type": "number", "minimum": 0.0},
+        "bias_target_met": {"type": "boolean"},
+        "interval_yield_target_met": {"type": "boolean"},
+        "coverage_target_met": {"type": "boolean"},
+        "standard_error_calibration_target_met": {"type": "boolean"},
+        "calibration_target_met": {"type": "boolean"},
+        "status_counts": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/statusCount"},
+          "minItems": 8,
+          "maxItems": 8
+        }
+      }
+    },
+    "metricResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "grid_inference",
+        "all_grid_calibration_targets_met"
+      ],
+      "properties": {
+        "metric": {"$ref": "#/$defs/metric"},
+        "grid_inference": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/cell"},
+          "minItems": 1
+        },
+        "all_grid_calibration_targets_met": {"type": "boolean"}
+      }
+    },
+    "methodResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "metric_inference",
+        "all_metric_calibration_targets_met",
+        "operational_candidate",
+        "experimental_only"
+      ],
+      "properties": {
+        "method": {"$ref": "#/$defs/method"},
+        "metric_inference": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/metricResult"},
+          "minItems": 8,
+          "maxItems": 8
+        },
+        "all_metric_calibration_targets_met": {"type": "boolean"},
+        "operational_candidate": {"type": "boolean"},
+        "experimental_only": {"type": "boolean"}
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "stage",
+        "endpoint_family",
+        "true_log_imor",
+        "analysis_structure",
+        "equal_cluster_sizes",
+        "production_eligible",
+        "production_ineligibility_reasons",
+        "method_results",
+        "student_t_coverage_noninferior_to_normal_all_cells",
+        "equal_size_delete_mj_standard_error_equivalence_expected",
+        "equal_size_delete_mj_standard_error_equivalence_met",
+        "student_t_candidate_target_met",
+        "delete_mj_sensitivity_target_met",
+        "webb_experimental_target_met",
+        "dominant_cluster_hard_stop_preserved",
+        "research_target_met",
+        "rng_stream_sha256",
+        "outcome_rng_stream_sha256",
+        "evaluability_rng_stream_sha256",
+        "multiplier_rng_stream_sha256"
+      ],
+      "properties": {
+        "scenario_id": {"type": "string", "minLength": 1},
+        "stage": {"const": "clinical_strategy"},
+        "endpoint_family": {"type": "string", "minLength": 1},
+        "true_log_imor": {"type": "number"},
+        "analysis_structure": {"$ref": "#/$defs/structure"},
+        "equal_cluster_sizes": {"type": "boolean"},
+        "production_eligible": {"type": "boolean"},
+        "production_ineligibility_reasons": {
+          "type": "array",
+          "items": {"enum": ["insufficient_clusters", "dominant_cluster"]},
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "method_results": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/methodResult"},
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "student_t_coverage_noninferior_to_normal_all_cells": {"type": "boolean"},
+        "equal_size_delete_mj_standard_error_equivalence_expected": {"type": "boolean"},
+        "equal_size_delete_mj_standard_error_equivalence_met": {"type": "boolean"},
+        "student_t_candidate_target_met": {"type": "boolean"},
+        "delete_mj_sensitivity_target_met": {"type": "boolean"},
+        "webb_experimental_target_met": {"type": "boolean"},
+        "dominant_cluster_hard_stop_preserved": {"type": "boolean"},
+        "research_target_met": {"type": "boolean"},
+        "rng_stream_sha256": {"$ref": "#/$defs/sha256"},
+        "outcome_rng_stream_sha256": {"$ref": "#/$defs/sha256"},
+        "evaluability_rng_stream_sha256": {"$ref": "#/$defs/sha256"},
+        "multiplier_rng_stream_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "protocol_fingerprint",
+        "stress_protocol_id",
+        "stress_protocol_fingerprint",
+        "stress_report_fingerprint",
+        "pattern_mixture_protocol_id",
+        "pattern_mixture_protocol_fingerprint",
+        "pattern_mixture_report_fingerprint",
+        "method_id",
+        "rng_method_id",
+        "multiplier_method_id",
+        "quantile_method_id",
+        "replicates",
+        "log_imor_grid",
+        "methods",
+        "confidence_level",
+        "monte_carlo_confidence_level",
+        "coverage_target",
+        "minimum_interval_yield",
+        "minimum_production_clusters",
+        "maximum_production_cluster_unit_fraction",
+        "maximum_absolute_bias",
+        "standard_error_calibration_lower",
+        "standard_error_calibration_upper",
+        "multiplier_draws",
+        "multiplier_seed",
+        "primary_metric",
+        "scenario_results",
+        "aggregate_simulation_only",
+        "replicate_level_records_included",
+        "cluster_level_records_included",
+        "unit_level_records_included",
+        "real_clinical_outcomes_included",
+        "stress_only_ineligible_intervals_operational",
+        "dominant_cluster_override_allowed",
+        "automatic_method_selection_included",
+        "regression_wild_cluster_bootstrap_claimed",
+        "multiplier_method_experimental_only",
+        "identification_and_sampling_uncertainty_separated",
+        "limitations"
+      ],
+      "properties": {
+        "protocol_id": {"type": "string", "minLength": 1},
+        "protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "stress_protocol_id": {"type": "string", "minLength": 1},
+        "stress_protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "stress_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "pattern_mixture_protocol_id": {"type": "string", "minLength": 1},
+        "pattern_mixture_protocol_fingerprint": {"$ref": "#/$defs/sha256"},
+        "pattern_mixture_report_fingerprint": {"$ref": "#/$defs/sha256"},
+        "method_id": {"const": "adds.pattern-mixture.unequal-cluster-influence-calibration.v1"},
+        "rng_method_id": {"const": "adds.mt19937-block-polya-urn-informative-evaluability.v1"},
+        "multiplier_method_id": {"const": "adds.delete-mj.webb-six-point-variance-matched.v1"},
+        "quantile_method_id": {"const": "adds.linear-interpolation-r7.v1"},
+        "replicates": {"type": "integer", "minimum": 1},
+        "log_imor_grid": {
+          "type": "array",
+          "items": {"type": "number"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "methods": {"$ref": "#/$defs/methodOrder"},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1.0},
+        "monte_carlo_confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1.0},
+        "coverage_target": {"$ref": "#/$defs/probability"},
+        "minimum_interval_yield": {"type": "number", "exclusiveMinimum": 0.0, "maximum": 1.0},
+        "minimum_production_clusters": {"type": "integer", "minimum": 3},
+        "maximum_production_cluster_unit_fraction": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "exclusiveMaximum": 1.0
+        },
+        "maximum_absolute_bias": {"type": "number", "minimum": 0.0},
+        "standard_error_calibration_lower": {"type": "number", "minimum": 0.0},
+        "standard_error_calibration_upper": {"type": "number", "minimum": 0.0},
+        "multiplier_draws": {
+          "type": "integer",
+          "minimum": 99,
+          "maximum": 9999,
+          "not": {"multipleOf": 2}
+        },
+        "multiplier_seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9223372036854775807
+        },
+        "primary_metric": {"$ref": "#/$defs/metric"},
+        "scenario_results": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/scenario"},
+          "minItems": 1
+        },
+        "aggregate_simulation_only": {"const": true},
+        "replicate_level_records_included": {"const": false},
+        "cluster_level_records_included": {"const": false},
+        "unit_level_records_included": {"const": false},
+        "real_clinical_outcomes_included": {"const": false},
+        "stress_only_ineligible_intervals_operational": {"const": false},
+        "dominant_cluster_override_allowed": {"const": false},
+        "automatic_method_selection_included": {"const": false},
+        "regression_wild_cluster_bootstrap_claimed": {"const": false},
+        "multiplier_method_experimental_only": {"const": true},
+        "identification_and_sampling_uncertainty_separated": {"const": true},
+        "limitations": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 10,
+          "maxItems": 10
+        }
+      }
+    }
+  }
+}

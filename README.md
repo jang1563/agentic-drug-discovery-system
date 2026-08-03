@@ -17,27 +17,17 @@ their stated scope.
 
 The repository name reflects the longer-term research direction. The proposed
 eight-stage, long-horizon agentic drug discovery system remains a research
-scaffold rather than a completed public platform. The public 0.3.0.dev2 update
-adds an evidence-governed execution backbone with typed program state,
-verifier-gated transitions, cross-stage identity controls, source-pinned
-ingestion, tool/database adapters, scientific foundation-model interfaces,
-sealed retrospective policy evaluation, preregistered held-out evaluation
-contracts, stage-stratified uncertainty, provenance-preserving clinical
-evidence and bounded-VOI planning, a reviewer-governed clinical evidence closed
-loop, outcome-free multi-package cohort diagnostics with matched policy
-sensitivity, preregistered package-bound clinical outcome forecasts with
-aggregate calibration and paired policy evaluation, dependence-audited
-cluster-robust uncertainty for additive outcome metrics, deterministic prospective
-coverage/interval-yield design simulation over cluster count, imbalance, prevalence, and ICC,
-deterministic informative-evaluability and residual-dependence stress analysis that separates
-population/evaluable targets and nominal/dependence-closed clustering,
-preregistered prediction-stratified binary log-IMOR sensitivity analysis that separates
-evaluable calibration, truth-aligned recovery, and population identification,
-fingerprint-bound nominal/dependence-closed delete-one-cluster jackknife calibration around every
-fixed log-IMOR model functional,
-and bounded source-preserving
-ClinicalTrials.gov harmonization with typed missing-measurement gaps. No real
-independently curated clinical outcome result is claimed.
+scaffold rather than a completed public platform. The public 0.3.0.dev2 baseline
+established the evidence-governed execution, evaluation, clinical-planning,
+closed-loop, and bounded ClinicalTrials.gov harmonization backbone. The
+0.3.0.dev3 candidate extends that baseline with outcome-free cohort diagnostics,
+preregistered package-bound forecasts, paired policy evaluation, dependence-aware
+uncertainty and design simulation, informative-evaluability stress analysis,
+prediction-stratified binary log-IMOR sensitivity, dependence-closed jackknife
+calibration, and unequal-cluster influence calibration comparing normal,
+`t_(G-1)`, delete-`m_j`, and an experimental Webb multiplier. This candidate is
+not approved, merged, or uploaded. No real independently curated clinical outcome
+result is claimed.
 Seven of eight planned atlases still do not have standalone public data, and
 the demonstrated continuous multi-stage program currently covers one
 disease/target slice.
@@ -47,7 +37,7 @@ disease/target slice.
 | Field | Value |
 | --- | --- |
 | Purpose | Build a verification-oriented, auditable decision environment for drug-discovery agents. |
-| Release status | 0.3.0.dev2 is the current public development release on GitHub and Hugging Face after exact-package approval. 0.2.0 remains the latest tagged stable release. |
+| Release status | 0.3.0.dev2 remains public on GitHub and Hugging Face. 0.3.0.dev3 is an unapproved, unmerged, and not-uploaded update candidate. 0.2.0 remains the latest tagged stable release. |
 | Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
 | Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed or held-out boards, curator identities/attestations/votes/adjudications, real clinical decision policies/action catalogs/evidence tensors/packages, real clinical prediction submissions/outcome or dependence manifests/unit labels, real design/stress/sensitivity scenario elicitation or working records, unit-to-cluster assignments, cluster-level or unit-level scores, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
@@ -78,6 +68,8 @@ adds-clinical-evidence summarize-pattern-mixture \
   --report rl_env/specs/clinical_outcome_pattern_mixture_report.example.json
 adds-clinical-evidence summarize-pattern-mixture-uncertainty \
   --report rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_report.example.json
+adds-clinical-evidence summarize-pattern-mixture-influence \
+  --report rl_env/specs/clinical_outcome_pattern_mixture_influence_report.example.json
 python -m pytest -q
 ```
 
@@ -218,6 +210,22 @@ for continuous bias and width summaries, and shows hidden-linkage undercoverage 
 clustering with recovery after dependence closure. It never infers the closure or combines the
 sampling interval with the identifying-assumption grid into one confidence set.
 
+Compare small- and unequal-cluster interval constructions on the dedicated public study:
+
+```bash
+adds-clinical-evidence calibrate-pattern-mixture-influence \
+  --protocol rl_env/specs/clinical_outcome_pattern_mixture_influence_protocol.example.json \
+  --pattern-mixture-protocol rl_env/specs/clinical_outcome_pattern_mixture_influence_pattern_protocol.example.json \
+  --stress-protocol rl_env/specs/clinical_outcome_pattern_mixture_influence_stress_protocol.example.json \
+  --output clinical-outcome-pattern-mixture-influence-report.json
+```
+
+The 500-replicate study preserves all production-eligibility gates, supports `t_(G-1)` as the
+minimum small-cluster upgrade, and retains delete-`m_j` as an unequal-size influence sensitivity.
+The one-step Webb multiplier remains experimental because its all-cell coverage target fails in
+both balanced scenarios. See `docs/36_unequal_cluster_influence_calibration.md` for formulas,
+results, and claim boundaries.
+
 ## Core Question
 
 Can a long-horizon discovery process be represented as an agentic environment where:
@@ -234,9 +242,11 @@ Can a long-horizon discovery process be represented as an agentic environment wh
 The public 0.2.0 release provides a **retrospective clinical and regulatory
 decision benchmark with source-derived labels (generated without human
 curation), plus one audited end-to-end vertical slice**. The public 0.3.0.dev2
-update adds a typed execution, evaluation, clinical-evidence planning,
+baseline adds a typed execution, evaluation, clinical-evidence planning,
 reviewer-governed closed-loop, and bounded registry-harmonization backbone
-around those artifacts. It is not yet the complete autonomous eight-stage
+around those artifacts. The 0.3.0.dev3 candidate adds the clinical outcome,
+dependence, pattern-mixture, and influence-calibration research described below;
+it has not been merged or uploaded. It is not yet the complete autonomous eight-stage
 system or full trajectory atlas described in the roadmap. Honest status:
 
 - **Executable bounded agent loop:** `agentic_drug_discovery/` provides typed evidence, claims,
@@ -407,6 +417,12 @@ system or full trajectory atlas described in the roadmap. Honest status:
   cluster-count, enrolled-unit dominance, leave-one-out support, and rounded-zero variance fail
   closed. Synthetic oracle closure is never discovered automatically and is not a real-board
   coverage guarantee.
+- **Unequal-cluster influence calibration:** A third bound protocol compares delete-one normal,
+  delete-one `t_(G-1)`, unequal delete-`m_j` `t_(G-1)`, and an experimental variance-matched Webb
+  multiplier over identical seeded samples. Equal-size variance reduction, Student-t coverage
+  noninferiority, multiplier RNG isolation, dominance hard stops, Monte Carlo gates, and strict
+  aggregate replay are executable contracts. No method is automatically selected, and passing a
+  synthetic interval gate cannot make a dominant-cluster design production eligible.
 - **Built & audited:** source-derived label authority plus scoped construct-validity controls;
   callable tool/DB adapters
   (ClinicalTrials.gov, openFDA, Open Targets, ChEMBL, EMA EPAR) and multi-stage flow orchestrators;
@@ -418,7 +434,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   clinical outcome dependence/uncertainty protocol/report/summary, prospective clustered-board
   design protocol/report/summary, informative-evaluability/dependence stress
   protocol/report/summary, pattern-mixture sensitivity protocol/report/summary,
-  pattern-mixture cluster-jackknife protocol/report/summary, and
+  pattern-mixture cluster-jackknife protocol/report/summary, unequal-cluster influence-calibration
+  protocol/report/summary, and
   closed-loop transition,
   sealed-board, label-vault, policy-submission, policy-report, held-out protocol,
   curator-manifest, and stage-stratified report schemas;
@@ -512,6 +529,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
   `docs/35_dependence_closed_pattern_mixture_uncertainty.md` defines fixed-assumption model
   functionals, delete-one-cluster variance, all-grid calibration gates, nominal/closed comparison,
   Monte Carlo precision bounds, and the no-automatic-closure boundary.
+  `docs/36_unequal_cluster_influence_calibration.md` defines unequal delete-`m_j` pseudovalues,
+  `t_(G-1)` intervals, the experimental multiplier boundary, influence and dominance diagnostics,
+  public calibration results, and the no-automatic-selection boundary.
   `docs/public_evidence_summary.json` is the
   aggregate claim ledger.
 - `agentic_drug_discovery/`: typed state, bounded planning, tool execution, semantic promotion,
@@ -596,6 +616,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/33_informative_evaluability_and_dependence_stress.md` | Humans + agents | Outcome-dependent evaluability, analytic estimand shifts, residual dependence blocks, nominal/oracle-closure CR1 comparison, and correction boundaries. |
 | `docs/34_preregistered_pattern_mixture_sensitivity.md` | Humans + agents | Prediction-stratified binary log-IMOR sensitivity, observable aggregate inputs, matched estimand/recovery gates, public synthetic results, and claim boundaries. |
 | `docs/35_dependence_closed_pattern_mixture_uncertainty.md` | Humans + agents | Conditional sampling intervals across fixed log-IMOR assumptions, dependence-closed jackknife calibration, Monte Carlo precision, public synthetic results, and claim boundaries. |
+| `docs/36_unequal_cluster_influence_calibration.md` | Humans + agents | Few, unequal, and dominant-cluster calibration; Student-t and delete-mj comparisons; experimental multiplier diagnostics; and operational boundaries. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Machines + reviewers | Aggregate 4-pair/8-episode policy metrics, payload-free artifact hashes, real gate outcomes, and limitations. |
 | `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
 | `agentic_drug_discovery/` | Developers + agents | Bounded planning, typed execution, semantic promotion, multi-stage stop semantics, matched evaluation, replay, and verifier-gated transitions. |
@@ -616,6 +637,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinical_outcome_stress_simulation.py` | Developers + evaluators | Bounded block-Polya simulation, analytic population/evaluable truths, nominal/dependence-closed CR1 comparison, strict claim boundaries, readers, summaries, and replay. |
 | `agentic_drug_discovery/clinical_outcome_pattern_mixture.py` | Developers + evaluators | Exact stress-bound binary log-IMOR grids, prediction-stratified aggregate estimators, matched calibration/recovery/identification diagnostics, strict readers, summaries, and replay. |
 | `agentic_drug_discovery/clinical_outcome_pattern_mixture_uncertainty.py` | Developers + evaluators | Exact point-report binding, nominal/dependence-closed delete-one-cluster jackknife inference, model-functional coverage, Monte Carlo bounds, fail-closed statuses, strict readers, summaries, and replay. |
+| `agentic_drug_discovery/clinical_outcome_pattern_mixture_influence_calibration.py` | Developers + evaluators | Student-t critical values, unequal delete-mj pseudovalues, experimental multiplier intervals, production eligibility, Monte Carlo calibration, strict readers, summaries, and replay. |
 | `agentic_drug_discovery/clinical_decision_cli.py` | Users + agents | JSON CLI for package/cohort compilation, outcome and uncertainty evaluation, prospective design, stress, pattern-mixture, and cluster-jackknife simulation, full replay validation, and compact summaries. |
 | `agentic_drug_discovery/clinical_closed_loop.py` | Developers + agents | State-bound selected-action batches, bounded runner integration, compact execution and refresh receipts, source-rejoined transition compilation, strict readers, and two-state replay validation. |
 | `agentic_drug_discovery/policy.py` | Developers + agents | Deterministic policy rules, queue-bound replanning, checkpoint integrity, and exact resume orchestration. |
@@ -684,6 +706,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `tests/test_clinical_outcome_stress_simulation.py` | Users + evaluators + CI | Analytic estimand shifts, informative-selection bias, hidden-linkage undercoverage, oracle-closure recovery, combined stress, exact partitions, strict readers, privacy, schemas, and atomic CLI coverage. |
 | `tests/test_clinical_outcome_pattern_mixture.py` | Users + evaluators + CI | Binary log-IMOR recovery, grid-exclusion controls, MCAR, sparse-stratum failure, exact binding/replay, strict readers, privacy, schemas, and atomic CLI coverage. |
 | `tests/test_clinical_outcome_pattern_mixture_uncertainty.py` | Users + evaluators + CI | All-grid jackknife calibration, hidden-linkage repair, independent-mode equivalence, model-functional/population separation, Monte Carlo bounds, fail-closed states, exact replay, privacy, schemas, and CLI coverage. |
+| `tests/test_clinical_outcome_pattern_mixture_influence_calibration.py` | Users + evaluators + CI | Student-t references, delete-mj algebra, seed isolation, dominant-cluster hard stops, strict schemas/readers, public exact replay, and CLI coverage. |
 | `tests/test_clinical_portfolio.py` | Developers + reviewers | Multi-job/bundle extraction, schema, source-disjointness, payload removal, and atomic no-output failure controls. |
 | `benchmark/` | Users + CI | Installable scorer and tests for the linked external clinical-trial decision dataset. |
 | `release_manifest.json` | Machines + reviewers | Canonical GitHub/HF release scope and required checks. |

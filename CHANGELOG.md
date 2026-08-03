@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added unequal- and influential-cluster calibration for fixed binary log-IMOR model functionals.
+  Four exact synthetic scenarios compare delete-one normal, delete-one Student-t, unequal
+  delete-mj Student-t, and an experimental variance-matched Webb multiplier over shared seeded
+  outcomes. Strict contracts enforce equal-size variance reduction, Student-t coverage
+  noninferiority, multiplier substream isolation, production cluster-count/dominance hard stops,
+  Monte Carlo calibration gates, aggregate-only output, and exact replay. Public schemas, a
+  deterministic artifact builder, 500-replicate report and compact summary, CLI paths,
+  documentation, and regression tests are included. No method is selected automatically, and the
+  multiplier is not claimed as a regression wild-cluster bootstrap.
 - Added dependence-closed delete-one-cluster jackknife uncertainty around every fixed point of the
   preregistered binary log-IMOR pattern-mixture curve. A second protocol binds the exact stress
   protocol, sensitivity protocol, and point report before replaying the complete nonlinear

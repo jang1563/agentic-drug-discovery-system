@@ -1,8 +1,8 @@
 {
   "artifact": "agentic-drug-discovery-system",
-  "release_version": "0.3.0.dev2",
+  "release_version": "0.3.0.dev3",
   "last_public_release_version": "0.3.0.dev2",
-  "release_stage": "public_release",
+  "release_stage": "public_update_candidate",
   "target_surface": "github_and_huggingface_dataset",
   "public_boundary": {
     "include_semantics": "Exhaustive tracked public file anchors and directory prefixes; every tracked or unignored candidate file must be covered and is scanned by github_release_file_audit.py.",
@@ -61,6 +61,7 @@
       "docs/33_informative_evaluability_and_dependence_stress.md",
       "docs/34_preregistered_pattern_mixture_sensitivity.md",
       "docs/35_dependence_closed_pattern_mixture_uncertainty.md",
+      "docs/36_unequal_cluster_influence_calibration.md",
       "docs/retrospective_policy_evaluation_snapshot.json",
       "docs/public_evidence_summary.json",
       "agentic_drug_discovery/",
@@ -118,8 +119,8 @@
     ]
   },
   "surface_scope": {
-    "github": "Full sanitized bounded agent, execution core, typed policy replanning and checkpoint resume, cutoff-safe matched and sealed evaluation, preregistered independently curated held-out evaluation and stage-stratified uncertainty, source capture, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, provenance-preserving clinical evidence tensor and bounded VOI planning, accepted-state-bindable cohort diagnostics with matched policy sensitivity and provenance-overlap reporting, preregistered package-bound clinical forecasts with aggregate calibration, paired policy evaluation, dependence-audited CR1 uncertainty, aggregate prospective clustered-board design simulation, informative-evaluability/residual-dependence stress analysis, preregistered prediction-stratified pattern-mixture sensitivity analysis, and dependence-closed cluster-jackknife sampling calibration, bounded selected-action execution with compact receipts, reviewer-only refresh and source-rejoined before/after transition validation, payload-free manifest compiler, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, protocol, adapter, flow, verifier, benchmark-scorer, documentation, tests, and audit surface.",
-    "hugging_face": "Commit-pinned candidate subset containing the dependency-free source capture/compiler, typed policy replanning and hash-bound checkpoint resume contracts, cutoff-safe matched and sealed evaluation, preregistered held-out curation contracts and aggregate stage-stratified uncertainty examples, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, provenance-preserving clinical evidence tensor and bounded VOI planning, accepted-state-bindable cohort diagnostics with matched policy sensitivity and provenance-overlap reporting, preregistered package-bound clinical forecasts with aggregate calibration, paired policy evaluation, dependence-audited CR1 uncertainty, synthetic prospective clustered-board design simulation, informative-evaluability/residual-dependence stress analysis, preregistered prediction-stratified pattern-mixture sensitivity analysis, and dependence-closed cluster-jackknife sampling calibration, bounded selected-action execution with compact receipts, reviewer-only refresh and source-rejoined before/after transition validation, pinned-evidence and clinical-synthesis adapters and bindings, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, semantic mappings, stage and program runners, executable core, tests, documentation, schemas, audit code, and the scorer for the separately hosted clinical-trial decision dataset.",
+    "github": "Full sanitized bounded agent, execution core, typed policy replanning and checkpoint resume, cutoff-safe matched and sealed evaluation, preregistered independently curated held-out evaluation and stage-stratified uncertainty, source capture, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, provenance-preserving clinical evidence tensor and bounded VOI planning, accepted-state-bindable cohort diagnostics with matched policy sensitivity and provenance-overlap reporting, preregistered package-bound clinical forecasts with aggregate calibration, paired policy evaluation, dependence-audited CR1 uncertainty, aggregate prospective clustered-board design simulation, informative-evaluability/residual-dependence stress analysis, preregistered prediction-stratified pattern-mixture sensitivity analysis, dependence-closed cluster-jackknife sampling calibration, and unequal-cluster influence calibration, bounded selected-action execution with compact receipts, reviewer-only refresh and source-rejoined before/after transition validation, payload-free manifest compiler, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, protocol, adapter, flow, verifier, benchmark-scorer, documentation, tests, and audit surface.",
+    "hugging_face": "Commit-pinned candidate subset containing the dependency-free source capture/compiler, typed policy replanning and hash-bound checkpoint resume contracts, cutoff-safe matched and sealed evaluation, preregistered held-out curation contracts and aggregate stage-stratified uncertainty examples, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and atomic multi-trial portfolio verifiers, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, provenance-preserving clinical evidence tensor and bounded VOI planning, accepted-state-bindable cohort diagnostics with matched policy sensitivity and provenance-overlap reporting, preregistered package-bound clinical forecasts with aggregate calibration, paired policy evaluation, dependence-audited CR1 uncertainty, synthetic prospective clustered-board design simulation, informative-evaluability/residual-dependence stress analysis, preregistered prediction-stratified pattern-mixture sensitivity analysis, dependence-closed cluster-jackknife sampling calibration, and unequal-cluster influence calibration, bounded selected-action execution with compact receipts, reviewer-only refresh and source-rejoined before/after transition validation, pinned-evidence and clinical-synthesis adapters and bindings, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity ledgers, semantic mappings, stage and program runners, executable core, tests, documentation, schemas, audit code, and the scorer for the separately hosted clinical-trial decision dataset.",
     "github_only": [
       "CONTRIBUTING.md",
       "SECURITY.md",
@@ -210,29 +211,21 @@
     "No real policy checkpoints or policy-run artifacts",
     "No scheduler logs, local paths, credentials, or machine-specific breadcrumbs",
     "Vertical-slice benchmark numbers remain caveats-first and small-N scoped",
-    "Source capture/compiler, typed policy replanning and checkpoint resume, cutoff-safe matched and sealed evaluation, preregistered held-out curation and stage-stratified uncertainty, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and multi-trial portfolio verification, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, provenance-preserving clinical evidence tensor plus bounded VOI action planning, accepted-state-bindable cohort diagnostics, preregistered package-bound clinical outcome evaluation with dependence-audited CR1 uncertainty, aggregate prospective design simulation, informative-evaluability/residual-dependence stress analysis, preregistered prediction-stratified pattern-mixture sensitivity analysis, dependence-closed cluster-jackknife sampling calibration, and bounded selected-action execution plus reviewer-only source-rejoined transition validation, typed endpoint and lineage-independent preclinical promotion, atomic clinical endpoint/safety promotion, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, semantic mapper, eight-stage provider-backed program replay, core tests, and wheel build pass without private research artifacts",
-    "Hugging Face public package is built from the exact committed source and validated by file hashes",
-    "Release decision packet records explicit approval and publication; every future update requires a new exact-package approval",
+    "Source capture/compiler, typed policy replanning and checkpoint resume, cutoff-safe matched and sealed evaluation, preregistered held-out curation and stage-stratified uncertainty, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and multi-trial portfolio verification, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, provenance-preserving clinical evidence tensor plus bounded VOI action planning, accepted-state-bindable cohort diagnostics, preregistered package-bound clinical outcome evaluation with dependence-audited CR1 uncertainty, aggregate prospective design simulation, informative-evaluability/residual-dependence stress analysis, preregistered prediction-stratified pattern-mixture sensitivity analysis, dependence-closed cluster-jackknife sampling calibration, unequal-cluster influence calibration, and bounded selected-action execution plus reviewer-only source-rejoined transition validation, typed endpoint and lineage-independent preclinical promotion, atomic clinical endpoint/safety promotion, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, semantic mapper, eight-stage provider-backed program replay, core tests, and wheel build pass without private research artifacts",
+    "Hugging Face candidate package is built from the exact committed source and validated by file hashes before upload",
+    "Release decision packet preserves the 0.3.0.dev2 public baseline and holds the 0.3.0.dev3 candidate until new exact-package approval",
     "Release audit workflow green on GitHub"
   ],
-  "publication_record": {
-    "approved_candidate_commit": "ea9cc3575fa687a3f05b6e0f9bf81a85413e5436",
-    "approved_candidate_tree": "9f5d0e903a9367824982f03cb34922fae46c52d6",
-    "content_publication_commit": "ea9cc3575fa687a3f05b6e0f9bf81a85413e5436",
-    "github_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/18",
-    "github_actions_run": "https://github.com/jang1563/agentic-drug-discovery-system/actions/runs/30620432953",
-    "hugging_face_initial_content_commit": "8125fcfdb4984045948c2ffacb37c2c6f0c3ae70",
-    "hugging_face_file_count": 169,
-    "approved_and_published_on": "2026-07-31"
-  },
+  "publication_record": null,
   "hugging_face": {
-    "status": "public_repo_uploaded_after_approval",
+    "status": "public_repo_update_candidate_not_uploaded",
     "repo_type": "dataset",
     "repo_id": "jang1563/agentic-drug-discovery-system",
     "repo_url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
     "visibility": "public",
     "last_public_release_version": "0.3.0.dev2",
     "current_public_version": "0.3.0.dev2",
-    "rule": "Every future public update requires final human boundary review of the exact committed release package."
+    "candidate_version": "0.3.0.dev3",
+    "rule": "Do not merge or upload the candidate until final human boundary review approves the exact committed release package."
   }
 }

@@ -1,6 +1,6 @@
 # Public Release Readiness Plan
 
-Status: 0.3.0.dev2 public development release active after exact-package approval
+Status: 0.3.0.dev3 public-update candidate; 0.3.0.dev2 remains the approved public baseline
 Release posture: GitHub and Hugging Face public; publish refreshes only from reviewed Git commits after all blocking gates pass
 Target surface: public GitHub repository with a commit-pinned Hugging Face Dataset mirror
 
@@ -14,7 +14,7 @@ The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
-  `docs/11_*` through `docs/34_*`, the payload-free preclinical, clinical provider, and sealed
+  `docs/11_*` through `docs/36_*`, the payload-free preclinical, clinical provider, and sealed
   policy-evaluation snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and
   this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
@@ -55,6 +55,10 @@ The public GitHub surface includes:
   cluster-jackknife examples, tests, and documentation. Real dependence manifests, cluster
   influence records, elicited log-IMOR ranges, and replicate- or cluster-level results remain
   excluded.
+- The unequal-cluster influence-calibration surface is limited to four bound synthetic scenarios,
+  strict aggregate schemas/readers, a deterministic builder, exact replay tests, and documented
+  method comparisons. Real cluster influence records, dependence rosters, method-selection
+  deliberations, and any operational use of the experimental multiplier remain excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 

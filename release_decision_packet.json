@@ -1,51 +1,39 @@
 {
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
-  "release_version": "0.3.0.dev2",
+  "release_version": "0.3.0.dev3",
   "last_public_release_version": "0.3.0.dev2",
-  "decision_status": "public_released_after_human_approval",
-  "as_of_date": "2026-07-31",
+  "decision_status": "candidate_pending_human_approval",
+  "as_of_date": "2026-08-03",
   "human_readable_checklist": "docs/public_launch_checklist.md",
   "surfaces": {
     "github": {
       "url": "https://github.com/jang1563/agentic-drug-discovery-system",
       "current_visibility": "public",
       "default_branch": "main",
-      "release_state": "merged_to_default_branch",
-      "release_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/18",
-      "approved_content_commit": "ea9cc3575fa687a3f05b6e0f9bf81a85413e5436",
-      "approved_content_tree": "9f5d0e903a9367824982f03cb34922fae46c52d6",
-      "publication_target": "public_default_branch"
+      "last_public_release_state": "merged_to_default_branch",
+      "last_public_release_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/18",
+      "candidate_release_state": "not_approved_or_merged",
+      "publication_target": "public_default_branch_after_approval"
     },
     "hugging_face": {
       "url": "https://huggingface.co/datasets/jang1563/agentic-drug-discovery-system",
       "repo_type": "dataset",
       "current_visibility": "public",
-      "release_version": "0.3.0.dev2",
-      "release_state": "uploaded_to_public_dataset",
-      "initial_content_commit": "8125fcfdb4984045948c2ffacb37c2c6f0c3ae70",
-      "file_count": 169,
-      "publication_target": "public_dataset"
+      "last_public_release_version": "0.3.0.dev2",
+      "candidate_release_state": "not_uploaded",
+      "publication_target": "public_dataset_update_after_approval"
     }
   },
   "launch_decision": {
-    "default": "published_after_approval",
+    "default": "hold_candidate_until_approval",
     "human_approval_required": true,
     "no_public_visibility_change_without_explicit_approval": true,
     "no_public_update_without_explicit_approval": true,
-    "approval_record": "Explicit owner update approval received on 2026-07-31 after the exact content commit, source tree, GitHub PR #18, validated 169-file Hugging Face package, release audits, and real nine-trial provider verification were presented",
+    "approval_record": null,
     "last_public_release_approval_record": "Explicit owner update approval received on 2026-07-31 for the reviewed 0.3.0.dev2 GitHub and Hugging Face package"
   },
-  "publication_record": {
-    "approved_candidate_commit": "ea9cc3575fa687a3f05b6e0f9bf81a85413e5436",
-    "approved_candidate_tree": "9f5d0e903a9367824982f03cb34922fae46c52d6",
-    "content_publication_commit": "ea9cc3575fa687a3f05b6e0f9bf81a85413e5436",
-    "github_pull_request": "https://github.com/jang1563/agentic-drug-discovery-system/pull/18",
-    "github_actions_run": "https://github.com/jang1563/agentic-drug-discovery-system/actions/runs/30620432953",
-    "hugging_face_initial_content_commit": "8125fcfdb4984045948c2ffacb37c2c6f0c3ae70",
-    "hugging_face_file_count": 169,
-    "approved_and_published_on": "2026-07-31"
-  },
+  "publication_record": null,
   "release_scope": {
     "include": [
       "reader-facing README and project brief",
@@ -65,7 +53,7 @@
       "bounded clinical selected-action execution with compact payload-free receipts, reviewer-only verifier refresh, single-use action ids, exact source-rejoined gap transitions, strict two-state validation, and a compiler-generated synthetic example",
       "role-neutral cutoff-safe sealed evaluation contracts, externally separated labels and commitments, strict policy submissions, aggregate policy comparison, and synthetic fail-closed tests",
       "preregistered held-out cohort, label, curator-roster, outcome-window, stage-minimum, and metric contracts; evaluator-only independent curation validation; aggregate Wilson intervals, action coverage, selective risk, and synthetic fail-closed tests",
-      "preregistered package-bound clinical outcome evaluation, dependence-audited CR1 uncertainty, clustered-board design simulation, informative-evaluability and residual-dependence stress analysis, binary log-IMOR pattern-mixture sensitivity, and dependence-closed cluster-jackknife calibration with aggregate synthetic evidence and explicit claim boundaries",
+      "preregistered package-bound clinical outcome evaluation, dependence-audited CR1 uncertainty, clustered-board design simulation, informative-evaluability and residual-dependence stress analysis, binary log-IMOR pattern-mixture sensitivity, dependence-closed cluster-jackknife calibration, and unequal-cluster influence calibration with aggregate synthetic evidence and explicit claim boundaries",
       "eight-stage provider-backed program fixture with one cumulative execution ledger, typed identity continuity through regulatory review, and exact accepted-packet replay",
       "benchmark/ scorer and tests for the separately hosted clinical-trial decision dataset",
       "audit scripts and GitHub Actions release audit"
@@ -190,6 +178,7 @@
     "docs/33_informative_evaluability_and_dependence_stress.md",
     "docs/34_preregistered_pattern_mixture_sensitivity.md",
     "docs/35_dependence_closed_pattern_mixture_uncertainty.md",
+    "docs/36_unequal_cluster_influence_calibration.md",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
@@ -204,6 +193,7 @@
     "agentic_drug_discovery/clinical_decision.py",
     "agentic_drug_discovery/clinical_outcome_pattern_mixture.py",
     "agentic_drug_discovery/clinical_outcome_pattern_mixture_uncertainty.py",
+    "agentic_drug_discovery/clinical_outcome_pattern_mixture_influence_calibration.py",
     "agentic_drug_discovery/clinical_closed_loop.py",
     "adapters/pinned_evidence_adapter.py",
     "adapters/clinical_synthesis_adapter.py",
@@ -219,6 +209,9 @@
     "rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_protocol.schema.json",
     "rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_report.schema.json",
     "rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_summary.schema.json",
+    "rl_env/specs/clinical_outcome_pattern_mixture_influence_protocol.schema.json",
+    "rl_env/specs/clinical_outcome_pattern_mixture_influence_report.schema.json",
+    "rl_env/specs/clinical_outcome_pattern_mixture_influence_summary.schema.json",
     "rl_env/specs/clinical_evidence_closed_loop_transition.example.json",
     "rl_env/specs/clinical_endpoint_mapping.schema.json",
     "rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json",
@@ -241,7 +234,9 @@
     "tests/test_heldout_evaluation.py",
     "tests/test_clinical_outcome_pattern_mixture.py",
     "tests/test_clinical_outcome_pattern_mixture_uncertainty.py",
+    "tests/test_clinical_outcome_pattern_mixture_influence_calibration.py",
     "scripts/audit/validate_policy_evaluation_snapshot.py",
+    "scripts/audit/build_pattern_mixture_influence_study.py",
     "tests/",
     "benchmark/"
   ],

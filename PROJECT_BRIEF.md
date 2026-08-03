@@ -161,6 +161,12 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   scenarios require a preregistered outcome-blind closure response while independent clusters must
   remain exactly equivalent. The public study uses synthetic oracle blocks and does not infer a
   real dependence structure or combine sampling and identification uncertainty into one interval.
+- An unequal-cluster influence layer binds dedicated balanced, unequal, and dominant-cluster
+  scenarios before comparing delete-one normal, delete-one `t_(G-1)`, unequal delete-`m_j`
+  `t_(G-1)`, and an experimental variance-matched multiplier. The public study verifies exact
+  equal-size variance reduction, Student-t coverage noninferiority, multiplier RNG isolation,
+  production hard stops, and full aggregate replay. It does not select a universal method or let
+  synthetic calibration passage rescue a production-ineligible cluster structure.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -280,9 +286,10 @@ Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are 
    stage-stratified held-out board; no such real-board result is claimed yet.
 3. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, residual-dependence, and
    log-IMOR ranges for a real multi-program clinical board. Point sensitivity and dependence-closed
-   cluster-jackknife sampling layers are shipped; prevalence heterogeneity, influential-cluster
-   methods, structured cluster loss, non-nested dependence, and real locked-board validation remain
-   before stage-by-endpoint gate selection.
+   cluster-jackknife sampling layers and an unequal/influential-cluster method comparison are
+   shipped; informative size-influence correlation, structured cluster loss, non-nested
+   dependence, misspecified block boundaries, and real locked-board validation remain before
+   stage-by-endpoint gate selection.
 4. Join preregistered clinical package predictions to independently curated outcomes so the shipped
    cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
    selective risk and calibration.

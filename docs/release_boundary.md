@@ -190,6 +190,14 @@ cluster influence working records, and replicate-level intervals remain outside 
 Face. Public output contains no unit or cluster roster, never discovers dependence automatically,
 and keeps fixed-assumption sampling intervals separate from identification uncertainty.
 
+The unequal-cluster influence layer ships four bound synthetic scenarios, strict
+protocol/report/summary schemas, a deterministic artifact builder, exact replay tests, and aggregate
+method-grid-metric results. It compares normal and `t_(G-1)` delete-one intervals, unequal
+delete-`m_j` pseudovalue intervals, and an experimental one-step Webb multiplier. It neither
+selects a universal method nor claims a regression wild-cluster bootstrap. Dominant-cluster stress
+results remain non-operational even when a calibration cell passes. Real influence records,
+dependence rosters, cluster-level outputs, and method-selection deliberations remain excluded.
+
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution
 batches, provider requests/outcomes, compact receipts, reviewer refresh records, before/after
@@ -208,7 +216,8 @@ external until separate scientific and release-boundary approval.
 
 ## GitHub and Hugging Face Split
 
-- The approved 0.3.0.dev2 release is public on GitHub and Hugging Face.
+- The approved 0.3.0.dev2 release remains public on GitHub and Hugging Face.
+- The 0.3.0.dev3 candidate is not approved, merged, or uploaded.
 - The GitHub release contains the full sanitized code surface:
   adapters, chains, verifiers, the typed `agentic_drug_discovery/` core,
   governance docs, automation, tests, and `benchmark/`.

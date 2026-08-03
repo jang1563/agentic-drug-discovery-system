@@ -232,6 +232,51 @@
     "real_board_validation": false,
     "scope": "Delete-one-cluster sampling calibration for fixed binary log-IMOR model functionals under exact synthetic dependence blocks"
   },
+  "clinical_pattern_mixture_influence_calibration_synthetic": {
+    "synthetic_only": true,
+    "influence_protocol_fingerprint": "a57300753f0467f7589aa54c86f94bd7c25448ed37e92abba6c757af61376694",
+    "influence_report_fingerprint": "80ab9f4ae9dc2c0953bc302151a3846e9dce414a529b7911ad34fe3cd971abc9",
+    "stress_protocol_fingerprint": "7952aa48e2eb5cecd26196b7c3ba599bc44933e8c1d92e8b56da8be946f72f7d",
+    "stress_report_fingerprint": "1dfdde5523e5b0d89bbf73d315f496a30499e9838e011ffca1558a15e17be481",
+    "pattern_mixture_protocol_fingerprint": "c638c88456d065ae26562516a25317591573a0aba892cc36d2b8283890b591d0",
+    "pattern_mixture_report_fingerprint": "5321f2dc596c1d9b29200adb4610ac6a69870c440da8bf883ca18dfbe7fe39ed",
+    "replicates_per_scenario": 500,
+    "scenario_count": 4,
+    "method_grid_metric_cells": 640,
+    "production_eligible_scenario_count": 3,
+    "all_production_eligible_student_t_candidate_targets_met": true,
+    "all_production_eligible_delete_mj_sensitivity_targets_met": true,
+    "all_dominant_cluster_hard_stops_preserved": true,
+    "coverage_target": 0.87,
+    "delete_one_normal_minimum_coverage_lower_range": [
+      0.872793949134,
+      0.895146450127
+    ],
+    "delete_one_student_t_minimum_coverage_lower_range": [
+      0.901931595983,
+      0.929572803164
+    ],
+    "delete_mj_student_t_minimum_coverage_lower_range": [
+      0.901931595983,
+      0.927231838828
+    ],
+    "webb_multiplier_minimum_coverage_lower_range": [
+      0.833333984654,
+      0.875013037572
+    ],
+    "webb_all_cell_target_failed_scenarios": [
+      "balanced-few-8",
+      "balanced-reference-12",
+      "dominant-cluster-12"
+    ],
+    "dominant_cluster_maximum_unit_fraction": 0.266666666667,
+    "automatic_method_selection_included": false,
+    "dominant_cluster_override_allowed": false,
+    "webb_multiplier_operational": false,
+    "identification_and_sampling_uncertainty_combined": false,
+    "real_board_validation": false,
+    "scope": "Unequal and influential dependence-block calibration for fixed binary log-IMOR model functionals under exact synthetic outcomes"
+  },
   "limitations": [
     "Aggregate results are not substitutes for released per-record evidence or independent replication",
     "Repeated observations on a fixed slice are not independent samples",
@@ -239,6 +284,7 @@
     "Target-ID cross-stage evidence is label-adjacent and evaluated on the same constructed set",
     "No result is clinical validation, an approval prediction, or autonomous discovery capability evidence",
     "Pattern-mixture point-envelope inclusion is not a sampling-coverage guarantee and the public log-IMOR grid is not elicited for a real clinical board",
-    "Pattern-mixture cluster-jackknife passage assumes evaluator-declared synthetic dependence blocks and does not discover or validate real clinical dependence"
+    "Pattern-mixture cluster-jackknife passage assumes evaluator-declared synthetic dependence blocks and does not discover or validate real clinical dependence",
+    "Unequal-cluster interval calibration does not select a universal method, rescue a dominant-cluster design, or establish the experimental multiplier as a regression wild-cluster bootstrap"
   ]
 }

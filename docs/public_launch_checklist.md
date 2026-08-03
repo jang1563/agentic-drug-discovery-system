@@ -1,9 +1,10 @@
 # Public Launch Checklist
 
 This checklist is the human-readable companion to `release_decision_packet.json`.
-It records the approved and published 0.3.0.dev2 public development release.
-The 0.2.0 tag remains the latest stable release, and every future public update
-requires a new exact-package review and explicit human approval.
+It records the `candidate_pending_human_approval` state for the 0.3.0.dev3
+candidate while preserving the approved 0.3.0.dev2 public baseline. The 0.2.0
+tag remains the latest stable release. No candidate may update either public
+surface without a new exact-package review and explicit human approval.
 Scientific anchors: `docs/12_scd_vertical_slice.md`,
 `docs/13_target_id_governance_node.md`, and
 `docs/public_evidence_summary.json`. Execution contracts:
@@ -28,13 +29,22 @@ preregistration and stage-stratified uncertainty are in
 
 | Surface | Current state | Publication record |
 | --- | --- | --- |
-| GitHub | 0.3.0.dev2 public baseline on `main` | Approved content published through PR 18 at `ea9cc3575fa687a3f05b6e0f9bf81a85413e5436` |
-| Hugging Face | 0.3.0.dev2 public, ungated exact-source mirror | Initial approved upload `8125fcfdb4984045948c2ffacb37c2c6f0c3ae70`; 169 files |
+| GitHub | 0.3.0.dev2 public baseline on `main`; 0.3.0.dev3 candidate not approved or merged | Baseline content published through PR 18 at `ea9cc3575fa687a3f05b6e0f9bf81a85413e5436` |
+| Hugging Face | 0.3.0.dev2 public exact-source mirror; 0.3.0.dev3 candidate not uploaded | Baseline upload `8125fcfdb4984045948c2ffacb37c2c6f0c3ae70`; 169 files |
 
-Machine status is `public_released_after_human_approval`. The 0.3.0.dev2 public
-development release was approved after its exact candidate commit, tree,
-release audits, GitHub PR, validated Hugging Face package, and human/visual QA
-were presented.
+Machine status is `candidate_pending_human_approval`. The public repositories
+remain at 0.3.0.dev2 while the 0.3.0.dev3 exact candidate is reviewed and
+validated.
+
+## 0.3.0.dev3 Candidate Gate
+
+- [x] Unequal/influential-cluster calibration code, CLI, schemas, exact synthetic artifacts,
+  research note, and fail-closed tests are present.
+- [x] Public outputs are aggregate-only and preserve the dominant-cluster production hard stop.
+- [x] Release metadata records an unmerged and not-uploaded candidate.
+- [ ] The exact committed source and generated Hugging Face package pass every blocking command.
+- [ ] GitHub Actions passes for the exact candidate commit.
+- [ ] The owner approves that exact commit and package before merge or upload.
 
 ## 0.2.0 Baseline Record
 
