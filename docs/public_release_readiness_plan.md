@@ -64,6 +64,11 @@ The public GitHub surface includes:
   estimand and influence comparisons. Real size-outcome profiles, block rosters, conditional or
   superpopulation design deliberations, and replicate-, block-, or unit-level results remain
   excluded.
+- The cluster-superpopulation surface is limited to uniform resampling from those finite public
+  template supports, exact fixed-report binding, strict aggregate schemas/readers, a deterministic
+  builder, replay tests, and documented conditional comparisons. External sampling frames,
+  cluster covariates, transport models, post-hoc eligibility filtering, and replicate-, cluster-,
+  or unit-level records remain excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 

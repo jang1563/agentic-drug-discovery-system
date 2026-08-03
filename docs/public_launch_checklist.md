@@ -41,6 +41,9 @@ validated.
 - [x] Unequal/influential-cluster calibration code, CLI, schemas, exact synthetic artifacts,
   research note, and fail-closed tests are present.
 - [x] Public outputs are aggregate-only and preserve the dominant-cluster production hard stop.
+- [x] Empirical-template cluster-superpopulation calibration binds the exact conditional report,
+  preserves all known truths, reports realized dominance without filtering, and carries an explicit
+  no-external-transportability boundary.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.

@@ -72,6 +72,8 @@ adds-clinical-evidence summarize-pattern-mixture-uncertainty \
   --report rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_report.example.json
 adds-clinical-evidence summarize-informative-cluster-size \
   --report rl_env/specs/clinical_outcome_informative_cluster_size_report.example.json
+adds-clinical-evidence summarize-cluster-superpopulation \
+  --report rl_env/specs/clinical_outcome_cluster_superpopulation_report.example.json
 adds-clinical-evidence summarize-pattern-mixture-influence \
   --report rl_env/specs/clinical_outcome_pattern_mixture_influence_report.example.json
 python -m pytest -q
@@ -246,6 +248,25 @@ methods remain nearly unbiased for their declared target, while fixed-profile he
 conventional jackknife intervals overconservative. Delete-`m_j` reduces some influence
 concentration but does not change the unit-weighted estimand. See
 `docs/37_informative_cluster_size_estimands.md` for the sampling-frame interpretation and results.
+
+Separate fixed-profile conditional variation from cluster-superpopulation variation while
+preserving the same known truths:
+
+```bash
+adds-clinical-evidence analyze-cluster-superpopulation \
+  --protocol rl_env/specs/clinical_outcome_cluster_superpopulation_protocol.example.json \
+  --stress-protocol rl_env/specs/clinical_outcome_informative_cluster_size_stress_protocol.example.json \
+  --fixed-profile-protocol rl_env/specs/clinical_outcome_informative_cluster_size_protocol.example.json \
+  --fixed-profile-report rl_env/specs/clinical_outcome_informative_cluster_size_report.example.json \
+  --output clinical-outcome-cluster-superpopulation-report.json
+```
+
+Uniform empirical-template resampling restores SE calibration in all `320` fixed-profile failure
+cells, moving the aggregate SE pass count from `280/600` to `600/600`. Full calibration reaches
+`520/600`: the dominant informative scenario still exposes unit-weighted finite-cluster bias and
+undercoverage, so calibrated SE scaling is not treated as operational eligibility. See
+`docs/38_cluster_superpopulation_sampling.md` for the sampling model, estimands, results, and
+transport boundary.
 
 ## Core Question
 
@@ -557,6 +578,10 @@ system or full trajectory atlas described in the roadmap. Honest status:
   pattern-mixture functionals, fixed block-specific prevalence profiles, estimand-direction drift,
   aggregate max-block influence diagnostics, conditional calibration results, and the
   no-automatic-estimand-selection boundary.
+  `docs/38_cluster_superpopulation_sampling.md` defines uniform empirical-template cluster
+  resampling, exact preservation of unit- and cluster-weighted known truths, conditional versus
+  superpopulation calibration, realized-design and tie-aware influence diagnostics, and the
+  no-transportability/no-post-hoc-filtering boundary.
   `docs/public_evidence_summary.json` is the
   aggregate claim ledger.
 - `agentic_drug_discovery/`: typed state, bounded planning, tool execution, semantic promotion,
@@ -643,6 +668,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/35_dependence_closed_pattern_mixture_uncertainty.md` | Humans + agents | Conditional sampling intervals across fixed log-IMOR assumptions, dependence-closed jackknife calibration, Monte Carlo precision, public synthetic results, and claim boundaries. |
 | `docs/36_unequal_cluster_influence_calibration.md` | Humans + agents | Few, unequal, and dominant-cluster calibration; Student-t and delete-mj comparisons; experimental multiplier diagnostics; and operational boundaries. |
 | `docs/37_informative_cluster_size_estimands.md` | Humans + agents | Unit-weighted versus cluster-balanced functionals, informative-size direction drift, fixed-profile calibration, influence concentration, and estimand-selection boundaries. |
+| `docs/38_cluster_superpopulation_sampling.md` | Humans + agents | Empirical-template cluster-superpopulation sampling, preserved known truths, conditional calibration comparison, realized-design diagnostics, and transport boundaries. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Machines + reviewers | Aggregate 4-pair/8-episode policy metrics, payload-free artifact hashes, real gate outcomes, and limitations. |
 | `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
 | `agentic_drug_discovery/` | Developers + agents | Bounded planning, typed execution, semantic promotion, multi-stage stop semantics, matched evaluation, replay, and verifier-gated transitions. |

@@ -95,6 +95,16 @@ from .clinical_outcome_informative_cluster_size import (
     clinical_outcome_informative_cluster_size_validation_summary,
     validate_clinical_outcome_informative_cluster_size_report,
 )
+from .clinical_outcome_cluster_superpopulation import (
+    ClinicalOutcomeClusterSuperpopulationError,
+    analyze_clinical_outcome_cluster_superpopulation,
+    clinical_outcome_cluster_superpopulation_protocol_from_json,
+    clinical_outcome_cluster_superpopulation_report_envelope,
+    clinical_outcome_cluster_superpopulation_report_from_json,
+    clinical_outcome_cluster_superpopulation_summary,
+    clinical_outcome_cluster_superpopulation_validation_summary,
+    validate_clinical_outcome_cluster_superpopulation_report,
+)
 from .clinical_outcome_uncertainty import (
     ClinicalOutcomeUncertaintyError,
     clinical_outcome_dependence_manifest_from_json,
@@ -281,6 +291,18 @@ def _informative_cluster_size_protocol(path: str):
 def _informative_cluster_size_report(path: str):
     return clinical_outcome_informative_cluster_size_report_from_json(
         _read_text(path, "clinical outcome informative-cluster-size report")
+    )
+
+
+def _cluster_superpopulation_protocol(path: str):
+    return clinical_outcome_cluster_superpopulation_protocol_from_json(
+        _read_text(path, "clinical outcome cluster-superpopulation protocol")
+    )
+
+
+def _cluster_superpopulation_report(path: str):
+    return clinical_outcome_cluster_superpopulation_report_from_json(
+        _read_text(path, "clinical outcome cluster-superpopulation report")
     )
 
 
@@ -944,6 +966,87 @@ def _summarize_informative_cluster_size(args: argparse.Namespace) -> int:
     _print_json(
         clinical_outcome_informative_cluster_size_summary(
             _informative_cluster_size_report(args.report)
+        )
+    )
+    return 0
+
+
+def _analyze_cluster_superpopulation(args: argparse.Namespace) -> int:
+    _require_single_stdin(
+        (
+            args.protocol,
+            args.stress_protocol,
+            args.fixed_profile_protocol,
+            args.fixed_profile_report,
+        )
+    )
+    report = analyze_clinical_outcome_cluster_superpopulation(
+        _cluster_superpopulation_protocol(args.protocol),
+        _stress_protocol(args.stress_protocol),
+        _informative_cluster_size_protocol(args.fixed_profile_protocol),
+        _informative_cluster_size_report(args.fixed_profile_report),
+    )
+    envelope = clinical_outcome_cluster_superpopulation_report_envelope(report)
+    if args.output == "-":
+        _print_json(envelope)
+        return 0
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    if not output.is_file():
+        raise OSError("cluster-superpopulation report output was not created")
+    _print_json(
+        clinical_outcome_cluster_superpopulation_validation_summary(
+            report,
+            scope="bound_conditional_reference_and_seeded_superpopulation_analysis",
+        )
+    )
+    return 0
+
+
+def _validate_cluster_superpopulation(args: argparse.Namespace) -> int:
+    replay_inputs = (
+        args.protocol,
+        args.stress_protocol,
+        args.fixed_profile_protocol,
+        args.fixed_profile_report,
+    )
+    if any(item is not None for item in replay_inputs) and not all(
+        item is not None for item in replay_inputs
+    ):
+        raise ValueError(
+            "full cluster-superpopulation replay requires --protocol, "
+            "--stress-protocol, --fixed-profile-protocol, and "
+            "--fixed-profile-report"
+        )
+    _require_single_stdin((args.report, *replay_inputs))
+    report = _cluster_superpopulation_report(args.report)
+    failures: tuple[str, ...] = ()
+    scope = "integrity_and_aggregate_consistency"
+    if args.protocol is not None:
+        assert args.stress_protocol is not None
+        assert args.fixed_profile_protocol is not None
+        assert args.fixed_profile_report is not None
+        failures = validate_clinical_outcome_cluster_superpopulation_report(
+            report,
+            _cluster_superpopulation_protocol(args.protocol),
+            _stress_protocol(args.stress_protocol),
+            _informative_cluster_size_protocol(args.fixed_profile_protocol),
+            _informative_cluster_size_report(args.fixed_profile_report),
+        )
+        scope = "full_conditional_reference_and_seeded_superpopulation_replay"
+    _print_json(
+        clinical_outcome_cluster_superpopulation_validation_summary(
+            report,
+            failures=failures,
+            scope=scope,
+        )
+    )
+    return 0 if not failures else 1
+
+
+def _summarize_cluster_superpopulation(args: argparse.Namespace) -> int:
+    _print_json(
+        clinical_outcome_cluster_superpopulation_summary(
+            _cluster_superpopulation_report(args.report)
         )
     )
     return 0
@@ -1660,6 +1763,80 @@ def _parser() -> argparse.ArgumentParser:
     summarize_informative_cluster_size_parser.set_defaults(
         handler=_summarize_informative_cluster_size
     )
+
+    cluster_superpopulation_parser = subparsers.add_parser(
+        "analyze-cluster-superpopulation",
+        help=(
+            "Compare fixed-profile conditional inference with empirical-template "
+            "cluster-superpopulation inference."
+        ),
+    )
+    cluster_superpopulation_parser.add_argument(
+        "--protocol",
+        required=True,
+        help="Cluster-superpopulation protocol JSON path, or '-' for stdin.",
+    )
+    cluster_superpopulation_parser.add_argument(
+        "--stress-protocol",
+        required=True,
+        help="Bound stress simulation protocol JSON path, or '-' for stdin.",
+    )
+    cluster_superpopulation_parser.add_argument(
+        "--fixed-profile-protocol",
+        required=True,
+        help="Bound informative-cluster-size protocol JSON path, or '-' for stdin.",
+    )
+    cluster_superpopulation_parser.add_argument(
+        "--fixed-profile-report",
+        required=True,
+        help="Bound fixed-profile aggregate report JSON path, or '-' for stdin.",
+    )
+    cluster_superpopulation_parser.add_argument(
+        "--output",
+        required=True,
+        help="Aggregate cluster-superpopulation report path, or '-' for stdout.",
+    )
+    cluster_superpopulation_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing cluster-superpopulation report.",
+    )
+    cluster_superpopulation_parser.set_defaults(
+        handler=_analyze_cluster_superpopulation
+    )
+
+    validate_cluster_superpopulation_parser = subparsers.add_parser(
+        "validate-cluster-superpopulation",
+        help=(
+            "Validate cluster-superpopulation integrity, with optional conditional "
+            "reference and seeded replay."
+        ),
+    )
+    validate_cluster_superpopulation_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate cluster-superpopulation report path, or '-' for stdin.",
+    )
+    validate_cluster_superpopulation_parser.add_argument("--protocol")
+    validate_cluster_superpopulation_parser.add_argument("--stress-protocol")
+    validate_cluster_superpopulation_parser.add_argument("--fixed-profile-protocol")
+    validate_cluster_superpopulation_parser.add_argument("--fixed-profile-report")
+    validate_cluster_superpopulation_parser.set_defaults(
+        handler=_validate_cluster_superpopulation
+    )
+
+    summarize_cluster_superpopulation_parser = subparsers.add_parser(
+        "summarize-cluster-superpopulation",
+        help="Emit compact conditional-versus-superpopulation calibration results.",
+    )
+    summarize_cluster_superpopulation_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate cluster-superpopulation report path, or '-' for stdin.",
+    )
+    summarize_cluster_superpopulation_parser.set_defaults(
+        handler=_summarize_cluster_superpopulation
+    )
     return parser
 
 
@@ -1677,6 +1854,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ClinicalOutcomePatternMixtureUncertaintyError,
         ClinicalOutcomePatternMixtureInfluenceError,
         ClinicalOutcomeInformativeClusterSizeError,
+        ClinicalOutcomeClusterSuperpopulationError,
         ClinicalOutcomeUncertaintyError,
         ClinicalEvidenceWorkflowError,
         OSError,

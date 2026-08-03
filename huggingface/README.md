@@ -141,6 +141,11 @@ This card describes the unuploaded 0.3.0.dev3 update candidate for the public 0.
   protocol/report/summary schemas for unit-weighted and cluster-balanced truths, fixed-profile
   conditional calibration, aggregate influence concentration, and the no-automatic-estimand-
   selection boundary.
+- Inspect `docs/38_cluster_superpopulation_sampling.md`,
+  `agentic_drug_discovery/clinical_outcome_cluster_superpopulation.py`, and the adjacent
+  protocol/report/summary schemas for empirical-template cluster resampling, exact known-truth
+  preservation, conditional-versus-superpopulation calibration, realized-design diagnostics,
+  and the no-transportability/no-post-hoc-filtering boundary.
 - Inspect `rl_env/specs/pinned_evidence_manifest.schema.json` and its synthetic example before
   constructing a source manifest.
 - Inspect `rl_env/specs/target_identity_record.schema.json` and its synthetic example before
@@ -236,6 +241,7 @@ outside both public release surfaces.
 | `docs/35_dependence_closed_pattern_mixture_uncertainty.md` | Fixed log-IMOR model functionals, dependence-closed cluster jackknife, all-grid calibration, Monte Carlo precision, synthetic results, and claim boundaries. |
 | `docs/36_unequal_cluster_influence_calibration.md` | Few, unequal, and dominant-cluster interval calibration, Student-t and delete-mj comparisons, experimental multiplier diagnostics, and operational boundaries. |
 | `docs/37_informative_cluster_size_estimands.md` | Unit-weighted versus cluster-balanced functionals, informative-size direction drift, fixed-profile calibration, influence concentration, and estimand-selection boundaries. |
+| `docs/38_cluster_superpopulation_sampling.md` | Empirical-template cluster-superpopulation sampling, preserved known truths, conditional calibration comparison, realized-design diagnostics, and transport boundaries. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |
@@ -259,6 +265,7 @@ outside both public release surfaces.
 | `agentic_drug_discovery/clinical_outcome_pattern_mixture_uncertainty.py` | Exact point-report binding, nominal/dependence-closed delete-one-cluster jackknife inference, model-functional coverage, Monte Carlo bounds, fail-closed statuses, strict readers, summaries, and replay. |
 | `agentic_drug_discovery/clinical_outcome_pattern_mixture_influence_calibration.py` | Student-t critical values, unequal delete-mj pseudovalues, experimental multiplier intervals, production eligibility, Monte Carlo calibration, strict readers, summaries, and replay. |
 | `agentic_drug_discovery/clinical_outcome_informative_cluster_size.py` | Profile-bound dual estimands, three Student-t methods, conditional calibration, aggregate max-block influence, strict readers, summaries, and exact replay. |
+| `agentic_drug_discovery/clinical_outcome_cluster_superpopulation.py` | Empirical-template cluster resampling, preserved superpopulation truths, conditional comparison cells, realized-design rates, dynamic largest-cluster influence, strict readers, and replay. |
 | `adapters/pinned_evidence_adapter.py` | Dependency-free validation and lookup for source-pinned, payload-free evidence manifests. |
 | `adapters/clinical_synthesis_adapter.py` | Local normalization of approved endpoint mappings and reviewed synthesis selections without supplied source measurements. |
 | `adapters/execution_registry.py` | Typed contracts for the pinned adapter and caller-supplied GitHub adapter instances. |
@@ -299,6 +306,9 @@ outside both public release surfaces.
 | `rl_env/specs/clinical_outcome_informative_cluster_size_protocol.schema.json` | Exact stress binding, block-specific prevalence profiles, canonical estimand methods, calibration targets, and direction threshold. |
 | `rl_env/specs/clinical_outcome_informative_cluster_size_report.schema.json` | Aggregate dual-estimand truths, own/alternate bias, conditional interval calibration, influence concentration, production hard stops, and privacy boundaries. |
 | `rl_env/specs/clinical_outcome_informative_cluster_size_summary.schema.json` | Compact estimand-drift, reference calibration, influence, sampling-frame, and claim-boundary contract. |
+| `rl_env/specs/clinical_outcome_cluster_superpopulation_protocol.schema.json` | Exact stress/fixed-protocol/fixed-report binding, empirical sampling rule, seed, canonical methods, and calibration targets. |
+| `rl_env/specs/clinical_outcome_cluster_superpopulation_report.schema.json` | Aggregate preserved truths, conditional comparisons, realized-design rates, dynamic influence, deterministic substreams, and claim boundaries. |
+| `rl_env/specs/clinical_outcome_cluster_superpopulation_summary.schema.json` | Compact sampling-frame finding, recovery counts, primary-functional comparison, design rates, and transport boundary. |
 | `rl_env/specs/sealed_evaluation_board.schema.json` | Policy-visible, role-neutral cutoff episode and matched-pair board contract. |
 | `rl_env/specs/sealed_evaluation_vault.schema.json` | Evaluator-only label, failure-cause, arm-role, and commitment-opening contract. |
 | `rl_env/specs/policy_evaluation_submission.schema.json` | Exact board-bound policy prediction and confidence contract. |
@@ -338,6 +348,7 @@ outside both public release surfaces.
 | `tests/test_clinical_outcome_pattern_mixture_uncertainty.py` | All-grid jackknife calibration, hidden-linkage repair, independent-mode equivalence, model-functional/population separation, Monte Carlo bounds, fail-closed states, exact replay, privacy, schemas, and CLI coverage. |
 | `tests/test_clinical_outcome_pattern_mixture_influence_calibration.py` | Student-t references, delete-mj algebra, seed isolation, dominant-cluster hard stops, strict schemas/readers, public exact replay, and CLI coverage. |
 | `tests/test_clinical_outcome_informative_cluster_size.py` | Null equivalence, positive/negative direction drift, target preservation, dominant hard stop, aggregate influence, strict schemas/readers, public replay, privacy, and CLI coverage. |
+| `tests/test_clinical_outcome_cluster_superpopulation.py` | Known-truth preservation, dynamic tie denominators, no post-hoc filtering, exact binding/replay, strict schemas/readers, public findings, privacy, and CLI coverage. |
 | `tests/test_sealed_evaluation.py` | Synthetic board determinism, commitment, submission, confidence, schema, leakage, and baseline-policy coverage. |
 | `tests/` | Dependency-free planning, multi-stage stopping, mapping, evaluation, execution, replay, and transition regression tests. |
 | `benchmark/` | Installable `ctdbench` scorer and tests. |

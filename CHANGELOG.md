@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added empirical-template cluster-superpopulation calibration bound to the exact fixed-profile
+  informative-cluster-size report. Five 500-replicate scenarios resample cluster size, prediction
+  layout, and mean risk jointly while preserving every unit-weighted and cluster-balanced known
+  truth. Aggregate SE calibration moves from `280/600` conditional cells to `600/600`; full
+  calibration reaches `520/600` because dominant-profile unit-weighted methods retain finite-
+  cluster bias and undercoverage. Strict schemas/readers, deterministic RNG substreams, tie-aware
+  influence and realized-design diagnostics, exact replay, CLI paths, public artifacts,
+  documentation, and tests are included. No external transportability, post-hoc eligibility
+  filtering, automatic estimand or method selection, or dominant-cluster override is claimed.
 - Added informative-cluster-size calibration that separates unit-weighted and
   cluster-balanced pattern-mixture functionals. Five exact 500-replicate profiles cover balanced
   and unequal null association, positive and negative size-outcome association with opposite

@@ -206,6 +206,16 @@ It neither chooses an estimand nor claims cluster-superpopulation inference. Rea
 profiles, block rosters, replicate or block records, influence traces, and estimand-selection
 deliberations remain outside Git and Hugging Face.
 
+The cluster-superpopulation layer ships uniform empirical-template resampling over the same five
+synthetic profiles, strict protocol/report/summary schemas, exact conditional-reference binding,
+deterministic substreams and replay, aggregate realized-design and tie-aware influence diagnostics,
+tests, and documentation. It preserves both known truths exactly and isolates one declared
+sampling-frame variance contrast. It does not claim that the template support represents an
+external clinical population, filter inferential results by realized eligibility, select an
+estimand or interval method, or override dominance hard stops. Real sampling frames, cluster
+covariates, transport models, cluster or replicate records, and design-selection deliberations
+remain outside Git and Hugging Face.
+
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution
 batches, provider requests/outcomes, compact receipts, reviewer refresh records, before/after

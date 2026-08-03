@@ -1,0 +1,46 @@
+{
+  "integrity_sha256": "50f8494d73d32452f02a15595bae3b39549bc13069a65211af4d03500c8bafa4",
+  "protocol": {
+    "cluster_count_rule": "match_template_count",
+    "confidence_level": 0.95,
+    "coverage_tolerance": 0.08,
+    "direction_threshold": 0.5,
+    "fixed_profile_protocol_fingerprint": "23918d52ed465928701ddd70ca40f5a7dc139a75afe84bafca691529997d0317",
+    "fixed_profile_report_fingerprint": "1b0d6a6d8b4bead1b5ad06df5b83dac1296f1be39d072feb6de25bdd7aab8eda",
+    "log_imor_grid": [
+      -1.996553881874,
+      -1.0,
+      0.0,
+      1.0,
+      2.0
+    ],
+    "maximum_absolute_bias": 0.02,
+    "maximum_production_cluster_unit_fraction": 0.15,
+    "maximum_standard_error_calibration_deviation": 0.3,
+    "metadata": {
+      "design_scope": "conditional versus empirical-template cluster-superpopulation interval calibration",
+      "post_hoc_design_filtering": false,
+      "public_example": true,
+      "sampling_frame": "finite empirical template support"
+    },
+    "method_id": "adds.pattern-mixture.cluster-superpopulation-calibration.v1",
+    "methods": [
+      "unit_weighted_delete_one_student_t",
+      "unit_weighted_delete_mj_student_t",
+      "cluster_balanced_delete_one_student_t"
+    ],
+    "minimum_interval_yield": 0.95,
+    "minimum_production_clusters": 8,
+    "monte_carlo_confidence_level": 0.95,
+    "primary_metric": "observed_favorable_rate",
+    "protocol_id": "synthetic-cluster-superpopulation-calibration",
+    "random_seed": 20260804,
+    "reference_log_imor": -1.996553881874,
+    "registered_on": "2026-08-03",
+    "replicates": 500,
+    "sampling_model": "uniform_empirical_template_with_replacement",
+    "stress_protocol_fingerprint": "7bf7793108e90b0d1928948511153d46cfa683471559a0176e2fda6fd152a379",
+    "version": "1.0.0"
+  },
+  "schema_version": "adds.clinical-outcome-cluster-superpopulation-protocol.v1"
+}
