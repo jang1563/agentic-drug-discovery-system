@@ -277,6 +277,42 @@
     "real_board_validation": false,
     "scope": "Unequal and influential dependence-block calibration for fixed binary log-IMOR model functionals under exact synthetic outcomes"
   },
+  "clinical_informative_cluster_size_synthetic": {
+    "synthetic_only": true,
+    "protocol_fingerprint": "23918d52ed465928701ddd70ca40f5a7dc139a75afe84bafca691529997d0317",
+    "report_fingerprint": "1b0d6a6d8b4bead1b5ad06df5b83dac1296f1be39d072feb6de25bdd7aab8eda",
+    "stress_protocol_fingerprint": "7bf7793108e90b0d1928948511153d46cfa683471559a0176e2fda6fd152a379",
+    "replicates_per_scenario": 500,
+    "scenario_count": 5,
+    "method_grid_metric_cells": 600,
+    "production_eligible_scenario_count": 4,
+    "truth_direction_disagreement_scenario_count": 3,
+    "all_cell_bias_yield_and_coverage_targets_met": true,
+    "standard_error_calibration_failure_cell_count": 320,
+    "maximum_all_cell_absolute_own_target_bias": 0.007953423642,
+    "maximum_reference_absolute_own_target_bias": 0.001775576029,
+    "eligible_informative_reference_absolute_alternate_estimand_bias_range": [
+      0.04507081129,
+      0.047710024701
+    ],
+    "null_reference_standard_error_calibration_ratio_range": [
+      0.996490959642,
+      1.049040811537
+    ],
+    "eligible_informative_reference_standard_error_calibration_ratio_range": [
+      1.428414885004,
+      1.585506842833
+    ],
+    "all_null_all_cell_targets_met": true,
+    "all_eligible_informative_all_cell_targets_met": false,
+    "automatic_estimand_selection_included": false,
+    "delete_mj_estimand_correction_claimed": false,
+    "fixed_block_profiles_across_replicates": true,
+    "cluster_superpopulation_resampling_included": false,
+    "dominant_cluster_override_allowed": false,
+    "real_board_validation": false,
+    "scope": "Unit-weighted versus cluster-balanced pattern-mixture functionals under fixed synthetic size-outcome mean profiles"
+  },
   "limitations": [
     "Aggregate results are not substitutes for released per-record evidence or independent replication",
     "Repeated observations on a fixed slice are not independent samples",
@@ -285,6 +321,7 @@
     "No result is clinical validation, an approval prediction, or autonomous discovery capability evidence",
     "Pattern-mixture point-envelope inclusion is not a sampling-coverage guarantee and the public log-IMOR grid is not elicited for a real clinical board",
     "Pattern-mixture cluster-jackknife passage assumes evaluator-declared synthetic dependence blocks and does not discover or validate real clinical dependence",
-    "Unequal-cluster interval calibration does not select a universal method, rescue a dominant-cluster design, or establish the experimental multiplier as a regression wild-cluster bootstrap"
+    "Unequal-cluster interval calibration does not select a universal method, rescue a dominant-cluster design, or establish the experimental multiplier as a regression wild-cluster bootstrap",
+    "Informative-cluster-size calibration does not select an estimand or establish cluster-superpopulation coverage from fixed synthetic block profiles"
   ]
 }

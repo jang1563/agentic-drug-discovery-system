@@ -4,6 +4,17 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added informative-cluster-size calibration that separates unit-weighted and
+  cluster-balanced pattern-mixture functionals. Five exact 500-replicate profiles cover balanced
+  and unequal null association, positive and negative size-outcome association with opposite
+  threshold directions, and a production-ineligible dominant block. Three Student-t methods
+  aggregate one shared block-specific functional with declared weights, then report own- and
+  alternate-estimand bias, conditional coverage and SE calibration, support yield, and aggregate
+  max-block influence without replicate, block, or unit records. Results
+  show near-zero own-target bias, material cross-estimand drift, overconservative jackknife
+  uncertainty under fixed block heterogeneity, and no estimand correction from delete-mj. Strict
+  schemas/readers, exact replay, CLI paths, public artifacts, documentation, and regression tests
+  are included; automatic estimand selection and cluster-superpopulation claims are excluded.
 - Added unequal- and influential-cluster calibration for fixed binary log-IMOR model functionals.
   Four exact synthetic scenarios compare delete-one normal, delete-one Student-t, unequal
   delete-mj Student-t, and an experimental variance-matched Webb multiplier over shared seeded

@@ -198,6 +198,14 @@ selects a universal method nor claims a regression wild-cluster bootstrap. Domin
 results remain non-operational even when a calibration cell passes. Real influence records,
 dependence rosters, cluster-level outputs, and method-selection deliberations remain excluded.
 
+The informative-cluster-size layer ships five fixed synthetic prevalence profiles, strict
+protocol/report/summary schemas, a deterministic artifact builder, exact replay tests, and
+aggregate estimand and influence comparisons. It distinguishes unit-weighted from
+cluster-balanced functionals and explicitly conditions calibration on the fixed public blocks.
+It neither chooses an estimand nor claims cluster-superpopulation inference. Real size-outcome
+profiles, block rosters, replicate or block records, influence traces, and estimand-selection
+deliberations remain outside Git and Hugging Face.
+
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution
 batches, provider requests/outcomes, compact receipts, reviewer refresh records, before/after

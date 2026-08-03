@@ -7,6 +7,9 @@ Script groups:
 - `audit/build_pattern_mixture_influence_study.py`: deterministically rebuilds the public unequal-
   cluster stress protocol, bound pattern-mixture point report, influence-calibration protocol/report,
   and compact summary.
+- `audit/build_informative_cluster_size_study.py`: deterministically rebuilds the public fixed-
+  profile unit-weighted/cluster-balanced estimand study, aggregate influence report, and compact
+  summary.
 - `audit/validate_policy_evaluation_snapshot.py`: binds the public payload-free sealed-evaluation
   aggregate to the current evaluation and clinical-promotion implementations and checks its
   claim and release boundaries.
@@ -28,7 +31,8 @@ Script groups:
   bound outcomes, CR1 uncertainty, prospective design, informative-evaluability stress, binary
   log-IMOR pattern-mixture sensitivity, and dependence-closed cluster-jackknife calibration.
   It also compares normal, Student-t, unequal delete-mj, and experimental multiplier intervals on
-  the dedicated influence-calibration study.
+  the dedicated influence-calibration study, then compares unit-weighted and cluster-balanced
+  functionals under informative cluster size.
   Validation commands perform exact bound replay; summary commands emit compact JSON for people
   and automation.
 

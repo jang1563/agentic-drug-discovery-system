@@ -167,6 +167,12 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   equal-size variance reduction, Student-t coverage noninferiority, multiplier RNG isolation,
   production hard stops, and full aggregate replay. It does not select a universal method or let
   synthetic calibration passage rescue a production-ineligible cluster structure.
+- An informative-cluster-size layer binds fixed block-specific prevalence profiles before
+  separating unit-weighted and cluster-balanced pattern-mixture truths. Positive and negative
+  size-outcome association reverse the precommitted benefit-risk direction while all three
+  estimators remain close to their declared target. Aggregate max-block diagnostics expose
+  influence concentration, and fixed-profile calibration reveals overconservative jackknife
+  uncertainty without claiming cluster-superpopulation validity or selecting an estimand.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -287,9 +293,10 @@ Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are 
 3. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, residual-dependence, and
    log-IMOR ranges for a real multi-program clinical board. Point sensitivity and dependence-closed
    cluster-jackknife sampling layers and an unequal/influential-cluster method comparison are
-   shipped; informative size-influence correlation, structured cluster loss, non-nested
-   dependence, misspecified block boundaries, and real locked-board validation remain before
-   stage-by-endpoint gate selection.
+   shipped. Fixed informative size-outcome profiles and dual estimands are now calibrated;
+   cluster-superpopulation resampling, structured cluster loss, non-nested dependence,
+   misspecified block boundaries, and real locked-board validation remain before stage-by-endpoint
+   gate selection.
 4. Join preregistered clinical package predictions to independently curated outcomes so the shipped
    cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
    selective risk and calibration.

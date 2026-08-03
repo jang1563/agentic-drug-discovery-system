@@ -85,6 +85,16 @@ from .clinical_outcome_pattern_mixture_influence_calibration import (
     clinical_outcome_pattern_mixture_influence_report_from_json,
     validate_clinical_outcome_pattern_mixture_influence_calibration_report,
 )
+from .clinical_outcome_informative_cluster_size import (
+    ClinicalOutcomeInformativeClusterSizeError,
+    analyze_clinical_outcome_informative_cluster_size,
+    clinical_outcome_informative_cluster_size_protocol_from_json,
+    clinical_outcome_informative_cluster_size_report_envelope,
+    clinical_outcome_informative_cluster_size_report_from_json,
+    clinical_outcome_informative_cluster_size_summary,
+    clinical_outcome_informative_cluster_size_validation_summary,
+    validate_clinical_outcome_informative_cluster_size_report,
+)
 from .clinical_outcome_uncertainty import (
     ClinicalOutcomeUncertaintyError,
     clinical_outcome_dependence_manifest_from_json,
@@ -259,6 +269,18 @@ def _pattern_mixture_influence_protocol(path: str):
 def _pattern_mixture_influence_report(path: str):
     return clinical_outcome_pattern_mixture_influence_report_from_json(
         _read_text(path, "clinical outcome pattern-mixture influence report")
+    )
+
+
+def _informative_cluster_size_protocol(path: str):
+    return clinical_outcome_informative_cluster_size_protocol_from_json(
+        _read_text(path, "clinical outcome informative-cluster-size protocol")
+    )
+
+
+def _informative_cluster_size_report(path: str):
+    return clinical_outcome_informative_cluster_size_report_from_json(
+        _read_text(path, "clinical outcome informative-cluster-size report")
     )
 
 
@@ -860,6 +882,68 @@ def _summarize_pattern_mixture_influence(args: argparse.Namespace) -> int:
     _print_json(
         clinical_outcome_pattern_mixture_influence_calibration_summary(
             _pattern_mixture_influence_report(args.report)
+        )
+    )
+    return 0
+
+
+def _analyze_informative_cluster_size(args: argparse.Namespace) -> int:
+    _require_single_stdin((args.protocol, args.stress_protocol))
+    report = analyze_clinical_outcome_informative_cluster_size(
+        _informative_cluster_size_protocol(args.protocol),
+        _stress_protocol(args.stress_protocol),
+    )
+    envelope = clinical_outcome_informative_cluster_size_report_envelope(report)
+    if args.output == "-":
+        _print_json(envelope)
+        return 0
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    if not output.is_file():
+        raise OSError("informative-cluster-size report output was not created")
+    _print_json(
+        clinical_outcome_informative_cluster_size_validation_summary(
+            report,
+            scope="full_protocol_and_seeded_stress_replay",
+        )
+    )
+    return 0
+
+
+def _validate_informative_cluster_size(args: argparse.Namespace) -> int:
+    replay_inputs = (args.protocol, args.stress_protocol)
+    if any(item is not None for item in replay_inputs) and not all(
+        item is not None for item in replay_inputs
+    ):
+        raise ValueError(
+            "full informative-cluster-size replay requires --protocol and "
+            "--stress-protocol"
+        )
+    _require_single_stdin((args.report, *replay_inputs))
+    report = _informative_cluster_size_report(args.report)
+    failures: tuple[str, ...] = ()
+    scope = "integrity_and_aggregate_consistency"
+    if args.protocol is not None:
+        assert args.stress_protocol is not None
+        failures = validate_clinical_outcome_informative_cluster_size_report(
+            report,
+            _informative_cluster_size_protocol(args.protocol),
+            _stress_protocol(args.stress_protocol),
+        )
+        scope = "full_protocol_and_seeded_stress_replay"
+    _print_json(
+        clinical_outcome_informative_cluster_size_validation_summary(
+            report,
+            failures=failures,
+            scope=scope,
+        )
+    )
+    return 0 if not failures else 1
+
+
+def _summarize_informative_cluster_size(args: argparse.Namespace) -> int:
+    _print_json(
+        clinical_outcome_informative_cluster_size_summary(
+            _informative_cluster_size_report(args.report)
         )
     )
     return 0
@@ -1508,6 +1592,74 @@ def _parser() -> argparse.ArgumentParser:
     summarize_pattern_influence_parser.set_defaults(
         handler=_summarize_pattern_mixture_influence
     )
+
+    informative_cluster_size_parser = subparsers.add_parser(
+        "analyze-informative-cluster-size",
+        help=(
+            "Compare unit-weighted and cluster-balanced pattern-mixture "
+            "functionals under informative cluster size."
+        ),
+    )
+    informative_cluster_size_parser.add_argument(
+        "--protocol",
+        required=True,
+        help="Informative-cluster-size protocol JSON path, or '-' for stdin.",
+    )
+    informative_cluster_size_parser.add_argument(
+        "--stress-protocol",
+        required=True,
+        help="Bound stress simulation protocol JSON path, or '-' for stdin.",
+    )
+    informative_cluster_size_parser.add_argument(
+        "--output",
+        required=True,
+        help="Aggregate informative-cluster-size report path, or '-' for stdout.",
+    )
+    informative_cluster_size_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing informative-cluster-size report.",
+    )
+    informative_cluster_size_parser.set_defaults(
+        handler=_analyze_informative_cluster_size
+    )
+
+    validate_informative_cluster_size_parser = subparsers.add_parser(
+        "validate-informative-cluster-size",
+        help=(
+            "Validate informative-cluster-size integrity, with optional complete "
+            "seeded replay."
+        ),
+    )
+    validate_informative_cluster_size_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate informative-cluster-size report path, or '-' for stdin.",
+    )
+    validate_informative_cluster_size_parser.add_argument(
+        "--protocol",
+        help="Informative-cluster-size protocol for complete replay.",
+    )
+    validate_informative_cluster_size_parser.add_argument(
+        "--stress-protocol",
+        help="Bound stress simulation protocol for complete replay.",
+    )
+    validate_informative_cluster_size_parser.set_defaults(
+        handler=_validate_informative_cluster_size
+    )
+
+    summarize_informative_cluster_size_parser = subparsers.add_parser(
+        "summarize-informative-cluster-size",
+        help="Emit compact estimand-drift and influence-concentration comparisons.",
+    )
+    summarize_informative_cluster_size_parser.add_argument(
+        "--report",
+        required=True,
+        help="Aggregate informative-cluster-size report path, or '-' for stdin.",
+    )
+    summarize_informative_cluster_size_parser.set_defaults(
+        handler=_summarize_informative_cluster_size
+    )
     return parser
 
 
@@ -1524,6 +1676,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ClinicalOutcomePatternMixtureError,
         ClinicalOutcomePatternMixtureUncertaintyError,
         ClinicalOutcomePatternMixtureInfluenceError,
+        ClinicalOutcomeInformativeClusterSizeError,
         ClinicalOutcomeUncertaintyError,
         ClinicalEvidenceWorkflowError,
         OSError,

@@ -25,7 +25,9 @@ preregistered package-bound forecasts, paired policy evaluation, dependence-awar
 uncertainty and design simulation, informative-evaluability stress analysis,
 prediction-stratified binary log-IMOR sensitivity, dependence-closed jackknife
 calibration, and unequal-cluster influence calibration comparing normal,
-`t_(G-1)`, delete-`m_j`, and an experimental Webb multiplier. This candidate is
+`t_(G-1)`, delete-`m_j`, and an experimental Webb multiplier. It now also separates
+unit-weighted from cluster-balanced functionals under informative cluster size,
+with aggregate influence diagnostics and fixed-profile conditional calibration. This candidate is
 not approved, merged, or uploaded. No real independently curated clinical outcome
 result is claimed.
 Seven of eight planned atlases still do not have standalone public data, and
@@ -68,6 +70,8 @@ adds-clinical-evidence summarize-pattern-mixture \
   --report rl_env/specs/clinical_outcome_pattern_mixture_report.example.json
 adds-clinical-evidence summarize-pattern-mixture-uncertainty \
   --report rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_report.example.json
+adds-clinical-evidence summarize-informative-cluster-size \
+  --report rl_env/specs/clinical_outcome_informative_cluster_size_report.example.json
 adds-clinical-evidence summarize-pattern-mixture-influence \
   --report rl_env/specs/clinical_outcome_pattern_mixture_influence_report.example.json
 python -m pytest -q
@@ -225,6 +229,23 @@ minimum small-cluster upgrade, and retains delete-`m_j` as an unequal-size influ
 The one-step Webb multiplier remains experimental because its all-cell coverage target fails in
 both balanced scenarios. See `docs/36_unequal_cluster_influence_calibration.md` for formulas,
 results, and claim boundaries.
+
+Compare unit-weighted and cluster-balanced targets when outcome prevalence is associated with
+cluster size:
+
+```bash
+adds-clinical-evidence analyze-informative-cluster-size \
+  --protocol rl_env/specs/clinical_outcome_informative_cluster_size_protocol.example.json \
+  --stress-protocol rl_env/specs/clinical_outcome_informative_cluster_size_stress_protocol.example.json \
+  --output clinical-outcome-informative-cluster-size-report.json
+```
+
+The public study shows that the two known truths coincide under null size-outcome association and
+take opposite benefit-risk directions under positive and negative informative-size profiles. All
+methods remain nearly unbiased for their declared target, while fixed-profile heterogeneity makes
+conventional jackknife intervals overconservative. Delete-`m_j` reduces some influence
+concentration but does not change the unit-weighted estimand. See
+`docs/37_informative_cluster_size_estimands.md` for the sampling-frame interpretation and results.
 
 ## Core Question
 
@@ -532,6 +553,10 @@ system or full trajectory atlas described in the roadmap. Honest status:
   `docs/36_unequal_cluster_influence_calibration.md` defines unequal delete-`m_j` pseudovalues,
   `t_(G-1)` intervals, the experimental multiplier boundary, influence and dominance diagnostics,
   public calibration results, and the no-automatic-selection boundary.
+  `docs/37_informative_cluster_size_estimands.md` defines unit-weighted and cluster-balanced
+  pattern-mixture functionals, fixed block-specific prevalence profiles, estimand-direction drift,
+  aggregate max-block influence diagnostics, conditional calibration results, and the
+  no-automatic-estimand-selection boundary.
   `docs/public_evidence_summary.json` is the
   aggregate claim ledger.
 - `agentic_drug_discovery/`: typed state, bounded planning, tool execution, semantic promotion,
@@ -617,6 +642,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/34_preregistered_pattern_mixture_sensitivity.md` | Humans + agents | Prediction-stratified binary log-IMOR sensitivity, observable aggregate inputs, matched estimand/recovery gates, public synthetic results, and claim boundaries. |
 | `docs/35_dependence_closed_pattern_mixture_uncertainty.md` | Humans + agents | Conditional sampling intervals across fixed log-IMOR assumptions, dependence-closed jackknife calibration, Monte Carlo precision, public synthetic results, and claim boundaries. |
 | `docs/36_unequal_cluster_influence_calibration.md` | Humans + agents | Few, unequal, and dominant-cluster calibration; Student-t and delete-mj comparisons; experimental multiplier diagnostics; and operational boundaries. |
+| `docs/37_informative_cluster_size_estimands.md` | Humans + agents | Unit-weighted versus cluster-balanced functionals, informative-size direction drift, fixed-profile calibration, influence concentration, and estimand-selection boundaries. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Machines + reviewers | Aggregate 4-pair/8-episode policy metrics, payload-free artifact hashes, real gate outcomes, and limitations. |
 | `docs/public_evidence_summary.json` | Machines + reviewers | Aggregate-only metrics, provenance limits, and claim boundaries. |
 | `agentic_drug_discovery/` | Developers + agents | Bounded planning, typed execution, semantic promotion, multi-stage stop semantics, matched evaluation, replay, and verifier-gated transitions. |

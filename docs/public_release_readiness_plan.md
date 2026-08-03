@@ -14,7 +14,7 @@ The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
-  `docs/11_*` through `docs/36_*`, the payload-free preclinical, clinical provider, and sealed
+  `docs/11_*` through `docs/37_*`, the payload-free preclinical, clinical provider, and sealed
   policy-evaluation snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and
   this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
@@ -59,6 +59,11 @@ The public GitHub surface includes:
   strict aggregate schemas/readers, a deterministic builder, exact replay tests, and documented
   method comparisons. Real cluster influence records, dependence rosters, method-selection
   deliberations, and any operational use of the experimental multiplier remain excluded.
+- The informative-cluster-size surface is limited to five fixed synthetic profiles, strict
+  aggregate schemas/readers, a deterministic builder, exact replay tests, and documented
+  estimand and influence comparisons. Real size-outcome profiles, block rosters, conditional or
+  superpopulation design deliberations, and replicate-, block-, or unit-level results remain
+  excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 

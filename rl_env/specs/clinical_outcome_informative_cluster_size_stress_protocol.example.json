@@ -1,0 +1,381 @@
+{
+  "integrity_sha256": "7bf7793108e90b0d1928948511153d46cfa683471559a0176e2fda6fd152a379",
+  "protocol": {
+    "analysis_modes": [
+      "nominal_clusters",
+      "dependence_closed_clusters"
+    ],
+    "confidence_level": 0.95,
+    "coverage_tolerance": 0.08,
+    "estimand_targets": [
+      "population",
+      "evaluable"
+    ],
+    "gates": [
+      {
+        "gate_id": "production-g08-share15",
+        "maximum_evaluable_cluster_fraction": 0.15,
+        "minimum_evaluable_clusters": 8
+      }
+    ],
+    "metadata": {
+      "design_scope": "informative cluster size and estimand drift",
+      "prediction_strata": 1,
+      "public_example": true,
+      "real_clinical_outcomes_included": false
+    },
+    "minimum_interval_yield": 0.95,
+    "monte_carlo_confidence_level": 0.95,
+    "protocol_id": "synthetic-informative-cluster-size-stress",
+    "random_seed": 20260803,
+    "registered_on": "2026-08-03",
+    "replicates": 500,
+    "rng_method_id": "adds.mt19937-block-polya-urn-informative-evaluability.v1",
+    "scenarios": [
+      {
+        "classification_threshold": 0.5,
+        "dependence_block_intraclass_correlation": 0.05,
+        "dependence_blocks": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ],
+          [
+            8
+          ],
+          [
+            9
+          ],
+          [
+            10
+          ],
+          [
+            11
+          ]
+        ],
+        "endpoint_family": "composite_benefit_risk",
+        "favorable_evaluable_probability": 0.9,
+        "favorable_prevalence": 0.5,
+        "nominal_cluster_sizes": [
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128
+        ],
+        "policy_a_probability_pattern": [
+          0.35
+        ],
+        "policy_b_probability_pattern": [
+          0.65
+        ],
+        "scenario_id": "balanced-null-12",
+        "stage": "clinical_strategy",
+        "unfavorable_evaluable_probability": 0.55
+      },
+      {
+        "classification_threshold": 0.5,
+        "dependence_block_intraclass_correlation": 0.05,
+        "dependence_blocks": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ],
+          [
+            8
+          ],
+          [
+            9
+          ],
+          [
+            10
+          ],
+          [
+            11
+          ]
+        ],
+        "endpoint_family": "composite_benefit_risk",
+        "favorable_evaluable_probability": 0.9,
+        "favorable_prevalence": 0.53,
+        "nominal_cluster_sizes": [
+          512,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128
+        ],
+        "policy_a_probability_pattern": [
+          0.35
+        ],
+        "policy_b_probability_pattern": [
+          0.65
+        ],
+        "scenario_id": "dominant-informative-benefit-12",
+        "stage": "clinical_strategy",
+        "unfavorable_evaluable_probability": 0.55
+      },
+      {
+        "classification_threshold": 0.5,
+        "dependence_block_intraclass_correlation": 0.05,
+        "dependence_blocks": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ],
+          [
+            8
+          ],
+          [
+            9
+          ],
+          [
+            10
+          ],
+          [
+            11
+          ]
+        ],
+        "endpoint_family": "composite_benefit_risk",
+        "favorable_evaluable_probability": 0.9,
+        "favorable_prevalence": 0.526086956522,
+        "nominal_cluster_sizes": [
+          192,
+          160,
+          160,
+          160,
+          128,
+          128,
+          128,
+          96,
+          96,
+          96,
+          64,
+          64
+        ],
+        "policy_a_probability_pattern": [
+          0.35
+        ],
+        "policy_b_probability_pattern": [
+          0.65
+        ],
+        "scenario_id": "unequal-informative-benefit-12",
+        "stage": "clinical_strategy",
+        "unfavorable_evaluable_probability": 0.55
+      },
+      {
+        "classification_threshold": 0.5,
+        "dependence_block_intraclass_correlation": 0.05,
+        "dependence_blocks": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ],
+          [
+            8
+          ],
+          [
+            9
+          ],
+          [
+            10
+          ],
+          [
+            11
+          ]
+        ],
+        "endpoint_family": "composite_benefit_risk",
+        "favorable_evaluable_probability": 0.9,
+        "favorable_prevalence": 0.473913043478,
+        "nominal_cluster_sizes": [
+          192,
+          160,
+          160,
+          160,
+          128,
+          128,
+          128,
+          96,
+          96,
+          96,
+          64,
+          64
+        ],
+        "policy_a_probability_pattern": [
+          0.35
+        ],
+        "policy_b_probability_pattern": [
+          0.65
+        ],
+        "scenario_id": "unequal-informative-harm-12",
+        "stage": "clinical_strategy",
+        "unfavorable_evaluable_probability": 0.55
+      },
+      {
+        "classification_threshold": 0.5,
+        "dependence_block_intraclass_correlation": 0.05,
+        "dependence_blocks": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4
+          ],
+          [
+            5
+          ],
+          [
+            6
+          ],
+          [
+            7
+          ],
+          [
+            8
+          ],
+          [
+            9
+          ],
+          [
+            10
+          ],
+          [
+            11
+          ]
+        ],
+        "endpoint_family": "composite_benefit_risk",
+        "favorable_evaluable_probability": 0.9,
+        "favorable_prevalence": 0.5,
+        "nominal_cluster_sizes": [
+          192,
+          160,
+          160,
+          160,
+          128,
+          128,
+          128,
+          96,
+          96,
+          96,
+          64,
+          64
+        ],
+        "policy_a_probability_pattern": [
+          0.35
+        ],
+        "policy_b_probability_pattern": [
+          0.65
+        ],
+        "scenario_id": "unequal-null-12",
+        "stage": "clinical_strategy",
+        "unfavorable_evaluable_probability": 0.55
+      }
+    ],
+    "simulation_method_id": "adds.prospective-clinical-outcome-stress.informative-evaluability-dependence.v1",
+    "uncertainty_method_id": "adds.cluster-robust-clinical-outcome-uncertainty.cr1.v1",
+    "version": "1.0.0"
+  },
+  "schema_version": "adds.clinical-outcome-stress-simulation-protocol.v1"
+}
