@@ -7,9 +7,14 @@ from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 
 from agentic_drug_discovery.clinical_effects import (
+    canonical_effect_measure,
     canonical_ratio_effect_measure,
+    effect_benefit_direction,
     ratio_benefit_direction,
     ratio_effect_favorable_direction,
+    validate_effect_contract,
+    validate_effect_interval,
+    validate_effect_measure_unit,
     validate_ratio_effect_contract,
 )
 from agentic_drug_discovery.clinical_endpoint_mapping import (
@@ -83,6 +88,70 @@ class CrossDiseaseClinicalConformanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "requires higher_is_better"):
             validate_ratio_effect_contract("odds_ratio", "lower_is_better")
 
+    def test_percentage_point_risk_difference_contract_is_direction_aware(
+        self,
+    ) -> None:
+        aliases = (
+            "Difference in percentage",
+            "Risk Difference (RD)",
+            "Adjusted risk difference (%)",
+        )
+        self.assertEqual(
+            {canonical_effect_measure(label) for label in aliases},
+            {"risk_difference"},
+        )
+        self.assertIsNone(canonical_ratio_effect_measure(aliases[0]))
+        self.assertIsNone(canonical_effect_measure("Adjusted treatment difference"))
+        for direction in ("higher_is_better", "lower_is_better"):
+            validate_effect_contract("risk_difference", direction)
+        self.assertEqual(
+            effect_benefit_direction(
+                15.3,
+                31.2,
+                "risk_difference",
+                "higher_is_better",
+            ),
+            "benefit",
+        )
+        self.assertEqual(
+            effect_benefit_direction(
+                -12.0,
+                -2.0,
+                "risk_difference",
+                "lower_is_better",
+            ),
+            "benefit",
+        )
+        self.assertEqual(
+            effect_benefit_direction(
+                -1.0,
+                2.0,
+                "risk_difference",
+                "higher_is_better",
+            ),
+            "null_or_uncertain",
+        )
+        with self.assertRaisesRegex(ValueError, "finite"):
+            validate_effect_interval(
+                float("nan"),
+                -1.0,
+                1.0,
+                "risk_difference",
+            )
+        with self.assertRaisesRegex(ValueError, "contain"):
+            validate_effect_interval(2.0, -1.0, 1.0, "risk_difference")
+        validate_effect_measure_unit(
+            "risk_difference",
+            "percentage of participants",
+        )
+        with self.assertRaisesRegex(ValueError, "percentage-of-participants"):
+            validate_effect_measure_unit("risk_difference", "participants")
+        with self.assertRaisesRegex(ValueError, "percentage-of-participants"):
+            validate_effect_measure_unit(
+                "risk_difference",
+                "percent change from baseline",
+            )
+
     def test_uc_examples_validate_round_trip_and_share_disease_identity(self) -> None:
         mapping_schema = _json(MAPPING_SCHEMA)
         synthesis_schema = _json(SYNTHESIS_SCHEMA)
@@ -124,6 +193,17 @@ class CrossDiseaseClinicalConformanceTests(unittest.TestCase):
         mapping["favorable_direction"] = "lower_is_better"
         errors = list(Draft202012Validator(schema).iter_errors(mapping))
         self.assertTrue(errors)
+
+    def test_public_schemas_accept_directional_risk_difference(self) -> None:
+        mapping = _json(MAPPING)
+        mapping["effect_measure"] = "risk_difference"
+        mapping["favorable_direction"] = "higher_is_better"
+        synthesis = _json(SYNTHESIS)
+        synthesis["effect_measure"] = "risk_difference"
+        synthesis["effect_measure_favorable_direction"] = "higher_is_better"
+
+        Draft202012Validator(_json(MAPPING_SCHEMA)).validate(mapping)
+        Draft202012Validator(_json(SYNTHESIS_SCHEMA)).validate(synthesis)
 
 
 if __name__ == "__main__":

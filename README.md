@@ -60,6 +60,7 @@ evidence hashes:
 - Synthetic immune-disease breadth check: `docs/41_ulcerative_colitis_conformance_slice.md`
 - Public-source UC provider validation: `docs/42_uc_provider_validation.md`
 - Phase-bound UC population alignment: `docs/43_uc_phase_population_alignment.md`
+- Independent UC maintenance risk-difference replication: `docs/44_uc_maintenance_risk_difference_replication.md`
 
 ```bash
 adds-research-readiness validate \
@@ -567,6 +568,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
   `docs/42_uc_provider_validation.md` and
   `docs/uc_clinical_provider_validation_snapshot.json` record two additional public-source UC
   induction runs that retain uncertain evidence on `HOLD` and advance a bounded favorable result.
+  `docs/44_uc_maintenance_risk_difference_replication.md` records an independent primary
+  maintenance trial on an absolute percentage-point scale, including its screened exclusion
+  ledger and additive-scale decision boundary.
   `docs/22_clinical_benefit_risk_synthesis.md` defines the explicit, source-disjoint, non-pooled
   cross-trial synthesis contract, and `docs/23_clinical_portfolio_endpoint_mapping.md` defines the
   multi-bundle portfolio transaction and append-only reviewer-approved mapping ledger.
@@ -688,6 +692,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/clinical_provider_validation_snapshot.json` | Machines + reviewers | Payload-free NCT/design ids, typed values, artifact hashes, stage outcome, matched control, and limitations. |
 | `docs/42_uc_provider_validation.md` | Humans + agents | Two public-source UC induction contract runs, direction-aware gating, phase identity, safety aggregates, and non-pooling limits. |
 | `docs/uc_clinical_provider_validation_snapshot.json` | Machines + reviewers | Payload-free UC source/job/output/manifest hashes, selected typed values, decisions, and replay limits. |
+| `docs/44_uc_maintenance_risk_difference_replication.md` | Humans + agents | Independent primary-maintenance percentage-point replication, sign/unit controls, screened exclusions, and non-pooling boundary. |
+| `docs/uc_maintenance_risk_difference_validation_snapshot.json` | Machines + reviewers | Payload-free selected-trial hashes, additive effect, role-wise safety/population alignment, execution result, and exclusion reason codes. |
 | `docs/22_clinical_benefit_risk_synthesis.md` | Humans + agents | Explicit cross-trial selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
@@ -983,6 +989,10 @@ Public-release readiness is tracked in:
 - `docs/42_uc_provider_validation.md` and
   `docs/uc_clinical_provider_validation_snapshot.json` — public-source UC induction contract
   validation, retained uncertainty, typed phase boundaries, and payload-free hashes.
+- `docs/44_uc_maintenance_risk_difference_replication.md` and
+  `docs/uc_maintenance_risk_difference_validation_snapshot.json` — independent primary
+  maintenance replication on an absolute percentage-point scale, screened controls, and explicit
+  no-pooling/no-participant-identity limits.
 - `docs/public_evidence_summary.json` — machine-readable aggregate claim ledger.
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
 - `docs/public_launch_checklist.md` — final human launch checklist.

@@ -13,9 +13,12 @@ from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from .clinical_effects import (
-    canonical_ratio_effect_measure,
-    ratio_benefit_direction,
-    ratio_effect_favorable_direction,
+    canonical_effect_measure,
+    effect_benefit_direction,
+    effect_favorable_direction,
+    validate_effect_contract,
+    validate_effect_interval,
+    validate_effect_measure_unit,
 )
 from .ingestion import (
     INGESTION_JOB_SCHEMA_VERSION,
@@ -684,22 +687,41 @@ def _generic_job(
     endpoint = trial["endpoint"]
     analysis = endpoint["analysis"]
     safety = trial["safety"]
-    if (
-        not 0 < analysis["p_value"] <= 1
-        or not 0
-        < analysis["confidence_interval_lower"]
-        <= analysis["parameter_value"]
-        <= analysis["confidence_interval_upper"]
-        or not 0 < analysis["confidence_interval_percent"] <= 100
-    ):
-        raise ValueError("ClinicalTrials.gov endpoint ratio analysis is invalid")
-    effect_measure = canonical_ratio_effect_measure(analysis["parameter_type"])
+    if not 0 < analysis["p_value"] <= 1 or not 0 < analysis[
+        "confidence_interval_percent"
+    ] <= 100:
+        raise ValueError("ClinicalTrials.gov endpoint effect analysis is invalid")
+    effect_measure = canonical_effect_measure(analysis["parameter_type"])
     if effect_measure is None:
         raise ValueError("ClinicalTrials.gov endpoint effect measure is unsupported")
-    effect_direction = ratio_benefit_direction(
+    try:
+        effect_direction_contract = effect_favorable_direction(
+            effect_measure,
+            endpoint["favorable_direction"],
+        )
+        validate_effect_contract(effect_measure, effect_direction_contract)
+        validate_effect_interval(
+            analysis["parameter_value"],
+            analysis["confidence_interval_lower"],
+            analysis["confidence_interval_upper"],
+            effect_measure,
+        )
+        validate_effect_measure_unit(effect_measure, endpoint["unit"])
+        if effect_measure == "risk_difference" and [
+            item["role"] for item in trial["arms"]
+        ] != ["candidate", "comparator"]:
+            raise ValueError(
+                "risk_difference requires candidate then comparator group order"
+            )
+    except ValueError as exc:
+        raise ValueError(
+            "ClinicalTrials.gov endpoint effect analysis is invalid"
+        ) from exc
+    effect_direction = effect_benefit_direction(
         analysis["confidence_interval_lower"],
         analysis["confidence_interval_upper"],
-        ratio_effect_favorable_direction(effect_measure),
+        effect_measure,
+        effect_direction_contract,
     )
     arms = [
         {
@@ -1188,20 +1210,37 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
     ci_upper = Decimal(str(expected_analysis["confidence_interval_upper"]))
     ci_percent = Decimal(str(expected_analysis["confidence_interval_percent"]))
     p_value = Decimal(str(expected_analysis["p_value"]))
-    effect_measure = canonical_ratio_effect_measure(expected_analysis["parameter_type"])
+    effect_measure = canonical_effect_measure(expected_analysis["parameter_type"])
+    interval_is_valid = True
+    if effect_measure is not None:
+        try:
+            effect_direction_contract = effect_favorable_direction(
+                effect_measure,
+                endpoint["favorable_direction"],
+            )
+            validate_effect_contract(effect_measure, effect_direction_contract)
+            validate_effect_interval(
+                float(parameter),
+                float(ci_lower),
+                float(ci_upper),
+                effect_measure,
+            )
+            validate_effect_measure_unit(effect_measure, endpoint["unit"])
+        except ValueError:
+            interval_is_valid = False
     if (
         candidate["role"] != "candidate"
         or comparator["role"] != "comparator"
         or _normalized(endpoint["outcome_type"]) != "primary"
         or _normalized(endpoint["reporting_status"]) != "posted"
         or effect_measure is None
+        or not interval_is_valid
         or expected_analysis["p_value_relation"] not in {"lt", "le", "eq", "ge", "gt"}
         or not 0 < p_value <= 1
-        or not 0 < ci_lower <= parameter <= ci_upper
         or not 0 < ci_percent <= 100
     ):
         raise ValueError(
-            "ClinicalTrials.gov endpoint fails the bounded ratio-evidence rule"
+            "ClinicalTrials.gov endpoint fails the bounded effect-evidence rule"
         )
 
     safety = trial["safety"]

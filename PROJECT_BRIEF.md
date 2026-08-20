@@ -130,6 +130,11 @@ claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
   safety-acceptability, or therapeutic validation set. A separate real-source run binds induction
   and maintenance endpoint/safety populations within `NCT02435992` without treating them as
   independent trials or inferring participant identity.
+- An independent real-source UC maintenance replication binds the primary Week 52 remission
+  result in `NCT01458574` to an explicit percentage-point risk difference and role-aligned posted
+  serious-safety counts. It records five screened exclusion/defer controls, preserves raw payloads
+  externally, and makes no same-candidate cross-trial, pooling, safety-acceptability, or treatment
+  claim. The current decision tensor remains ratio-only.
 - A clinical cohort diagnostics layer binds exact package rosters and can require accepted-state
   hashes plus committed-ledger replay. It separates packages, programs, and synthesis-bound
   evidence units; reports complete decision/dimension/gap/action denominators; performs matched
@@ -318,6 +323,11 @@ The `NCT02435992` induction and maintenance analyses additionally execute phase-
 alignment with separate `645` and `457` participant aggregates. The payload-free result is in
 `docs/uc_phase_population_validation_snapshot.json`; it remains one trial and makes no
 participant-identity or longitudinal-exchangeability claim.
+The independent `NCT01458574` maintenance run adds bounded `risk_difference` extraction,
+promotion, mapping, and non-pooled synthesis semantics with a 23.2 percentage-point primary effect
+and exact 198/198 endpoint/safety denominators per selected role. Its payload-free result and
+screened exclusion ledger are in
+`docs/uc_maintenance_risk_difference_validation_snapshot.json`.
 
 The current external validation also runs one continuous source-pinned senicapoc program through
 five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the

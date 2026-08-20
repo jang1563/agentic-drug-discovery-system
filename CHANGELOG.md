@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added independent public-source UC maintenance replication for `NCT01458574`. The shared
+  clinical effect contract now supports explicit percentage-point `risk_difference` labels with
+  null 0, endpoint-declared direction, percent-unit validation, and candidate-then-comparator sign
+  binding through extraction, promotion, endpoint mapping, typed study records, and non-pooled
+  synthesis. The exact source replay committed and promoted a bounded `ADVANCE`; the payload-free
+  snapshot records source/output/manifest hashes, role-aligned endpoint and serious-safety counts,
+  five screened exclusion/defer controls, and no same-candidate, pooling, participant-identity,
+  safety-acceptability, or treatment claim. The log-ratio decision tensor remains ratio-only and
+  rejects additive effects explicitly.
 - Added two public-source ulcerative-colitis ClinicalTrials.gov induction contract runs. Valid
   `benefit`, `harm`, and `null_or_uncertain` ratio intervals now survive extraction and promotion;
   only benefit recommends `ADVANCE`, while other directions commit on `HOLD`. The v3 reviewer

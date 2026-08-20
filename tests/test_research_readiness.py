@@ -42,11 +42,11 @@ class ResearchReadinessTests(unittest.TestCase):
 
         self.assertEqual(summary["profile_id"], RESEARCH_READINESS_PROFILE_ID)
         self.assertEqual(summary["official_source_count"], 4)
-        self.assertEqual(summary["evidence_anchor_count"], 27)
+        self.assertEqual(summary["evidence_anchor_count"], 31)
         self.assertEqual(
             summary["maturity_counts"],
             {
-                "implemented_public": 5,
+                "implemented_public": 6,
                 "proposed_pilot": 1,
                 "synthetic_validated": 3,
             },
@@ -59,6 +59,14 @@ class ResearchReadinessTests(unittest.TestCase):
         self.assertEqual(summary["acceptance_gate_count"], 5)
         self.assertEqual(summary["known_gap_count"], 6)
         self.assertFalse(summary["affiliation_claimed"])
+        self.assertIn(
+            "uc-public-registry-contract-validation",
+            {item["capability_id"] for item in profile["maturity_ledger"]},
+        )
+        self.assertIn(
+            "claim-uc-public-registry-validation",
+            {item["claim_id"] for item in profile["presentation"]["claims"]},
+        )
 
     def test_public_profile_matches_strict_json_schema(self) -> None:
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))

@@ -13,6 +13,7 @@ from enum import Enum
 from typing import Any
 
 from .clinical_effects import (
+    RATIO_EFFECT_FAVORABLE_DIRECTIONS,
     ratio_benefit_direction,
     ratio_effect_favorable_direction,
 )
@@ -1276,6 +1277,10 @@ def compile_clinical_evidence_tensor(
     )
     _require_instance(policy, ClinicalDecisionPolicy, "policy")
     _require_text(tensor_id, "tensor_id")
+    if synthesis.effect_measure not in RATIO_EFFECT_FAVORABLE_DIRECTIONS:
+        raise ClinicalDecisionError(
+            "clinical decision tensor currently supports ratio effects only"
+        )
     if policy.registered_on > state.as_of_date:
         raise ClinicalDecisionError(
             "clinical decision policy is after the program cutoff"

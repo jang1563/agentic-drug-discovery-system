@@ -91,7 +91,7 @@
     "all_external_artifact_manifest_hashes_verified": true,
     "all_board_vault_submission_report_schemas_validated": true,
     "sealed_evaluation_module_sha256": "479ccd73a931243eba557e7eac625e35e1e4e2e616c90a40c2a4fe1440547414",
-    "clinical_promotion_module_sha256": "615e3f2bacc14b5a03e99666c9983330f0415c2d1e863a58d376ced19a5d511d"
+    "clinical_promotion_module_sha256": "542816b21b86c301e5af7aee371ee224bf686934e68aafe875b00a57d454e52d"
   },
   "release_boundary": {
     "published_here": [

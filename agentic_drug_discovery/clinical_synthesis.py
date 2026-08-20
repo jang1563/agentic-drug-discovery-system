@@ -10,9 +10,11 @@ from dataclasses import dataclass, field, replace
 from typing import Any
 
 from .clinical_effects import (
-    canonical_ratio_effect_measure,
-    ratio_benefit_direction,
-    validate_ratio_effect_contract,
+    canonical_effect_measure,
+    effect_benefit_direction,
+    validate_effect_contract,
+    validate_effect_interval,
+    validate_effect_measure_unit,
 )
 from .clinical_endpoint_mapping import validate_clinical_endpoint_mapping
 from .clinical_population import (
@@ -107,7 +109,7 @@ class ClinicalSynthesisSpec(SerializableRecord):
             raise ValueError("clinical synthesis is limited to regulatory_postmarket")
         if self.harmonization_policy_id != CLINICAL_SYNTHESIS_POLICY_ID:
             raise ValueError("unsupported harmonization_policy_id")
-        validate_ratio_effect_contract(
+        validate_effect_contract(
             self.effect_measure,
             self.effect_measure_favorable_direction,
         )
@@ -319,10 +321,16 @@ def _study_record(
     parameter_type = _normalized(
         _text(analysis.get("parameter_type"), "endpoint.analysis.parameter_type")
     )
-    if canonical_ratio_effect_measure(parameter_type) != spec.effect_measure:
+    if canonical_effect_measure(parameter_type) != spec.effect_measure:
         raise ClinicalSynthesisError(
             f"selected endpoint does not report declared {spec.effect_measure}"
         )
+    try:
+        validate_effect_measure_unit(spec.effect_measure, endpoint.unit)
+    except ValueError as exc:
+        raise ClinicalSynthesisError(
+            "selected endpoint effect scale is invalid"
+        ) from exc
     effect_estimate = _number(
         analysis.get("parameter_value"), "endpoint.analysis.parameter_value"
     )
@@ -338,8 +346,15 @@ def _study_record(
         analysis.get("confidence_interval_upper"),
         "endpoint.analysis.confidence_interval_upper",
     )
-    if not 0 < ci_lower <= effect_estimate <= ci_upper:
-        raise ClinicalSynthesisError("ratio confidence interval is invalid")
+    try:
+        validate_effect_interval(
+            effect_estimate,
+            ci_lower,
+            ci_upper,
+            spec.effect_measure,
+        )
+    except ValueError as exc:
+        raise ClinicalSynthesisError("effect confidence interval is invalid") from exc
     arms_by_role = {item.role: item for item in design.arms}
     safety_by_role = {item.role: item for item in safety.arm_summaries}
     candidate_arm = arms_by_role.get(TrialArmRole.CANDIDATE)
@@ -362,6 +377,15 @@ def _study_record(
         )
     if candidate_safety is None or comparator_safety is None:
         raise ClinicalSynthesisError("candidate/comparator safety arms are incomplete")
+    if spec.effect_measure == "risk_difference" and list(
+        analysis.get("source_group_ids") or ()
+    ) != [
+        candidate_arm.identifiers.get("clinicaltrials_gov_group"),
+        comparator_arm.identifiers.get("clinicaltrials_gov_group"),
+    ]:
+        raise ClinicalSynthesisError(
+            "risk_difference group order must be candidate then comparator"
+        )
     candidate_measurement = _mapping(
         candidate_arm.attributes.get("measurement"), "candidate_arm.measurement"
     )
@@ -457,9 +481,10 @@ def _study_record(
         candidate_serious_event_risk=candidate_risk,
         comparator_serious_event_risk=comparator_risk,
         serious_event_risk_difference=risk_difference,
-        benefit_direction=ratio_benefit_direction(
+        benefit_direction=effect_benefit_direction(
             ci_lower,
             ci_upper,
+            spec.effect_measure,
             spec.effect_measure_favorable_direction,
         ),
         safety_direction=_safety_direction(risk_difference),

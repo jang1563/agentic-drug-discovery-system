@@ -58,7 +58,8 @@
       "enum": [
         "hazard_ratio",
         "odds_ratio",
-        "risk_ratio"
+        "risk_ratio",
+        "risk_difference"
       ]
     },
     "effect_measure_favorable_direction": {

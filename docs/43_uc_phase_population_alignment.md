@@ -87,7 +87,9 @@ replications. The system does not pool the two odds ratios, infer participant ov
 longitudinal exchangeability, compare phase effects, or infer efficacy, safety acceptability, or a
 treatment recommendation.
 
-The next research step is an independent-trial maintenance replication that exercises the same
-contract without source overlap. Disease breadth should then extend to a second
-immune/inflammatory indication with a preregistered endpoint-family and safety-window mapping,
-still non-pooled until exchangeability is explicitly justified.
+The independent-trial maintenance step is now complete in
+`docs/44_uc_maintenance_risk_difference_replication.md`, using a source-disjoint trial and an
+additive percentage-point effect. The next breadth milestone is a second immune/inflammatory
+indication with preregistered endpoint-family, population, estimand, and safety-window mappings.
+Risk-difference evidence remains outside bounded VOI planning until an additive-scale precision
+policy is preregistered.

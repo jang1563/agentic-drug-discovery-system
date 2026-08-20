@@ -1297,6 +1297,90 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             {item.code for item in tensor.gaps},
         )
 
+    def test_risk_difference_mapping_and_non_pooled_synthesis_are_supported(
+        self,
+    ) -> None:
+        difference_designs = []
+        for design in self.unmapped_state.trial_designs:
+            endpoint = design.endpoints[0]
+            difference_endpoint = replace(
+                endpoint,
+                name="Synthetic clinical remission",
+                time_frame="52 weeks",
+                unit="percentage of participants",
+                attributes={
+                    **dict(endpoint.attributes),
+                    "analysis": {
+                        **dict(endpoint.attributes["analysis"]),
+                        "parameter_type": "Difference in percentage",
+                        "parameter_value": 23.2,
+                        "confidence_interval_lower": 15.3,
+                        "confidence_interval_upper": 31.2,
+                    },
+                },
+            )
+            difference_designs.append(
+                replace(
+                    design,
+                    endpoints=(difference_endpoint, *design.endpoints[1:]),
+                )
+            )
+        difference_state = replace(
+            self.unmapped_state,
+            trial_designs=tuple(difference_designs),
+        )
+        mapping_spec = replace(
+            _mapping_spec(),
+            mapping_id="CHEMBL_TEST:MONDO_TEST:remission-rd-map:v1",
+            portfolio_id="CHEMBL_TEST-MONDO_TEST-remission-rd-portfolio-v1",
+            endpoint_family_id="clinical_remission",
+            endpoint_family_label="Clinical remission",
+            ontology=ClinicalEndpointOntology(
+                system="urn:adds:synthetic-uc-endpoint-ontology",
+                version="1.0",
+                code="UC_CLINICAL_REMISSION",
+                label="Clinical remission",
+            ),
+            effect_measure="risk_difference",
+            favorable_direction="higher_is_better",
+        )
+        mapping_result, _ = _run_mapping(difference_state, mapping_spec)
+        self.assertIs(mapping_result.status, StageRunStatus.COMMITTED)
+
+        synthesis_spec = replace(
+            _spec(),
+            synthesis_id="CHEMBL_TEST:MONDO_TEST:remission-rd-benefit-risk:v1",
+            endpoint_mapping_id=mapping_spec.mapping_id,
+            endpoint_family="clinical_remission",
+            effect_measure="risk_difference",
+            effect_measure_favorable_direction="higher_is_better",
+        )
+        synthesis_result, _ = _run_synthesis(
+            mapping_result.final_state,
+            synthesis_spec,
+        )
+        self.assertIs(synthesis_result.status, StageRunStatus.COMMITTED)
+        synthesis = synthesis_result.final_state.benefit_risk_syntheses[0]
+        self.assertEqual(
+            {item.effect_measure for item in synthesis.studies},
+            {"risk_difference"},
+        )
+        self.assertEqual(
+            {item.effect_estimate for item in synthesis.studies},
+            {23.2},
+        )
+        self.assertEqual(
+            {item.benefit_direction for item in synthesis.studies},
+            {"benefit"},
+        )
+        with self.assertRaisesRegex(ValueError, "supports ratio effects only"):
+            compile_clinical_evidence_tensor(
+                synthesis_result.final_state,
+                synthesis,
+                _decision_policy(),
+                tensor_id="synthetic-risk-difference-tensor",
+            )
+
     def test_synthesis_without_committed_mapping_defers_without_partial_state(
         self,
     ) -> None:

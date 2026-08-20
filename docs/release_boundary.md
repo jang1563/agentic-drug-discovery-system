@@ -115,6 +115,13 @@ hashes while keeping `same_participants_inferred` false. The shared NCT/source c
 no phase pooling, participant overlap, longitudinal exchangeability, comparative phase effect, or
 clinical acceptability is inferred.
 
+`docs/uc_maintenance_risk_difference_validation_snapshot.json` adds one independent primary
+maintenance replication from `NCT01458574`. It preserves an explicit percentage-point scale,
+candidate-first sign binding, role-wise endpoint/safety counts, exact artifact hashes, and five
+screened exclusion/defer controls. It does not claim same-candidate replication, cross-trial
+pooling, participant identity, safety acceptability, or a treatment recommendation. Raw source,
+review, manifest, and run artifacts remain outside Git.
+
 The cross-trial synthesis surface contains explicit synthetic selection examples, typed
 trial-level outputs, source evidence IDs, content hashes, and a payload-free aggregate record of
 one external PALOMA-2/3 execution. It does not include the real review packet, full state, source

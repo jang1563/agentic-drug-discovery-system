@@ -22,18 +22,21 @@ measurements to the synthetic fixtures.
 
 ## Implemented Expansion
 
-One shared ratio-effect contract now governs ClinicalTrials.gov extraction, reviewer-approved
-endpoint mapping, non-pooled synthesis, typed study records, and clinical evidence tensors:
+One shared effect contract now governs ClinicalTrials.gov extraction, reviewer-approved endpoint
+mapping, non-pooled synthesis, and typed study records. Ratio effects continue into clinical
+evidence tensors; percentage-point effects currently stop before the tensor:
 
 | Effect measure | Required favorable direction | Benefit interval |
 |---|---|---|
 | `hazard_ratio` | `lower_is_better` | upper confidence bound below 1 |
 | `odds_ratio` | `higher_is_better` | lower confidence bound above 1 |
 | `risk_ratio` | `higher_is_better` | lower confidence bound above 1 |
+| `risk_difference` | endpoint-declared | favorable confidence bound beyond 0 |
 
 Registry labels such as `Hazard Ratio (HR)`, `Odds Ratio (OR)`, `Risk Ratio (RR)`, and
-`Relative Risk` resolve to canonical machine identities. Unsupported labels and reversed
-measure/direction pairs fail closed.
+`Relative Risk`, `Difference in percentage`, and `Risk Difference (RD)` resolve to canonical
+machine identities. Additive effects require explicit percent units and candidate-first group
+order. Unsupported labels, scales, orderings, and measure/direction pairs fail closed.
 
 ## Cross-Stage Artifacts
 
@@ -83,8 +86,9 @@ The provider-only follow-up is now complete for two non-sensitive public UC indu
 induction phase identity, source capture, and uncertain-versus-beneficial gating while preserving
 raw bytes and reviewer jobs outside Git.
 
-The induction-versus-maintenance aggregate population boundary is now exercised separately on
-real provider data in `docs/43_uc_phase_population_alignment.md`. The next breadth milestone is an
-independent maintenance-trial replication, followed by a second immune/inflammatory disease. That
-work must remain non-pooled until endpoint, population, estimand, and safety-window exchangeability
-are explicitly justified.
+The induction-versus-maintenance aggregate population boundary is exercised separately on real
+provider data in `docs/43_uc_phase_population_alignment.md`. The independent maintenance-trial
+replication is now complete in `docs/44_uc_maintenance_risk_difference_replication.md`; it adds an
+absolute percentage-point effect without pooling or same-candidate replication claims. The next
+breadth milestone is a second immune/inflammatory disease with a preregistered endpoint and
+population contract.

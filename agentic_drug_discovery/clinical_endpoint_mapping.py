@@ -11,8 +11,9 @@ from datetime import datetime
 from typing import Any
 
 from .clinical_effects import (
-    canonical_ratio_effect_measure,
-    validate_ratio_effect_contract,
+    canonical_effect_measure,
+    validate_effect_contract,
+    validate_effect_measure_unit,
 )
 from .clinical_population import (
     ClinicalPopulationAlignmentError,
@@ -25,6 +26,7 @@ from .models import (
     ProgramState,
     SerializableRecord,
     Stage,
+    TrialArmRole,
     _freeze_mapping,
     _require_instance,
     _require_text,
@@ -128,7 +130,7 @@ class ClinicalEndpointMappingSpec(SerializableRecord):
             raise ValueError("endpoint_family_id must be a canonical snake-case id")
         if self.stage is not Stage.REGULATORY_POSTMARKET:
             raise ValueError("endpoint mapping is limited to regulatory_postmarket")
-        validate_ratio_effect_contract(
+        validate_effect_contract(
             self.effect_measure,
             self.favorable_direction,
         )
@@ -367,10 +369,32 @@ def _resolve_binding(
     parameter_type = _normalized(
         _text(analysis.get("parameter_type"), "endpoint.analysis.parameter_type")
     )
-    if canonical_ratio_effect_measure(parameter_type) != spec.effect_measure:
+    if canonical_effect_measure(parameter_type) != spec.effect_measure:
         raise ClinicalEndpointMappingError(
             f"selected endpoint does not report declared {spec.effect_measure}"
         )
+    try:
+        validate_effect_measure_unit(spec.effect_measure, endpoint.unit)
+    except ValueError as exc:
+        raise ClinicalEndpointMappingError(
+            "selected endpoint effect scale is invalid"
+        ) from exc
+    if spec.effect_measure == "risk_difference":
+        arms_by_role = {item.role: item for item in design.arms}
+        candidate_arm = arms_by_role.get(TrialArmRole.CANDIDATE)
+        comparator_arm = arms_by_role.get(TrialArmRole.COMPARATOR)
+        if candidate_arm is None or comparator_arm is None:
+            raise ClinicalEndpointMappingError(
+                "selected endpoint candidate/comparator roles are incomplete"
+            )
+        expected_group_ids = [
+            candidate_arm.identifiers.get("clinicaltrials_gov_group"),
+            comparator_arm.identifiers.get("clinicaltrials_gov_group"),
+        ]
+        if list(analysis.get("source_group_ids") or ()) != expected_group_ids:
+            raise ClinicalEndpointMappingError(
+                "risk_difference group order must be candidate then comparator"
+            )
     source_evidence_ids = tuple(sorted(set(design.supporting_evidence)))
     source_content_hashes: set[str] = set()
     for evidence_id in source_evidence_ids:

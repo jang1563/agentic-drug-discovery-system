@@ -83,19 +83,25 @@ not accept arbitrary extra cohort or treatment descriptors. Serious-event term s
 `numAffected` only for nonselected groups whose posted `numAtRisk` is zero; selected safety groups
 must retain complete nonnegative affected counts and positive at-risk counts.
 
-## Bounded Ratio-Evidence Rule
+## Bounded Effect-Evidence Rule
 
-Version 3 preserves structurally valid posted primary ratio evidence before making a decision. It
-supports frozen hazard-ratio, odds-ratio, and risk-ratio aliases; requires a positive ordered
-confidence interval containing the estimate, a typed p-value between 0 and 1, exact source
-agreement, and a declared favorable direction. The interval is classified as `benefit`, `harm`,
-or `null_or_uncertain` under the shared ratio-effect contract.
+Version 3 preserves structurally valid posted primary effect evidence before making a decision. It
+supports frozen hazard-ratio, odds-ratio, and risk-ratio aliases plus bounded percentage-point
+`risk_difference` aliases. Ratio intervals must be positive and are classified against null 1.
+Risk differences are classified against null 0 and additionally require a bounded participant-,
+patient-, or subject-proportion percent unit (or bare percent unit), endpoint-declared favorable
+direction, and candidate-then-comparator analysis-group order. Continuous percent-change units are
+not accepted. Every measure requires an ordered finite confidence interval containing the estimate,
+a typed p-value between 0 and 1, and exact source agreement. The interval is classified as
+`benefit`, `harm`, or
+`null_or_uncertain` under the shared effect contract.
 
 The extractor no longer discards valid harm or uncertain results. A promoted `benefit` recommends
 `ADVANCE`; `harm` or `null_or_uncertain` recommends `HOLD`, retaining the evidence and design in the
 ledger. Descriptive arm measurements remain source-pinned and typed, but they are not used to
-override the reported analysis interval. Registry analysis-group order is also preserved and does
-not substitute for typed candidate/comparator roles.
+override the reported analysis interval. Registry analysis-group order is preserved. For additive
+risk differences, it must also bind candidate before comparator so the sign cannot be silently
+reversed; ratio records retain their measure-specific fixed direction.
 
 Endpoint and safety selections carry the same required `treatment_phase`: `induction`,
 `maintenance`, or `not_applicable`. Mismatch or source phase conflict fails closed. Anything
@@ -121,6 +127,9 @@ participants or event occurrences.
 The cross-disease UC execution and its payload-free hashes are documented in
 `docs/42_uc_provider_validation.md` and
 `docs/uc_clinical_provider_validation_snapshot.json`.
+The independent primary-maintenance percentage-point replication is documented in
+`docs/44_uc_maintenance_risk_difference_replication.md` and
+`docs/uc_maintenance_risk_difference_validation_snapshot.json`.
 
 ## Stage Gate
 

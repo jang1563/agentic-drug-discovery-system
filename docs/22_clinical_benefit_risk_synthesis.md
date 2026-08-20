@@ -14,7 +14,7 @@ intervention is clinically acceptable.
 | Execution stage | `regulatory_postmarket` |
 | Endpoint selection | Exact ordered bindings from a committed `ClinicalEndpointMappingRecord` |
 | Endpoint family | Reviewer-approved canonical family and ontology identity; no name-based automatic mapping |
-| Effect measure | Hazard ratio with `lower_is_better`, or odds/risk ratio with `higher_is_better` |
+| Effect measure | Hazard ratio with `lower_is_better`; odds/risk ratio with `higher_is_better`; or explicit percentage-point `risk_difference` with endpoint-declared direction |
 | Safety measure | Candidate minus comparator serious-adverse-event participant risk |
 | Phase/population rule | Any declared phase alignment must replay exactly across design, population, endpoint, and safety records |
 | Minimum studies | Two distinct trials, designs, endpoints, and safety records |
@@ -52,7 +52,8 @@ source-content hashes, and the mapping id remain attached to the output.
 Each `StudyBenefitRiskRecord` retains:
 
 - exact trial, design, endpoint, and safety IDs;
-- endpoint family, canonical ratio effect, required favorable direction, confidence level, and confidence interval;
+- endpoint family, canonical ratio or percentage-point effect, required favorable direction,
+  confidence level, and confidence interval;
 - candidate and comparator source measurements and unit, with approved source missing-value
   markers represented as `null` while the raw marker remains in record attributes;
 - candidate and comparator serious-event affected and at-risk counts;
@@ -98,7 +99,8 @@ These fields make absence of inference machine-readable instead of leaving it to
 The synthesis is not promoted when the approved mapping is absent, fails replay, changes dimensions,
 or does not exactly equal the ordered selection set. It also abstains when any selected identity is
 missing, rebound, duplicated, after the program cutoff, unsupported, or unpinned; the endpoint is not
-a posted primary result with a supported ratio measure and direction; the safety record is not a posted serious-event summary; or
+a posted primary result with a supported effect measure, scale, group order, and direction; the
+safety record is not a posted serious-event summary; or
 source hashes overlap across selected trials.
 
 Key promotion and verifier codes:
@@ -123,12 +125,17 @@ a reviewer-approved endpoint mapping, then runs the synthesis through the real t
 transition, serialization, and replay path. Controls cover missing mapping, endpoint-ID mismatch,
 overlapping source hashes, attempted automatic pooling, forged harmonized values, direct mapping and
 synthesis commit bypass, unrelated derived support, removal from committed history, and
-higher-is-better odds-ratio propagation into the decision tensor.
+higher-is-better odds-ratio propagation into the decision tensor, percentage-point risk-difference
+propagation through non-pooled synthesis, and explicit rejection of additive effects by the current
+log-ratio decision tensor.
 
 ## Current Limitations
 
-- v1 supports only explicitly selected positive ratio measures: hazard ratio, odds ratio, and risk
-  ratio under their fixed favorable-direction contracts.
+- v1 supports explicitly selected hazard, odds, and risk ratios plus percentage-point risk
+  differences. Additive effects require an explicit percent unit, candidate-first sign binding,
+  and endpoint-declared favorable direction.
+- The downstream clinical decision tensor remains ratio-only because its precision policy uses
+  log-ratio CI width. Additive-scale bounded VOI policy is not yet implemented.
 - Source-reported missing descriptive arm summaries remain typed gaps; they are not imputed from
   the ratio estimate or confidence interval.
 - Serious-event data are posted aggregate participant counts, not adjudicated event-level causality.

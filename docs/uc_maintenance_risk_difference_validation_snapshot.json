@@ -1,0 +1,174 @@
+{
+  "schema_version": "adds.uc-maintenance-risk-difference-validation-snapshot.v1",
+  "generated_at": "2026-08-20T18:10:00Z",
+  "research_question": "Can the clinical provider contract replicate a source-pinned primary maintenance endpoint reported as an absolute percentage-point risk difference while preserving endpoint, safety, population, and provenance boundaries?",
+  "public_payload_policy": {
+    "contains_source_bytes": false,
+    "contains_reviewer_text": false,
+    "contains_review_jobs": false,
+    "contains_local_paths": false,
+    "external_artifacts_required_for_exact_replay": true
+  },
+  "screening": {
+    "disease_id": "MONDO:0005101",
+    "disease_name": "ulcerative colitis",
+    "screened_trial_count": 6,
+    "selection_policy": [
+      "posted primary maintenance remission endpoint",
+      "bounded percentage-point effect label",
+      "candidate-then-comparator analysis order",
+      "exact endpoint and serious-safety arm identities",
+      "role-wise endpoint and safety denominator agreement"
+    ]
+  },
+  "selected_trial": {
+    "trial_id": "NCT01458574",
+    "registry_version": "2026-08-20",
+    "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT01458574",
+    "source_content_sha256": "b36fe4657f28c1f631d85d15f2e9357a348329c924ff754ca0abb5c17db930da",
+    "sanitized_provider_output_sha256": "0ec1c6a00e750a28c7375824ebb8f85fb669f4866e481a8f01b86ee4dae0dc17",
+    "compiled_manifest_sha256": "5fc323e6fcf3002da32ac0c0f32da7ea500c0e2501d001c62b375da1f2b31adb",
+    "compile_review_sha256": "d428f0017cb84c1c0de8e467b51fd7cb0abf1772b601bc8a322ee47e0c57a336",
+    "candidate": {
+      "candidate_id": "CHEMBL221959",
+      "canonical_name": "Tofacitinib",
+      "registry_intervention_aliases": [
+        "CP690,550",
+        "CP-690,550"
+      ],
+      "identity_resolution": "preapproved_alias_binding"
+    },
+    "study": {
+      "phase": "PHASE3",
+      "overall_status": "COMPLETED",
+      "treatment_phase": "maintenance",
+      "study_enrollment_count": 593,
+      "endpoint_population": "full_analysis_set"
+    },
+    "endpoint": {
+      "endpoint_id": "NCT01458574:endpoint:primary-0",
+      "name": "Percentage of Participants In Remission at Week 52",
+      "outcome_type": "PRIMARY",
+      "time_frame": "Week 52",
+      "unit": "percentage of participants",
+      "favorable_direction": "higher_is_better",
+      "effect": {
+        "registry_parameter_type": "Difference in percentage",
+        "canonical_measure": "risk_difference",
+        "scale": "percentage_points",
+        "null_value": 0.0,
+        "estimate": 23.2,
+        "confidence_interval_percent": 95.0,
+        "confidence_interval_lower": 15.3,
+        "confidence_interval_upper": 31.2,
+        "p_value_relation": "lt",
+        "p_value": 0.0001,
+        "direction": "benefit"
+      }
+    },
+    "arms": [
+      {
+        "role": "candidate",
+        "endpoint_group_id": "OG000",
+        "safety_group_id": "EG000",
+        "label": "Tofacitinib 5 mg BID",
+        "endpoint_value": 34.3,
+        "endpoint_denominator": 198,
+        "serious_num_affected": 10,
+        "serious_num_at_risk": 198,
+        "observed_serious_event_risk": 0.050505050505050504
+      },
+      {
+        "role": "comparator",
+        "endpoint_group_id": "OG002",
+        "safety_group_id": "EG002",
+        "label": "Placebo",
+        "endpoint_value": 11.1,
+        "endpoint_denominator": 198,
+        "serious_num_affected": 13,
+        "serious_num_at_risk": 198,
+        "observed_serious_event_risk": 0.06565656565656566
+      }
+    ],
+    "observed_serious_event_risk_difference": -0.015151515151515152,
+    "population_alignment": {
+      "treatment_phase": "maintenance",
+      "study_enrollment_count": 593,
+      "endpoint_analysis_participant_count": 396,
+      "safety_at_risk_participant_count": 396,
+      "rolewise_counts_match": true,
+      "same_participants_inferred": false
+    },
+    "execution": {
+      "run_status": "committed",
+      "promotion_status": "promoted",
+      "recommended_decision": "advance",
+      "final_stage": "regulatory_postmarket",
+      "bounded_interpretation": "posted_primary_risk_difference_benefit"
+    }
+  },
+  "screened_controls": [
+    {
+      "trial_id": "NCT01647516",
+      "source_content_sha256": "ce2687e2ebf865d850ed90d58375773c1cdfadb60109771db94c6bccd88d66ff",
+      "disposition": "excluded",
+      "reason_codes": [
+        "maintenance_endpoint_is_secondary",
+        "endpoint_safety_denominators_not_rolewise_aligned"
+      ]
+    },
+    {
+      "trial_id": "NCT00783718",
+      "source_content_sha256": "521501db67f0858749c69122f96f4eaf3c9daebe22a05aae8aba4f66d7dac4aa",
+      "disposition": "excluded",
+      "reason_codes": [
+        "maintenance_safety_group_pools_dose_schedules_and_populations",
+        "candidate_comparator_effect_sign_not_bound_by_group_order"
+      ]
+    },
+    {
+      "trial_id": "NCT02407236",
+      "source_content_sha256": "30feee7887b9c80c2b2c96a7f3d3f246ac23de1c5e9484fdb574b5e14b06a463",
+      "disposition": "deferred",
+      "reason_codes": [
+        "adjusted_treatment_difference_scale_is_not_explicit_in_parameter_label"
+      ]
+    },
+    {
+      "trial_id": "NCT02819635",
+      "source_content_sha256": "e736548af01440664d9662dfb709e0e0bf8b76525e700ae5be492a4aa1ee5712",
+      "disposition": "excluded",
+      "reason_codes": [
+        "protocol_arm_combines_multiple_maintenance_assignments",
+        "endpoint_safety_denominators_not_rolewise_aligned",
+        "candidate_comparator_effect_sign_not_bound_by_group_order"
+      ]
+    },
+    {
+      "trial_id": "NCT03945188",
+      "source_content_sha256": "226025b65ca94b5145042520d4485f4136abfc396bd55c361d28c49b12850b69",
+      "disposition": "deferred",
+      "reason_codes": [
+        "week52_treat_through_design_is_not_explicitly_phase_bound_as_maintenance",
+        "endpoint_safety_denominators_not_rolewise_aligned"
+      ]
+    }
+  ],
+  "claims": {
+    "independent_maintenance_contract_replication": true,
+    "absolute_percentage_point_effect_supported": true,
+    "source_provenance_preserved": true,
+    "same_candidate_cross_trial_replication": false,
+    "cross_trial_pooling_performed": false,
+    "participant_identity_inferred": false,
+    "clinical_acceptability_inferred": false,
+    "therapeutic_recommendation_made": false
+  },
+  "limitations": [
+    "This is one public registry contract replication, not an independent reanalysis of participant-level data.",
+    "The selected trial uses a different candidate from the prior ozanimod validation and cannot support same-candidate pooled efficacy.",
+    "Matching endpoint and safety counts do not establish that the same participants contributed to both summaries.",
+    "The current clinical decision tensor remains ratio-effect only; risk-difference synthesis stops before log-ratio uncertainty planning.",
+    "Observed serious-event risks are descriptive and do not establish comparative safety or acceptability."
+  ]
+}

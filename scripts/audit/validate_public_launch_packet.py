@@ -106,6 +106,8 @@ REQUIRED_READ_ORDER = {
     "docs/uc_clinical_provider_validation_snapshot.json",
     "docs/43_uc_phase_population_alignment.md",
     "docs/uc_phase_population_validation_snapshot.json",
+    "docs/44_uc_maintenance_risk_difference_replication.md",
+    "docs/uc_maintenance_risk_difference_validation_snapshot.json",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",

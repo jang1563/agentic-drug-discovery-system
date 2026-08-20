@@ -229,6 +229,108 @@ def run_manifest(
 
 
 class ClinicalTrialsGovIngestionTests(unittest.TestCase):
+    def test_uc_maintenance_risk_difference_snapshot_is_bounded(self) -> None:
+        snapshot_path = (
+            ROOT
+            / "docs/uc_maintenance_risk_difference_validation_snapshot.json"
+        )
+        snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            snapshot["schema_version"],
+            "adds.uc-maintenance-risk-difference-validation-snapshot.v1",
+        )
+        policy = snapshot["public_payload_policy"]
+        self.assertFalse(policy["contains_source_bytes"])
+        self.assertFalse(policy["contains_reviewer_text"])
+        self.assertFalse(policy["contains_review_jobs"])
+        self.assertFalse(policy["contains_local_paths"])
+        self.assertTrue(policy["external_artifacts_required_for_exact_replay"])
+
+        selected = snapshot["selected_trial"]
+        self.assertEqual(selected["trial_id"], "NCT01458574")
+        for field_name in (
+            "source_content_sha256",
+            "sanitized_provider_output_sha256",
+            "compiled_manifest_sha256",
+            "compile_review_sha256",
+        ):
+            self.assertRegex(selected[field_name], SHA256)
+        self.assertEqual(
+            len(
+                {
+                    selected[field_name]
+                    for field_name in (
+                        "source_content_sha256",
+                        "sanitized_provider_output_sha256",
+                        "compiled_manifest_sha256",
+                        "compile_review_sha256",
+                    )
+                }
+            ),
+            4,
+        )
+        self.assertEqual(
+            selected["endpoint"]["effect"],
+            {
+                "registry_parameter_type": "Difference in percentage",
+                "canonical_measure": "risk_difference",
+                "scale": "percentage_points",
+                "null_value": 0.0,
+                "estimate": 23.2,
+                "confidence_interval_percent": 95.0,
+                "confidence_interval_lower": 15.3,
+                "confidence_interval_upper": 31.2,
+                "p_value_relation": "lt",
+                "p_value": 0.0001,
+                "direction": "benefit",
+            },
+        )
+        self.assertEqual(
+            selected["population_alignment"],
+            {
+                "treatment_phase": "maintenance",
+                "study_enrollment_count": 593,
+                "endpoint_analysis_participant_count": 396,
+                "safety_at_risk_participant_count": 396,
+                "rolewise_counts_match": True,
+                "same_participants_inferred": False,
+            },
+        )
+        self.assertEqual(
+            [item["role"] for item in selected["arms"]],
+            ["candidate", "comparator"],
+        )
+        self.assertEqual(
+            selected["execution"],
+            {
+                "run_status": "committed",
+                "promotion_status": "promoted",
+                "recommended_decision": "advance",
+                "final_stage": "regulatory_postmarket",
+                "bounded_interpretation": (
+                    "posted_primary_risk_difference_benefit"
+                ),
+            },
+        )
+        self.assertEqual(len(snapshot["screened_controls"]), 5)
+        self.assertEqual(
+            {item["disposition"] for item in snapshot["screened_controls"]},
+            {"excluded", "deferred"},
+        )
+        for item in snapshot["screened_controls"]:
+            self.assertRegex(item["source_content_sha256"], SHA256)
+            self.assertTrue(item["reason_codes"])
+        self.assertFalse(snapshot["claims"]["same_candidate_cross_trial_replication"])
+        self.assertFalse(snapshot["claims"]["cross_trial_pooling_performed"])
+        self.assertFalse(snapshot["claims"]["participant_identity_inferred"])
+        self.assertFalse(snapshot["claims"]["clinical_acceptability_inferred"])
+        self.assertFalse(snapshot["claims"]["therapeutic_recommendation_made"])
+
+        encoded = snapshot_path.read_text(encoding="utf-8")
+        self.assertNotRegex(encoded, r"/(Users|home|tmp|private)/")
+        self.assertNotIn("eligibilityCriteria", encoded)
+        self.assertNotIn("raw_payload", encoded)
+
     def test_uc_phase_population_snapshot_is_bounded_and_reproducible(self) -> None:
         snapshot = json.loads(
             (ROOT / "docs/uc_phase_population_validation_snapshot.json").read_text(
@@ -449,7 +551,7 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
             with self.subTest(field_name=field_name):
                 job = clinical_job()
                 job["trial"]["endpoint"]["analysis"][field_name] = value
-                with self.assertRaisesRegex(ValueError, "ratio analysis is invalid"):
+                with self.assertRaisesRegex(ValueError, "effect analysis is invalid"):
                     normalize_clinicaltrials_gov_ingestion_job(job)
 
     def test_source_declared_treatment_phase_cannot_be_omitted(self) -> None:
@@ -665,6 +767,100 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         )
         self.assertEqual(result.accepted_packets[0].decision, Decision.ADVANCE)
         self.assertEqual(len(result.final_state.trial_designs), 1)
+
+    def test_percentage_point_risk_difference_advances_with_endpoint_direction(
+        self,
+    ) -> None:
+        source = json.loads(SOURCE.read_text())
+        job = clinical_job()
+        outcome = source["resultsSection"]["outcomeMeasuresModule"][
+            "outcomeMeasures"
+        ][0]
+        outcome.update(
+            {
+                "title": "Percentage of Participants in Remission",
+                "paramType": "NUMBER",
+                "unitOfMeasure": "Percentage of Participants",
+            }
+        )
+        source["protocolSection"]["outcomesModule"]["primaryOutcomes"][0][
+            "measure"
+        ] = "Percentage of Participants in Remission"
+        measurements = outcome["classes"][0]["categories"][0]["measurements"]
+        measurements[0]["value"] = "34.3"
+        measurements[1]["value"] = "11.1"
+        outcome["analyses"][0].update(
+            {
+                "pValue": "<0.0001",
+                "statisticalMethod": "CMH chi-square test",
+                "paramType": "Difference in percentage",
+                "paramValue": "23.2",
+                "ciLowerLimit": "15.3",
+                "ciUpperLimit": "31.2",
+            }
+        )
+        endpoint = job["trial"]["endpoint"]
+        endpoint.update(
+            {
+                "name": "Percentage of Participants in Remission",
+                "parameter_type": "NUMBER",
+                "unit": "Percentage of Participants",
+                "favorable_direction": "higher_is_better",
+            }
+        )
+        job["trial"]["arms"][0]["measurement"]["value"] = "34.3"
+        job["trial"]["arms"][1]["measurement"]["value"] = "11.1"
+        endpoint["analysis"].update(
+            {
+                "p_value": 0.0001,
+                "statistical_method": "CMH chi-square test",
+                "parameter_type": "Difference in percentage",
+                "parameter_value": 23.2,
+                "confidence_interval_lower": 15.3,
+                "confidence_interval_upper": 31.2,
+            }
+        )
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+        bundle = clinical_bundle(payload=payload)
+        extracted = extract_clinicaltrials_gov_ingestion_job(job, bundle)
+        metadata = extracted["records"][0]["metadata"]
+
+        self.assertEqual(metadata["effect_direction"], "benefit")
+        self.assertEqual(
+            metadata["endpoint"]["analysis"]["parameter_type"],
+            "Difference in percentage",
+        )
+        manifest, _ = compile_pinned_evidence_manifest(
+            extracted,
+            {bundle.receipt.receipt_id: bundle},
+        )
+        result = run_manifest(
+            manifest,
+            program_id="clinical-design-risk-difference",
+        )
+        self.assertEqual(result.promotions[0].status, PromotionStatus.PROMOTED)
+        self.assertEqual(result.accepted_packets[0].decision, Decision.ADVANCE)
+        clinical_evidence = next(
+            item
+            for item in result.final_state.evidence
+            if item.predicate == "clinical_evidence_assessed"
+        )
+        self.assertEqual(
+            clinical_evidence.metadata["bounded_interpretation"],
+            "posted_primary_risk_difference_benefit",
+        )
+
+        invalid_unit_job = copy.deepcopy(job)
+        invalid_unit_job["trial"]["endpoint"]["unit"] = "participants"
+        with self.assertRaisesRegex(ValueError, "effect analysis is invalid"):
+            normalize_clinicaltrials_gov_ingestion_job(invalid_unit_job)
+
+        reversed_job = copy.deepcopy(job)
+        reversed_job["trial"]["arms"].reverse()
+        reversed_job["trial"]["safety"]["arms"].reverse()
+        reversed_job["trial"]["endpoint"]["analysis"]["source_group_ids"].reverse()
+        with self.assertRaisesRegex(ValueError, "effect analysis is invalid"):
+            normalize_clinicaltrials_gov_ingestion_job(reversed_job)
 
     def test_valid_uncertain_and_harmful_ratio_results_are_retained_on_hold(
         self,

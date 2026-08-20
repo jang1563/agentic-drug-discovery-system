@@ -24,7 +24,9 @@ preregistration and stage-stratified uncertainty are in
 `docs/26_independent_heldout_evaluation.md`; the synthetic cross-disease UC conformance boundary is
 in `docs/41_ulcerative_colitis_conformance_slice.md`, and the separate public-source UC provider
 execution is in `docs/42_uc_provider_validation.md`; its single-trial induction/maintenance
-population boundary is in `docs/43_uc_phase_population_alignment.md`. The external scorer is under `benchmark/`,
+population boundary is in `docs/43_uc_phase_population_alignment.md`, and the independent primary
+maintenance percentage-point replication is in
+`docs/44_uc_maintenance_risk_difference_replication.md`. The external scorer is under `benchmark/`,
 `scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
@@ -49,12 +51,18 @@ validated.
   no-external-transportability boundary.
 - [x] Hazard-, odds-, and risk-ratio semantics use one fixed measure/direction contract across
   provider extraction, semantic promotion, endpoint mapping, synthesis, and evidence cells.
+- [x] Percentage-point risk differences use null 0, explicit percent units, endpoint-declared
+  direction, and candidate-first sign binding through non-pooled synthesis; the log-ratio decision
+  tensor rejects them until an additive-scale precision policy exists.
 - [x] The ulcerative-colitis synthetic conformance surface remains distinct from two public-source
   provider-only induction runs; neither is represented as pooled efficacy, safety acceptability,
   independent disease-slice review, or a therapeutic claim.
 - [x] The UC induction/maintenance population-alignment run preserves distinct phase counts,
   treats the shared NCT/source as one trial, and never infers participant identity or longitudinal
   exchangeability.
+- [x] The independent UC maintenance replication records its screened exclusions and exact hashes,
+  and is not represented as same-candidate replication, pooled efficacy, safety acceptability, or
+  a treatment recommendation.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.

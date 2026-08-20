@@ -12,9 +12,12 @@ from enum import Enum
 from typing import Any
 
 from .clinical_effects import (
-    canonical_ratio_effect_measure,
-    ratio_benefit_direction,
-    ratio_effect_favorable_direction,
+    canonical_effect_measure,
+    effect_benefit_direction,
+    effect_favorable_direction,
+    validate_effect_contract,
+    validate_effect_interval,
+    validate_effect_measure_unit,
 )
 from .execution import EvidenceDraft, ToolOutcome, ToolStatus
 from .clinical_synthesis import (
@@ -2909,25 +2912,53 @@ def _map_pinned_clinical_trial_design(
             raise ValueError("endpoint analysis contains non-numeric values")
         endpoint_direction = _normalized(str(endpoint["favorable_direction"]))
         treatment_phase = _normalized(str(endpoint["treatment_phase"]))
-        effect_measure = canonical_ratio_effect_measure(
+        effect_measure = canonical_effect_measure(
             str(analysis.get("parameter_type", ""))
         )
+        effect_contract_valid = effect_measure is not None
+        effect_direction_contract = ""
+        if effect_measure is not None:
+            try:
+                effect_direction_contract = effect_favorable_direction(
+                    effect_measure,
+                    endpoint_direction,
+                )
+                validate_effect_contract(effect_measure, effect_direction_contract)
+                validate_effect_interval(
+                    parameter_value,
+                    ci_lower,
+                    ci_upper,
+                    effect_measure,
+                )
+                validate_effect_measure_unit(effect_measure, str(endpoint["unit"]))
+                if effect_measure == "risk_difference" and list(
+                    analysis.get("source_group_ids") or ()
+                ) != [
+                    candidate_arm.get("source_group_id"),
+                    comparator_arm.get("source_group_id"),
+                ]:
+                    raise ValueError(
+                        "risk_difference group order is not candidate then comparator"
+                    )
+            except ValueError:
+                effect_contract_valid = False
         if (
             _normalized(str(endpoint["outcome_type"])) != "primary"
             or _normalized(str(endpoint["reporting_status"])) != "posted"
             or endpoint_direction not in {"higher_is_better", "lower_is_better"}
             or treatment_phase not in {"induction", "maintenance", "not_applicable"}
             or effect_measure is None
+            or not effect_contract_valid
             or analysis.get("p_value_relation") not in {"lt", "le", "eq", "ge", "gt"}
             or not 0 < p_value <= 1
-            or not 0 < ci_lower <= parameter_value <= ci_upper
             or not 0 < ci_percent <= 100
         ):
-            raise ValueError("posted primary endpoint is not valid ratio evidence")
-        effect_direction = ratio_benefit_direction(
+            raise ValueError("posted primary endpoint is not valid effect evidence")
+        effect_direction = effect_benefit_direction(
             ci_lower,
             ci_upper,
-            ratio_effect_favorable_direction(effect_measure),
+            effect_measure,
+            effect_direction_contract,
         )
         treatment_phase_metadata = (
             {"treatment_phase": treatment_phase}
@@ -2937,7 +2968,11 @@ def _map_pinned_clinical_trial_design(
         bounded_clinical_interpretation = (
             "posted_primary_time_to_event_benefit"
             if effect_measure == "hazard_ratio" and effect_direction == "benefit"
-            else f"posted_primary_ratio_effect_{effect_direction}"
+            else (
+                f"posted_primary_risk_difference_{effect_direction}"
+                if effect_measure == "risk_difference"
+                else f"posted_primary_ratio_effect_{effect_direction}"
+            )
         )
         if _normalized(str(metadata.get("effect_direction", ""))) != effect_direction:
             raise ValueError("endpoint effect direction does not match its interval")
@@ -3038,7 +3073,7 @@ def _map_pinned_clinical_trial_design(
             outcome,
             PromotionStatus.ABSTAINED,
             "pinned_clinical_design_endpoint_not_supportive",
-            "Clinical design was not promoted beyond the bounded ratio-evidence contract.",
+            "Clinical design was not promoted beyond the bounded effect-evidence contract.",
             recommended_decision=Decision.DEFER,
             details={"validation_error": str(exc)},
         )

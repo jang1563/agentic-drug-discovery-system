@@ -124,13 +124,13 @@
     {
       "anchor_id": "core-models",
       "path": "agentic_drug_discovery/models.py",
-      "sha256": "52350d41aba580a812f8b994aabfff62eac887376f3485d0694160532147c94a",
+      "sha256": "5ed44ac07444f5362f0666c6a3c947fe7f64e828811fffc6cf7f0329d35c279c",
       "kind": "implementation"
     },
     {
       "anchor_id": "clinical-effects-core",
       "path": "agentic_drug_discovery/clinical_effects.py",
-      "sha256": "463dbb17aecc0657b6738357ecfe436f2e70e4feec9501ded1037977949d9986",
+      "sha256": "4431dca32b94cb3f7e8eede8c5e544ddd0a0a1e9de8cb02317200f62f70d2897",
       "kind": "implementation"
     },
     {
@@ -142,13 +142,13 @@
     {
       "anchor_id": "clinical-synthesis-core",
       "path": "agentic_drug_discovery/clinical_synthesis.py",
-      "sha256": "ccc808cd07450fa8c11d451ec09d5bb246761243fd7a9da6a4f92d9b758c934d",
+      "sha256": "1c061f56d00336d023c646888111313cb407a52c0b8d0bcd839dd9671160e806",
       "kind": "implementation"
     },
     {
       "anchor_id": "clinical-decision-core",
       "path": "agentic_drug_discovery/clinical_decision.py",
-      "sha256": "1fc432ab1eedd49e0385e3c1029c48543dbdc63ba7cf17f451df6e5b5efa05c3",
+      "sha256": "55d6ea031a37168e9f049245b393054e1eb991b2a811c6e1830ca95f5873d693",
       "kind": "implementation"
     },
     {
@@ -178,7 +178,7 @@
     {
       "anchor_id": "synthesis-tests",
       "path": "tests/test_clinical_benefit_risk_synthesis.py",
-      "sha256": "af8355753e17e7ccd2d08860a21dd42e56c3c00be6751db060ca7044b07f1dcd",
+      "sha256": "caad952ddf713bea25dd9c0b3b7bd5281c6f4c3a5092df55756404a48425e374",
       "kind": "test"
     },
     {
@@ -208,7 +208,7 @@
     {
       "anchor_id": "synthesis-document",
       "path": "docs/22_clinical_benefit_risk_synthesis.md",
-      "sha256": "2055ee726b44898a7319a7594ab24f0443d000e8badd94176383f7303320b337",
+      "sha256": "e50a9874fa2843c00317be2fb5b41b7abdc491f5492032a0d8eb71e4b85a02ad",
       "kind": "document"
     },
     {
@@ -268,13 +268,13 @@
     {
       "anchor_id": "cross-disease-conformance-tests",
       "path": "tests/test_cross_disease_clinical_conformance.py",
-      "sha256": "1c4c35620d744528cad8a8b02d5daecb8f6be41e54960d73658b757b5457c8c8",
+      "sha256": "799cd9bd059bb6e99a98d98b4f4c19bb13cf8b28e549215dcf27158146190456",
       "kind": "test"
     },
     {
       "anchor_id": "uc-conformance-document",
       "path": "docs/41_ulcerative_colitis_conformance_slice.md",
-      "sha256": "3a0d0a0462a1d5e60dcb9e3c0314f14357bd4a3d3625148f3acbbd8f77eb35d1",
+      "sha256": "aa1e80f9dc39591bb187c91e4978e34d16630727fb9ce433ac4f0f16aab57d4a",
       "kind": "document"
     },
     {
@@ -282,6 +282,30 @@
       "path": "rl_env/specs/translational_handoff.uc.synthetic.example.json",
       "sha256": "de6ebdcce6c6b8c8cc14a8f9e8c090a7557fb627e71687c0ed3b95ddcfb7c0a0",
       "kind": "synthetic_summary"
+    },
+    {
+      "anchor_id": "clinical-provider-core",
+      "path": "agentic_drug_discovery/clinicaltrials_gov.py",
+      "sha256": "e54477be9fed07ceafa860ce76bbbff7edd6fb9bc8a2c9d58e61fb25d96cc205",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "clinical-provider-tests",
+      "path": "tests/test_clinicaltrials_gov_ingestion.py",
+      "sha256": "7800a324c9251ed40f50adbb760377392b8c7259b8837f9b8b8dc82f52f0865b",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "uc-maintenance-risk-difference-document",
+      "path": "docs/44_uc_maintenance_risk_difference_replication.md",
+      "sha256": "6bc8d9a5e53296a519421af2370350b0619d0ac7a076368eaa1cc2707f8837fa",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "uc-maintenance-risk-difference-snapshot",
+      "path": "docs/uc_maintenance_risk_difference_validation_snapshot.json",
+      "sha256": "27c6d86fe91fb795bad25a1681b83c6767fb2decd0dd4515361b1e58bc21fe36",
+      "kind": "document"
     }
   ],
   "maturity_ledger": [
@@ -320,7 +344,7 @@
       "capability_id": "cross-trial-synthesis",
       "label": "Source-preserving cross-trial endpoint and safety synthesis",
       "maturity": "implemented_public",
-      "claim": "The implementation recompiles reviewer-approved endpoint and safety selections across source-disjoint trials while retaining trial-level values, provenance, and fixed favorable-direction semantics for hazard, odds, and risk ratios.",
+      "claim": "The implementation recompiles reviewer-approved endpoint and safety selections across source-disjoint trials while retaining trial-level values, provenance, and bounded direction semantics for ratio and percentage-point risk-difference effects.",
       "evidence_anchor_ids": [
         "clinical-effects-core",
         "clinical-synthesis-core",
@@ -414,6 +438,23 @@
       ]
     },
     {
+      "capability_id": "uc-public-registry-contract-validation",
+      "label": "Ulcerative-colitis public-registry contract validation",
+      "maturity": "implemented_public",
+      "claim": "A source-pinned independent maintenance run preserves a primary percentage-point risk difference, candidate-first sign, role-wise endpoint and serious-safety populations, screened exclusions, and payload-free provenance hashes.",
+      "evidence_anchor_ids": [
+        "clinical-effects-core",
+        "clinical-provider-core",
+        "clinical-provider-tests",
+        "uc-maintenance-risk-difference-document",
+        "uc-maintenance-risk-difference-snapshot"
+      ],
+      "limitations": [
+        "The public repository contains hashes and bounded aggregates, not source bytes, reviewer jobs, or participant-level data.",
+        "This is provider-contract replication with a different candidate, not same-candidate efficacy replication, pooling, safety acceptability, or a treatment recommendation."
+      ]
+    },
+    {
       "capability_id": "biohub-data-integration",
       "label": "Biohub platform or data integration",
       "maturity": "proposed_pilot",
@@ -497,6 +538,7 @@
         "evidence-governed-execution",
         "cross-trial-synthesis",
         "cross-disease-clinical-conformance",
+        "uc-public-registry-contract-validation",
         "evidence-gap-voi",
         "cluster-superpopulation-calibration"
       ],
@@ -740,7 +782,7 @@
       },
       {
         "claim_id": "claim-clinical-synthesis",
-        "text": "Endpoint and safety evidence can be harmonized under explicit ratio-measure direction semantics without erasing trial-level values, source identity, reviewer mappings, or non-comparability limits.",
+        "text": "Endpoint and safety evidence can be harmonized under explicit ratio or percentage-point direction semantics without erasing trial-level values, source identity, reviewer mappings, or non-comparability limits.",
         "maturity": "implemented_public",
         "evidence_anchor_ids": [
           "clinical-effects-core",
@@ -765,6 +807,21 @@
         ],
         "capability_ids": [
           "cross-disease-clinical-conformance"
+        ]
+      },
+      {
+        "claim_id": "claim-uc-public-registry-validation",
+        "text": "One independent public-source ulcerative-colitis maintenance run preserves additive effect scale, sign, endpoint/safety population boundaries, screened exclusions, and exact artifact hashes without importing raw payloads.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "clinical-effects-core",
+          "clinical-provider-core",
+          "clinical-provider-tests",
+          "uc-maintenance-risk-difference-document",
+          "uc-maintenance-risk-difference-snapshot"
+        ],
+        "capability_ids": [
+          "uc-public-registry-contract-validation"
         ]
       },
       {
@@ -881,13 +938,16 @@
         "purpose": "Show exact trial mappings, explicit effect direction, non-pooled synthesis, cross-disease conformance, and typed evidence gaps.",
         "claim_ids": [
           "claim-clinical-synthesis",
-          "claim-cross-disease-conformance"
+          "claim-cross-disease-conformance",
+          "claim-uc-public-registry-validation"
         ],
         "artifact_paths": [
           "docs/22_clinical_benefit_risk_synthesis.md",
-          "docs/41_ulcerative_colitis_conformance_slice.md"
+          "docs/41_ulcerative_colitis_conformance_slice.md",
+          "docs/44_uc_maintenance_risk_difference_replication.md",
+          "docs/uc_maintenance_risk_difference_validation_snapshot.json"
         ],
-        "speaker_boundary": "The ulcerative-colitis artifact is synthetic contract conformance, not real clinical validation or a treatment recommendation."
+        "speaker_boundary": "Separate the synthetic end-to-end UC conformance slice from the real public-registry provider run; neither is clinical validation or a treatment recommendation."
       },
       {
         "slide": 6,
@@ -1043,7 +1103,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Preregister an independent maintenance-trial replication, then nominate a second immune/inflammatory disease with explicit endpoint-family, population, estimand, and safety-window mappings."
+    "next_decision": "Nominate a second immune/inflammatory disease with explicit endpoint-family, population, estimand, and safety-window mappings, and preregister an additive-scale precision policy before risk-difference evidence enters bounded VOI planning."
   },
-  "integrity_sha256": "3d5cabdeeeb6ff3c26ca6983b2bc72a74adc011cb406be29bcae75ea63c4daeb"
+  "integrity_sha256": "b8108da04685160fa355ae7249c14e7565740a69e3b98070324dbeb690e2e4cc"
 }
