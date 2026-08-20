@@ -13,7 +13,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "adds.clinicaltrials-gov-ingestion-job.v2"
+      "const": "adds.clinicaltrials-gov-ingestion-job.v3"
     },
     "job_id": {
       "$ref": "#/$defs/safeId"
@@ -36,6 +36,13 @@
     "nonEmptyText": {
       "type": "string",
       "minLength": 1
+    },
+    "treatmentPhase": {
+      "enum": [
+        "induction",
+        "maintenance",
+        "not_applicable"
+      ]
     },
     "textList": {
       "type": "array",
@@ -234,6 +241,7 @@
         "endpoint_id",
         "outcome_index",
         "analysis_index",
+        "treatment_phase",
         "name",
         "outcome_type",
         "time_frame",
@@ -254,6 +262,9 @@
         "analysis_index": {
           "type": "integer",
           "minimum": 0
+        },
+        "treatment_phase": {
+          "$ref": "#/$defs/treatmentPhase"
         },
         "name": {
           "$ref": "#/$defs/nonEmptyText"
@@ -331,6 +342,7 @@
       "additionalProperties": false,
       "required": [
         "safety_id",
+        "treatment_phase",
         "event_category",
         "reporting_status",
         "time_frame",
@@ -341,6 +353,9 @@
       "properties": {
         "safety_id": {
           "$ref": "#/$defs/safeId"
+        },
+        "treatment_phase": {
+          "$ref": "#/$defs/treatmentPhase"
         },
         "event_category": {
           "const": "SERIOUS"

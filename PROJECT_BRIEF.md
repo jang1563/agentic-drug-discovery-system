@@ -124,7 +124,10 @@ claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
   recommendations, terminal decisions, and calibrated economic VOI claims are prohibited.
 - A synthetic ulcerative-colitis conformance slice (`MONDO:0005101`) exercises a second disease
   geometry from contextual M6 handoff through clinical-remission odds-ratio mapping, non-pooled
-  synthesis, and decision-tensor direction checks. It is not a real UC evidence or validation set.
+  synthesis, and decision-tensor direction checks. Separately, two public ClinicalTrials.gov UC
+  induction snapshots execute the provider contract: one uncertain interval is retained on
+  `HOLD`, while one bounded favorable interval advances. Neither surface is a pooled efficacy,
+  safety-acceptability, or therapeutic validation set.
 - A clinical cohort diagnostics layer binds exact package rosters and can require accepted-state
   hashes plus committed-ledger replay. It separates packages, programs, and synthesis-bound
   evidence units; reports complete decision/dimension/gap/action denominators; performs matched
@@ -305,6 +308,10 @@ snapshot also passes strict endpoint/safety extraction, atomic promotion, commit
 validation, and a matched missing-safety control. Its payload-free identifiers, hashes, outcomes,
 and limits are recorded
 in `docs/clinical_provider_validation_snapshot.json`.
+Two additional UC induction records (`NCT01647516` and `NCT02435992`) execute the same source-pinned
+path with typed treatment-phase boundaries and direction-aware decisions. Their payload-free
+values, hashes, and non-pooling limits are in
+`docs/uc_clinical_provider_validation_snapshot.json`.
 
 The current external validation also runs one continuous source-pinned senicapoc program through
 five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the

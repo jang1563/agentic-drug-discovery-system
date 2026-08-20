@@ -63,8 +63,8 @@ The extractor verifies:
 6. Enrollment and bounded eligibility fields: analysis population description, count/type, sex,
    age bounds, and healthy-volunteer status.
 7. One posted primary endpoint against both protocol and results modules.
-8. Candidate-first analysis group order, p-value comparator, statistical method, analysis
-   parameter, estimate, confidence interval percentage, and confidence bounds.
+8. Exact registry analysis group order, typed candidate/comparator roles, p-value comparator,
+   statistical method, analysis parameter, estimate, confidence interval percentage, and bounds.
 9. The posted adverse-event time frame, optional description, and exact serious-event term count.
 10. Two selected adverse-event groups against exact `EG...` ids, bounded title equivalence, arm
     roles, affected participant counts, and positive at-risk participant counts.
@@ -82,25 +82,24 @@ not accept arbitrary extra cohort or treatment descriptors. Serious-event term s
 `numAffected` only for nonselected groups whose posted `numAtRisk` is zero; selected safety groups
 must retain complete nonnegative affected counts and positive at-risk counts.
 
-## Bounded Support Rule
+## Bounded Ratio-Evidence Rule
 
-Version 2 does not attempt arbitrary endpoint or safety interpretation. Endpoint support is
-limited to a posted primary time-to-event endpoint when all of the following hold:
+Version 3 preserves structurally valid posted primary ratio evidence before making a decision. It
+supports frozen hazard-ratio, odds-ratio, and risk-ratio aliases; requires a positive ordered
+confidence interval containing the estimate, a typed p-value between 0 and 1, exact source
+agreement, and a declared favorable direction. The interval is classified as `benefit`, `harm`,
+or `null_or_uncertain` under the shared ratio-effect contract.
 
-- the endpoint declares `higher_is_better`;
-- when both descriptive arm measurements are numeric, the candidate measurement is greater than
-  the comparator measurement; an approved source marker such as `NA`, `NR`, or `not reached`
-  remains missing and is never imputed;
-- the candidate-versus-comparator analysis uses one frozen hazard-ratio parameter alias:
-  `Hazard Ratio`, `Hazard Ratio (HR)`, `Hazard Ratio, log`, or
-  `Cox Proportional Hazard`;
-- the hazard ratio and its upper confidence bound are below `1`;
-- the p-value relation is `<`, `<=`, or exact numeric equality and the typed value is at most
-  `0.05`.
+The extractor no longer discards valid harm or uncertain results. A promoted `benefit` recommends
+`ADVANCE`; `harm` or `null_or_uncertain` recommends `HOLD`, retaining the evidence and design in the
+ledger. Descriptive arm measurements remain source-pinned and typed, but they are not used to
+override the reported analysis interval. Registry analysis-group order is also preserved and does
+not substitute for typed candidate/comparator roles.
 
-Anything outside this narrow shape returns
-`pinned_clinical_design_endpoint_not_supportive` and `DEFER`. The agent does not infer benefit from
-endpoint names, free text, registration status, or non-significance.
+Endpoint and safety selections carry the same required `treatment_phase`: `induction`,
+`maintenance`, or `not_applicable`. Mismatch or source phase conflict fails closed. Anything
+outside the bounded structural contract returns
+`pinned_clinical_design_endpoint_not_supportive` and `DEFER`.
 
 An approved missing descriptive arm summary does not disappear downstream. The promoted endpoint
 evidence retains the raw marker, synthesis serializes the numeric field as `null`, and the evidence
@@ -110,6 +109,10 @@ The safety contract separately proves only that posted aggregate serious-adverse
 counts were resolved for the same candidate and comparator arms. It does not infer attribution,
 comparative safety, acceptability, or benefit-risk. `event_term_count` counts reported terms, not
 participants or event occurrences.
+
+The cross-disease UC execution and its payload-free hashes are documented in
+`docs/42_uc_provider_validation.md` and
+`docs/uc_clinical_provider_validation_snapshot.json`.
 
 ## Stage Gate
 

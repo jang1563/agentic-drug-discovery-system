@@ -33,6 +33,12 @@ clinical-remission odds ratios with `higher_is_better` semantics from M6 context
 clinical synthesis. The disease identity is real; all targets, interventions, trials, measurements,
 sources, and reviews are synthetic.
 
+A separate provider-only validation executes two public ClinicalTrials.gov ulcerative-colitis
+induction records. It preserves one uncertain interval on `HOLD` and advances one bounded favorable
+interval while retaining exact treatment-phase and safety-group identity. The package includes only
+the payload-free hashes and selected aggregate values, not source bytes or reviewer jobs. This does
+not convert the synthetic upstream/downstream UC slice into real end-to-end validation.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -84,9 +90,11 @@ sources, and reviews are synthetic.
   of external source ids, typed values, hashes, matched outcomes, and limitations.
 - Inspect `docs/21_clinical_provider_ingestion.md`,
   `docs/clinical_provider_validation_snapshot.json`, and
+  `docs/42_uc_provider_validation.md`,
+  `docs/uc_clinical_provider_validation_snapshot.json`, and
   `tests/test_clinicaltrials_gov_ingestion.py` for exact ClinicalTrials.gov receipt, NCT, arm,
-  population, endpoint, posted serious-adverse-event aggregate, atomic promotion, external hashes,
-  and matched missing-safety behavior.
+  population, endpoint, treatment phase, posted serious-adverse-event aggregate, direction-aware
+  atomic promotion, external hashes, retained uncertainty, and matched missing-safety behavior.
 - Inspect `docs/22_clinical_benefit_risk_synthesis.md` and
   `tests/test_clinical_benefit_risk_synthesis.py` for explicit multi-trial endpoint/safety
   selections, retained trial values and hashes, non-pooling boundaries, exact replay, and tamper
@@ -242,6 +250,8 @@ outside both public release surfaces.
 | `docs/preclinical_provider_validation_snapshot.json` | Payload-free machine record of provider ids, typed values, hashes, matched outcomes, and limitations. |
 | `docs/21_clinical_provider_ingestion.md` | ClinicalTrials.gov source receipt, endpoint/safety design identities, bounded promotion, and matched failure contract. |
 | `docs/clinical_provider_validation_snapshot.json` | Payload-free NCT/design/safety identities, artifact hashes, live stage outcome, matched control, and limitations. |
+| `docs/42_uc_provider_validation.md` | Public-source UC induction provider execution, direction-aware gating, treatment-phase identity, and non-pooling limits. |
+| `docs/uc_clinical_provider_validation_snapshot.json` | Payload-free UC source/job/output/manifest hashes, selected aggregates, decisions, and exact-replay limits. |
 | `docs/22_clinical_benefit_risk_synthesis.md` | Explicit reviewed selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed synthesis behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Exact multi-bundle portfolio transaction, reviewer-approved endpoint mapping ledger, synthesis dependency, and release boundary. |
 | `docs/24_policy_replanning_and_resume.md` | Typed policy observations, bounded replans, checkpoint integrity, and deterministic resume. |

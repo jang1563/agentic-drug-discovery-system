@@ -1,5 +1,5 @@
 {
-  "schema_version": "adds.clinicaltrials-gov-ingestion-job.v2",
+  "schema_version": "adds.clinicaltrials-gov-ingestion-job.v3",
   "job_id": "clinicaltrials-gov-test-design",
   "source_receipt_id": "ctgov-test-trial",
   "trial": {
@@ -66,6 +66,7 @@
       "endpoint_id": "NCT00000001:endpoint:primary-0",
       "outcome_index": 0,
       "analysis_index": 0,
+      "treatment_phase": "not_applicable",
       "name": "Progression-Free Survival",
       "outcome_type": "PRIMARY",
       "time_frame": "24 months",
@@ -90,6 +91,7 @@
     },
     "safety": {
       "safety_id": "NCT00000001:safety:serious-adverse-events",
+      "treatment_phase": "not_applicable",
       "event_category": "SERIOUS",
       "reporting_status": "POSTED",
       "time_frame": "From first dose through 30 days after last dose",

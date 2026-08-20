@@ -25,9 +25,7 @@ from .ingestion import (
 )
 
 
-CLINICALTRIALS_GOV_JOB_SCHEMA_VERSION = (
-    "adds.clinicaltrials-gov-ingestion-job.v2"
-)
+CLINICALTRIALS_GOV_JOB_SCHEMA_VERSION = "adds.clinicaltrials-gov-ingestion-job.v3"
 CLINICALTRIALS_GOV_PROVIDER_ID = "clinicaltrials_gov"
 
 _JOB_FIELDS = frozenset(
@@ -84,6 +82,7 @@ _ENDPOINT_FIELDS = frozenset(
         "endpoint_id",
         "outcome_index",
         "analysis_index",
+        "treatment_phase",
         "name",
         "outcome_type",
         "time_frame",
@@ -110,6 +109,7 @@ _ANALYSIS_FIELDS = frozenset(
 _SAFETY_FIELDS = frozenset(
     {
         "safety_id",
+        "treatment_phase",
         "event_category",
         "reporting_status",
         "time_frame",
@@ -145,6 +145,7 @@ _P_VALUE = re.compile(
     r"^\s*(?P<relation><=|>=|<|>|=)?\s*(?P<value>[0-9]+(?:\.[0-9]+)?)\s*$"
 )
 _RELATION = {"<": "lt", "<=": "le", "=": "eq", ">=": "ge", ">": "gt"}
+_TREATMENT_PHASES = frozenset({"induction", "maintenance", "not_applicable"})
 
 
 def _mapping(value: Any, field_name: str) -> dict[str, Any]:
@@ -221,9 +222,17 @@ def _normalized(value: str) -> str:
 
 def _arm_title_tokens(value: str) -> frozenset[str]:
     tokens = [
-        token
+        "hydrochloride" if token == "hcl" else token
         for token in re.findall(r"[a-z]+|[0-9]+", value.casefold())
-        if token not in {"mg", "milligram", "milligrams"}
+        if token
+        not in {
+            "induction",
+            "maintenance",
+            "period",
+            "mg",
+            "milligram",
+            "milligrams",
+        }
     ]
     if "on" in tokens and "treatment" in tokens:
         tokens = [token for token in tokens if token not in {"on", "treatment"}]
@@ -236,6 +245,22 @@ def _compatible_arm_titles(left: str, right: str) -> bool:
     if not left_tokens or not right_tokens:
         return False
     return left_tokens == right_tokens
+
+
+def _treatment_phase(value: Any, field_name: str) -> str:
+    phase = _text(value, field_name).casefold()
+    if phase not in _TREATMENT_PHASES:
+        raise ValueError(f"{field_name} must be one of {sorted(_TREATMENT_PHASES)}")
+    return phase
+
+
+def _declared_treatment_phases(*values: Any) -> set[str]:
+    declared: set[str] = set()
+    for value in values:
+        if isinstance(value, str):
+            tokens = set(re.findall(r"[a-z]+", value.casefold()))
+            declared.update(tokens & {"induction", "maintenance"})
+    return declared
 
 
 _MISSING_MEASUREMENT_VALUES = frozenset(
@@ -270,7 +295,9 @@ def _text_list(value: Any, field_name: str) -> list[str]:
     return result
 
 
-def _exact_fields(value: Mapping[str, Any], expected: frozenset[str], label: str) -> None:
+def _exact_fields(
+    value: Mapping[str, Any], expected: frozenset[str], label: str
+) -> None:
     if set(value) != expected:
         raise ValueError(f"{label} must contain exactly {sorted(expected)}")
 
@@ -429,13 +456,15 @@ def _normalize_endpoint(value: Any) -> dict[str, Any]:
         "analysis_index": _non_negative_int(
             endpoint["analysis_index"], "job.trial.endpoint.analysis_index"
         ),
+        "treatment_phase": _treatment_phase(
+            endpoint["treatment_phase"],
+            "job.trial.endpoint.treatment_phase",
+        ),
         "name": _text(endpoint["name"], "job.trial.endpoint.name"),
         "outcome_type": _text(
             endpoint["outcome_type"], "job.trial.endpoint.outcome_type"
         ),
-        "time_frame": _text(
-            endpoint["time_frame"], "job.trial.endpoint.time_frame"
-        ),
+        "time_frame": _text(endpoint["time_frame"], "job.trial.endpoint.time_frame"),
         "parameter_type": _text(
             endpoint["parameter_type"], "job.trial.endpoint.parameter_type"
         ),
@@ -461,9 +490,7 @@ def _normalize_safety_arm(value: Any, index: int) -> dict[str, Any]:
     affected = _non_negative_int(
         arm["serious_num_affected"], f"{label}.serious_num_affected"
     )
-    at_risk = _positive_int(
-        arm["serious_num_at_risk"], f"{label}.serious_num_at_risk"
-    )
+    at_risk = _positive_int(arm["serious_num_at_risk"], f"{label}.serious_num_at_risk")
     if affected > at_risk:
         raise ValueError(f"{label} affected count cannot exceed at-risk count")
     return {
@@ -498,9 +525,7 @@ def _normalize_safety(value: Any, arms: Sequence[Mapping[str, Any]]) -> dict[str
         description = _text(description, "job.trial.safety.description")
     safety_arms = [
         _normalize_safety_arm(item, index)
-        for index, item in enumerate(
-            _sequence(safety["arms"], "job.trial.safety.arms")
-        )
+        for index, item in enumerate(_sequence(safety["arms"], "job.trial.safety.arms"))
     ]
     if len(safety_arms) != 2:
         raise ValueError("job.trial.safety.arms must contain exactly two selected arms")
@@ -510,7 +535,9 @@ def _normalize_safety(value: Any, arms: Sequence[Mapping[str, Any]]) -> dict[str
         )
     for field_name in ("safety_arm_id", "arm_id", "source_group_id"):
         if len({item[field_name] for item in safety_arms}) != 2:
-            raise ValueError(f"job.trial.safety.arms {field_name} values must be unique")
+            raise ValueError(
+                f"job.trial.safety.arms {field_name} values must be unique"
+            )
     canonical_arms = {item["arm_id"]: item for item in arms}
     if [item["arm_id"] for item in safety_arms] != [item["arm_id"] for item in arms]:
         raise ValueError("safety arm order must match the selected endpoint arms")
@@ -519,16 +546,21 @@ def _normalize_safety(value: Any, arms: Sequence[Mapping[str, Any]]) -> dict[str
         if (
             canonical is None
             or canonical["role"] != item["role"]
-            or item["safety_arm_id"]
-            != f"{safety_id}:arm:{item['source_group_id']}"
+            or item["safety_arm_id"] != f"{safety_id}:arm:{item['source_group_id']}"
             or not _compatible_arm_titles(
                 canonical["source_group_title"],
                 item["source_group_title"],
             )
         ):
-            raise ValueError("safety arm mapping conflicts with the selected design arm")
+            raise ValueError(
+                "safety arm mapping conflicts with the selected design arm"
+            )
     return {
         "safety_id": safety_id,
+        "treatment_phase": _treatment_phase(
+            safety["treatment_phase"],
+            "job.trial.safety.treatment_phase",
+        ),
         "event_category": event_category,
         "reporting_status": reporting_status,
         "time_frame": _text(safety["time_frame"], "job.trial.safety.time_frame"),
@@ -549,19 +581,21 @@ def _normalize_trial(value: Any) -> dict[str, Any]:
     registry_version = _iso_date(
         trial["registry_version"], "job.trial.registry_version"
     ).isoformat()
-    arms = [_normalize_arm(item, index) for index, item in enumerate(_sequence(trial["arms"], "job.trial.arms"))]
+    arms = [
+        _normalize_arm(item, index)
+        for index, item in enumerate(_sequence(trial["arms"], "job.trial.arms"))
+    ]
     if len(arms) != 2:
         raise ValueError("job.trial.arms must contain exactly two selected arms")
     if {item["role"] for item in arms} != {"candidate", "comparator"}:
         raise ValueError("job.trial.arms must contain candidate and comparator roles")
-    if len({item["arm_id"] for item in arms}) != 2 or len(
-        {item["source_group_id"] for item in arms}
-    ) != 2:
+    if (
+        len({item["arm_id"] for item in arms}) != 2
+        or len({item["source_group_id"] for item in arms}) != 2
+    ):
         raise ValueError("job.trial.arms identifiers must be unique")
     candidate_id = _safe_id(trial["candidate_id"], "job.trial.candidate_id")
-    intervention_id = _safe_id(
-        trial["intervention_id"], "job.trial.intervention_id"
-    )
+    intervention_id = _safe_id(trial["intervention_id"], "job.trial.intervention_id")
     candidate_arm = next(item for item in arms if item["role"] == "candidate")
     if candidate_arm["intervention_id"] != intervention_id:
         raise ValueError("candidate arm must link job.trial.intervention_id")
@@ -576,6 +610,8 @@ def _normalize_trial(value: Any) -> dict[str, Any]:
     if _normalized(candidate_name) not in {_normalized(item) for item in aliases}:
         raise ValueError("candidate_aliases must include candidate_name")
     safety = _normalize_safety(trial["safety"], arms)
+    if endpoint["treatment_phase"] != safety["treatment_phase"]:
+        raise ValueError("endpoint and safety treatment phases must match")
     expected_safety_id = f"{nct_id}:safety:serious-adverse-events"
     if safety["safety_id"] != expected_safety_id:
         raise ValueError("job.trial.safety.safety_id is not canonical")
@@ -591,9 +627,7 @@ def _normalize_trial(value: Any) -> dict[str, Any]:
         "condition": _text(trial["condition"], "job.trial.condition"),
         "study_type": _text(trial["study_type"], "job.trial.study_type"),
         "phase": _text(trial["phase"], "job.trial.phase"),
-        "overall_status": _text(
-            trial["overall_status"], "job.trial.overall_status"
-        ),
+        "overall_status": _text(trial["overall_status"], "job.trial.overall_status"),
         "arms": arms,
         "population": population,
         "endpoint": endpoint,
@@ -642,7 +676,25 @@ def _generic_job(
 ) -> dict[str, Any]:
     trial = job["trial"]
     endpoint = trial["endpoint"]
+    analysis = endpoint["analysis"]
     safety = trial["safety"]
+    if (
+        not 0 < analysis["p_value"] <= 1
+        or not 0
+        < analysis["confidence_interval_lower"]
+        <= analysis["parameter_value"]
+        <= analysis["confidence_interval_upper"]
+        or not 0 < analysis["confidence_interval_percent"] <= 100
+    ):
+        raise ValueError("ClinicalTrials.gov endpoint ratio analysis is invalid")
+    effect_measure = canonical_ratio_effect_measure(analysis["parameter_type"])
+    if effect_measure is None:
+        raise ValueError("ClinicalTrials.gov endpoint effect measure is unsupported")
+    effect_direction = ratio_benefit_direction(
+        analysis["confidence_interval_lower"],
+        analysis["confidence_interval_upper"],
+        ratio_effect_favorable_direction(effect_measure),
+    )
     arms = [
         {
             "arm_id": item["arm_id"],
@@ -667,14 +719,10 @@ def _generic_job(
         "study_type": trial["study_type"],
         "overall_status": trial["overall_status"],
         "phase": trial["phase"],
-        "effect_direction": "benefit",
+        "effect_direction": effect_direction,
         "candidate_aliases": trial["candidate_aliases"],
         "source_interventions": sorted(
-            {
-                name
-                for arm in trial["arms"]
-                for name in arm["intervention_names"]
-            }
+            {name for arm in trial["arms"] for name in arm["intervention_names"]}
         ),
         "source_conditions": [trial["condition"]],
         "source_lineage_ids": [f"clinicaltrials-gov:{trial['nct_id']}"],
@@ -684,6 +732,7 @@ def _generic_job(
             "endpoint_id": endpoint["endpoint_id"],
             "outcome_index": endpoint["outcome_index"],
             "analysis_index": endpoint["analysis_index"],
+            "treatment_phase": endpoint["treatment_phase"],
             "population_id": population["population_id"],
             "name": endpoint["name"],
             "outcome_type": endpoint["outcome_type"],
@@ -697,6 +746,7 @@ def _generic_job(
         },
         "safety": {
             "safety_id": safety["safety_id"],
+            "treatment_phase": safety["treatment_phase"],
             "event_category": safety["event_category"],
             "reporting_status": safety["reporting_status"],
             "time_frame": safety["time_frame"],
@@ -785,7 +835,10 @@ def _validate_receipt(bundle: SourceBundle, job: Mapping[str, Any]) -> None:
     trial = job["trial"]
     if receipt.receipt_id != job["source_receipt_id"]:
         raise ValueError("ClinicalTrials.gov receipt_id does not match the job")
-    if receipt.media_type.casefold() not in {"application/json", "application/json; charset=utf-8"}:
+    if receipt.media_type.casefold() not in {
+        "application/json",
+        "application/json; charset=utf-8",
+    }:
         raise ValueError("ClinicalTrials.gov source must use application/json")
     parsed = urllib.parse.urlsplit(receipt.locator)
     expected_path = f"/api/v2/studies/{trial['nct_id']}"
@@ -804,7 +857,9 @@ def _validate_receipt(bundle: SourceBundle, job: Mapping[str, Any]) -> None:
         f"clinicaltrials-gov-{trial['nct_id']}-version-{trial['registry_version']}"
     )
     if receipt.source_version != expected_version:
-        raise ValueError("ClinicalTrials.gov source_version does not bind versionHolder")
+        raise ValueError(
+            "ClinicalTrials.gov source_version does not bind versionHolder"
+        )
     if receipt.source_id != f"clinicaltrials-gov-{trial['nct_id']}":
         raise ValueError("ClinicalTrials.gov source_id is not canonical")
     if receipt.retrieved_at.date() < date.fromisoformat(trial["registry_version"]):
@@ -829,12 +884,9 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
     outcome_measures = _module(
         results, "outcomeMeasuresModule", "outcomeMeasuresModule"
     )
-    adverse_events = _module(
-        results, "adverseEventsModule", "adverseEventsModule"
-    )
+    adverse_events = _module(results, "adverseEventsModule", "adverseEventsModule")
     if (
-        _source_text(identification, "nctId", "identificationModule")
-        != trial["nct_id"]
+        _source_text(identification, "nctId", "identificationModule") != trial["nct_id"]
         or _source_text(misc, "versionHolder", "miscInfoModule")
         != trial["registry_version"]
         or source.get("hasResults") is not True
@@ -876,7 +928,9 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
     source_aliases: set[str] = set()
     for index, raw in enumerate(source_interventions):
         intervention = _mapping(raw, f"ClinicalTrials.gov interventions[{index}]")
-        source_aliases.add(_normalized(_source_text(intervention, "name", "intervention")))
+        source_aliases.add(
+            _normalized(_source_text(intervention, "name", "intervention"))
+        )
         for alias in intervention.get("otherNames", ()):
             source_aliases.add(_normalized(_text(alias, "intervention.otherNames")))
     missing_aliases = sorted(
@@ -914,23 +968,54 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         "ClinicalTrials.gov protocol primary outcome",
     )
     outcome_checks = {
-        "outcome type": (_source_text(source_outcome, "type", "outcome"), endpoint["outcome_type"]),
-        "outcome name": (_source_text(source_outcome, "title", "outcome"), endpoint["name"]),
-        "protocol outcome name": (_source_text(protocol_outcome, "measure", "primary outcome"), endpoint["name"]),
-        "outcome time frame": (_source_text(source_outcome, "timeFrame", "outcome"), endpoint["time_frame"]),
-        "protocol time frame": (_source_text(protocol_outcome, "timeFrame", "primary outcome"), endpoint["time_frame"]),
-        "parameter type": (_source_text(source_outcome, "paramType", "outcome"), endpoint["parameter_type"]),
-        "unit": (_source_text(source_outcome, "unitOfMeasure", "outcome"), endpoint["unit"]),
-        "reporting status": (_source_text(source_outcome, "reportingStatus", "outcome"), endpoint["reporting_status"]),
-        "population": (_source_text(source_outcome, "populationDescription", "outcome"), trial["population"]["description"]),
+        "outcome type": (
+            _source_text(source_outcome, "type", "outcome"),
+            endpoint["outcome_type"],
+        ),
+        "outcome name": (
+            _source_text(source_outcome, "title", "outcome"),
+            endpoint["name"],
+        ),
+        "protocol outcome name": (
+            _source_text(protocol_outcome, "measure", "primary outcome"),
+            endpoint["name"],
+        ),
+        "outcome time frame": (
+            _source_text(source_outcome, "timeFrame", "outcome"),
+            endpoint["time_frame"],
+        ),
+        "protocol time frame": (
+            _source_text(protocol_outcome, "timeFrame", "primary outcome"),
+            endpoint["time_frame"],
+        ),
+        "parameter type": (
+            _source_text(source_outcome, "paramType", "outcome"),
+            endpoint["parameter_type"],
+        ),
+        "unit": (
+            _source_text(source_outcome, "unitOfMeasure", "outcome"),
+            endpoint["unit"],
+        ),
+        "reporting status": (
+            _source_text(source_outcome, "reportingStatus", "outcome"),
+            endpoint["reporting_status"],
+        ),
+        "population": (
+            _source_text(source_outcome, "populationDescription", "outcome"),
+            trial["population"]["description"],
+        ),
     }
     mismatches = sorted(
-        label for label, (source_value, expected) in outcome_checks.items() if source_value != expected
+        label
+        for label, (source_value, expected) in outcome_checks.items()
+        if source_value != expected
     )
     if mismatches:
         raise ValueError(f"ClinicalTrials.gov endpoint mismatch: {mismatches}")
 
-    enrollment = _mapping(design.get("enrollmentInfo"), "ClinicalTrials.gov enrollmentInfo")
+    enrollment = _mapping(
+        design.get("enrollmentInfo"), "ClinicalTrials.gov enrollmentInfo"
+    )
     population = trial["population"]
     population_checks = {
         "enrollment count": (enrollment.get("count"), population["enrollment_count"]),
@@ -938,10 +1023,15 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         "sex": (eligibility.get("sex"), population["sex"]),
         "minimum age": (eligibility.get("minimumAge"), population["minimum_age"]),
         "maximum age": (eligibility.get("maximumAge"), population["maximum_age"]),
-        "healthy volunteers": (eligibility.get("healthyVolunteers"), population["healthy_volunteers"]),
+        "healthy volunteers": (
+            eligibility.get("healthyVolunteers"),
+            population["healthy_volunteers"],
+        ),
     }
     mismatches = sorted(
-        label for label, (source_value, expected) in population_checks.items() if source_value != expected
+        label
+        for label, (source_value, expected) in population_checks.items()
+        if source_value != expected
     )
     if mismatches:
         raise ValueError(f"ClinicalTrials.gov population mismatch: {mismatches}")
@@ -951,6 +1041,35 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         for item in _sequence(source_outcome.get("groups"), "outcome.groups")
         if isinstance(item, Mapping)
     }
+    treatment_phase = endpoint["treatment_phase"]
+    selected_outcome_groups = [
+        outcome_groups.get(group_id)
+        for group_id in endpoint["analysis"]["source_group_ids"]
+    ]
+    endpoint_phase_evidence = _declared_treatment_phases(
+        identification.get("officialTitle"),
+        source_outcome.get("title"),
+        source_outcome.get("timeFrame"),
+        protocol_outcome.get("measure"),
+        protocol_outcome.get("timeFrame"),
+        *(
+            value
+            for group in selected_outcome_groups
+            if isinstance(group, Mapping)
+            for value in (group.get("title"), group.get("description"))
+        ),
+    )
+    if (
+        treatment_phase != "not_applicable"
+        and treatment_phase not in endpoint_phase_evidence
+    ):
+        raise ValueError(
+            "ClinicalTrials.gov endpoint does not declare the selected treatment phase"
+        )
+    if treatment_phase == "not_applicable" and endpoint_phase_evidence:
+        raise ValueError(
+            "ClinicalTrials.gov endpoint declares a treatment phase but the job does not"
+        )
     denoms = _sequence(source_outcome.get("denoms"), "outcome.denoms")
     participant_denoms = [
         _mapping(item, "outcome denom")
@@ -960,7 +1079,7 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
     if len(participant_denoms) != 1:
         raise ValueError("ClinicalTrials.gov outcome needs one participant denominator")
     denominator_by_group = {
-        _source_text(item, "groupId", "denominator count"): _positive_int(
+        _source_text(item, "groupId", "denominator count"): _non_negative_int(
             int(_source_text(item, "value", "denominator count")),
             "ClinicalTrials.gov denominator",
         )
@@ -978,12 +1097,18 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
                 value = _mapping(measurement, "outcome measurement")
                 group_id = _source_text(value, "groupId", "outcome measurement")
                 if group_id in measurements:
-                    raise ValueError("ClinicalTrials.gov group has duplicate measurements")
-                measurements[group_id] = _source_text(value, "value", "outcome measurement")
+                    raise ValueError(
+                        "ClinicalTrials.gov group has duplicate measurements"
+                    )
+                measurements[group_id] = _source_text(
+                    value, "value", "outcome measurement"
+                )
 
     for arm in trial["arms"]:
         matching_protocol = [
-            item for item in protocol_arms if item.get("label") == arm["protocol_arm_label"]
+            item
+            for item in protocol_arms
+            if item.get("label") == arm["protocol_arm_label"]
         ]
         if len(matching_protocol) != 1:
             raise ValueError("ClinicalTrials.gov selected arm identity is ambiguous")
@@ -994,8 +1119,7 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
             or protocol_arm.get("interventionNames") != arm["intervention_names"]
             or not isinstance(outcome_group, Mapping)
             or outcome_group.get("title") != arm["source_group_title"]
-            or measurements.get(arm["source_group_id"])
-            != arm["measurement"]["value"]
+            or measurements.get(arm["source_group_id"]) != arm["measurement"]["value"]
             or denominator_by_group.get(arm["source_group_id"])
             != arm["measurement"]["denominator"]
         ):
@@ -1015,58 +1139,49 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         "p_value": float(p_value),
         "statistical_method": source_analysis.get("statisticalMethod"),
         "parameter_type": source_analysis.get("paramType"),
-        "parameter_value": float(_decimal(source_analysis.get("paramValue"), "analysis.paramValue")),
-        "confidence_interval_percent": float(_decimal(source_analysis.get("ciPctValue"), "analysis.ciPctValue")),
-        "confidence_interval_lower": float(_decimal(source_analysis.get("ciLowerLimit"), "analysis.ciLowerLimit")),
-        "confidence_interval_upper": float(_decimal(source_analysis.get("ciUpperLimit"), "analysis.ciUpperLimit")),
+        "parameter_value": float(
+            _decimal(source_analysis.get("paramValue"), "analysis.paramValue")
+        ),
+        "confidence_interval_percent": float(
+            _decimal(source_analysis.get("ciPctValue"), "analysis.ciPctValue")
+        ),
+        "confidence_interval_lower": float(
+            _decimal(source_analysis.get("ciLowerLimit"), "analysis.ciLowerLimit")
+        ),
+        "confidence_interval_upper": float(
+            _decimal(source_analysis.get("ciUpperLimit"), "analysis.ciUpperLimit")
+        ),
     }
     if source_analysis_values != expected_analysis:
         raise ValueError("ClinicalTrials.gov statistical analysis mismatch")
-    candidate, comparator = trial["arms"]
-    candidate_value = _optional_measurement_decimal(
+    candidate = next(item for item in trial["arms"] if item["role"] == "candidate")
+    comparator = next(item for item in trial["arms"] if item["role"] == "comparator")
+    _optional_measurement_decimal(
         candidate["measurement"]["value"], "candidate measurement"
     )
-    comparator_value = _optional_measurement_decimal(
+    _optional_measurement_decimal(
         comparator["measurement"]["value"], "comparator measurement"
     )
-    endpoint_direction = endpoint["favorable_direction"]
-    arm_measurements_support_direction = (
-        candidate_value is None or comparator_value is None
-    )
-    if candidate_value is not None and comparator_value is not None:
-        arm_measurements_support_direction = (
-            candidate_value > comparator_value
-            if endpoint_direction == "higher_is_better"
-            else candidate_value < comparator_value
-        )
     parameter = Decimal(str(expected_analysis["parameter_value"]))
     ci_lower = Decimal(str(expected_analysis["confidence_interval_lower"]))
     ci_upper = Decimal(str(expected_analysis["confidence_interval_upper"]))
-    effect_measure = canonical_ratio_effect_measure(
-        expected_analysis["parameter_type"]
-    )
-    ratio_supports_benefit = False
-    if effect_measure is not None and 0 < ci_lower <= parameter <= ci_upper:
-        ratio_supports_benefit = (
-            ratio_benefit_direction(
-                float(ci_lower),
-                float(ci_upper),
-                ratio_effect_favorable_direction(effect_measure),
-            )
-            == "benefit"
-        )
+    ci_percent = Decimal(str(expected_analysis["confidence_interval_percent"]))
+    p_value = Decimal(str(expected_analysis["p_value"]))
+    effect_measure = canonical_ratio_effect_measure(expected_analysis["parameter_type"])
     if (
         candidate["role"] != "candidate"
         or comparator["role"] != "comparator"
         or _normalized(endpoint["outcome_type"]) != "primary"
         or _normalized(endpoint["reporting_status"]) != "posted"
         or effect_measure is None
-        or expected_analysis["p_value_relation"] not in {"lt", "le", "eq"}
-        or not 0 < Decimal(str(expected_analysis["p_value"])) <= Decimal("0.05")
-        or not ratio_supports_benefit
-        or not arm_measurements_support_direction
+        or expected_analysis["p_value_relation"] not in {"lt", "le", "eq", "ge", "gt"}
+        or not 0 < p_value <= 1
+        or not 0 < ci_lower <= parameter <= ci_upper
+        or not 0 < ci_percent <= 100
     ):
-        raise ValueError("ClinicalTrials.gov endpoint fails the bounded benefit rule")
+        raise ValueError(
+            "ClinicalTrials.gov endpoint fails the bounded ratio-evidence rule"
+        )
 
     safety = trial["safety"]
     source_description = adverse_events.get("description")
@@ -1100,9 +1215,7 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         if not source_stats:
             raise ValueError("ClinicalTrials.gov serious event has no arm statistics")
         event_group_ids: set[str] = set()
-        selected_safety_group_ids = {
-            item["source_group_id"] for item in safety["arms"]
-        }
+        selected_safety_group_ids = {item["source_group_id"] for item in safety["arms"]}
         for stat_index, raw_stat in enumerate(source_stats):
             source_stat = _mapping(
                 raw_stat,
@@ -1152,14 +1265,14 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         "ClinicalTrials.gov adverseEventsModule.eventGroups",
     ):
         source_group = _mapping(raw_group, "ClinicalTrials.gov adverse-event group")
-        source_group_id = _source_text(
-            source_group, "id", "adverse-event group"
-        )
+        source_group_id = _source_text(source_group, "id", "adverse-event group")
         if (
             _ADVERSE_EVENT_GROUP_ID.fullmatch(source_group_id) is None
             or source_group_id in source_event_groups
         ):
-            raise ValueError("ClinicalTrials.gov adverse-event group ids are duplicated")
+            raise ValueError(
+                "ClinicalTrials.gov adverse-event group ids are duplicated"
+            )
         source_event_groups[source_group_id] = source_group
     canonical_arms = {item["arm_id"]: item for item in trial["arms"]}
     for safety_arm in safety["arms"]:
@@ -1177,10 +1290,18 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
             source_group.get("seriousNumAtRisk"),
             "ClinicalTrials.gov adverse-event group seriousNumAtRisk",
         )
+        source_safety_phases = _declared_treatment_phases(
+            source_group.get("title"),
+            source_group.get("description"),
+        )
         if (
             canonical_arm is None
             or canonical_arm["role"] != safety_arm["role"]
             or source_group.get("title") != safety_arm["source_group_title"]
+            or (
+                source_safety_phases
+                and safety["treatment_phase"] not in source_safety_phases
+            )
             or source_affected != safety_arm["serious_num_affected"]
             or source_at_risk != safety_arm["serious_num_at_risk"]
         ):

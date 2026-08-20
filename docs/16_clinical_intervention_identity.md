@@ -77,14 +77,15 @@ candidate's pre-approved `attributes.identity_aliases`; adding a canonical name 
 unapproved alias does not authorize the latter. At least one source condition must likewise match
 the canonical disease name or a pre-approved disease identity alias.
 
-Version 2 supports one bounded endpoint shape: a posted primary time-to-event endpoint with
-`higher_is_better` measurements, a candidate-first hazard ratio, upper confidence bound below one,
-and p-value bound at most 0.05. It additionally requires exact posted serious-adverse-event
-affected/at-risk counts for the same two arms, without inferring safety acceptability. Other shapes
-or missing safety defer without artifacts. Full provider rules, external validation hashes, and
-the matched missing-safety control are in
+Version 3 supports posted primary hazard-, odds-, and risk-ratio evidence with exact registry group
+order, typed candidate/comparator roles, a valid estimate/interval/p-value structure, and matched
+endpoint/safety treatment phase. Benefit, harm, and uncertain intervals are retained; only benefit
+recommends advance. It additionally requires exact posted serious-adverse-event affected/at-risk
+counts for the same two arms, without inferring safety acceptability. Invalid structures or missing
+safety defer without artifacts. Full provider rules and external validation hashes are in
 `docs/21_clinical_provider_ingestion.md` and
-`docs/clinical_provider_validation_snapshot.json`.
+`docs/clinical_provider_validation_snapshot.json`; the UC direction/phase execution is in
+`docs/42_uc_provider_validation.md`.
 
 ## EMA Promotion
 

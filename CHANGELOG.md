@@ -4,6 +4,13 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added two public-source ulcerative-colitis ClinicalTrials.gov induction contract runs. Valid
+  `benefit`, `harm`, and `null_or_uncertain` ratio intervals now survive extraction and promotion;
+  only benefit recommends `ADVANCE`, while other directions commit on `HOLD`. The v3 reviewer
+  contract binds endpoint and safety treatment phase, preserves registry analysis-group order,
+  permits zero denominators only for unselected groups, and keeps raw bytes/jobs external. The
+  payload-free NCT01647516/NCT02435992 snapshot records exact hashes, selected aggregates,
+  decisions, and explicit non-pooling and no-safety-acceptability boundaries.
 - Expanded cross-disease clinical conformance beyond the hazard-ratio-only path. Shared
   ratio-effect semantics now support hazard ratio with `lower_is_better` and odds/risk ratios with
   `higher_is_better` across ClinicalTrials.gov ingestion, reviewer mapping, non-pooled synthesis,

@@ -58,6 +58,7 @@ evidence hashes:
 - Strict schema: `rl_env/specs/biohub_research_readiness.schema.json`
 - Implemented generic M6 handoff: `docs/40_upstream_translational_handoff.md`
 - Synthetic immune-disease breadth check: `docs/41_ulcerative_colitis_conformance_slice.md`
+- Public-source UC provider validation: `docs/42_uc_provider_validation.md`
 
 ```bash
 adds-research-readiness validate \
@@ -506,7 +507,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   sealed-board, label-vault, policy-submission, policy-report, held-out protocol,
   curator-manifest, and stage-stratified report schemas;
   one disease/target slice (sickle cell) traversed retrospectively; one synthetic ulcerative-colitis
-  cross-disease conformance slice for M6 and higher-is-better remission-ratio semantics; an unscored
+  cross-disease conformance slice plus two payload-free public-source UC induction contract runs;
+  an unscored
   prospective scaffold whose stale example is invalidated pending source refresh;
   conditional local RDKit druglikeness screening; and aggregate retrospective
   risk analysis. Local calibration cards and locked replay artifacts are excluded.
@@ -560,6 +562,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
   external matched provider run. `docs/21_clinical_provider_ingestion.md` and
   `docs/clinical_provider_validation_snapshot.json` describe the exact ClinicalTrials.gov
   endpoint/safety design contract and its payload-free external validation.
+  `docs/42_uc_provider_validation.md` and
+  `docs/uc_clinical_provider_validation_snapshot.json` record two additional public-source UC
+  induction runs that retain uncertain evidence on `HOLD` and advance a bounded favorable result.
   `docs/22_clinical_benefit_risk_synthesis.md` defines the explicit, source-disjoint, non-pooled
   cross-trial synthesis contract, and `docs/23_clinical_portfolio_endpoint_mapping.md` defines the
   multi-bundle portfolio transaction and append-only reviewer-approved mapping ledger.
@@ -679,6 +684,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/preclinical_provider_validation_snapshot.json` | Machines + reviewers | Payload-free provider ids, typed values, source/job/output hashes, matched outcomes, and limitations for the external validation run. |
 | `docs/21_clinical_provider_ingestion.md` | Humans + agents | ClinicalTrials.gov receipt, arm, population, endpoint, serious-adverse-event summary, bounded promotion, and atomic-failure contract. |
 | `docs/clinical_provider_validation_snapshot.json` | Machines + reviewers | Payload-free NCT/design ids, typed values, artifact hashes, stage outcome, matched control, and limitations. |
+| `docs/42_uc_provider_validation.md` | Humans + agents | Two public-source UC induction contract runs, direction-aware gating, phase identity, safety aggregates, and non-pooling limits. |
+| `docs/uc_clinical_provider_validation_snapshot.json` | Machines + reviewers | Payload-free UC source/job/output/manifest hashes, selected typed values, decisions, and replay limits. |
 | `docs/22_clinical_benefit_risk_synthesis.md` | Humans + agents | Explicit cross-trial selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
@@ -971,6 +978,9 @@ Public-release readiness is tracked in:
   reviewer-approved endpoint mapping ledger contract.
 - `docs/clinical_provider_validation_snapshot.json` — payload-free exact-NCT validation hashes,
   typed identities, matched outcome, and limitations.
+- `docs/42_uc_provider_validation.md` and
+  `docs/uc_clinical_provider_validation_snapshot.json` — public-source UC induction contract
+  validation, retained uncertainty, typed phase boundaries, and payload-free hashes.
 - `docs/public_evidence_summary.json` — machine-readable aggregate claim ledger.
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
 - `docs/public_launch_checklist.md` — final human launch checklist.

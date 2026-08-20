@@ -187,7 +187,7 @@ def _clinical_trial_design_metadata(
     if _normalized(str(metadata["effect_direction"])) not in {
         "benefit",
         "harm",
-        "unresolved",
+        "null_or_uncertain",
     }:
         raise ValueError(f"{label}.effect_direction is unsupported")
     metadata["candidate_aliases"] = _text_sequence(
@@ -231,9 +231,7 @@ def _clinical_trial_design_metadata(
         if role == "candidate":
             _text(intervention_id, f"{label}.arms[{arm_index}].intervention_id")
         elif intervention_id is not None:
-            raise ValueError(
-                f"{label}.arms[{arm_index}].intervention_id must be null"
-            )
+            raise ValueError(f"{label}.arms[{arm_index}].intervention_id must be null")
         arm["intervention_names"] = _text_sequence(
             arm.get("intervention_names"),
             f"{label}.arms[{arm_index}].intervention_names",
@@ -247,7 +245,11 @@ def _clinical_trial_design_metadata(
             f"{label}.arms[{arm_index}].measurement",
         )
         denominator = measurements.get("denominator")
-        if not isinstance(denominator, int) or isinstance(denominator, bool) or denominator <= 0:
+        if (
+            not isinstance(denominator, int)
+            or isinstance(denominator, bool)
+            or denominator <= 0
+        ):
             raise ValueError(
                 f"{label}.arms[{arm_index}].measurement.denominator must be positive"
             )
@@ -290,6 +292,7 @@ def _clinical_trial_design_metadata(
         (
             "endpoint_id",
             "population_id",
+            "treatment_phase",
             "name",
             "outcome_type",
             "time_frame",
@@ -307,6 +310,12 @@ def _clinical_trial_design_metadata(
         raise ValueError(f"{label}.endpoint.arm_ids must preserve selected arm order")
     if endpoint["population_id"] != population["population_id"]:
         raise ValueError(f"{label}.endpoint population identity mismatch")
+    if endpoint["treatment_phase"] not in {
+        "induction",
+        "maintenance",
+        "not_applicable",
+    }:
+        raise ValueError(f"{label}.endpoint treatment phase is unsupported")
     analysis = _mapping(endpoint.get("analysis"), f"{label}.endpoint.analysis")
     _require_text_values(
         analysis,
@@ -424,9 +433,7 @@ def _clinical_disposition_metadata(
     if _normalized(str(metadata["effect_direction"])) != "no_clinical_benefit":
         raise ValueError(f"{label}.effect_direction must be no_clinical_benefit")
     if _normalized(str(metadata["early_termination_reason"])) != "lack_of_efficacy":
-        raise ValueError(
-            f"{label}.early_termination_reason must be lack_of_efficacy"
-        )
+        raise ValueError(f"{label}.early_termination_reason must be lack_of_efficacy")
     _iso_date(metadata["publication_date"], f"{label}.publication_date")
     for field_name in ("candidate_rate", "comparator_rate"):
         _require_finite_number(metadata.get(field_name), f"{label}.{field_name}")

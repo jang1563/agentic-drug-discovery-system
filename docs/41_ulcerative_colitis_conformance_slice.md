@@ -78,7 +78,12 @@ across populations or time frames, or that any intervention is effective, safe, 
 
 ## Next Research Decision
 
-The next breadth milestone is an independently reviewed, non-sensitive UC or other
-immune/inflammatory source bundle. It should test real endpoint definitions, induction versus
-maintenance time frames, population differences, source capture, and reviewer disagreement while
-remaining non-pooled and outside Git until data rights and release approval are explicit.
+The provider-only follow-up is now complete for two non-sensitive public UC induction records; see
+`docs/42_uc_provider_validation.md`. It tests real endpoint definitions, registry arm ordering,
+induction phase identity, source capture, and uncertain-versus-beneficial gating while preserving
+raw bytes and reviewer jobs outside Git.
+
+The next breadth milestone is reviewer-approved induction-versus-maintenance harmonization across
+distinct analysis populations, followed by a second immune/inflammatory disease. That work must
+remain non-pooled until endpoint, population, estimand, and safety-window exchangeability are
+explicitly justified.

@@ -22,7 +22,8 @@ resume are in `docs/24_policy_replanning_and_resume.md`; cutoff-safe matched and
 evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`; independently curated held-out
 preregistration and stage-stratified uncertainty are in
 `docs/26_independent_heldout_evaluation.md`; the synthetic cross-disease UC conformance boundary is
-in `docs/41_ulcerative_colitis_conformance_slice.md`. The external scorer is under `benchmark/`,
+in `docs/41_ulcerative_colitis_conformance_slice.md`, and the separate public-source UC provider
+execution is in `docs/42_uc_provider_validation.md`. The external scorer is under `benchmark/`,
 `scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
@@ -47,8 +48,9 @@ validated.
   no-external-transportability boundary.
 - [x] Hazard-, odds-, and risk-ratio semantics use one fixed measure/direction contract across
   provider extraction, semantic promotion, endpoint mapping, synthesis, and evidence cells.
-- [x] The ulcerative-colitis artifacts pass synthetic cross-disease conformance while remaining
-  explicitly outside real-source validation, independent disease-slice review, and therapeutic claims.
+- [x] The ulcerative-colitis synthetic conformance surface remains distinct from two public-source
+  provider-only induction runs; neither is represented as pooled efficacy, safety acceptability,
+  independent disease-slice review, or a therapeutic claim.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.
@@ -160,8 +162,9 @@ validated.
 
 ## 0.3.0.dev2 Publication Record
 
-- [x] The strict ClinicalTrials.gov provider accepts only the frozen exact-p-value,
-  hazard-ratio-alias, missing-value, arm-title, and sparse zero-risk variants.
+- [x] The strict ClinicalTrials.gov v3 provider accepts frozen hazard-, odds-, and risk-ratio
+  aliases, preserves valid benefit/harm/uncertain intervals, binds endpoint and safety treatment
+  phase, and permits sparse zero counts only for unselected groups.
 - [x] Missing descriptive arm summaries retain their raw source marker, serialize as `null`, and
   produce a typed tenth tensor dimension and provenance-linked workflow gap.
 - [x] Unsupported effect aliases, title qualifiers, arbitrary missing markers, selected zero-risk

@@ -105,17 +105,20 @@ exact replay requires excluded external artifacts.
 ClinicalTrials.gov contract run: it records registry/design/safety identities, typed aggregate
 values, artifact hashes, outcomes, and limitations, but no source payload or reviewer job.
 
+`docs/uc_clinical_provider_validation_snapshot.json` adds two public-source ulcerative-colitis
+induction contract runs under that boundary. It records one retained uncertain result and one
+bounded favorable result, treatment-phase identity, and exact hashes without source bytes or jobs.
+
 The cross-trial synthesis surface contains explicit synthetic selection examples, typed
 trial-level outputs, source evidence IDs, content hashes, and a payload-free aggregate record of
 one external PALOMA-2/3 execution. It does not include the real review packet, full state, source
 bytes, pooled estimates, benefit-risk scores, clinical judgments, or treatment recommendations.
 
-The ulcerative-colitis surface is a fully synthetic cross-disease conformance slice. It exercises
-one immune-inflammatory disease identity across contextual translational handoff, clinical-remission
-endpoint mapping, higher-is-better odds-ratio synthesis, and evidence-tensor compilation. Synthetic
-trial ids, values, sources, targets, perturbations, and reviewers cannot be represented as real
-ClinicalTrials.gov ingestion, independent scientific review, clinical validation, or a second
-end-to-end disease result.
+The ulcerative-colitis M6, endpoint-mapping, synthesis, and evidence-tensor conformance surface
+remains fully synthetic. A separate provider-only surface uses two real public ClinicalTrials.gov
+snapshots to validate exact ingestion, direction-aware gating, and phase identity. It does not
+extend real-source validation upstream to M6 or downstream to pooled synthesis, establish
+independent scientific review, or constitute a second end-to-end therapeutic result.
 
 The portfolio and endpoint-mapping surface likewise contains only executable verifiers, strict
 schemas, synthetic references, and tests. Real multi-trial source bundles, single-trial review jobs,

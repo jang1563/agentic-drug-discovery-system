@@ -274,7 +274,7 @@
     {
       "anchor_id": "uc-conformance-document",
       "path": "docs/41_ulcerative_colitis_conformance_slice.md",
-      "sha256": "d3a40590c79cb022b00f899636ae4d0ecb03d04f4c1791360b7e8fa7c1bd47b8",
+      "sha256": "6f49b9fd1b21c7a084c776448077e3a9d52821a97b55a0246e6c4b59683b23ab",
       "kind": "document"
     },
     {
@@ -1045,5 +1045,5 @@
     "public_release_status": "candidate_not_merged_or_uploaded",
     "next_decision": "Decide whether to review one non-sensitive external handoff fixture and nominate a scientifically owned 12-to-20-program immune-perturbation pilot cohort."
   },
-  "integrity_sha256": "1ee1e38c7c5b857f198e048ffe88506194663152f11d21ad70c584f43e70e977"
+  "integrity_sha256": "a8ace89e6dc67f57773961f88c65c58a1d06d389cb3b3c287a4ba4e3cf41ab6c"
 }
