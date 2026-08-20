@@ -157,6 +157,7 @@
   "claims": {
     "independent_maintenance_contract_replication": true,
     "absolute_percentage_point_effect_supported": true,
+    "additive_decision_tensor_contract_supported": true,
     "source_provenance_preserved": true,
     "same_candidate_cross_trial_replication": false,
     "cross_trial_pooling_performed": false,
@@ -168,7 +169,7 @@
     "This is one public registry contract replication, not an independent reanalysis of participant-level data.",
     "The selected trial uses a different candidate from the prior ozanimod validation and cannot support same-candidate pooled efficacy.",
     "Matching endpoint and safety counts do not establish that the same participants contributed to both summaries.",
-    "The current clinical decision tensor remains ratio-effect only; risk-difference synthesis stops before log-ratio uncertainty planning.",
+    "The clinical decision tensor now has a separate percentage-point precision contract, but this one-trial replication does not satisfy its two-source minimum.",
     "Observed serious-event risks are descriptive and do not establish comparative safety or acceptability."
   ]
 }

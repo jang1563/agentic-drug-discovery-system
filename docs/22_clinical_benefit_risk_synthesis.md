@@ -126,16 +126,16 @@ transition, serialization, and replay path. Controls cover missing mapping, endp
 overlapping source hashes, attempted automatic pooling, forged harmonized values, direct mapping and
 synthesis commit bypass, unrelated derived support, removal from committed history, and
 higher-is-better odds-ratio propagation into the decision tensor, percentage-point risk-difference
-propagation through non-pooled synthesis, and explicit rejection of additive effects by the current
-log-ratio decision tensor.
+propagation through non-pooled synthesis and the decision tensor, scale-specific precision
+thresholds, and rejection when the matching additive threshold is absent.
 
 ## Current Limitations
 
 - v1 supports explicitly selected hazard, odds, and risk ratios plus percentage-point risk
   differences. Additive effects require an explicit percent unit, candidate-first sign binding,
   and endpoint-declared favorable direction.
-- The downstream clinical decision tensor remains ratio-only because its precision policy uses
-  log-ratio CI width. Additive-scale bounded VOI policy is not yet implemented.
+- The downstream clinical decision tensor uses log-CI width for ratios and raw percentage-point CI
+  width for risk differences. The matching scale-specific policy threshold must be preregistered.
 - Source-reported missing descriptive arm summaries remain typed gaps; they are not imputed from
   the ratio estimate or confidence interval.
 - Serious-event data are posted aggregate participant counts, not adjudicated event-level causality.

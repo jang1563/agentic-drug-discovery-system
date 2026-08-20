@@ -130,6 +130,9 @@ The cross-disease UC execution and its payload-free hashes are documented in
 The independent primary-maintenance percentage-point replication is documented in
 `docs/44_uc_maintenance_risk_difference_replication.md` and
 `docs/uc_maintenance_risk_difference_validation_snapshot.json`.
+The second-disease RA ACR20 HOLD replication is documented in
+`docs/45_ra_acr20_risk_difference_hold_replication.md` and
+`docs/ra_acr20_risk_difference_validation_snapshot.json`.
 
 ## Stage Gate
 

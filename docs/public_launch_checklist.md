@@ -26,7 +26,8 @@ in `docs/41_ulcerative_colitis_conformance_slice.md`, and the separate public-so
 execution is in `docs/42_uc_provider_validation.md`; its single-trial induction/maintenance
 population boundary is in `docs/43_uc_phase_population_alignment.md`, and the independent primary
 maintenance percentage-point replication is in
-`docs/44_uc_maintenance_risk_difference_replication.md`. The external scorer is under `benchmark/`,
+`docs/44_uc_maintenance_risk_difference_replication.md`; the second-disease RA HOLD replication is
+in `docs/45_ra_acr20_risk_difference_hold_replication.md`. The external scorer is under `benchmark/`,
 `scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
@@ -52,8 +53,8 @@ validated.
 - [x] Hazard-, odds-, and risk-ratio semantics use one fixed measure/direction contract across
   provider extraction, semantic promotion, endpoint mapping, synthesis, and evidence cells.
 - [x] Percentage-point risk differences use null 0, explicit percent units, endpoint-declared
-  direction, and candidate-first sign binding through non-pooled synthesis; the log-ratio decision
-  tensor rejects them until an additive-scale precision policy exists.
+  direction, and candidate-first sign binding through non-pooled synthesis; the decision tensor
+  uses a separate preregistered percentage-point CI-width threshold.
 - [x] The ulcerative-colitis synthetic conformance surface remains distinct from two public-source
   provider-only induction runs; neither is represented as pooled efficacy, safety acceptability,
   independent disease-slice review, or a therapeutic claim.
@@ -63,6 +64,8 @@ validated.
 - [x] The independent UC maintenance replication records its screened exclusions and exact hashes,
   and is not represented as same-candidate replication, pooled efficacy, safety acceptability, or
   a treatment recommendation.
+- [x] The RA ACR20 replication commits a source-valid null-crossing result on `HOLD`, records
+  denominator mismatch and screened controls, and does not claim a real multi-trial tensor.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.

@@ -229,6 +229,72 @@ def run_manifest(
 
 
 class ClinicalTrialsGovIngestionTests(unittest.TestCase):
+    def test_ra_acr20_risk_difference_snapshot_retains_hold_boundary(self) -> None:
+        snapshot_path = (
+            ROOT / "docs/ra_acr20_risk_difference_validation_snapshot.json"
+        )
+        snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            snapshot["schema_version"],
+            "adds.ra-acr20-risk-difference-validation-snapshot.v1",
+        )
+        policy = snapshot["public_payload_policy"]
+        self.assertFalse(policy["contains_source_bytes"])
+        self.assertFalse(policy["contains_reviewer_text"])
+        self.assertFalse(policy["contains_review_jobs"])
+        self.assertFalse(policy["contains_local_paths"])
+        self.assertTrue(policy["external_artifacts_required_for_exact_replay"])
+
+        selected = snapshot["selected_trial"]
+        self.assertEqual(selected["trial_id"], "NCT00383188")
+        for field_name in (
+            "source_content_sha256",
+            "sanitized_provider_output_sha256",
+            "compiled_manifest_sha256",
+            "compile_review_sha256",
+        ):
+            self.assertRegex(selected[field_name], SHA256)
+        effect = selected["endpoint"]["effect"]
+        self.assertEqual(effect["canonical_measure"], "risk_difference")
+        self.assertEqual(effect["direction"], "null_or_uncertain")
+        self.assertEqual(
+            effect["confidence_interval_width_percentage_points"],
+            31.229,
+        )
+        self.assertLess(effect["confidence_interval_lower"], 0)
+        self.assertGreater(effect["confidence_interval_upper"], 0)
+        self.assertEqual(
+            selected["execution"],
+            {
+                "run_status": "committed",
+                "promotion_status": "promoted",
+                "recommended_decision": "hold",
+                "final_stage": "clinical_strategy",
+                "bounded_interpretation": (
+                    "posted_primary_risk_difference_null_or_uncertain"
+                ),
+            },
+        )
+        self.assertFalse(selected["population_boundary"]["rolewise_counts_match"])
+        self.assertFalse(
+            selected["population_boundary"]["same_participants_inferred"]
+        )
+        self.assertFalse(
+            snapshot["decision_layer"]["real_multi_trial_additive_tensor_compiled"]
+        )
+        self.assertEqual(len(snapshot["screened_controls"]), 4)
+        for item in snapshot["screened_controls"]:
+            self.assertRegex(item["source_content_sha256"], SHA256)
+            self.assertTrue(item["reason_codes"])
+        self.assertFalse(snapshot["claims"]["cross_trial_pooling_performed"])
+        self.assertFalse(snapshot["claims"]["clinical_acceptability_inferred"])
+        self.assertFalse(snapshot["claims"]["therapeutic_recommendation_made"])
+
+        encoded = snapshot_path.read_text(encoding="utf-8")
+        self.assertNotRegex(encoded, r"/(Users|home|tmp|private)/")
+        self.assertNotIn("eligibilityCriteria", encoded)
+        self.assertNotIn("raw_payload", encoded)
+
     def test_uc_maintenance_risk_difference_snapshot_is_bounded(self) -> None:
         snapshot_path = (
             ROOT

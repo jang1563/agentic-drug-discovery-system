@@ -74,6 +74,8 @@
       "docs/uc_phase_population_validation_snapshot.json",
       "docs/44_uc_maintenance_risk_difference_replication.md",
       "docs/uc_maintenance_risk_difference_validation_snapshot.json",
+      "docs/45_ra_acr20_risk_difference_hold_replication.md",
+      "docs/ra_acr20_risk_difference_validation_snapshot.json",
       "docs/retrospective_policy_evaluation_snapshot.json",
       "docs/public_evidence_summary.json",
       "agentic_drug_discovery/",

@@ -124,7 +124,7 @@
     {
       "anchor_id": "core-models",
       "path": "agentic_drug_discovery/models.py",
-      "sha256": "5ed44ac07444f5362f0666c6a3c947fe7f64e828811fffc6cf7f0329d35c279c",
+      "sha256": "1a6f9c88471d070b41344ec609fff29e93b7a9ead3fc897ff8c49ed76c7ff7bf",
       "kind": "implementation"
     },
     {
@@ -148,7 +148,7 @@
     {
       "anchor_id": "clinical-decision-core",
       "path": "agentic_drug_discovery/clinical_decision.py",
-      "sha256": "55d6ea031a37168e9f049245b393054e1eb991b2a811c6e1830ca95f5873d693",
+      "sha256": "8c8c056ca640a14558b6c342d81b1a6d388b42ceec88ba46b2b572adee9006b4",
       "kind": "implementation"
     },
     {
@@ -178,13 +178,13 @@
     {
       "anchor_id": "synthesis-tests",
       "path": "tests/test_clinical_benefit_risk_synthesis.py",
-      "sha256": "caad952ddf713bea25dd9c0b3b7bd5281c6f4c3a5092df55756404a48425e374",
+      "sha256": "a51700287c23092187d76462826d01d8d15686ecf7d7bf7355d388a2d70ce38c",
       "kind": "test"
     },
     {
       "anchor_id": "decision-cli-tests",
       "path": "tests/test_clinical_decision_cli.py",
-      "sha256": "77a8b6bdf75574a3ed6568bd634b517a059c37ebb490a5d919470a01f4c47bc3",
+      "sha256": "39f52ce9944766392a34fef4a041c059247e1e04bb692d0f3ae9a9ad17893ed0",
       "kind": "test"
     },
     {
@@ -208,13 +208,13 @@
     {
       "anchor_id": "synthesis-document",
       "path": "docs/22_clinical_benefit_risk_synthesis.md",
-      "sha256": "e50a9874fa2843c00317be2fb5b41b7abdc491f5492032a0d8eb71e4b85a02ad",
+      "sha256": "cdc80b8e58112ba3205cb85dae015e62bdde6ce8ab41de3697ef033f260ca653",
       "kind": "document"
     },
     {
       "anchor_id": "decision-document",
       "path": "docs/27_clinical_evidence_tensor_and_voi.md",
-      "sha256": "02e753237855fbf040eac7ce2bff0555aa587a43fc35da863aeb43be2bb415fb",
+      "sha256": "48f0f5094b5b892731ffb3d5ca24d9465033e1a83b088c07d320c09b4f2bc2ea",
       "kind": "document"
     },
     {
@@ -292,20 +292,32 @@
     {
       "anchor_id": "clinical-provider-tests",
       "path": "tests/test_clinicaltrials_gov_ingestion.py",
-      "sha256": "7800a324c9251ed40f50adbb760377392b8c7259b8837f9b8b8dc82f52f0865b",
+      "sha256": "aaa349d55496532465407199355ac8a8532e8a79b5358099e9344c066a8ac182",
       "kind": "test"
     },
     {
       "anchor_id": "uc-maintenance-risk-difference-document",
       "path": "docs/44_uc_maintenance_risk_difference_replication.md",
-      "sha256": "6bc8d9a5e53296a519421af2370350b0619d0ac7a076368eaa1cc2707f8837fa",
+      "sha256": "d566b2e24f89058ea981d80616dc266c90ae3ed8facd8ff2f2860c2df9bd8431",
       "kind": "document"
     },
     {
       "anchor_id": "uc-maintenance-risk-difference-snapshot",
       "path": "docs/uc_maintenance_risk_difference_validation_snapshot.json",
-      "sha256": "27c6d86fe91fb795bad25a1681b83c6767fb2decd0dd4515361b1e58bc21fe36",
+      "sha256": "5483ca242a1eb32b7c666bfe43d2f5cce4ba5f2dab57664060c568ec3d8cd7d9",
       "kind": "document"
+    },
+    {
+      "anchor_id": "ra-acr20-risk-difference-document",
+      "path": "docs/45_ra_acr20_risk_difference_hold_replication.md",
+      "kind": "document",
+      "sha256": "1881b673b907be4611cea5d841ac59efd9c4567ef009b3ffe9419ec25cc5d277"
+    },
+    {
+      "anchor_id": "ra-acr20-risk-difference-snapshot",
+      "path": "docs/ra_acr20_risk_difference_validation_snapshot.json",
+      "kind": "document",
+      "sha256": "d16645889e093d795d2bb5bfd6bc1754cb5007bff6444fe97a2eefb7563dbc5f"
     }
   ],
   "maturity_ledger": [
@@ -360,7 +372,7 @@
       "capability_id": "evidence-gap-voi",
       "label": "Typed evidence gaps and bounded next-action planning",
       "maturity": "implemented_public",
-      "claim": "The clinical decision layer compiles exact evidence cells into typed gaps and budget-bounded evidence-acquisition actions under a preregistered policy.",
+      "claim": "The clinical decision layer compiles exact evidence cells into typed gaps and budget-bounded evidence-acquisition actions under preregistered, effect-scale-specific ratio or percentage-point precision policies.",
       "evidence_anchor_ids": [
         "clinical-decision-core",
         "decision-cli-tests",
@@ -452,6 +464,25 @@
       "limitations": [
         "The public repository contains hashes and bounded aggregates, not source bytes, reviewer jobs, or participant-level data.",
         "This is provider-contract replication with a different candidate, not same-candidate efficacy replication, pooling, safety acceptability, or a treatment recommendation."
+      ]
+    },
+    {
+      "capability_id": "ra-public-registry-contract-validation",
+      "label": "Rheumatoid-arthritis public-registry HOLD replication",
+      "maturity": "implemented_public",
+      "claim": "A source-pinned rheumatoid-arthritis run preserves a primary ACR20 percentage-point interval crossing null, exact candidate-first sign and safety arms, and a committed HOLD without silent advance.",
+      "evidence_anchor_ids": [
+        "clinical-effects-core",
+        "clinical-provider-core",
+        "clinical-decision-core",
+        "clinical-provider-tests",
+        "synthesis-tests",
+        "ra-acr20-risk-difference-document",
+        "ra-acr20-risk-difference-snapshot"
+      ],
+      "limitations": [
+        "The public repository contains hashes and bounded aggregates, not source bytes, reviewer jobs, or participant-level data.",
+        "Only one eligible source-pinned RA trial was executed; this is not a real multi-trial tensor, independent efficacy replication, safety judgment, or treatment recommendation."
       ]
     },
     {
@@ -788,7 +819,9 @@
           "clinical-effects-core",
           "clinical-synthesis-core",
           "synthesis-tests",
-          "synthesis-document"
+          "synthesis-document",
+          "clinical-decision-core",
+          "decision-document"
         ],
         "capability_ids": [
           "cross-trial-synthesis",
@@ -822,6 +855,23 @@
         ],
         "capability_ids": [
           "uc-public-registry-contract-validation"
+        ]
+      },
+      {
+        "claim_id": "claim-ra-public-registry-hold",
+        "text": "A public-source rheumatoid-arthritis ACR20 run preserves a null-crossing percentage-point interval and commits the evidence on HOLD rather than silently advancing the workflow.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "clinical-effects-core",
+          "clinical-provider-core",
+          "clinical-decision-core",
+          "clinical-provider-tests",
+          "synthesis-tests",
+          "ra-acr20-risk-difference-document",
+          "ra-acr20-risk-difference-snapshot"
+        ],
+        "capability_ids": [
+          "ra-public-registry-contract-validation"
         ]
       },
       {
@@ -939,15 +989,18 @@
         "claim_ids": [
           "claim-clinical-synthesis",
           "claim-cross-disease-conformance",
-          "claim-uc-public-registry-validation"
+          "claim-uc-public-registry-validation",
+          "claim-ra-public-registry-hold"
         ],
         "artifact_paths": [
           "docs/22_clinical_benefit_risk_synthesis.md",
           "docs/41_ulcerative_colitis_conformance_slice.md",
           "docs/44_uc_maintenance_risk_difference_replication.md",
-          "docs/uc_maintenance_risk_difference_validation_snapshot.json"
+          "docs/uc_maintenance_risk_difference_validation_snapshot.json",
+          "docs/45_ra_acr20_risk_difference_hold_replication.md",
+          "docs/ra_acr20_risk_difference_validation_snapshot.json"
         ],
-        "speaker_boundary": "Separate the synthetic end-to-end UC conformance slice from the real public-registry provider run; neither is clinical validation or a treatment recommendation."
+        "speaker_boundary": "Separate synthetic end-to-end conformance from real UC and RA provider runs; the RA run is one HOLD trial, not a multi-trial tensor, clinical validation, or treatment recommendation."
       },
       {
         "slide": 6,
@@ -1056,7 +1109,7 @@
     },
     {
       "gap_id": "gap-disease-breadth",
-      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis now adds real provider-level phase/population validation but not an independently reviewed end-to-end disease slice.",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis and rheumatoid arthritis now add real provider-level validation, but neither is an independently reviewed end-to-end disease slice or a real source-disjoint additive multi-trial tensor.",
       "status": "open",
       "closure_evidence_required": [
         "at least one independently reviewed non-synthetic immune or inflammatory disease slice",
@@ -1103,7 +1156,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Nominate a second immune/inflammatory disease with explicit endpoint-family, population, estimand, and safety-window mappings, and preregister an additive-scale precision policy before risk-difference evidence enters bounded VOI planning."
+    "next_decision": "Nominate a second source-disjoint rheumatoid-arthritis trial under the same endpoint-family, population, additive estimand, and safety-window contract, then execute the first real multi-trial percentage-point evidence tensor."
   },
-  "integrity_sha256": "b8108da04685160fa355ae7249c14e7565740a69e3b98070324dbeb690e2e4cc"
+  "integrity_sha256": "2022cbd9975d52fa762b85d5bd46ff16a5b685779b39b7483784dab4dfccf9fa"
 }

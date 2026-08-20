@@ -649,7 +649,8 @@ def _run_synthesis(
 def _decision_policy(
     *,
     minimum_independent_trials: int = 2,
-    maximum_log_effect_ci_width: float = 0.6,
+    maximum_log_effect_ci_width: float | None = 0.6,
+    maximum_risk_difference_ci_width_percentage_points: float | None = None,
     minimum_safety_participants_per_arm: int = 60,
     max_planned_actions: int = 2,
     max_planned_cost: float = 0.3,
@@ -669,6 +670,9 @@ def _decision_policy(
             "payload_class": "synthetic",
             "clinical_use": "prohibited",
         },
+        maximum_risk_difference_ci_width_percentage_points=(
+            maximum_risk_difference_ci_width_percentage_points
+        ),
     )
 
 
@@ -1373,12 +1377,90 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             {item.benefit_direction for item in synthesis.studies},
             {"benefit"},
         )
-        with self.assertRaisesRegex(ValueError, "supports ratio effects only"):
+        policy = _decision_policy(
+            maximum_log_effect_ci_width=None,
+            maximum_risk_difference_ci_width_percentage_points=16.0,
+        )
+        tensor = compile_clinical_evidence_tensor(
+            synthesis_result.final_state,
+            synthesis,
+            policy,
+            tensor_id="synthetic-risk-difference-tensor",
+        )
+        self.assertEqual(
+            {item.effect_measure_favorable_direction for item in tensor.cells},
+            {"higher_is_better"},
+        )
+        self.assertEqual(
+            {
+                item.risk_difference_ci_width_percentage_points
+                for item in tensor.cells
+            },
+            {15.9},
+        )
+        self.assertEqual({item.log_effect_ci_width for item in tensor.cells}, {None})
+        self.assertNotIn("log_effect_ci_width", tensor.cells[0].to_dict())
+        decision_schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
+        cell_schema_errors = list(
+            Draft202012Validator(decision_schema).descend(
+                tensor.cells[0].to_dict(),
+                decision_schema["$defs"]["cell"],
+            )
+        )
+        self.assertEqual(cell_schema_errors, [])
+        precision = next(
+            item
+            for item in tensor.dimensions
+            if item.dimension is ClinicalEvidenceDimension.BENEFIT_PRECISION
+        )
+        self.assertEqual(
+            precision.observed,
+            {
+                "risk_difference_ci_width_percentage_points_by_study": {
+                    item.study_record_id: 15.9 for item in tensor.cells
+                },
+                "maximum_observed_risk_difference_ci_width_percentage_points": 15.9,
+            },
+        )
+        self.assertEqual(
+            precision.criterion,
+            {"maximum_risk_difference_ci_width_percentage_points": 16.0},
+        )
+        self.assertNotIn(
+            ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE,
+            {item.code for item in tensor.gaps},
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "risk_difference_ci_width_percentage_points does not match",
+        ):
+            replace(
+                tensor.cells[0],
+                risk_difference_ci_width_percentage_points=15.8,
+            )
+
+        imprecise = compile_clinical_evidence_tensor(
+            synthesis_result.final_state,
+            synthesis,
+            replace(
+                policy,
+                maximum_risk_difference_ci_width_percentage_points=10.0,
+            ),
+            tensor_id="synthetic-imprecise-risk-difference-tensor",
+        )
+        self.assertIn(
+            ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE,
+            {item.code for item in imprecise.gaps},
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "maximum_risk_difference_ci_width_percentage_points policy threshold",
+        ):
             compile_clinical_evidence_tensor(
                 synthesis_result.final_state,
                 synthesis,
                 _decision_policy(),
-                tensor_id="synthetic-risk-difference-tensor",
+                tensor_id="synthetic-missing-risk-difference-threshold-tensor",
             )
 
     def test_synthesis_without_committed_mapping_defers_without_partial_state(

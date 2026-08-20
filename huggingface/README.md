@@ -47,6 +47,11 @@ An independent `NCT01458574` run adds a primary maintenance endpoint reported as
 percentage-point risk difference. It binds percent scale, candidate/comparator sign, endpoint and
 serious-safety roles, and source hashes; it is not same-candidate replication or pooled evidence.
 
+A rheumatoid-arthritis extension executes public `NCT00383188` ACR20 and serious-adverse-event
+aggregates through the same additive contract. Its uncertain 8.05 percentage-point interval remains
+on `HOLD`, demonstrating scale-specific decision precision without claiming efficacy, safety
+acceptability, or a real multi-trial additive tensor.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -105,8 +110,12 @@ serious-safety roles, and source hashes; it is not same-candidate replication or
   atomic promotion, external hashes, retained uncertainty, and matched missing-safety behavior.
 - Inspect `docs/22_clinical_benefit_risk_synthesis.md` and
   `tests/test_clinical_benefit_risk_synthesis.py` for explicit multi-trial endpoint/safety
-  selections, retained trial values and hashes, non-pooling boundaries, exact replay, and tamper
-  controls.
+  selections, retained trial values and hashes, ratio and percentage-point decision precision,
+  non-pooling boundaries, exact replay, and tamper controls.
+- Inspect `docs/45_ra_acr20_risk_difference_hold_replication.md` and
+  `docs/ra_acr20_risk_difference_validation_snapshot.json` for the payload-free public-source RA
+  ACR20 replication, source and artifact hashes, uncertain interval, HOLD outcome, and explicit
+  one-trial boundary.
 - Inspect `docs/23_clinical_portfolio_endpoint_mapping.md` and
   `tests/test_clinical_portfolio.py` for exact-set multi-job/bundle preflight, payload-free output,
   reviewer-approved ontology identity, append-only mapping continuity, and atomic failure controls.
@@ -285,6 +294,8 @@ outside both public release surfaces.
 | `docs/uc_phase_population_validation_snapshot.json` | Payload-free phase counts, effect and safety aggregates, artifact hashes, stage outcomes, and non-exchangeability boundary. |
 | `docs/44_uc_maintenance_risk_difference_replication.md` | Independent primary-maintenance percentage-point replication with screened exclusion controls and explicit decision-layer boundary. |
 | `docs/uc_maintenance_risk_difference_validation_snapshot.json` | Payload-free source/output hashes, additive effect, role-wise safety/population alignment, execution result, and exclusion codes. |
+| `docs/45_ra_acr20_risk_difference_hold_replication.md` | Public-source RA ACR20 percentage-point replication with uncertain-interval HOLD behavior and a real multi-trial boundary. |
+| `docs/ra_acr20_risk_difference_validation_snapshot.json` | Payload-free RA source and artifact hashes, additive endpoint and safety aggregates, decision result, and limitations. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |
@@ -298,7 +309,7 @@ outside both public release surfaces.
 | `agentic_drug_discovery/clinical_portfolio.py` | Atomic exact-set multi-trial extraction with source-hash disjointness and payload-free output. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Strict approved-mapping parser, endpoint/safety fingerprint compiler, approval chronology, and replay validation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Deterministic source-ledger compiler for supported trial-level ratio or percentage-point effects and serious-event risk differences without pooling. |
-| `agentic_drug_discovery/clinical_decision.py` | Committed-synthesis tensor compiler, typed gaps, deterministic budget-aware bounded VOI planner, integrity envelopes, and state replay. |
+| `agentic_drug_discovery/clinical_decision.py` | Committed-synthesis tensor compiler with scale-specific ratio/additive precision, typed gaps, deterministic budget-aware bounded VOI planner, integrity envelopes, and state replay. |
 | `agentic_drug_discovery/clinical_cohort.py` | Accepted-state-bindable package rosters, deterministic cohort aggregation, matched policy comparisons, strict readers, and cross-unit provenance overlap. |
 | `agentic_drug_discovery/clinical_outcome_evaluation.py` | Preregistered protocol and submission binding, post-deadline outcome provenance, aggregate Brier/calibration/threshold metrics, paired policy comparisons, and full replay. |
 | `agentic_drug_discovery/clinical_outcome_uncertainty.py` | Frozen dependence commitments, exact assignment coverage, known-overlap closure, CR1 policy/stratum/paired intervals, strict readers, and full replay. |

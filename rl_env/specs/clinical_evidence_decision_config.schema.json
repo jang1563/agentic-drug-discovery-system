@@ -103,7 +103,6 @@
         "version",
         "registered_on",
         "minimum_independent_trials",
-        "maximum_log_effect_ci_width",
         "minimum_safety_participants_per_arm",
         "max_planned_actions",
         "max_planned_cost",
@@ -120,6 +119,18 @@
         "terminal_decisions_prohibited",
         "metadata"
       ],
+      "anyOf": [
+        {
+          "required": [
+            "maximum_log_effect_ci_width"
+          ]
+        },
+        {
+          "required": [
+            "maximum_risk_difference_ci_width_percentage_points"
+          ]
+        }
+      ],
       "properties": {
         "policy_id": {
           "$ref": "#/$defs/text"
@@ -135,6 +146,9 @@
           "minimum": 2
         },
         "maximum_log_effect_ci_width": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "maximum_risk_difference_ci_width_percentage_points": {
           "$ref": "#/$defs/positiveNumber"
         },
         "minimum_safety_participants_per_arm": {

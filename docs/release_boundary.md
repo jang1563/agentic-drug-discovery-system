@@ -122,16 +122,23 @@ screened exclusion/defer controls. It does not claim same-candidate replication,
 pooling, participant identity, safety acceptability, or a treatment recommendation. Raw source,
 review, manifest, and run artifacts remain outside Git.
 
+`docs/ra_acr20_risk_difference_validation_snapshot.json` adds a second real immune-inflammatory
+disease through `NCT00383188`. It preserves a candidate-first ACR20 percentage-point interval that
+crosses null, commits the evidence on `HOLD`, records endpoint/safety denominator mismatch, and
+keeps four screened exclusions or deferrals. It does not claim a real source-disjoint multi-trial
+tensor, efficacy replication, safety acceptability, or a treatment recommendation.
+
 The cross-trial synthesis surface contains explicit synthetic selection examples, typed
 trial-level outputs, source evidence IDs, content hashes, and a payload-free aggregate record of
 one external PALOMA-2/3 execution. It does not include the real review packet, full state, source
 bytes, pooled estimates, benefit-risk scores, clinical judgments, or treatment recommendations.
 
 The ulcerative-colitis M6, endpoint-mapping, synthesis, and evidence-tensor conformance surface
-remains fully synthetic. A separate provider-only surface uses two real public ClinicalTrials.gov
-snapshots to validate exact ingestion, direction-aware gating, and phase identity. It does not
-extend real-source validation upstream to M6 or downstream to pooled synthesis, establish
-independent scientific review, or constitute a second end-to-end therapeutic result.
+remains fully synthetic. Separate provider-only UC and RA surfaces use real public
+ClinicalTrials.gov snapshots to validate exact ingestion, direction-aware gating, phase identity,
+and retained uncertainty. They do not extend real-source validation upstream to M6 or downstream
+to a source-disjoint multi-trial tensor, establish independent scientific review, or constitute a
+second end-to-end therapeutic result.
 
 The portfolio and endpoint-mapping surface likewise contains only executable verifiers, strict
 schemas, synthetic references, and tests. Real multi-trial source bundles, single-trial review jobs,

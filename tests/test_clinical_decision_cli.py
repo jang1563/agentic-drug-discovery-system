@@ -159,6 +159,23 @@ class ClinicalDecisionWorkflowTests(unittest.TestCase):
         with self.assertRaisesRegex(RecordParseError, "action ids must be unique"):
             clinical_decision_config_from_dict(duplicate_action)
 
+    def test_additive_only_precision_policy_parses_and_matches_schema(self) -> None:
+        additive = copy.deepcopy(self.config_raw)
+        additive["policy"].pop("maximum_log_effect_ci_width")
+        additive["policy"][
+            "maximum_risk_difference_ci_width_percentage_points"
+        ] = 20.0
+        Draft202012Validator(
+            json.loads(CONFIG_SCHEMA.read_text(encoding="utf-8"))
+        ).validate(additive)
+        parsed = clinical_decision_config_from_dict(additive)
+        self.assertIsNone(parsed.policy.maximum_log_effect_ci_width)
+        self.assertEqual(
+            parsed.policy.maximum_risk_difference_ci_width_percentage_points,
+            20.0,
+        )
+        self.assertEqual(clinical_decision_config_to_dict(parsed), additive)
+
     def test_cli_compile_validate_and_summarize_are_atomic(self) -> None:
         with tempfile.TemporaryDirectory(prefix="adds-clinical-decision-cli-") as tmp:
             root = Path(tmp)

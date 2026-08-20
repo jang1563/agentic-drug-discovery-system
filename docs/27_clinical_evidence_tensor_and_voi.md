@@ -39,7 +39,8 @@ An uncommitted, replaced, or non-replayable synthesis cannot enter the tensor.
 Each `ClinicalEvidenceCell` retains one selected trial's:
 
 - trial, design, endpoint, safety, and synthesis study identities;
-- supported ratio effect, required favorable direction, confidence interval, and log-scale interval width;
+- supported ratio or percentage-point risk-difference effect, required favorable direction,
+  confidence interval, and scale-specific interval width;
 - candidate and comparator endpoint measurements, including source-reported missing values, unit,
   and time frame;
 - serious-event affected/at-risk counts, observed risks, and unadjusted risk difference;
@@ -54,7 +55,7 @@ The tensor evaluates ten ordered dimensions:
 | Source independence | Selected trial source hashes remain disjoint. |
 | Trial count | Meets the preregistered minimum independent-trial count. |
 | Benefit direction | Every trial's interval is entirely in the declared favorable direction. |
-| Benefit precision | Every log-scale interval width is at or below the policy threshold. |
+| Benefit precision | Every log-scale ratio width or percentage-point risk-difference width is at or below its matching policy threshold. |
 | Descriptive arm measurement completeness | Every selected candidate and comparator arm has a source-reported numeric summary. |
 | Safety direction | No trial has higher observed aggregate serious-event risk and directions agree. |
 | Safety exposure | Each candidate and comparator arm meets the minimum participant count. |
@@ -65,6 +66,12 @@ The tensor evaluates ten ordered dimensions:
 These are workflow criteria, not validated clinical decision thresholds. Exact-string alignment
 does not establish scientific comparability, and equal or lower observed aggregate serious-event
 risk does not establish safety.
+
+Precision policy is effect-scale specific. Ratio synthesis requires
+`maximum_log_effect_ci_width`; risk-difference synthesis requires
+`maximum_risk_difference_ci_width_percentage_points`. Applying a log width to an additive interval,
+or compiling without the matching threshold, fails closed. Optional additive fields are omitted
+from ratio serialization so existing ratio package fingerprints remain stable.
 
 ## Gap Ontology
 
@@ -144,6 +151,10 @@ Public machine contracts:
 
 The adjacent example is fully synthetic and compiler-generated from two source-disjoint test
 bundles. It is a contract example, not a clinical result or calibrated action policy.
+
+A source-pinned rheumatoid-arthritis HOLD replication and the boundary between one real trial and
+the two-source tensor minimum are documented in
+`docs/45_ra_acr20_risk_difference_hold_replication.md`.
 
 ## Minimal API
 

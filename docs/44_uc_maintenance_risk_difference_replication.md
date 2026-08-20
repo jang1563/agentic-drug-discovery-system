@@ -75,9 +75,9 @@ For `risk_difference`, the provider additionally requires:
 
 The semantics propagate through extraction, promotion, endpoint mapping, typed study records, and
 non-pooled descriptive synthesis. Public mapping and synthesis schemas accept the new measure.
-The downstream clinical evidence tensor remains explicitly ratio-only because its uncertainty
-policy uses log-ratio CI width; it rejects risk-difference synthesis rather than applying that
-metric on the wrong scale.
+The downstream clinical evidence tensor now accepts risk differences under a separate
+percentage-point CI-width threshold. It still rejects a synthesis when the matching scale-specific
+threshold is absent and never applies log-ratio precision to an additive interval.
 
 ## Interpretation Boundary
 
@@ -86,6 +86,6 @@ maintenance result on an additive scale. It does not reproduce the estimate from
 data, establish safety causality, infer clinical acceptability, or recommend treatment.
 
 This is also not same-candidate cross-trial replication: the prior public UC work used ozanimod,
-whereas this study uses tofacitinib. No cross-candidate synthesis or pooling was performed. A future
-decision-layer extension needs a preregistered additive-scale precision policy before
-`risk_difference` can enter bounded VOI planning.
+whereas this study uses tofacitinib. No cross-candidate synthesis or pooling was performed. The
+additive decision policy is implemented and adversarially tested, but this one-trial replication is
+not duplicated to satisfy the tensor's two-source minimum.

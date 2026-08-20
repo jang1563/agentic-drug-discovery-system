@@ -199,9 +199,13 @@ def to_primitive(value: Any) -> Any:
     if isinstance(value, (tuple, list)):
         return [to_primitive(item) for item in value]
     if is_dataclass(value) and not isinstance(value, type):
-        return {
-            item.name: to_primitive(getattr(value, item.name)) for item in fields(value)
-        }
+        result = {}
+        for item in fields(value):
+            item_value = getattr(value, item.name)
+            if item.metadata.get("omit_if_none") and item_value is None:
+                continue
+            result[item.name] = to_primitive(item_value)
+        return result
     if value is None or isinstance(value, (str, bool, int, float)):
         return value
     raise TypeError(f"cannot serialize {type(value).__name__}")
