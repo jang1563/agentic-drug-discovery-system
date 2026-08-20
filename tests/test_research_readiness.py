@@ -42,12 +42,12 @@ class ResearchReadinessTests(unittest.TestCase):
 
         self.assertEqual(summary["profile_id"], RESEARCH_READINESS_PROFILE_ID)
         self.assertEqual(summary["official_source_count"], 4)
-        self.assertEqual(summary["evidence_anchor_count"], 19)
+        self.assertEqual(summary["evidence_anchor_count"], 23)
         self.assertEqual(
             summary["maturity_counts"],
             {
-                "implemented_public": 4,
-                "proposed_pilot": 2,
+                "implemented_public": 5,
+                "proposed_pilot": 1,
                 "synthetic_validated": 2,
             },
         )
@@ -91,7 +91,7 @@ class ResearchReadinessTests(unittest.TestCase):
         item = next(
             entry
             for entry in profile["maturity_ledger"]
-            if entry["capability_id"] == "upstream-cell-state-handoff"
+            if entry["capability_id"] == "biohub-data-integration"
         )
         item["maturity"] = "implemented_public"
         _rehash(profile)

@@ -23,6 +23,11 @@ public alignment sources and local artifact hashes, and freezes a proposed 90-da
 not claim Biohub affiliation, endorsement, data integration, a virtual-cell model, a completed
 pilot, or external clinical validation.
 
+The package also includes a generic synthetic M6 translational handoff. Its strict reader preserves
+perturbation, cell/tissue/model, assay/endpoint, uncertainty, sampling, QC, source lineage, and
+review context while compiling only `contextualizes` evidence. It includes no Biohub source or
+real experimental payload.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -250,6 +255,7 @@ outside both public release surfaces.
 | `docs/38_cluster_superpopulation_sampling.md` | Empirical-template cluster-superpopulation sampling, preserved known truths, conditional calibration comparison, realized-design diagnostics, and transport boundaries. |
 | `docs/39_biohub_translational_evidence_bridge.md` | Independent Biohub-context fit review, concrete 90-day pilot, ten-slide narrative, and explicit non-claims. |
 | `docs/biohub_research_readiness.json` | Machine-readable official-source alignment, artifact hashes, maturity ledger, fit matrix, pilot gates, presentation claims, and open gaps. |
+| `docs/40_upstream_translational_handoff.md` | Generic M6 handoff contract, contextual-only compilation semantics, validation boundary, and next external-review decision. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |
@@ -275,6 +281,7 @@ outside both public release surfaces.
 | `agentic_drug_discovery/clinical_outcome_informative_cluster_size.py` | Profile-bound dual estimands, three Student-t methods, conditional calibration, aggregate max-block influence, strict readers, summaries, and exact replay. |
 | `agentic_drug_discovery/clinical_outcome_cluster_superpopulation.py` | Empirical-template cluster resampling, preserved superpopulation truths, conditional comparison cells, realized-design rates, dynamic largest-cluster influence, strict readers, and replay. |
 | `agentic_drug_discovery/research_readiness.py` | Duplicate-safe readiness reader, artifact-hash verification, maturity and fit checks, immutable pilot gates, presentation claim validation, and compact summary. |
+| `agentic_drug_discovery/translational_handoff.py` | Strict perturbation-context reader, source/lineage/interval/QC/review validation, canonical integrity hash, summary, and contextual-only evidence compiler. |
 | `adapters/pinned_evidence_adapter.py` | Dependency-free validation and lookup for source-pinned, payload-free evidence manifests. |
 | `adapters/clinical_synthesis_adapter.py` | Local normalization of approved endpoint mappings and reviewed synthesis selections without supplied source measurements. |
 | `adapters/execution_registry.py` | Typed contracts for the pinned adapter and caller-supplied GitHub adapter instances. |
@@ -406,6 +413,7 @@ python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
 python3 scripts/audit/validate_policy_evaluation_snapshot.py
 python3 scripts/audit/validate_biohub_research_readiness.py
+python3 scripts/audit/validate_translational_handoff.py
 python3 -m unittest discover -s tests -v
 python3 -m ruff check agentic_drug_discovery tests adapters/boltz_adapter.py adapters/chembl_adapter.py adapters/opentargets_adapter.py adapters/execution_registry.py adapters/pinned_evidence_adapter.py adapters/clinical_synthesis_adapter.py scripts/audit
 python3 -m pytest -q benchmark/tests

@@ -623,6 +623,18 @@ from .research_readiness import (
     research_readiness_summary,
     validate_research_readiness_profile,
 )
+from .translational_handoff import (
+    TRANSLATIONAL_HANDOFF_ALLOWED_USE,
+    TRANSLATIONAL_HANDOFF_RELATION,
+    TRANSLATIONAL_HANDOFF_SCHEMA_VERSION,
+    TranslationalHandoffError,
+    compile_translational_handoff_evidence,
+    load_translational_handoff,
+    translational_handoff_from_json,
+    translational_handoff_integrity_sha256,
+    translational_handoff_summary,
+    validate_translational_handoff,
+)
 from .ncbi_pubmed import (
     NCBI_PUBMED_DISEASE_MODEL_JOB_SCHEMA_VERSION,
     NCBI_PUBMED_JOB_SCHEMA_VERSION,
@@ -1302,4 +1314,14 @@ __all__ = [
     "research_readiness_profile_from_json",
     "research_readiness_summary",
     "validate_research_readiness_profile",
+    "TRANSLATIONAL_HANDOFF_ALLOWED_USE",
+    "TRANSLATIONAL_HANDOFF_RELATION",
+    "TRANSLATIONAL_HANDOFF_SCHEMA_VERSION",
+    "TranslationalHandoffError",
+    "compile_translational_handoff_evidence",
+    "load_translational_handoff",
+    "translational_handoff_from_json",
+    "translational_handoff_integrity_sha256",
+    "translational_handoff_summary",
+    "validate_translational_handoff",
 ]

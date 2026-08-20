@@ -4,6 +4,13 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added the first generic M6 cell-state and perturbation handoff. A dependency-free strict reader,
+  Draft 2020-12 Schema, synthetic two-source fixture, public API, console command, release audit,
+  and adversarial tests preserve disease/target/perturbation/cell/tissue/model/assay/endpoint
+  identities, effect intervals, sampling, QC, source hashes, chronology, and independent lineage.
+  Compilation is fixed to contextual evidence and cannot emit a mechanism, efficacy, safety,
+  clinical-readiness, or treatment claim. No Biohub source, platform, authorization, affiliation,
+  or endorsement is integrated.
 - Added a strict Biohub-context research-readiness profile that positions the project as a
   translational evidence-governance bridge rather than a virtual-cell or therapeutic-design
   system. The machine profile binds official public alignment sources, 19 local artifact hashes,

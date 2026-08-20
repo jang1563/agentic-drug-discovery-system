@@ -56,10 +56,14 @@ evidence hashes:
 - Human-readable review: `docs/39_biohub_translational_evidence_bridge.md`
 - Machine profile: `docs/biohub_research_readiness.json`
 - Strict schema: `rl_env/specs/biohub_research_readiness.schema.json`
+- Implemented generic M6 handoff: `docs/40_upstream_translational_handoff.md`
 
 ```bash
 adds-research-readiness validate \
   --profile docs/biohub_research_readiness.json
+
+adds-translational-handoff compile \
+  --request-id synthetic-demo-request
 ```
 
 ## Quick Start
@@ -511,7 +515,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
   clinical benefit-risk synthesis; provenance-preserving clinical evidence tensor compilation and
   bounded evidence-action prioritization; matched multi-package policy sensitivity and provenance
   overlap diagnostics; bounded selected-action execution, reviewer-only
-  refresh, and exact source-rejoined decision transition; EMA
+  refresh, and exact source-rejoined decision transition; a generic contextual-only cell-state and
+  perturbation handoff with source, assay, endpoint, uncertainty, sampling, QC, and lineage
+  continuity; EMA
   regulatory status; and structured
   Boltz binding output; and source-pinned unmet-need and candidate functional-effect profiles have
   conservative mappings. Disease identity does not establish unmet need, ChEMBL activity volume
@@ -978,6 +984,9 @@ python3 scripts/audit/github_release_file_audit.py
 python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
+python3 scripts/audit/validate_policy_evaluation_snapshot.py
+python3 scripts/audit/validate_biohub_research_readiness.py
+python3 scripts/audit/validate_translational_handoff.py
 python3 -m unittest discover -s tests -v
 python3 -m ruff check agentic_drug_discovery tests adapters/boltz_adapter.py adapters/chembl_adapter.py adapters/opentargets_adapter.py adapters/execution_registry.py adapters/pinned_evidence_adapter.py adapters/clinical_synthesis_adapter.py scripts/audit
 python3 -m pytest -q benchmark/tests

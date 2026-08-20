@@ -191,6 +191,11 @@ claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
   diagnostics show SE calibration recovery in all 320 prior failure cells, but dominant-profile
   unit-weighted undercoverage limits full calibration to 520/600 cells. The layer neither filters
   by realized eligibility nor claims that the finite template support transports externally.
+- A generic upstream translational-handoff layer binds program, perturbation, species, tissue,
+  cell, model-system, source-lineage, assay, comparator, endpoint, effect-interval, sampling,
+  quality-control, and scientific-review context. Its compiler emits contextual evidence drafts
+  only and preserves explicit prohibitions on mechanism, efficacy, safety, clinical-readiness, and
+  treatment claims. The public fixture is synthetic and no Biohub source or workflow is integrated.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -304,20 +309,23 @@ benefit-risk synthesis; and seals four real matched contract pairs for three-pol
 Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are public in
 `docs/retrospective_policy_evaluation_snapshot.json`.
 
-1. Add a genuinely context-matched, independently reviewed disease-burden/treatment-gap pair; do
+1. Review one non-sensitive external cell-state or perturbation handoff against the generic M6
+   contract; keep the source fixture external until scientific ownership and release approval are
+   explicit.
+2. Add a genuinely context-matched, independently reviewed disease-burden/treatment-gap pair; do
    not coerce the current CDC and PubMed populations into one context.
-2. Use the shipped preregistration and curation contract to build a real independently curated,
+3. Use the shipped preregistration and curation contract to build a real independently curated,
    stage-stratified held-out board; no such real-board result is claimed yet.
-3. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, residual-dependence, and
+4. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, residual-dependence, and
    log-IMOR ranges for a real multi-program clinical board. Point sensitivity and dependence-closed
    cluster-jackknife sampling layers and an unequal/influential-cluster method comparison are
    shipped. Fixed informative size-outcome profiles, dual estimands, and finite empirical-template
    cluster-superpopulation resampling are now calibrated. Externally justified sampling frames,
    structured cluster loss, non-nested dependence, misspecified block boundaries, and real locked-
    board validation remain before stage-by-endpoint gate selection.
-4. Join preregistered clinical package predictions to independently curated outcomes so the shipped
+5. Join preregistered clinical package predictions to independently curated outcomes so the shipped
    cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
    selective risk and calibration.
-5. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
-6. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
+6. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
+7. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
    operator reauthorization above the shipped deterministic resume/replan control layer.

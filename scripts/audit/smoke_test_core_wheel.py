@@ -77,6 +77,11 @@ def main() -> int:
             if os.name == "nt"
             else "adds-research-readiness"
         )
+        handoff = scripts_dir / (
+            "adds-translational-handoff.exe"
+            if os.name == "nt"
+            else "adds-translational-handoff"
+        )
         if os.name == "nt":
             demo_command = (*python_command, "-m", "agentic_drug_discovery.demo")
             bounded_demo_command = (
@@ -99,12 +104,18 @@ def main() -> int:
                 "-m",
                 "agentic_drug_discovery.research_readiness_cli",
             )
+            handoff_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.translational_handoff_cli",
+            )
         else:
             demo_command = (*python_command, str(demo))
             bounded_demo_command = (*python_command, str(bounded_demo))
             replay_command = (*python_command, str(replay))
             ingestion_command = (*python_command, str(ingestion))
             readiness_command = (*python_command, str(readiness))
+            handoff_command = (*python_command, str(handoff))
 
         burden_source = Path(temp_dir) / "burden.json"
         gap_source = Path(temp_dir) / "gap.json"
@@ -703,7 +714,14 @@ def main() -> int:
                 text=True,
                 env=clean_env,
             )
-            for console_script in (demo, bounded_demo, replay, ingestion, readiness):
+            for console_script in (
+                demo,
+                bounded_demo,
+                replay,
+                ingestion,
+                readiness,
+                handoff,
+            ):
                 if not console_script.is_file():
                     return fail(
                         f"wheel console script is missing: {console_script.name}"
@@ -726,6 +744,8 @@ def main() -> int:
                         "CLINICAL_OUTCOME_STRESS_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION, "
                         "RESEARCH_READINESS_SCHEMA_VERSION, "
+                        "TRANSLATIONAL_HANDOFF_ALLOWED_USE, "
+                        "TRANSLATIONAL_HANDOFF_SCHEMA_VERSION, "
                         "clinical_cohort_manifest_from_json, "
                         "clinical_cohort_report_from_json, "
                         "clinical_outcome_dependence_manifest_from_json, "
@@ -768,6 +788,8 @@ def main() -> int:
                         "sealed_evaluation_vault_from_json, "
                         "research_readiness_integrity_sha256, "
                         "research_readiness_profile_from_json, "
+                        "compile_translational_handoff_evidence, "
+                        "translational_handoff_from_json, "
                         "validate_clinical_evidence_transition, "
                         "validate_clinical_outcome_uncertainty_report, "
                         "validate_clinical_outcome_design_simulation_report, "
@@ -802,6 +824,10 @@ def main() -> int:
                         "'adds.clinical-outcome-uncertainty-report.v1'; "
                         "assert RESEARCH_READINESS_SCHEMA_VERSION == "
                         "'adds.biohub-research-readiness.v1'; "
+                        "assert TRANSLATIONAL_HANDOFF_SCHEMA_VERSION == "
+                        "'adds.translational-handoff.v1'; "
+                        "assert TRANSLATIONAL_HANDOFF_ALLOWED_USE == "
+                        "'contextual_evidence_only'; "
                         "assert all(callable(item) for item in ("
                         "clinical_cohort_manifest_from_json, "
                         "clinical_cohort_report_from_json, "
@@ -845,6 +871,8 @@ def main() -> int:
                         "sealed_evaluation_vault_from_json, "
                         "research_readiness_integrity_sha256, "
                         "research_readiness_profile_from_json, "
+                        "compile_translational_handoff_evidence, "
+                        "translational_handoff_from_json, "
                         "validate_clinical_evidence_transition, "
                         "validate_clinical_outcome_uncertainty_report, "
                         "validate_clinical_outcome_design_simulation_report, "
@@ -866,6 +894,14 @@ def main() -> int:
             )
             readiness_help = subprocess.run(
                 [*readiness_command, "--help"],
+                cwd=temp_dir,
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            )
+            handoff_help = subprocess.run(
+                [*handoff_command, "--help"],
                 cwd=temp_dir,
                 check=True,
                 capture_output=True,
@@ -1620,6 +1656,8 @@ def main() -> int:
         )
     if "research profile" not in readiness_help.stdout:
         return fail("research-readiness console command help was not available")
+    if "translational handoff" not in handoff_help.stdout:
+        return fail("translational-handoff console command help was not available")
 
     print(
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
@@ -1627,7 +1665,8 @@ def main() -> int:
         "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
         "plus sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture/"
         "pattern-mixture-uncertainty/influence/informative-cluster-size/"
-        "cluster-superpopulation, research-readiness, and closed-loop API "
+        "cluster-superpopulation, research-readiness, translational-handoff, and "
+        "closed-loop API "
         "smoke tests "
         f"completed for {wheels[0].name}"
     )

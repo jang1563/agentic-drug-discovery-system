@@ -38,6 +38,8 @@ This repository uses a conservative boundary so that future public or collaborat
 - Real collaborator or Biohub program data, biomodel outputs, cell-state or perturbation payloads,
   reviewer assignments, manual baseline worksheets, adjudication records, pilot timings, and
   program-level pilot results.
+- Real upstream cell-state or perturbation payloads, source bytes, donor or cell records,
+  scientific-owner mappings, reviewer identities, and non-public handoff fixtures.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -225,6 +227,12 @@ machine profile, artifact hashes, a maturity ledger, a ten-slide claim sequence,
 endorsement, or report an executed pilot. Real collaborator program rosters, payloads, reviewer
 materials, authorization records, timings, adjudications, and program-level results remain outside
 Git and Hugging Face pending a separate joint scientific, privacy, governance, and release review.
+
+The generic upstream translational-handoff surface ships a strict schema and reader, one fully
+synthetic two-source fixture, contextual-only compilation, documentation, and adversarial tests.
+Real source bytes, cell- or donor-level records, scientific-owner mappings, reviewer identities,
+and non-public fixtures remain outside Git and Hugging Face. A valid handoff proves contract
+consistency, not source truth, mechanism, efficacy, safety, clinical readiness, or transportability.
 
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution

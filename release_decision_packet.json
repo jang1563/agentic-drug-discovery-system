@@ -55,6 +55,7 @@
       "preregistered held-out cohort, label, curator-roster, outcome-window, stage-minimum, and metric contracts; evaluator-only independent curation validation; aggregate Wilson intervals, action coverage, selective risk, and synthetic fail-closed tests",
       "preregistered package-bound clinical outcome evaluation, dependence-audited CR1 uncertainty, clustered-board design simulation, informative-evaluability and residual-dependence stress analysis, binary log-IMOR pattern-mixture sensitivity, dependence-closed cluster-jackknife calibration, unequal-cluster influence calibration, informative-cluster-size dual-estimand analysis, and empirical-template cluster-superpopulation calibration with aggregate synthetic evidence and explicit claim boundaries",
       "independent Biohub-context translational-bridge review with official public sources, artifact hashes, strict maturity classes, a ten-slide claim ledger, six explicit open gaps, and a proposed 90-day pilot with five immutable acceptance gates and no affiliation or endorsement claim",
+      "generic synthetic M6 translational handoff with strict biological context, source lineage, effect uncertainty, sampling, QC, review, and contextual-only compilation",
       "eight-stage provider-backed program fixture with one cumulative execution ledger, typed identity continuity through regulatory review, and exact accepted-packet replay",
       "benchmark/ scorer and tests for the separately hosted clinical-trial decision dataset",
       "audit scripts and GitHub Actions release audit"
@@ -78,6 +79,7 @@
       "real informative-cluster-size profiles, block rosters, estimand-selection deliberations, and replicate-, block-, or unit-level results",
       "real cluster-superpopulation sampling frames, cluster covariates, transport models, post-hoc design-selection deliberations, and replicate-, cluster-, or unit-level results",
       "real collaborator or Biohub program data, biomodel outputs, cell-state or perturbation payloads, reviewer assignments, manual baseline worksheets, adjudication records, pilot timings, and program-level pilot results",
+      "real upstream cell-state or perturbation payloads, source bytes, donor or cell records, scientific-owner mappings, reviewer identities, and non-public handoff fixtures",
       "pooled meta-analysis, benefit-risk scores, clinical acceptability judgments, or treatment recommendations"
     ]
   },
@@ -110,6 +112,11 @@
     {
       "name": "biohub_research_readiness_validation",
       "command": "python3 scripts/audit/validate_biohub_research_readiness.py",
+      "blocking": true
+    },
+    {
+      "name": "translational_handoff_validation",
+      "command": "python3 scripts/audit/validate_translational_handoff.py",
       "blocking": true
     },
     {
@@ -192,6 +199,7 @@
     "docs/38_cluster_superpopulation_sampling.md",
     "docs/39_biohub_translational_evidence_bridge.md",
     "docs/biohub_research_readiness.json",
+    "docs/40_upstream_translational_handoff.md",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
@@ -210,6 +218,7 @@
     "agentic_drug_discovery/clinical_outcome_informative_cluster_size.py",
     "agentic_drug_discovery/clinical_outcome_cluster_superpopulation.py",
     "agentic_drug_discovery/research_readiness.py",
+    "agentic_drug_discovery/translational_handoff.py",
     "agentic_drug_discovery/clinical_closed_loop.py",
     "adapters/pinned_evidence_adapter.py",
     "adapters/clinical_synthesis_adapter.py",
@@ -235,6 +244,8 @@
     "rl_env/specs/clinical_outcome_cluster_superpopulation_report.schema.json",
     "rl_env/specs/clinical_outcome_cluster_superpopulation_summary.schema.json",
     "rl_env/specs/biohub_research_readiness.schema.json",
+    "rl_env/specs/translational_handoff.schema.json",
+    "rl_env/specs/translational_handoff.example.json",
     "rl_env/specs/clinical_evidence_closed_loop_transition.example.json",
     "rl_env/specs/clinical_endpoint_mapping.schema.json",
     "rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json",
@@ -261,8 +272,10 @@
     "tests/test_clinical_outcome_informative_cluster_size.py",
     "tests/test_clinical_outcome_cluster_superpopulation.py",
     "tests/test_research_readiness.py",
+    "tests/test_translational_handoff.py",
     "scripts/audit/validate_policy_evaluation_snapshot.py",
     "scripts/audit/validate_biohub_research_readiness.py",
+    "scripts/audit/validate_translational_handoff.py",
     "scripts/audit/build_pattern_mixture_influence_study.py",
     "scripts/audit/build_informative_cluster_size_study.py",
     "scripts/audit/build_cluster_superpopulation_study.py",
@@ -275,6 +288,7 @@
     "any future candidate is merged to public GitHub main or uploaded to the public Hugging Face Dataset without explicit approval",
     "the README overstates built functionality beyond the audited slice",
     "the Biohub-context surface claims affiliation, endorsement, implemented integration, a completed pilot, or external validation",
+    "the translational handoff emits non-contextual evidence, relaxes human review or prohibited inferences, or includes real upstream payloads",
     "the Hugging Face mirror is stale relative to the reviewed source commit or fails exact file/hash validation",
     "Croissant metadata for the separate clinical-trial-decision-benchmark enters this Hub package"
   ]

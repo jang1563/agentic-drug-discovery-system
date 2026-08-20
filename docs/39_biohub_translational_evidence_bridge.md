@@ -36,8 +36,9 @@ flowchart LR
     F --> G
 ```
 
-The proposed Biohub-context work begins at the handoff in box C. Boxes A and B remain
-owned by the relevant experimental and computational scientists.
+The public generic handoff now begins at box C and compiles reviewed perturbation observations as
+contextual evidence only. Boxes A and B remain owned by the relevant experimental and
+computational scientists, and no Biohub-specific source or workflow is integrated.
 
 ## Review verdict
 
@@ -47,6 +48,7 @@ owned by the relevant experimental and computational scientists.
 | Is it end to end? | Yes for one retrospective SCD slice | One disease only; seven proposed atlases lack equivalent public slices |
 | Does it preserve endpoint and safety provenance? | Yes | Reviewer-approved mappings and source-disjoint, non-pooled synthesis |
 | Is uncertainty treated as part of the decision object? | Yes, synthetically | Preregistered outcome, dependence, missingness, estimand, influence, and sampling studies |
+| Is there a typed upstream perturbation handoff? | Yes, generically and synthetically | Strict context, source, effect, sampling, QC, lineage, review, and non-claim contract |
 | Is it a virtual-cell or perturbation model? | No | Upstream model outputs are a planned input, not a current implementation |
 | Is it validated on Biohub data? | No | No Biohub data, model, platform, authorization, or endorsement is integrated |
 | Is it ready to present? | Yes, with explicit boundaries | Ten-slide claim ledger and machine-validated evidence anchors are included |
@@ -97,13 +99,25 @@ ratio bias or undercoverage.
 **Boundary:** these are synthetic known-truth studies, not an externally transportable
 clinical validation.
 
+### 6. Generic upstream perturbation handoff
+
+The [upstream handoff](40_upstream_translational_handoff.md) binds disease, target,
+perturbation, species, tissue, cell type, model system, source lineage, assay, endpoint, effect
+interval, sampling, quality control, review, and non-claim boundaries. Its compiler emits only
+`contextualizes` evidence drafts and requires a separate human-reviewed scientific gate.
+
+**What this proves:** a generic payload-minimized M6 observation can enter the control plane
+without silently becoming a mechanism, efficacy, safety, or clinical-readiness claim.
+**What it does not prove:** source truth, external scientific validity, Biohub integration, or
+transportability.
+
 ## Biohub-context fit matrix
 
 | Public Biohub direction | Fit | Project contribution | Missing before use |
 |---|---|---|---|
-| AI biomodels and virtual-cell science | Complementary | Bind a model hypothesis to identity, context, source, uncertainty, and downstream decisions | Typed upstream handoff and approved model-output fixture |
-| Immune-cell engineering and network causality | Proposed | Surface unsupported escalation, evidence conflicts, and next-experiment gaps | Immune-program cohort and scientific-owner mappings |
-| Inflammation measurement in tissues | Proposed | Preserve tissue, cell, assay, endpoint, and cutoff context | Platform-specific assay contract and data review |
+| AI biomodels and virtual-cell science | Complementary | Bind a model hypothesis to identity, context, source, uncertainty, and downstream decisions | Approved model-output fixture and scientific-owner review |
+| Immune-cell engineering and network causality | Proposed | Surface unsupported escalation, evidence conflicts, and next-experiment gaps through a generic perturbation contract | Immune-program cohort and scientific-owner mappings |
+| Inflammation measurement in tissues | Proposed | Preserve tissue, cell, assay, endpoint, cutoff, QC, and sampling context | Platform-specific assay contract and data review |
 | Open scientific software | Direct | Schemas, strict readers, synthetic fixtures, deterministic replay, and release audits | External-user study and approved candidate publication |
 
 ## Proposed 90-day pilot
@@ -122,7 +136,7 @@ resolution speed without silently promoting unsupported biological or clinical c
 - Comparator: reviewer-authored manual packets on the identical frozen roster.
 - Output: aggregate workflow metrics only; no public real-program payloads by default.
 
-### Required upstream input contract
+### Implemented generic upstream input contract
 
 1. Canonical disease and target identities.
 2. Perturbation identity, direction, modality, and intervention context.
@@ -193,6 +207,11 @@ adds-research-readiness validate \
 
 adds-research-readiness summarize \
   --profile docs/biohub_research_readiness.json
+
+adds-translational-handoff validate
+
+adds-translational-handoff compile \
+  --request-id synthetic-presentation-request
 ```
 
 Show the latest aggregate calibration summary without loading replicate-level records:
@@ -221,8 +240,8 @@ python3 scripts/audit/validate_biohub_research_readiness.py
 
 The project is **ready for a bounded research presentation** and **ready to scope a pilot**.
 It is not ready to claim Biohub integration or execute on real program data. The next useful
-decision is whether to co-design the upstream handoff contract and nominate a scientifically
-owned pilot cohort.
+decision is whether to review one non-sensitive external handoff fixture and nominate a
+scientifically owned pilot cohort.
 
 The complete machine-readable contract is
 [`docs/biohub_research_readiness.json`](biohub_research_readiness.json), validated against

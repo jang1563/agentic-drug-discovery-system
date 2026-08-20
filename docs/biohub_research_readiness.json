@@ -234,6 +234,30 @@
       "path": "rl_env/specs/clinical_outcome_cluster_superpopulation_summary.example.json",
       "sha256": "ed17495a946f67104e143a0883e8b5bd5d8f74bdd6d0d3affbf14b752475d3c5",
       "kind": "synthetic_summary"
+    },
+    {
+      "anchor_id": "translational-handoff-core",
+      "path": "agentic_drug_discovery/translational_handoff.py",
+      "sha256": "b1ae604f764517409d85b4f4e473d67823cf0d37f85062b906be4a32022390ff",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "translational-handoff-tests",
+      "path": "tests/test_translational_handoff.py",
+      "sha256": "79b056ed053ff97aa266aabc6db81791da8cd7f0a734162e32330739243dd7bd",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "translational-handoff-document",
+      "path": "docs/40_upstream_translational_handoff.md",
+      "sha256": "9da02e7aaf7444ae0984f0a04fafa885072142662b62617f7238d3085a4816c5",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "translational-handoff-fixture",
+      "path": "rl_env/specs/translational_handoff.example.json",
+      "sha256": "0cf7e3ba5fc4729c1b19463e041f6d8019d37f2047f237551a90a358c1a24c10",
+      "kind": "synthetic_summary"
     }
   ],
   "maturity_ledger": [
@@ -333,12 +357,17 @@
     {
       "capability_id": "upstream-cell-state-handoff",
       "label": "Cell-state and perturbation evidence handoff",
-      "maturity": "proposed_pilot",
-      "claim": "A future adapter would bind cell-state, perturbation, assay, model-system, and source context into contextual evidence without automatically promoting mechanism or efficacy claims.",
-      "evidence_anchor_ids": [],
+      "maturity": "implemented_public",
+      "claim": "A strict generic handoff binds cell-state, perturbation, assay, endpoint, uncertainty, sampling, quality-control, lineage, and review context into contextual-only evidence drafts.",
+      "evidence_anchor_ids": [
+        "translational-handoff-core",
+        "translational-handoff-tests",
+        "translational-handoff-document",
+        "translational-handoff-fixture"
+      ],
       "limitations": [
-        "No public upstream cell-state handoff schema or adapter is implemented yet.",
-        "No Biohub dataset, model output, or experimental workflow has been integrated."
+        "The public fixture is fully synthetic and source truth remains externally reviewed.",
+        "No Biohub dataset, model output, experimental workflow, or scientific gate has been integrated."
       ]
     },
     {
@@ -359,7 +388,7 @@
       "biohub_priority": "AI biomodels and virtual-cell-enabled disease understanding",
       "fit": "complementary",
       "contribution": "Preserve the identity, source, biological context, uncertainty, and downstream decision consequences of an upstream biomodel hypothesis.",
-      "current_gap": "The project neither trains a virtual-cell model nor has a typed cell-state output handoff.",
+      "current_gap": "A generic contextual handoff is implemented, but no approved biomodel fixture or virtual-cell integration exists.",
       "capability_ids": [
         "evidence-governed-execution",
         "preregistered-outcome-evaluation",
@@ -379,7 +408,7 @@
       "biohub_priority": "Immune-cell engineering and network-causality research",
       "fit": "proposed",
       "contribution": "Test whether perturbation-to-program evidence packets expose missing context, conflicting evidence, and safer next experiments before translational escalation.",
-      "current_gap": "No immune-cell program cohort, perturbation schema, or reviewer workflow is currently present.",
+      "current_gap": "The generic perturbation contract is synthetic; no immune-program cohort or external scientific-owner workflow is present.",
       "capability_ids": [
         "evidence-gap-voi",
         "upstream-cell-state-handoff",
@@ -400,7 +429,7 @@
       "biohub_priority": "Molecular measurement of inflammation in human tissues",
       "fit": "proposed",
       "contribution": "Represent measurement provenance, tissue and cell context, endpoint mappings, and uncertainty as explicit decision dependencies.",
-      "current_gap": "No Chicago platform assay or tissue-measurement contract has been mapped into the project.",
+      "current_gap": "The generic tissue/cell/assay context is implemented, but no platform-specific assay contract or reviewed fixture is mapped.",
       "capability_ids": [
         "evidence-governed-execution",
         "upstream-cell-state-handoff",
@@ -711,12 +740,25 @@
         ]
       },
       {
+        "claim_id": "claim-upstream-handoff",
+        "text": "A strict generic perturbation handoff preserves biological context, source lineage, effect uncertainty, sampling, quality control, and review boundaries while emitting contextual evidence only.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "translational-handoff-core",
+          "translational-handoff-tests",
+          "translational-handoff-document",
+          "translational-handoff-fixture"
+        ],
+        "capability_ids": [
+          "upstream-cell-state-handoff"
+        ]
+      },
+      {
         "claim_id": "claim-pilot",
         "text": "A 90-day immune-perturbation handoff evaluation is concrete enough for joint scoping but has not been executed or endorsed.",
         "maturity": "proposed_pilot",
         "evidence_anchor_ids": [],
         "capability_ids": [
-          "upstream-cell-state-handoff",
           "biohub-data-integration"
         ]
       }
@@ -739,10 +781,12 @@
         "title": "The system role",
         "purpose": "Place the project downstream of cell and biomodel science and upstream of translational evidence decisions.",
         "claim_ids": [
-          "claim-biohub-fit"
+          "claim-biohub-fit",
+          "claim-upstream-handoff"
         ],
         "artifact_paths": [
-          "docs/biohub_research_readiness.json"
+          "docs/biohub_research_readiness.json",
+          "docs/40_upstream_translational_handoff.md"
         ],
         "speaker_boundary": "Describe complementarity, not organizational affiliation."
       },
@@ -799,10 +843,12 @@
         "title": "Biohub-context fit and gaps",
         "purpose": "Separate direct, complementary, and proposed alignment using official public sources.",
         "claim_ids": [
-          "claim-biohub-fit"
+          "claim-biohub-fit",
+          "claim-upstream-handoff"
         ],
         "artifact_paths": [
-          "docs/39_biohub_translational_evidence_bridge.md"
+          "docs/39_biohub_translational_evidence_bridge.md",
+          "docs/40_upstream_translational_handoff.md"
         ],
         "speaker_boundary": "No Biohub data or platform is currently integrated."
       },
@@ -825,6 +871,7 @@
         "claim_ids": [
           "claim-control-plane",
           "claim-calibration-boundary",
+          "claim-upstream-handoff",
           "claim-pilot"
         ],
         "artifact_paths": [
@@ -862,13 +909,13 @@
   "known_gaps": [
     {
       "gap_id": "gap-cell-state-contract",
-      "gap": "No typed public contract currently ingests cell-state or perturbation evidence into the control plane.",
+      "gap": "The generic public handoff is synthetic and has not been reviewed against an external scientific-owner cell-state or perturbation fixture.",
       "status": "open",
       "closure_evidence_required": [
-        "strict handoff schema and duplicate-safe reader",
-        "contextual-only promotion semantics",
-        "positive and adversarial fixtures",
-        "scientific-owner review"
+        "independently reviewed non-sensitive external fixture",
+        "source-capture and handoff hash reconciliation",
+        "scientific-owner mapping of assay and endpoint semantics",
+        "documented ambiguity and rejection cases"
       ]
     },
     {
@@ -930,7 +977,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Decide whether to jointly scope the upstream handoff contract and nominate a scientifically owned 12-to-20-program immune-perturbation pilot cohort."
+    "next_decision": "Decide whether to review one non-sensitive external handoff fixture and nominate a scientifically owned 12-to-20-program immune-perturbation pilot cohort."
   },
-  "integrity_sha256": "8222def3305452be31d51ffb171937b24d5ab4e9a8d37a00e590f2c670bdc8f0"
+  "integrity_sha256": "063bf0988a07621a08d2777ed938b376bd930cbc9ed1bc6617216119890935f5"
 }

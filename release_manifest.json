@@ -66,6 +66,7 @@
       "docs/38_cluster_superpopulation_sampling.md",
       "docs/39_biohub_translational_evidence_bridge.md",
       "docs/biohub_research_readiness.json",
+      "docs/40_upstream_translational_handoff.md",
       "docs/retrospective_policy_evaluation_snapshot.json",
       "docs/public_evidence_summary.json",
       "agentic_drug_discovery/",
@@ -115,6 +116,7 @@
       "real informative-cluster-size profiles, block rosters, estimand-selection deliberations, and replicate-, block-, or unit-level results",
       "real cluster-superpopulation sampling frames, cluster covariates, transport models, post-hoc design-selection deliberations, and replicate-, cluster-, or unit-level results",
       "real collaborator or Biohub program data, biomodel outputs, cell-state or perturbation payloads, reviewer assignments, manual baseline worksheets, adjudication records, pilot timings, and program-level pilot results",
+      "real upstream cell-state or perturbation payloads, source bytes, donor or cell records, scientific-owner mappings, reviewer identities, and non-public handoff fixtures",
       "real clinical closed-loop policies, execution batches, provider requests or outcomes, receipts, reviewer refresh records, before/after tensors, and transition packages",
       "locked episodes",
       "hidden/evaluator labels",
@@ -167,6 +169,11 @@
       {
         "name": "biohub_research_readiness_validation",
         "command": "python3 scripts/audit/validate_biohub_research_readiness.py",
+        "blocking": true
+      },
+      {
+        "name": "translational_handoff_validation",
+        "command": "python3 scripts/audit/validate_translational_handoff.py",
         "blocking": true
       },
     {
@@ -226,6 +233,7 @@
     "Source capture/compiler, typed policy replanning and checkpoint resume, cutoff-safe matched and sealed evaluation, preregistered held-out curation and stage-stratified uncertainty, CDC MMWR, NCBI PubMed treatment-gap and disease-model, ChEMBL functional-activity, ClinicalTrials.gov endpoint/safety trial-design and multi-trial portfolio verification, reviewer-approved endpoint mapping, explicit mapping-gated source-disjoint non-pooled clinical synthesis, provenance-preserving clinical evidence tensor plus bounded VOI action planning, accepted-state-bindable cohort diagnostics, preregistered package-bound clinical outcome evaluation with dependence-audited CR1 uncertainty, aggregate prospective design simulation, informative-evaluability/residual-dependence stress analysis, preregistered prediction-stratified pattern-mixture sensitivity analysis, dependence-closed cluster-jackknife sampling calibration, unequal-cluster influence calibration, informative-cluster-size dual-estimand analysis, empirical-template cluster-superpopulation calibration, and bounded selected-action execution plus reviewer-only source-rejoined transition validation, typed endpoint and lineage-independent preclinical promotion, atomic clinical endpoint/safety promotion, bounded planner, disease/target/assay/model-system/intervention/trial/design/safety/mapping/synthesis identity continuity, semantic mapper, eight-stage provider-backed program replay, core tests, and wheel build pass without private research artifacts",
     "Hugging Face candidate package is built from the exact committed source and validated by file hashes before upload",
     "Biohub-context claims, maturity classes, official-source references, local artifact hashes, proposed pilot gates, and explicit non-affiliation boundary pass the blocking readiness validator",
+    "The generic translational handoff, synthetic fixture, contextual-only compilation boundary, source lineage, and prohibited-inference set pass the blocking handoff validator",
     "Release decision packet preserves the 0.3.0.dev2 public baseline and holds the 0.3.0.dev3 candidate until new exact-package approval",
     "Release audit workflow green on GitHub"
   ],

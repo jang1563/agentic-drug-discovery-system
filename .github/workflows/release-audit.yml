@@ -24,6 +24,8 @@ jobs:
         run: python3 scripts/audit/validate_public_launch_packet.py
       - name: Validate Biohub research readiness
         run: python3 scripts/audit/validate_biohub_research_readiness.py
+      - name: Validate upstream translational handoff
+        run: python3 scripts/audit/validate_translational_handoff.py
       - name: Validate vertical-slice documentation
         run: python3 scripts/audit/validate_vertical_slice_doc.py
       - name: Validate sealed policy-evaluation snapshot
