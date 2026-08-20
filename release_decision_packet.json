@@ -4,7 +4,7 @@
   "release_version": "0.3.0.dev3",
   "last_public_release_version": "0.3.0.dev2",
   "decision_status": "candidate_pending_human_approval",
-  "as_of_date": "2026-08-03",
+  "as_of_date": "2026-08-20",
   "human_readable_checklist": "docs/public_launch_checklist.md",
   "surfaces": {
     "github": {
@@ -54,6 +54,7 @@
       "role-neutral cutoff-safe sealed evaluation contracts, externally separated labels and commitments, strict policy submissions, aggregate policy comparison, and synthetic fail-closed tests",
       "preregistered held-out cohort, label, curator-roster, outcome-window, stage-minimum, and metric contracts; evaluator-only independent curation validation; aggregate Wilson intervals, action coverage, selective risk, and synthetic fail-closed tests",
       "preregistered package-bound clinical outcome evaluation, dependence-audited CR1 uncertainty, clustered-board design simulation, informative-evaluability and residual-dependence stress analysis, binary log-IMOR pattern-mixture sensitivity, dependence-closed cluster-jackknife calibration, unequal-cluster influence calibration, informative-cluster-size dual-estimand analysis, and empirical-template cluster-superpopulation calibration with aggregate synthetic evidence and explicit claim boundaries",
+      "independent Biohub-context translational-bridge review with official public sources, artifact hashes, strict maturity classes, a ten-slide claim ledger, six explicit open gaps, and a proposed 90-day pilot with five immutable acceptance gates and no affiliation or endorsement claim",
       "eight-stage provider-backed program fixture with one cumulative execution ledger, typed identity continuity through regulatory review, and exact accepted-packet replay",
       "benchmark/ scorer and tests for the separately hosted clinical-trial decision dataset",
       "audit scripts and GitHub Actions release audit"
@@ -76,6 +77,7 @@
       "real pattern-mixture sampling-uncertainty protocols, dependence manifests, cluster influence records, elicited log-IMOR ranges, and replicate- or cluster-level results",
       "real informative-cluster-size profiles, block rosters, estimand-selection deliberations, and replicate-, block-, or unit-level results",
       "real cluster-superpopulation sampling frames, cluster covariates, transport models, post-hoc design-selection deliberations, and replicate-, cluster-, or unit-level results",
+      "real collaborator or Biohub program data, biomodel outputs, cell-state or perturbation payloads, reviewer assignments, manual baseline worksheets, adjudication records, pilot timings, and program-level pilot results",
       "pooled meta-analysis, benefit-risk scores, clinical acceptability judgments, or treatment recommendations"
     ]
   },
@@ -103,6 +105,11 @@
     {
       "name": "policy_evaluation_snapshot_validation",
       "command": "python3 scripts/audit/validate_policy_evaluation_snapshot.py",
+      "blocking": true
+    },
+    {
+      "name": "biohub_research_readiness_validation",
+      "command": "python3 scripts/audit/validate_biohub_research_readiness.py",
       "blocking": true
     },
     {
@@ -183,6 +190,8 @@
     "docs/36_unequal_cluster_influence_calibration.md",
     "docs/37_informative_cluster_size_estimands.md",
     "docs/38_cluster_superpopulation_sampling.md",
+    "docs/39_biohub_translational_evidence_bridge.md",
+    "docs/biohub_research_readiness.json",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
@@ -200,6 +209,7 @@
     "agentic_drug_discovery/clinical_outcome_pattern_mixture_influence_calibration.py",
     "agentic_drug_discovery/clinical_outcome_informative_cluster_size.py",
     "agentic_drug_discovery/clinical_outcome_cluster_superpopulation.py",
+    "agentic_drug_discovery/research_readiness.py",
     "agentic_drug_discovery/clinical_closed_loop.py",
     "adapters/pinned_evidence_adapter.py",
     "adapters/clinical_synthesis_adapter.py",
@@ -224,6 +234,7 @@
     "rl_env/specs/clinical_outcome_cluster_superpopulation_protocol.schema.json",
     "rl_env/specs/clinical_outcome_cluster_superpopulation_report.schema.json",
     "rl_env/specs/clinical_outcome_cluster_superpopulation_summary.schema.json",
+    "rl_env/specs/biohub_research_readiness.schema.json",
     "rl_env/specs/clinical_evidence_closed_loop_transition.example.json",
     "rl_env/specs/clinical_endpoint_mapping.schema.json",
     "rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json",
@@ -249,7 +260,9 @@
     "tests/test_clinical_outcome_pattern_mixture_influence_calibration.py",
     "tests/test_clinical_outcome_informative_cluster_size.py",
     "tests/test_clinical_outcome_cluster_superpopulation.py",
+    "tests/test_research_readiness.py",
     "scripts/audit/validate_policy_evaluation_snapshot.py",
+    "scripts/audit/validate_biohub_research_readiness.py",
     "scripts/audit/build_pattern_mixture_influence_study.py",
     "scripts/audit/build_informative_cluster_size_study.py",
     "scripts/audit/build_cluster_superpopulation_study.py",
@@ -261,6 +274,7 @@
     "any release-surface file has unreviewed sensitive content",
     "any future candidate is merged to public GitHub main or uploaded to the public Hugging Face Dataset without explicit approval",
     "the README overstates built functionality beyond the audited slice",
+    "the Biohub-context surface claims affiliation, endorsement, implemented integration, a completed pilot, or external validation",
     "the Hugging Face mirror is stale relative to the reviewed source commit or fails exact file/hash validation",
     "Croissant metadata for the separate clinical-trial-decision-benchmark enters this Hub package"
   ]

@@ -12,6 +12,17 @@ Build an evidence-governed execution and evaluation environment for end-to-end d
 
 Drug discovery can be modeled as a sequence of structured decision points rather than a single prompt-response task. If each step records the state, evidence, tools used, model outputs, verifier results, and decision rationale, then both successful and failed discovery paths can become reusable training and evaluation trajectories.
 
+## Biohub-Context Research Position
+
+The strongest collaborator-facing position is not as a virtual-cell or therapeutic-design model.
+It is a provenance-preserving translational decision layer downstream of cell measurement,
+perturbation, and biomodel science. A strict Biohub-context profile binds official public sources,
+implemented versus synthetic versus proposed maturity, local evidence hashes, a ten-slide claim
+ledger, and a 90-day immune-perturbation handoff pilot with frozen acceptance gates. No Biohub
+affiliation, data integration, endorsement, completed pilot, or real clinical calibration is
+claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
+`docs/biohub_research_readiness.json`.
+
 ## Current Executable Baseline
 
 - Immutable, JSON-serializable evidence, claim, disease, target, candidate, assay, model-system,

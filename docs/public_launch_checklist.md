@@ -179,6 +179,7 @@ python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
 python3 scripts/audit/validate_policy_evaluation_snapshot.py
+python3 scripts/audit/validate_biohub_research_readiness.py
 python3 -m unittest discover -s tests -v
 python3 -m ruff check agentic_drug_discovery tests adapters/boltz_adapter.py adapters/chembl_adapter.py adapters/opentargets_adapter.py adapters/execution_registry.py adapters/pinned_evidence_adapter.py adapters/clinical_synthesis_adapter.py scripts/audit
 python3 -m pytest -q benchmark/tests

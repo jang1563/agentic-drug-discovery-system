@@ -44,6 +44,24 @@ disease/target slice.
 | Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed or held-out boards, curator identities/attestations/votes/adjudications, real clinical decision policies/action catalogs/evidence tensors/packages, real clinical prediction submissions/outcome or dependence manifests/unit labels, real design/stress/sensitivity scenario elicitation or working records, unit-to-cluster assignments, cluster-level or unit-level scores, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
 
+## Biohub-Context Research Readiness
+
+An independent public-source review positions this project as a **translational evidence
+governance layer** downstream of cell measurement, perturbation, and biomodel research. It does
+not claim a Biohub affiliation, a virtual-cell model, autonomous therapeutic design, or real-world
+clinical calibration. The review includes a concrete 90-day immune-perturbation handoff pilot,
+five preregistered acceptance gates, a ten-slide presentation sequence, and machine-checked
+evidence hashes:
+
+- Human-readable review: `docs/39_biohub_translational_evidence_bridge.md`
+- Machine profile: `docs/biohub_research_readiness.json`
+- Strict schema: `rl_env/specs/biohub_research_readiness.schema.json`
+
+```bash
+adds-research-readiness validate \
+  --profile docs/biohub_research_readiness.json
+```
+
 ## Quick Start
 
 Install the core and test dependencies, then run the deterministic fixture and the public clinical

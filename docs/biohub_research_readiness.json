@@ -1,0 +1,936 @@
+{
+  "schema_version": "adds.biohub-research-readiness.v1",
+  "profile_id": "biohub-translational-evidence-bridge-v1",
+  "profile_status": "presentation_candidate_not_endorsed",
+  "assessment_date": "2026-08-20",
+  "organization_context": {
+    "name": "Chan Zuckerberg Biohub Network",
+    "affiliation_claimed": false,
+    "context_scope": "Public-source alignment assessment for research discussion only; this profile does not represent review, sponsorship, endorsement, or affiliation by the Chan Zuckerberg Biohub Network.",
+    "official_sources": [
+      {
+        "source_id": "biohub-network-overview",
+        "url": "https://www.czbiohub.org/",
+        "accessed_on": "2026-08-20",
+        "supports": [
+          "long-horizon-disease-mission",
+          "dynamic-cell-systems",
+          "inflammation-measurement",
+          "immune-cell-engineering"
+        ]
+      },
+      {
+        "source_id": "biohub-gremln",
+        "url": "https://www.czbiohub.org/news/czi-ai-model-scientists-pinpoint-cancer/",
+        "accessed_on": "2026-08-20",
+        "supports": [
+          "ai-biomodels"
+        ]
+      },
+      {
+        "source_id": "biohub-ny-platform-faq",
+        "url": "https://www.czbiohub.org/ny/wp-content/uploads/sites/20/2024/11/chan-zuckerberg-biohub-new-york-investigator-rfp-frequently-asked-questions.pdf",
+        "accessed_on": "2026-08-20",
+        "supports": [
+          "ny-platform-stack"
+        ]
+      },
+      {
+        "source_id": "biohub-open-source-science",
+        "url": "https://www.czbiohub.org/life-science/open-source-software-science-impact/",
+        "accessed_on": "2026-08-20",
+        "supports": [
+          "open-scientific-software"
+        ]
+      }
+    ],
+    "alignment_observations": [
+      {
+        "observation_id": "long-horizon-disease-mission",
+        "statement": "The network frames grand scientific challenges on a 10- to 15-year horizon to decrease the burden of human disease.",
+        "source_ids": [
+          "biohub-network-overview"
+        ]
+      },
+      {
+        "observation_id": "dynamic-cell-systems",
+        "statement": "Biohub San Francisco emphasizes dynamic cell systems across scales in health and disease.",
+        "source_ids": [
+          "biohub-network-overview"
+        ]
+      },
+      {
+        "observation_id": "inflammation-measurement",
+        "statement": "Biohub Chicago emphasizes molecular measurement of inflammatory states in human tissues.",
+        "source_ids": [
+          "biohub-network-overview"
+        ]
+      },
+      {
+        "observation_id": "immune-cell-engineering",
+        "statement": "Biohub New York emphasizes harnessing and engineering immune cells for early detection, prevention, and treatment research.",
+        "source_ids": [
+          "biohub-network-overview"
+        ]
+      },
+      {
+        "observation_id": "ai-biomodels",
+        "statement": "The public GREmLN description places AI biomodels and an open virtual-cell platform upstream of disease-mechanism and target discovery.",
+        "source_ids": [
+          "biohub-gremln"
+        ]
+      },
+      {
+        "observation_id": "ny-platform-stack",
+        "statement": "The public New York FAQ lists Advanced Single Cell Technologies, In Vivo/In Vitro Modeling, Immune Cell Engineering, and Network Causality, AI, and ML as core platforms.",
+        "source_ids": [
+          "biohub-ny-platform-faq"
+        ]
+      },
+      {
+        "observation_id": "open-scientific-software",
+        "statement": "Biohub and CZI public materials describe open-source scientific software as infrastructure for reusable biomedical research.",
+        "source_ids": [
+          "biohub-open-source-science"
+        ]
+      }
+    ]
+  },
+  "positioning": {
+    "one_line": "A provenance-preserving translational decision layer that turns upstream biological hypotheses into inspectable evidence packets, explicit gaps, and bounded next actions without replacing the upstream biomodel or making clinical decisions.",
+    "system_role": "translational_evidence_governance_layer",
+    "upstream_inputs": [
+      "disease and target identities",
+      "cell-state or perturbation hypotheses with source and context metadata",
+      "candidate, assay, and model-system evidence",
+      "clinical endpoint and safety records",
+      "reviewer-approved mappings and outcome protocols"
+    ],
+    "outputs": [
+      "hash-bound evidence and identity ledgers",
+      "fail-closed advance, hold, defer, pivot, or stop records",
+      "source-preserving multi-trial endpoint and safety synthesis",
+      "typed evidence gaps and bounded evidence-acquisition actions",
+      "preregistered aggregate evaluation and uncertainty reports"
+    ],
+    "explicit_non_roles": [
+      "biohub_endorsed_project",
+      "clinical_decision_maker",
+      "therapeutic_design_engine",
+      "virtual_cell_model"
+    ]
+  },
+  "evidence_anchors": [
+    {
+      "anchor_id": "core-models",
+      "path": "agentic_drug_discovery/models.py",
+      "sha256": "82afe3e4e89b1be4a1ce0e22f9d2b5d165c6ad6c53a4cc2029b36392fa694a21",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "execution-core",
+      "path": "agentic_drug_discovery/execution.py",
+      "sha256": "881a6c2c1ee7f1c3e6acf8ee3b632f66211dc12c2e7fe7ae24581d81b75348a8",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "clinical-synthesis-core",
+      "path": "agentic_drug_discovery/clinical_synthesis.py",
+      "sha256": "d258d9c4c0422e2df34ecfddd0d35bdc6883ab329aaaa010ecdb34131033fea7",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "clinical-decision-core",
+      "path": "agentic_drug_discovery/clinical_decision.py",
+      "sha256": "2eabd68514beeef1b9cdbc2f43228add140b9e6a472bad0b6099080baffd87a8",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "outcome-evaluation-core",
+      "path": "agentic_drug_discovery/clinical_outcome_evaluation.py",
+      "sha256": "62b1de31b6448cdff4999977524f6fc35c163ccf2b6cbfbbdd05751f8e6b6032",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "cluster-superpopulation-core",
+      "path": "agentic_drug_discovery/clinical_outcome_cluster_superpopulation.py",
+      "sha256": "8a9f19146339a7c35032c957ad3df37591b1ff438d5d35f8467206f4638d6dc9",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "execution-tests",
+      "path": "tests/test_execution.py",
+      "sha256": "5898cc2801924e87c45283709f1f3ea40ed501d31cf9a89060731bac74adf737",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "agent-loop-tests",
+      "path": "tests/test_agent_loop.py",
+      "sha256": "09af86c60ffb5d88a986974c0d9dbcdc0e94be67321515ed46953db4084d22b2",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "synthesis-tests",
+      "path": "tests/test_clinical_benefit_risk_synthesis.py",
+      "sha256": "f8e55dd29e7805c9d18bb819c9a45772bd818071d59fc52a2bd45a95028f2f39",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "decision-cli-tests",
+      "path": "tests/test_clinical_decision_cli.py",
+      "sha256": "77a8b6bdf75574a3ed6568bd634b517a059c37ebb490a5d919470a01f4c47bc3",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "outcome-evaluation-tests",
+      "path": "tests/test_clinical_outcome_evaluation.py",
+      "sha256": "d4b9f79bfe8f4713df9664e8982b57a1f0af43d89ab65b0252f0b69e347d01a5",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "cluster-superpopulation-tests",
+      "path": "tests/test_clinical_outcome_cluster_superpopulation.py",
+      "sha256": "bb7ae1bfd43830fd1e5ffee4b1fa62a702f6d2e130281f0b3420680186cadc0b",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "scd-slice-document",
+      "path": "docs/12_scd_vertical_slice.md",
+      "sha256": "26770fe23757f40951173ac2186a4446531226adcffc9f21cb5ab6972685654f",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "synthesis-document",
+      "path": "docs/22_clinical_benefit_risk_synthesis.md",
+      "sha256": "089c13e413419f5c09b09f9cba6e760dfa8d0ad3e8e7c5dd4b57f1548afea159",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "decision-document",
+      "path": "docs/27_clinical_evidence_tensor_and_voi.md",
+      "sha256": "b431b6bc296b3e82707fa3a0bd99a367437511248087a70e9065a9d51f4cb106",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "outcome-evaluation-document",
+      "path": "docs/30_preregistered_clinical_outcome_evaluation.md",
+      "sha256": "f8f1c0a17165f1df7687eafae6787c0266338c3aaca79371f047e9b32add9679",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "cluster-superpopulation-document",
+      "path": "docs/38_cluster_superpopulation_sampling.md",
+      "sha256": "9b8a145ac42b5e03c9214a945cccb69f9ae158f591c99ba23fc0e9876a06f8bd",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "public-evidence-summary",
+      "path": "docs/public_evidence_summary.json",
+      "sha256": "0bc4953be3d3be98017e6ca1ee087bf62b7a5a056bbcd59053d62f9e10d7c0c3",
+      "kind": "synthetic_summary"
+    },
+    {
+      "anchor_id": "cluster-superpopulation-summary",
+      "path": "rl_env/specs/clinical_outcome_cluster_superpopulation_summary.example.json",
+      "sha256": "ed17495a946f67104e143a0883e8b5bd5d8f74bdd6d0d3affbf14b752475d3c5",
+      "kind": "synthetic_summary"
+    }
+  ],
+  "maturity_ledger": [
+    {
+      "capability_id": "evidence-governed-execution",
+      "label": "Evidence-governed execution and replay",
+      "maturity": "implemented_public",
+      "claim": "The public core records typed tool requests, outcomes, promoted evidence, accepted decisions, costs, and replay links with fail-closed validation.",
+      "evidence_anchor_ids": [
+        "core-models",
+        "execution-core",
+        "execution-tests"
+      ],
+      "limitations": [
+        "Provider payloads and real review jobs are outside the public repository.",
+        "A valid replay demonstrates contract execution, not biological correctness."
+      ]
+    },
+    {
+      "capability_id": "eight-stage-scd-slice",
+      "label": "Audited eight-stage SCD vertical slice",
+      "maturity": "implemented_public",
+      "claim": "One retrospective sickle-cell disease slice traverses the eight-stage control plane with typed identity continuity and exact accepted-state replay.",
+      "evidence_anchor_ids": [
+        "core-models",
+        "execution-core",
+        "agent-loop-tests",
+        "scd-slice-document"
+      ],
+      "limitations": [
+        "This is one disease slice and does not establish breadth across the proposed atlases.",
+        "It is retrospective and is not a prospective therapeutic recommendation."
+      ]
+    },
+    {
+      "capability_id": "cross-trial-synthesis",
+      "label": "Source-preserving cross-trial endpoint and safety synthesis",
+      "maturity": "implemented_public",
+      "claim": "The implementation recompiles reviewer-approved endpoint and safety selections across source-disjoint trials while retaining trial-level values and provenance.",
+      "evidence_anchor_ids": [
+        "clinical-synthesis-core",
+        "synthesis-tests",
+        "synthesis-document"
+      ],
+      "limitations": [
+        "It does not infer endpoint similarity, pool effects, or decide clinical acceptability.",
+        "Real reviewer mappings and source bundles remain external."
+      ]
+    },
+    {
+      "capability_id": "evidence-gap-voi",
+      "label": "Typed evidence gaps and bounded next-action planning",
+      "maturity": "implemented_public",
+      "claim": "The clinical decision layer compiles exact evidence cells into typed gaps and budget-bounded evidence-acquisition actions under a preregistered policy.",
+      "evidence_anchor_ids": [
+        "clinical-decision-core",
+        "decision-cli-tests",
+        "decision-document"
+      ],
+      "limitations": [
+        "The VOI score is a bounded workflow heuristic, not calibrated economic value of information.",
+        "ADVANCE denotes evidence-workflow readiness, not therapeutic approval."
+      ]
+    },
+    {
+      "capability_id": "preregistered-outcome-evaluation",
+      "label": "Preregistered aggregate clinical outcome evaluation",
+      "maturity": "synthetic_validated",
+      "claim": "The public implementation binds forecasts to exact evidence packages before a deadline and evaluates later endpoint and safety outcomes in aggregate with explicit attrition and provenance controls.",
+      "evidence_anchor_ids": [
+        "outcome-evaluation-core",
+        "outcome-evaluation-tests",
+        "outcome-evaluation-document",
+        "public-evidence-summary"
+      ],
+      "limitations": [
+        "The public artifacts do not contain a real independently curated outcome board.",
+        "Synthetic validation does not establish clinical utility or policy superiority."
+      ]
+    },
+    {
+      "capability_id": "cluster-superpopulation-calibration",
+      "label": "Cluster-superpopulation uncertainty calibration",
+      "maturity": "synthetic_validated",
+      "claim": "A public known-truth study separates fixed-profile and empirical-template cluster-superpopulation variance while preserving unit-weighted and cluster-balanced estimands.",
+      "evidence_anchor_ids": [
+        "cluster-superpopulation-core",
+        "cluster-superpopulation-tests",
+        "cluster-superpopulation-document",
+        "cluster-superpopulation-summary"
+      ],
+      "limitations": [
+        "Finite public template support is synthetic and is not externally transportable.",
+        "Dominant-profile unit-weighted methods retain undercoverage and finite-cluster bias."
+      ]
+    },
+    {
+      "capability_id": "upstream-cell-state-handoff",
+      "label": "Cell-state and perturbation evidence handoff",
+      "maturity": "proposed_pilot",
+      "claim": "A future adapter would bind cell-state, perturbation, assay, model-system, and source context into contextual evidence without automatically promoting mechanism or efficacy claims.",
+      "evidence_anchor_ids": [],
+      "limitations": [
+        "No public upstream cell-state handoff schema or adapter is implemented yet.",
+        "No Biohub dataset, model output, or experimental workflow has been integrated."
+      ]
+    },
+    {
+      "capability_id": "biohub-data-integration",
+      "label": "Biohub platform or data integration",
+      "maturity": "proposed_pilot",
+      "claim": "Joint scoping could select one immune-perturbation use case and define a payload-minimized integration boundary.",
+      "evidence_anchor_ids": [],
+      "limitations": [
+        "This repository has no Biohub-specific API, data, authorization, or endorsement.",
+        "The proposed use case requires scientific-owner and governance review before execution."
+      ]
+    }
+  ],
+  "fit_matrix": [
+    {
+      "priority_id": "ai-biomodel-translation",
+      "biohub_priority": "AI biomodels and virtual-cell-enabled disease understanding",
+      "fit": "complementary",
+      "contribution": "Preserve the identity, source, biological context, uncertainty, and downstream decision consequences of an upstream biomodel hypothesis.",
+      "current_gap": "The project neither trains a virtual-cell model nor has a typed cell-state output handoff.",
+      "capability_ids": [
+        "evidence-governed-execution",
+        "preregistered-outcome-evaluation",
+        "upstream-cell-state-handoff"
+      ],
+      "pilot_work_package_ids": [
+        "wp-handoff-contract",
+        "wp-retrospective-packets"
+      ],
+      "source_observation_ids": [
+        "ai-biomodels",
+        "dynamic-cell-systems"
+      ]
+    },
+    {
+      "priority_id": "immune-cell-engineering",
+      "biohub_priority": "Immune-cell engineering and network-causality research",
+      "fit": "proposed",
+      "contribution": "Test whether perturbation-to-program evidence packets expose missing context, conflicting evidence, and safer next experiments before translational escalation.",
+      "current_gap": "No immune-cell program cohort, perturbation schema, or reviewer workflow is currently present.",
+      "capability_ids": [
+        "evidence-gap-voi",
+        "upstream-cell-state-handoff",
+        "biohub-data-integration"
+      ],
+      "pilot_work_package_ids": [
+        "wp-handoff-contract",
+        "wp-retrospective-packets",
+        "wp-prospective-evaluation"
+      ],
+      "source_observation_ids": [
+        "immune-cell-engineering",
+        "ny-platform-stack"
+      ]
+    },
+    {
+      "priority_id": "inflammation-measurement",
+      "biohub_priority": "Molecular measurement of inflammation in human tissues",
+      "fit": "proposed",
+      "contribution": "Represent measurement provenance, tissue and cell context, endpoint mappings, and uncertainty as explicit decision dependencies.",
+      "current_gap": "No Chicago platform assay or tissue-measurement contract has been mapped into the project.",
+      "capability_ids": [
+        "evidence-governed-execution",
+        "upstream-cell-state-handoff",
+        "biohub-data-integration"
+      ],
+      "pilot_work_package_ids": [
+        "wp-handoff-contract"
+      ],
+      "source_observation_ids": [
+        "inflammation-measurement"
+      ]
+    },
+    {
+      "priority_id": "open-scientific-infrastructure",
+      "biohub_priority": "Open and reusable scientific software",
+      "fit": "direct",
+      "contribution": "Provide dependency-light typed contracts, deterministic validators, public schemas, synthetic fixtures, replay, and release-boundary audits.",
+      "current_gap": "The candidate research branch is not merged or uploaded, and external-user usability has not been measured.",
+      "capability_ids": [
+        "evidence-governed-execution",
+        "cross-trial-synthesis",
+        "evidence-gap-voi",
+        "cluster-superpopulation-calibration"
+      ],
+      "pilot_work_package_ids": [
+        "wp-prospective-evaluation",
+        "wp-governance-release"
+      ],
+      "source_observation_ids": [
+        "open-scientific-software",
+        "long-horizon-disease-mission"
+      ]
+    }
+  ],
+  "pilot": {
+    "pilot_id": "immune-perturbation-translational-handoff-90d-v1",
+    "status": "proposed_not_executed",
+    "duration_days": 90,
+    "research_question": "Can a provenance-preserving handoff from immune-cell perturbation evidence to a bounded translational decision packet improve auditability, reviewer agreement, and evidence-gap resolution speed without silently promoting unsupported biological or clinical claims?",
+    "unit_of_analysis": "One candidate-disease-context program packet with one declared perturbation context and a frozen evidence cutoff.",
+    "target_programs": {
+      "minimum": 12,
+      "target": 20
+    },
+    "input_contract": [
+      "canonical disease and target identities",
+      "perturbation identity, direction, modality, and intervention context",
+      "cell type, tissue, species, assay, and model-system identifiers",
+      "effect estimate, uncertainty, endpoint, comparator, and quality-control status",
+      "source locator, version, content hash, observed date, and available date",
+      "reviewer-authored interpretation and explicit unresolved limitations"
+    ],
+    "output_contract": [
+      "contextual evidence records that cannot alone satisfy efficacy or clinical gates",
+      "identity and provenance validation report",
+      "typed evidence-gap tensor",
+      "bounded next-action plan with cost and stop conditions",
+      "reviewer decision record and exact replay bundle",
+      "aggregate pilot evaluation without raw program payloads"
+    ],
+    "work_packages": [
+      {
+        "work_package_id": "wp-handoff-contract",
+        "title": "Upstream evidence handoff contract",
+        "objective": "Define and test the minimum context required to carry a cell-state or perturbation result into the evidence ledger as contextual evidence only.",
+        "deliverables": [
+          "strict JSON Schema and duplicate-safe reader",
+          "synthetic positive and adversarial fixtures",
+          "mapping table from upstream fields to project identities and evidence records",
+          "explicit rejection rules for missing comparator, context, cutoff, or provenance"
+        ]
+      },
+      {
+        "work_package_id": "wp-retrospective-packets",
+        "title": "Retrospective immune-perturbation packet cohort",
+        "objective": "Build 12 to 20 reviewer-selected packets and a frozen manual baseline without using downstream outcomes to choose the cohort.",
+        "deliverables": [
+          "preregistered inclusion and exclusion criteria",
+          "source-hash-bound packet roster",
+          "manual baseline worksheets",
+          "blinded independent reviewer assignments"
+        ]
+      },
+      {
+        "work_package_id": "wp-prospective-evaluation",
+        "title": "Prospective workflow evaluation",
+        "objective": "Compare manual and governed workflows on replay, provenance completeness, agreement, time, and silent-advance failures.",
+        "deliverables": [
+          "frozen evaluation protocol",
+          "aggregate metric report with exact denominators",
+          "failure taxonomy and adjudication log",
+          "go, revise, or stop recommendation"
+        ]
+      },
+      {
+        "work_package_id": "wp-governance-release",
+        "title": "Governance and release boundary",
+        "objective": "Keep real program data, identities, reviewer materials, and unpublished results outside public release until separately approved.",
+        "deliverables": [
+          "data-flow and access-control review",
+          "payload-minimized public artifact plan",
+          "claim-boundary review",
+          "joint sign-off checklist"
+        ]
+      }
+    ],
+    "phases": [
+      {
+        "phase_id": "phase-scope",
+        "name": "Scope and preregister",
+        "day_start": 1,
+        "day_end": 15,
+        "work_package_ids": [
+          "wp-handoff-contract",
+          "wp-governance-release"
+        ],
+        "exit_criteria": [
+          "Scientific owner approves the unit of analysis and non-claims.",
+          "Input contract and data boundary pass privacy and provenance review.",
+          "Pilot protocol is frozen before packet selection."
+        ]
+      },
+      {
+        "phase_id": "phase-build",
+        "name": "Build contract and retrospective cohort",
+        "day_start": 16,
+        "day_end": 45,
+        "work_package_ids": [
+          "wp-handoff-contract",
+          "wp-retrospective-packets"
+        ],
+        "exit_criteria": [
+          "At least 12 eligible packets pass the strict input contract.",
+          "All included packets have frozen source hashes and evidence cutoffs.",
+          "Adversarial schema and provenance tests pass."
+        ]
+      },
+      {
+        "phase_id": "phase-evaluate",
+        "name": "Run blinded workflow evaluation",
+        "day_start": 46,
+        "day_end": 75,
+        "work_package_ids": [
+          "wp-retrospective-packets",
+          "wp-prospective-evaluation"
+        ],
+        "exit_criteria": [
+          "Manual and governed arms cover the exact same packet roster.",
+          "Reviewers complete decisions without access to aggregate outcomes.",
+          "Every decision has a replayable provenance record or an explicit failure status."
+        ]
+      },
+      {
+        "phase_id": "phase-decide",
+        "name": "Analyze, adjudicate, and decide",
+        "day_start": 76,
+        "day_end": 90,
+        "work_package_ids": [
+          "wp-prospective-evaluation",
+          "wp-governance-release"
+        ],
+        "exit_criteria": [
+          "All acceptance gates are evaluated on exact declared denominators.",
+          "Failures are adjudicated without changing thresholds or excluding failed packets post hoc.",
+          "Scientific, engineering, and governance owners issue a go, revise, or stop decision."
+        ]
+      }
+    ],
+    "evaluation_design": {
+      "design": "prospective_preregistered_workflow_evaluation",
+      "comparator": "Reviewer-authored manual packet workflow on the identical frozen program roster.",
+      "primary_endpoint": "Fraction of included program packets with exact end-to-end replay and complete source provenance.",
+      "secondary_endpoints": [
+        "independent reviewer agreement on advance, hold, defer, pivot, or stop",
+        "median reviewer time per completed packet",
+        "count and type of silently promoted unsupported claims",
+        "fraction of evidence gaps linked to an actionable and budget-bounded next step",
+        "adjudication burden and unresolved packet fraction"
+      ],
+      "analysis_boundary": "Workflow reliability and research usability only; no therapeutic efficacy, clinical utility, biomodel accuracy, or Biohub endorsement endpoint is evaluated."
+    },
+    "acceptance_gates": [
+      {
+        "gate_id": "provenance_coverage",
+        "metric": "Fraction of included packets whose used evidence records have source id, version, content hash, and cutoff-safe availability date.",
+        "operator": "==",
+        "threshold": 1.0,
+        "denominator": "All included program packets.",
+        "failure_action": "stop"
+      },
+      {
+        "gate_id": "replay_success",
+        "metric": "Fraction of completed governed-workflow packets that reproduce the accepted final state and decision from the frozen inputs.",
+        "operator": "==",
+        "threshold": 1.0,
+        "denominator": "All completed governed-workflow packets.",
+        "failure_action": "stop"
+      },
+      {
+        "gate_id": "silent_advance_count",
+        "metric": "Count of packets advanced after a required identity, provenance, context, mapping, or reviewer-approval gate failed.",
+        "operator": "==",
+        "threshold": 0,
+        "denominator": "All attempted governed-workflow advances.",
+        "failure_action": "stop"
+      },
+      {
+        "gate_id": "independent_review_agreement",
+        "metric": "Unweighted fraction of program packets with identical primary workflow decisions from two independent blinded reviewers before adjudication.",
+        "operator": ">=",
+        "threshold": 0.8,
+        "denominator": "Packets completed independently by both reviewers.",
+        "failure_action": "hold_and_review"
+      },
+      {
+        "gate_id": "median_packet_time_reduction",
+        "metric": "Relative reduction in median active reviewer minutes per completed packet versus the manual comparator.",
+        "operator": ">=",
+        "threshold": 0.25,
+        "denominator": "Matched packets completed in both workflow arms.",
+        "failure_action": "hold_and_review"
+      }
+    ],
+    "governance": {
+      "human_approval_required": true,
+      "no_autonomous_wet_lab_execution": true,
+      "no_treatment_recommendation": true,
+      "real_data_release_review_required": true,
+      "stopping_rule": "Stop execution on any provenance, replay, privacy, authorization, or silent-advance hard-gate failure; do not repair the denominator by post-hoc exclusion."
+    }
+  },
+  "presentation": {
+    "audience": "Biohub computational biology, platform engineering, translational science, and research-governance collaborators.",
+    "headline_claim": "The project is a verification-oriented bridge from biological hypotheses to translational evidence decisions, not a replacement for virtual-cell science or expert judgment.",
+    "claims": [
+      {
+        "claim_id": "claim-control-plane",
+        "text": "The public core makes evidence, tools, identity, time, uncertainty, costs, and decisions replayable and fail-closed.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "core-models",
+          "execution-core",
+          "execution-tests"
+        ],
+        "capability_ids": [
+          "evidence-governed-execution"
+        ]
+      },
+      {
+        "claim_id": "claim-end-to-end-slice",
+        "text": "One retrospective SCD program demonstrates continuous identity and evidence flow across the eight-stage control plane.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "core-models",
+          "execution-core",
+          "agent-loop-tests",
+          "scd-slice-document"
+        ],
+        "capability_ids": [
+          "eight-stage-scd-slice"
+        ]
+      },
+      {
+        "claim_id": "claim-clinical-synthesis",
+        "text": "Endpoint and safety evidence can be harmonized without erasing trial-level values, source identity, reviewer mappings, or non-comparability limits.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "clinical-synthesis-core",
+          "synthesis-tests",
+          "synthesis-document"
+        ],
+        "capability_ids": [
+          "cross-trial-synthesis",
+          "evidence-gap-voi"
+        ]
+      },
+      {
+        "claim_id": "claim-calibration-boundary",
+        "text": "Synthetic known-truth studies expose when estimand, missingness, dependence, and cluster sampling choices alter uncertainty; they do not establish external clinical calibration.",
+        "maturity": "synthetic_validated",
+        "evidence_anchor_ids": [
+          "outcome-evaluation-core",
+          "outcome-evaluation-tests",
+          "outcome-evaluation-document",
+          "cluster-superpopulation-core",
+          "cluster-superpopulation-tests",
+          "cluster-superpopulation-document",
+          "cluster-superpopulation-summary"
+        ],
+        "capability_ids": [
+          "preregistered-outcome-evaluation",
+          "cluster-superpopulation-calibration"
+        ]
+      },
+      {
+        "claim_id": "claim-biohub-fit",
+        "text": "The strongest Biohub-context fit is a complementary translational evidence-governance layer downstream of cell measurement, perturbation, and biomodel research.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "execution-core",
+          "clinical-synthesis-core",
+          "decision-document"
+        ],
+        "capability_ids": [
+          "evidence-governed-execution",
+          "cross-trial-synthesis",
+          "evidence-gap-voi"
+        ]
+      },
+      {
+        "claim_id": "claim-pilot",
+        "text": "A 90-day immune-perturbation handoff evaluation is concrete enough for joint scoping but has not been executed or endorsed.",
+        "maturity": "proposed_pilot",
+        "evidence_anchor_ids": [],
+        "capability_ids": [
+          "upstream-cell-state-handoff",
+          "biohub-data-integration"
+        ]
+      }
+    ],
+    "slide_sequence": [
+      {
+        "slide": 1,
+        "title": "Where scientific agents fail",
+        "purpose": "Frame the problem as evidence and decision continuity across a long research trajectory.",
+        "claim_ids": [
+          "claim-control-plane"
+        ],
+        "artifact_paths": [
+          "docs/39_biohub_translational_evidence_bridge.md"
+        ],
+        "speaker_boundary": "Do not claim autonomous drug discovery."
+      },
+      {
+        "slide": 2,
+        "title": "The system role",
+        "purpose": "Place the project downstream of cell and biomodel science and upstream of translational evidence decisions.",
+        "claim_ids": [
+          "claim-biohub-fit"
+        ],
+        "artifact_paths": [
+          "docs/biohub_research_readiness.json"
+        ],
+        "speaker_boundary": "Describe complementarity, not organizational affiliation."
+      },
+      {
+        "slide": 3,
+        "title": "Executable control plane",
+        "purpose": "Show typed state, tool contracts, evidence promotion, verifiers, decisions, and replay.",
+        "claim_ids": [
+          "claim-control-plane"
+        ],
+        "artifact_paths": [
+          "README.md"
+        ],
+        "speaker_boundary": "Contract execution is not biological truth."
+      },
+      {
+        "slide": 4,
+        "title": "One continuous disease slice",
+        "purpose": "Demonstrate what is end to end today and make the single-disease boundary visible.",
+        "claim_ids": [
+          "claim-end-to-end-slice"
+        ],
+        "artifact_paths": [
+          "docs/12_scd_vertical_slice.md"
+        ],
+        "speaker_boundary": "Seven proposed atlases do not have equivalent public slices."
+      },
+      {
+        "slide": 5,
+        "title": "Endpoint and safety without provenance loss",
+        "purpose": "Show exact trial mappings, non-pooled synthesis, and typed evidence gaps.",
+        "claim_ids": [
+          "claim-clinical-synthesis"
+        ],
+        "artifact_paths": [
+          "docs/22_clinical_benefit_risk_synthesis.md"
+        ],
+        "speaker_boundary": "No clinical acceptability or treatment recommendation is inferred."
+      },
+      {
+        "slide": 6,
+        "title": "Uncertainty is part of the object",
+        "purpose": "Present the known-truth calibration sequence and the remaining dominant-cluster failure mode.",
+        "claim_ids": [
+          "claim-calibration-boundary"
+        ],
+        "artifact_paths": [
+          "rl_env/specs/clinical_outcome_cluster_superpopulation_summary.example.json"
+        ],
+        "speaker_boundary": "Synthetic calibration is not external transportability."
+      },
+      {
+        "slide": 7,
+        "title": "Biohub-context fit and gaps",
+        "purpose": "Separate direct, complementary, and proposed alignment using official public sources.",
+        "claim_ids": [
+          "claim-biohub-fit"
+        ],
+        "artifact_paths": [
+          "docs/39_biohub_translational_evidence_bridge.md"
+        ],
+        "speaker_boundary": "No Biohub data or platform is currently integrated."
+      },
+      {
+        "slide": 8,
+        "title": "A falsifiable 90-day pilot",
+        "purpose": "Define the unit, roster, phases, comparator, endpoints, and hard gates before execution.",
+        "claim_ids": [
+          "claim-pilot"
+        ],
+        "artifact_paths": [
+          "docs/39_biohub_translational_evidence_bridge.md"
+        ],
+        "speaker_boundary": "This is a proposed workflow study, not a completed collaboration."
+      },
+      {
+        "slide": 9,
+        "title": "Machine-checkable claims",
+        "purpose": "Demonstrate schema, artifact hashes, maturity classes, and fail-closed validation.",
+        "claim_ids": [
+          "claim-control-plane",
+          "claim-calibration-boundary",
+          "claim-pilot"
+        ],
+        "artifact_paths": [
+          "docs/biohub_research_readiness.json",
+          "rl_env/specs/biohub_research_readiness.schema.json"
+        ],
+        "speaker_boundary": "A green validator confirms declared evidence consistency, not scientific endorsement."
+      },
+      {
+        "slide": 10,
+        "title": "The decision requested",
+        "purpose": "Ask whether to jointly scope the handoff contract and select a scientifically owned pilot cohort.",
+        "claim_ids": [
+          "claim-pilot"
+        ],
+        "artifact_paths": [
+          "docs/39_biohub_translational_evidence_bridge.md"
+        ],
+        "speaker_boundary": "Request a scoping decision, not approval to deploy."
+      }
+    ],
+    "prohibited_claims": [
+      "Biohub endorsement or affiliation",
+      "a validated virtual-cell model",
+      "autonomous therapeutic design or treatment recommendation",
+      "external transportability of synthetic cluster templates",
+      "real-world clinical calibration or policy superiority"
+    ],
+    "demo_commands": [
+      "adds-research-readiness validate --profile docs/biohub_research_readiness.json",
+      "adds-research-readiness summarize --profile docs/biohub_research_readiness.json",
+      "adds-clinical-evidence summarize-cluster-superpopulation --report rl_env/specs/clinical_outcome_cluster_superpopulation_report.example.json"
+    ]
+  },
+  "known_gaps": [
+    {
+      "gap_id": "gap-cell-state-contract",
+      "gap": "No typed public contract currently ingests cell-state or perturbation evidence into the control plane.",
+      "status": "open",
+      "closure_evidence_required": [
+        "strict handoff schema and duplicate-safe reader",
+        "contextual-only promotion semantics",
+        "positive and adversarial fixtures",
+        "scientific-owner review"
+      ]
+    },
+    {
+      "gap_id": "gap-biohub-integration",
+      "gap": "No Biohub dataset, API, model output, platform workflow, or authorization is integrated.",
+      "status": "open",
+      "closure_evidence_required": [
+        "jointly selected use case",
+        "data-flow and authorization review",
+        "versioned interface contract",
+        "integration tests on approved non-sensitive fixtures"
+      ]
+    },
+    {
+      "gap_id": "gap-disease-breadth",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice.",
+      "status": "open",
+      "closure_evidence_required": [
+        "at least one independently reviewed immune or inflammatory disease slice",
+        "cross-disease identity and endpoint tests",
+        "documented failure cases"
+      ]
+    },
+    {
+      "gap_id": "gap-real-heldout-evaluation",
+      "gap": "No real independently curated held-out Biohub-context outcome board is public or claimed.",
+      "status": "open",
+      "closure_evidence_required": [
+        "prospectively frozen board protocol",
+        "independent blinded reviewers",
+        "cutoff-safe source provenance",
+        "aggregate preregistered report"
+      ]
+    },
+    {
+      "gap_id": "gap-external-transport",
+      "gap": "Synthetic cluster templates and calibration results do not transport to an external program population by construction.",
+      "status": "open",
+      "closure_evidence_required": [
+        "prospectively defined external sampling frame",
+        "cluster covariates and transport assumptions",
+        "external validation protocol",
+        "dominance and finite-cluster bias analysis"
+      ]
+    },
+    {
+      "gap_id": "gap-public-candidate",
+      "gap": "The 0.3.0.dev3 research candidate is not merged to public main or uploaded to the public Hugging Face dataset.",
+      "status": "open",
+      "closure_evidence_required": [
+        "clean reviewed commit",
+        "full release audit",
+        "explicit human approval",
+        "commit-pinned GitHub and Hugging Face publication"
+      ]
+    }
+  ],
+  "decision": {
+    "presentation_readiness": "ready_with_boundaries",
+    "pilot_readiness": "ready_for_joint_scoping_not_execution",
+    "public_release_status": "candidate_not_merged_or_uploaded",
+    "next_decision": "Decide whether to jointly scope the upstream handoff contract and nominate a scientifically owned 12-to-20-program immune-perturbation pilot cohort."
+  },
+  "integrity_sha256": "8222def3305452be31d51ffb171937b24d5ab4e9a8d37a00e590f2c670bdc8f0"
+}

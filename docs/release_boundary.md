@@ -35,6 +35,9 @@ This repository uses a conservative boundary so that future public or collaborat
   records, replicate-level simulation records, and correction-selection deliberations.
 - Real clinical outcome sensitivity protocols, log-IMOR elicitation, prediction-stratum working
   records, latent outcomes, and correction-selection deliberations.
+- Real collaborator or Biohub program data, biomodel outputs, cell-state or perturbation payloads,
+  reviewer assignments, manual baseline worksheets, adjudication records, pilot timings, and
+  program-level pilot results.
 - Root-level cluster scheduler `.out` / `.err` logs.
 - API keys, credentials, `.env*`, key material, and local machine caches.
 
@@ -215,6 +218,13 @@ external clinical population, filter inferential results by realized eligibility
 estimand or interval method, or override dominance hard stops. Real sampling frames, cluster
 covariates, transport models, cluster or replicate records, and design-selection deliberations
 remain outside Git and Hugging Face.
+
+The Biohub-context readiness surface ships an independent public-source alignment review, a strict
+machine profile, artifact hashes, a maturity ledger, a ten-slide claim sequence, and a proposed
+90-day pilot contract. It does not contain Biohub data or model outputs, assert affiliation or
+endorsement, or report an executed pilot. Real collaborator program rosters, payloads, reviewer
+materials, authorization records, timings, adjudications, and program-level results remain outside
+Git and Hugging Face pending a separate joint scientific, privacy, governance, and release review.
 
 The clinical evidence closed-loop layer ships implementation, strict schema/readers, documentation,
 tests, and one compiler-generated synthetic transition. Real closed-loop policies, execution

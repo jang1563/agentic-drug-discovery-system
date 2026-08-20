@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a strict Biohub-context research-readiness profile that positions the project as a
+  translational evidence-governance bridge rather than a virtual-cell or therapeutic-design
+  system. The machine profile binds official public alignment sources, 19 local artifact hashes,
+  implemented/synthetic/proposed maturity, a ten-slide claim ledger, six open gaps, and a
+  preregistered 90-day immune-perturbation handoff pilot with five immutable acceptance gates.
+  A dependency-free reader, public API, console command, JSON Schema, blocking release audit,
+  presentation-ready review, and adversarial tests reject duplicate keys, non-finite values,
+  affiliation claims, evidence drift, maturity promotion, and threshold relaxation. No Biohub
+  affiliation, data integration, endorsement, completed pilot, or external validation is claimed.
 - Added empirical-template cluster-superpopulation calibration bound to the exact fixed-profile
   informative-cluster-size report. Five 500-replicate scenarios resample cluster size, prediction
   layout, and mean risk jointly while preserving every unit-weighted and cluster-balanced known

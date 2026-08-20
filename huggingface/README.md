@@ -17,6 +17,12 @@ tags:
 
 This card describes the unuploaded 0.3.0.dev3 update candidate for the public 0.3.0.dev2 Agentic Drug Discovery System mirror. It contains the executable control plane, tests, documentation, schemas, aggregate evidence, release metadata, safety boundaries, and the `ctdbench` scorer. It is not a row dataset or model release and does not contain raw source bundles, real provider review jobs, ingestion runs, raw clinical/regulatory source snapshots, hidden labels, real curator manifests, real clinical decision, cohort, outcome-evaluation, uncertainty, design/stress/sensitivity-scenario, or closed-loop policies/manifests/submissions/catalogs/batches/receipts/packages/unit results, real scenario elicitation or hidden-dependence working records, unit-to-cluster assignments, replicate- or cluster-level results, locked episodes, generated trajectories, scheduler logs, local paths, credentials, or unpublished working notes. Upload requires exact-package review and explicit approval.
 
+The candidate also contains an independent Biohub-context presentation-readiness packet. It
+positions the project as a downstream translational evidence-governance bridge, binds official
+public alignment sources and local artifact hashes, and freezes a proposed 90-day pilot. It does
+not claim Biohub affiliation, endorsement, data integration, a virtual-cell model, a completed
+pilot, or external clinical validation.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -242,6 +248,8 @@ outside both public release surfaces.
 | `docs/36_unequal_cluster_influence_calibration.md` | Few, unequal, and dominant-cluster interval calibration, Student-t and delete-mj comparisons, experimental multiplier diagnostics, and operational boundaries. |
 | `docs/37_informative_cluster_size_estimands.md` | Unit-weighted versus cluster-balanced functionals, informative-size direction drift, fixed-profile calibration, influence concentration, and estimand-selection boundaries. |
 | `docs/38_cluster_superpopulation_sampling.md` | Empirical-template cluster-superpopulation sampling, preserved known truths, conditional calibration comparison, realized-design diagnostics, and transport boundaries. |
+| `docs/39_biohub_translational_evidence_bridge.md` | Independent Biohub-context fit review, concrete 90-day pilot, ten-slide narrative, and explicit non-claims. |
+| `docs/biohub_research_readiness.json` | Machine-readable official-source alignment, artifact hashes, maturity ledger, fit matrix, pilot gates, presentation claims, and open gaps. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |
@@ -266,6 +274,7 @@ outside both public release surfaces.
 | `agentic_drug_discovery/clinical_outcome_pattern_mixture_influence_calibration.py` | Student-t critical values, unequal delete-mj pseudovalues, experimental multiplier intervals, production eligibility, Monte Carlo calibration, strict readers, summaries, and replay. |
 | `agentic_drug_discovery/clinical_outcome_informative_cluster_size.py` | Profile-bound dual estimands, three Student-t methods, conditional calibration, aggregate max-block influence, strict readers, summaries, and exact replay. |
 | `agentic_drug_discovery/clinical_outcome_cluster_superpopulation.py` | Empirical-template cluster resampling, preserved superpopulation truths, conditional comparison cells, realized-design rates, dynamic largest-cluster influence, strict readers, and replay. |
+| `agentic_drug_discovery/research_readiness.py` | Duplicate-safe readiness reader, artifact-hash verification, maturity and fit checks, immutable pilot gates, presentation claim validation, and compact summary. |
 | `adapters/pinned_evidence_adapter.py` | Dependency-free validation and lookup for source-pinned, payload-free evidence manifests. |
 | `adapters/clinical_synthesis_adapter.py` | Local normalization of approved endpoint mappings and reviewed synthesis selections without supplied source measurements. |
 | `adapters/execution_registry.py` | Typed contracts for the pinned adapter and caller-supplied GitHub adapter instances. |
@@ -396,6 +405,7 @@ python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
 python3 scripts/audit/validate_policy_evaluation_snapshot.py
+python3 scripts/audit/validate_biohub_research_readiness.py
 python3 -m unittest discover -s tests -v
 python3 -m ruff check agentic_drug_discovery tests adapters/boltz_adapter.py adapters/chembl_adapter.py adapters/opentargets_adapter.py adapters/execution_registry.py adapters/pinned_evidence_adapter.py adapters/clinical_synthesis_adapter.py scripts/audit
 python3 -m pytest -q benchmark/tests
