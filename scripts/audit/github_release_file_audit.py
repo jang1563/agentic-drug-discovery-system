@@ -100,6 +100,8 @@ REQUIRED_PUBLIC_FILES = (
     "docs/clinical_provider_validation_snapshot.json",
     "docs/42_uc_provider_validation.md",
     "docs/uc_clinical_provider_validation_snapshot.json",
+    "docs/43_uc_phase_population_alignment.md",
+    "docs/uc_phase_population_validation_snapshot.json",
     "docs/22_clinical_benefit_risk_synthesis.md",
     "docs/23_clinical_portfolio_endpoint_mapping.md",
     "docs/24_policy_replanning_and_resume.md",

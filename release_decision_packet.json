@@ -50,6 +50,7 @@
       "atomic multi-trial ClinicalTrials.gov portfolio extraction plus reviewer-approved endpoint-family mapping with exact bindings, append-only replay, synthetic public examples, and no ontology-authority claim",
       "explicit source-disjoint cross-trial hazard-, odds-, and risk-ratio and serious-event harmonization with retained trial-level values, fixed favorable-direction contracts, no automatic pooling, and no clinical acceptability inference",
       "synthetic ulcerative-colitis cross-disease conformance across contextual translational handoff, clinical-remission endpoint mapping, higher-is-better odds-ratio synthesis, and evidence-tensor compilation, with no real-source or clinical-validation claim",
+      "payload-free induction/maintenance population-alignment execution within one public-source ulcerative-colitis trial, with exact phase counts, hashes, and no participant-identity, exchangeability, pooling, or independent-replication claim",
       "provenance-preserving clinical evidence tensor compilation with typed gaps, preregistered workflow thresholds, deterministic budget-aware bounded VOI action planning, strict integrity envelopes, synthetic examples, and no treatment or clinical acceptability recommendation",
       "bounded clinical selected-action execution with compact payload-free receipts, reviewer-only verifier refresh, single-use action ids, exact source-rejoined gap transitions, strict two-state validation, and a compiler-generated synthetic example",
       "role-neutral cutoff-safe sealed evaluation contracts, externally separated labels and commitments, strict policy submissions, aggregate policy comparison, and synthetic fail-closed tests",
@@ -204,6 +205,8 @@
     "docs/41_ulcerative_colitis_conformance_slice.md",
     "docs/42_uc_provider_validation.md",
     "docs/uc_clinical_provider_validation_snapshot.json",
+    "docs/43_uc_phase_population_alignment.md",
+    "docs/uc_phase_population_validation_snapshot.json",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "docs/public_launch_checklist.md",
@@ -299,6 +302,7 @@
     "the Biohub-context surface claims affiliation, endorsement, implemented integration, a completed pilot, or external validation",
     "the translational handoff emits non-contextual evidence, relaxes human review or prohibited inferences, or includes real upstream payloads",
     "the ulcerative-colitis conformance slice is described as real source validation, an independently reviewed disease slice, or therapeutic evidence",
+    "the UC induction and maintenance analyses are described as independent trials, participant-identical, longitudinally exchangeable, pooled, or clinically acceptable",
     "the Hugging Face mirror is stale relative to the reviewed source commit or fails exact file/hash validation",
     "Croissant metadata for the separate clinical-trial-decision-benchmark enters this Hub package"
   ]

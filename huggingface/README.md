@@ -39,6 +39,10 @@ interval while retaining exact treatment-phase and safety-group identity. The pa
 the payload-free hashes and selected aggregate values, not source bytes or reviewer jobs. This does
 not convert the synthetic upstream/downstream UC slice into real end-to-end validation.
 
+A second provider-only run binds induction and maintenance endpoint/safety populations within
+`NCT02435992`. It preserves separate analysis counts, refuses participant-identity inference, and
+counts the shared NCT/source as one non-pooled trial.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -272,6 +276,9 @@ outside both public release surfaces.
 | `docs/biohub_research_readiness.json` | Machine-readable official-source alignment, artifact hashes, maturity ledger, fit matrix, pilot gates, presentation claims, and open gaps. |
 | `docs/40_upstream_translational_handoff.md` | Generic M6 handoff contract, contextual-only compilation semantics, validation boundary, and next external-review decision. |
 | `docs/41_ulcerative_colitis_conformance_slice.md` | Synthetic immune/inflammatory disease conformance across M6, ratio-effect mapping, non-pooled synthesis, and decision-tensor direction checks. |
+| `docs/42_uc_provider_validation.md` | Two public-source UC induction provider runs with direction-aware gating and payload-free artifact identity. |
+| `docs/43_uc_phase_population_alignment.md` | Real-source induction/maintenance phase-population alignment within one non-pooled UC trial. |
+| `docs/uc_phase_population_validation_snapshot.json` | Payload-free phase counts, effect and safety aggregates, artifact hashes, stage outcomes, and non-exchangeability boundary. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |

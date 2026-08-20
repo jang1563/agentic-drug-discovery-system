@@ -16,6 +16,7 @@ intervention is clinically acceptable.
 | Endpoint family | Reviewer-approved canonical family and ontology identity; no name-based automatic mapping |
 | Effect measure | Hazard ratio with `lower_is_better`, or odds/risk ratio with `higher_is_better` |
 | Safety measure | Candidate minus comparator serious-adverse-event participant risk |
+| Phase/population rule | Any declared phase alignment must replay exactly across design, population, endpoint, and safety records |
 | Minimum studies | Two distinct trials, designs, endpoints, and safety records |
 | Source rule | Study source-content SHA-256 sets must be pairwise disjoint |
 | Pooling | Prohibited; every estimate remains trial-level |
@@ -69,6 +70,11 @@ candidate affected / candidate at risk
 
 It is not adjusted for follow-up, censoring, exposure time, competing risks, population differences,
 or cross-trial confounding.
+
+Before computing a study row, the compiler recomputes any phase-bound population alignment from
+the committed endpoint denominators and safety at-risk counts. A missing layer, phase mismatch,
+population rebinding, or altered count rejects the selection. The retained alignment can show that
+role-wise aggregate counts match; it always keeps participant identity uninferred.
 
 ## Synthesis-Level Output
 

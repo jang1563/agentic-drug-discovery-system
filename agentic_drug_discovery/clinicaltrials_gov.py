@@ -221,12 +221,18 @@ def _normalized(value: str) -> str:
 
 
 def _arm_title_tokens(value: str) -> frozenset[str]:
+    value = re.sub(
+        r"\b\d+(?:\.\d+)?\s*(?:mg|milligrams?)\b",
+        " ",
+        value.casefold(),
+    )
     tokens = [
         "hydrochloride" if token == "hcl" else token
-        for token in re.findall(r"[a-z]+|[0-9]+", value.casefold())
+        for token in re.findall(r"[a-z]+|[0-9]+", value)
         if token
         not in {
             "induction",
+            "intervention",
             "maintenance",
             "period",
             "mg",
@@ -712,6 +718,20 @@ def _generic_job(
     population["description_sha256"] = hashlib.sha256(
         population["description"].encode("utf-8")
     ).hexdigest()
+    endpoint_counts = {
+        item["role"]: item["measurement"]["denominator"] for item in trial["arms"]
+    }
+    safety_counts = {
+        item["role"]: item["serious_num_at_risk"] for item in safety["arms"]
+    }
+    population_alignment = {
+        "treatment_phase": endpoint["treatment_phase"],
+        "study_enrollment_count": population["enrollment_count"],
+        "endpoint_analysis_participant_count": sum(endpoint_counts.values()),
+        "safety_at_risk_participant_count": sum(safety_counts.values()),
+        "rolewise_counts_match": endpoint_counts == safety_counts,
+        "same_participants_inferred": False,
+    }
     metadata = {
         "provider_id": CLINICALTRIALS_GOV_PROVIDER_ID,
         "registry": "ClinicalTrials.gov",
@@ -728,6 +748,7 @@ def _generic_job(
         "source_lineage_ids": [f"clinicaltrials-gov:{trial['nct_id']}"],
         "arms": arms,
         "population": population,
+        "population_alignment": population_alignment,
         "endpoint": {
             "endpoint_id": endpoint["endpoint_id"],
             "outcome_index": endpoint["outcome_index"],

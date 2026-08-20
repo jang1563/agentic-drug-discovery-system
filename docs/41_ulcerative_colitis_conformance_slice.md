@@ -83,7 +83,8 @@ The provider-only follow-up is now complete for two non-sensitive public UC indu
 induction phase identity, source capture, and uncertain-versus-beneficial gating while preserving
 raw bytes and reviewer jobs outside Git.
 
-The next breadth milestone is reviewer-approved induction-versus-maintenance harmonization across
-distinct analysis populations, followed by a second immune/inflammatory disease. That work must
-remain non-pooled until endpoint, population, estimand, and safety-window exchangeability are
-explicitly justified.
+The induction-versus-maintenance aggregate population boundary is now exercised separately on
+real provider data in `docs/43_uc_phase_population_alignment.md`. The next breadth milestone is an
+independent maintenance-trial replication, followed by a second immune/inflammatory disease. That
+work must remain non-pooled until endpoint, population, estimand, and safety-window exchangeability
+are explicitly justified.

@@ -14,6 +14,10 @@ from .clinical_effects import (
     canonical_ratio_effect_measure,
     validate_ratio_effect_contract,
 )
+from .clinical_population import (
+    ClinicalPopulationAlignmentError,
+    validate_phase_bound_population_alignment,
+)
 from .models import (
     ClinicalEndpointBindingRecord,
     ClinicalEndpointMappingRecord,
@@ -28,9 +32,7 @@ from .models import (
 )
 
 
-CLINICAL_ENDPOINT_MAPPING_SPEC_SCHEMA_VERSION = (
-    "adds.clinical-endpoint-mapping-spec.v1"
-)
+CLINICAL_ENDPOINT_MAPPING_SPEC_SCHEMA_VERSION = "adds.clinical-endpoint-mapping-spec.v1"
 _ENDPOINT_FAMILY_ID = re.compile(r"^[a-z][a-z0-9_]{0,127}$")
 _MAPPING_METADATA_FIELDS = frozenset({"review_note", "review_protocol_id"})
 
@@ -237,12 +239,18 @@ def clinical_endpoint_mapping_spec_from_dict(
         )
         bindings.append(
             ClinicalEndpointSelection(
-                trial_id=_text(binding["trial_id"], f"{path}.bindings[{index}].trial_id"),
-                design_id=_text(binding["design_id"], f"{path}.bindings[{index}].design_id"),
+                trial_id=_text(
+                    binding["trial_id"], f"{path}.bindings[{index}].trial_id"
+                ),
+                design_id=_text(
+                    binding["design_id"], f"{path}.bindings[{index}].design_id"
+                ),
                 endpoint_id=_text(
                     binding["endpoint_id"], f"{path}.bindings[{index}].endpoint_id"
                 ),
-                safety_id=_text(binding["safety_id"], f"{path}.bindings[{index}].safety_id"),
+                safety_id=_text(
+                    binding["safety_id"], f"{path}.bindings[{index}].safety_id"
+                ),
             )
         )
     try:
@@ -349,6 +357,12 @@ def _resolve_binding(
         raise ClinicalEndpointMappingError(
             "selected endpoint/safety record is not posted primary data"
         )
+    try:
+        validate_phase_bound_population_alignment(design, endpoint, safety)
+    except ClinicalPopulationAlignmentError as exc:
+        raise ClinicalEndpointMappingError(
+            "selected endpoint/safety population alignment is invalid"
+        ) from exc
     analysis = _mapping(endpoint.attributes.get("analysis"), "endpoint.analysis")
     parameter_type = _normalized(
         _text(analysis.get("parameter_type"), "endpoint.analysis.parameter_type")
@@ -386,7 +400,9 @@ def _resolve_binding(
             ) from exc
         source_content_hashes.add(digest)
     if not source_evidence_ids or not source_content_hashes:
-        raise ClinicalEndpointMappingError("selected design lacks source-pinned support")
+        raise ClinicalEndpointMappingError(
+            "selected design lacks source-pinned support"
+        )
     fingerprint_context = {
         "trial_id": selection.trial_id,
         "design_id": selection.design_id,
@@ -448,11 +464,7 @@ def compile_clinical_endpoint_mapping(
     )
     source_content_hashes = tuple(
         sorted(
-            {
-                digest
-                for binding in bindings
-                for digest in binding.source_content_hashes
-            }
+            {digest for binding in bindings for digest in binding.source_content_hashes}
         )
     )
     review_cutoff = spec.review.reviewed_at.date()
@@ -550,7 +562,9 @@ def validate_clinical_endpoint_mapping(
                 reviewed_at=record.reviewed_at,
             ),
             stage=record.stage,
-            metadata=_mapping(record.attributes.get("spec_metadata", {}), "spec_metadata"),
+            metadata=_mapping(
+                record.attributes.get("spec_metadata", {}), "spec_metadata"
+            ),
         )
         state_without_record = replace(
             state,

@@ -76,8 +76,9 @@ During promotion, every source candidate alias must also resolve through the acc
 unapproved aliases are rejected. A source condition must intersect the accepted disease name or
 its pre-approved identity aliases.
 
-Bounded title equivalence removes punctuation, dose-unit tokens (`mg`, `milligram`, or
-`milligrams`), and the exact `on-treatment` qualifier before requiring token-set equality. It does
+Bounded title equivalence removes punctuation, numeric dose expressions (`mg`, `milligram`, or
+`milligrams`), phase qualifiers, the `intervention` label, and the exact `on-treatment` qualifier
+before requiring token-set equality. It does
 not accept arbitrary extra cohort or treatment descriptors. Serious-event term statistics may omit
 `numAffected` only for nonselected groups whose posted `numAtRisk` is zero; selected safety groups
 must retain complete nonnegative affected counts and positive at-risk counts.
@@ -100,6 +101,13 @@ Endpoint and safety selections carry the same required `treatment_phase`: `induc
 `maintenance`, or `not_applicable`. Mismatch or source phase conflict fails closed. Anything
 outside the bounded structural contract returns
 `pinned_clinical_design_endpoint_not_supportive` and `DEFER`.
+
+For phase-bound induction or maintenance records, extraction also derives one exact
+`population_alignment` object: study enrollment, selected endpoint denominator total, selected
+safety at-risk total, role-wise count equality, and an invariant
+`same_participants_inferred=false`. Promotion recomputes it from typed arms, and every committed
+design, population, endpoint, and safety layer carries the same phase and alignment. Matching
+aggregate counts never establish participant identity.
 
 An approved missing descriptive arm summary does not disappear downstream. The promoted endpoint
 evidence retains the raw marker, synthesis serializes the numeric field as `null`, and the evidence

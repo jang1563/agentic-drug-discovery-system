@@ -229,6 +229,78 @@ def run_manifest(
 
 
 class ClinicalTrialsGovIngestionTests(unittest.TestCase):
+    def test_uc_phase_population_snapshot_is_bounded_and_reproducible(self) -> None:
+        snapshot = json.loads(
+            (ROOT / "docs/uc_phase_population_validation_snapshot.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(
+            snapshot["schema_version"],
+            "adds.uc-phase-population-validation-snapshot.v1",
+        )
+        policy = snapshot["public_payload_policy"]
+        self.assertFalse(policy["contains_source_bytes"])
+        self.assertFalse(policy["contains_reviewer_text"])
+        self.assertFalse(policy["contains_review_jobs"])
+        self.assertFalse(policy["contains_local_paths"])
+        self.assertTrue(policy["external_artifacts_required_for_exact_replay"])
+
+        phases = {item["treatment_phase"]: item for item in snapshot["phases"]}
+        self.assertEqual(phases.keys(), {"induction", "maintenance"})
+        self.assertEqual(
+            phases["induction"]["population_alignment"],
+            {
+                "treatment_phase": "induction",
+                "study_enrollment_count": 1012,
+                "endpoint_analysis_participant_count": 645,
+                "safety_at_risk_participant_count": 645,
+                "rolewise_counts_match": True,
+                "same_participants_inferred": False,
+            },
+        )
+        self.assertEqual(
+            phases["maintenance"]["population_alignment"],
+            {
+                "treatment_phase": "maintenance",
+                "study_enrollment_count": 1012,
+                "endpoint_analysis_participant_count": 457,
+                "safety_at_risk_participant_count": 457,
+                "rolewise_counts_match": True,
+                "same_participants_inferred": False,
+            },
+        )
+        source_hashes = {
+            item["artifact_hashes"]["source_content_sha256"] for item in phases.values()
+        }
+        self.assertEqual(
+            source_hashes,
+            {"fa48160bf981705439b8c3a759a2a17fbedead3d77cb3ee484afaeef16dd533c"},
+        )
+        for phase in phases.values():
+            self.assertTrue(
+                all(
+                    SHA256.fullmatch(value)
+                    for value in phase["artifact_hashes"].values()
+                )
+            )
+            self.assertEqual(phase["validation"]["stage_run_status"], "committed")
+            self.assertTrue(phase["validation"]["committed_history_valid"])
+
+        boundary = snapshot["cross_phase_boundary"]
+        self.assertEqual(boundary["independent_trial_count"], 1)
+        self.assertFalse(boundary["pooled_effect_estimate_computed"])
+        self.assertFalse(boundary["participant_overlap_inferred"])
+        self.assertFalse(boundary["longitudinal_exchangeability_approved"])
+        encoded = json.dumps(snapshot, sort_keys=True)
+        self.assertNotIn("/tmp/", encoded)
+        report = (ROOT / "docs/43_uc_phase_population_alignment.md").read_text(
+            encoding="utf-8"
+        )
+        for phase in phases.values():
+            for value in phase["artifact_hashes"].values():
+                self.assertIn(value, report)
+
     def test_uc_provider_snapshot_preserves_uncertainty_and_phase_boundaries(
         self,
     ) -> None:
@@ -416,11 +488,96 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         )
         self.assertEqual(metadata["safety"]["event_category"], "SERIOUS")
         self.assertEqual(metadata["safety"]["event_term_count"], 2)
+        self.assertEqual(
+            metadata["population_alignment"],
+            {
+                "treatment_phase": "not_applicable",
+                "study_enrollment_count": 120,
+                "endpoint_analysis_participant_count": 120,
+                "safety_at_risk_participant_count": 120,
+                "rolewise_counts_match": True,
+                "same_participants_inferred": False,
+            },
+        )
         encoded = json.dumps(extracted, sort_keys=True).casefold()
         self.assertNotIn("eligibilitycriteria", encoded)
         self.assertNotIn("protocolsection", encoded)
         self.assertNotIn("resultsection", encoded)
         self.assertNotIn("raw_payload", encoded)
+
+    def test_rolewise_population_count_difference_is_preserved(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        job = clinical_job()
+        source["protocolSection"]["identificationModule"]["officialTitle"] = (
+            "An Induction Study of Test Drug"
+        )
+        job["trial"]["endpoint"]["treatment_phase"] = "induction"
+        job["trial"]["safety"]["treatment_phase"] = "induction"
+        source["resultsSection"]["adverseEventsModule"]["eventGroups"][1][
+            "seriousNumAtRisk"
+        ] = 59
+        job["trial"]["safety"]["arms"][1]["serious_num_at_risk"] = 59
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+        bundle = clinical_bundle(payload=payload)
+        extracted = extract_clinicaltrials_gov_ingestion_job(job, bundle)
+        alignment = extracted["records"][0]["metadata"]["population_alignment"]
+
+        self.assertEqual(alignment["endpoint_analysis_participant_count"], 120)
+        self.assertEqual(alignment["safety_at_risk_participant_count"], 119)
+        self.assertFalse(alignment["rolewise_counts_match"])
+        self.assertFalse(alignment["same_participants_inferred"])
+        manifest, _ = compile_pinned_evidence_manifest(
+            extracted,
+            {bundle.receipt.receipt_id: bundle},
+        )
+        result = run_manifest(manifest, program_id="clinical-design-count-difference")
+        self.assertEqual(result.promotions[0].status, PromotionStatus.PROMOTED)
+        design_alignment = result.final_state.trial_designs[0].attributes[
+            "population_alignment"
+        ]
+        self.assertEqual(dict(design_alignment), alignment)
+
+    def test_maintenance_phase_accepts_bounded_intervention_title_qualifier(
+        self,
+    ) -> None:
+        source = json.loads(SOURCE.read_text())
+        job = clinical_job()
+        job["trial"]["endpoint"]["treatment_phase"] = "maintenance"
+        job["trial"]["safety"]["treatment_phase"] = "maintenance"
+        source["protocolSection"]["identificationModule"]["officialTitle"] = (
+            "A Maintenance Study of Test Drug"
+        )
+        outcome_groups = source["resultsSection"]["outcomeMeasuresModule"][
+            "outcomeMeasures"
+        ][0]["groups"]
+        outcome_groups[0]["title"] = "Test Drug (Maintenance Period)"
+        outcome_groups[1]["title"] = "Comparator Drug (Maintenance Period)"
+        job["trial"]["arms"][0]["source_group_title"] = outcome_groups[0]["title"]
+        job["trial"]["arms"][1]["source_group_title"] = outcome_groups[1]["title"]
+        safety_groups = source["resultsSection"]["adverseEventsModule"]["eventGroups"]
+        safety_groups[0]["title"] = (
+            "Intervention (Maintenance Period): Test Drug 100 mg"
+        )
+        safety_groups[1]["title"] = "Comparator Drug (Maintenance Period)"
+        job["trial"]["safety"]["arms"][0]["source_group_title"] = safety_groups[0][
+            "title"
+        ]
+        job["trial"]["safety"]["arms"][1]["source_group_title"] = safety_groups[1][
+            "title"
+        ]
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        extracted = extract_clinicaltrials_gov_ingestion_job(
+            job,
+            clinical_bundle(payload=payload),
+        )
+
+        self.assertEqual(
+            extracted["records"][0]["metadata"]["population_alignment"][
+                "treatment_phase"
+            ],
+            "maintenance",
+        )
 
     def test_bounded_registry_harmonization_preserves_source_values(self) -> None:
         source = json.loads(SOURCE.read_text())
@@ -607,6 +764,33 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         result = run_manifest(
             manifest,
             program_id="clinical-design-tampered-direction",
+        )
+
+        self.assertEqual(result.promotions[0].status, PromotionStatus.ABSTAINED)
+        self.assertEqual(
+            result.promotions[0].code,
+            "pinned_clinical_design_endpoint_not_supportive",
+        )
+        self.assertEqual(result.accepted_packets[0].decision, Decision.DEFER)
+        self.assertEqual(result.final_state.trial_designs, ())
+
+    def test_tampered_population_alignment_abstains(self) -> None:
+        bundle = clinical_bundle()
+        extracted = extract_clinicaltrials_gov_ingestion_job(
+            clinical_job(),
+            bundle,
+        )
+        extracted["records"][0]["metadata"]["population_alignment"][
+            "safety_at_risk_participant_count"
+        ] = 121
+        manifest, _ = compile_pinned_evidence_manifest(
+            extracted,
+            {bundle.receipt.receipt_id: bundle},
+        )
+
+        result = run_manifest(
+            manifest,
+            program_id="clinical-design-tampered-population-alignment",
         )
 
         self.assertEqual(result.promotions[0].status, PromotionStatus.ABSTAINED)

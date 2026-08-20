@@ -75,7 +75,8 @@ hashes and bounded selected values.
 This run does not pool the two odds ratios. The trials differ in phase, endpoint time, population
 wording, registry arm order, and safety follow-up. `NCT02435992` also contains a maintenance
 endpoint after re-randomization; that population and its maintenance safety groups are not treated
-as interchangeable with induction participants and were not promoted in this validation.
+as interchangeable with induction participants in this validation. A separate phase-bound run is
+documented in `docs/43_uc_phase_population_alignment.md` and remains non-pooled.
 
 The result establishes four implemented properties:
 

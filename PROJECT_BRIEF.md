@@ -127,7 +127,9 @@ claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
   synthesis, and decision-tensor direction checks. Separately, two public ClinicalTrials.gov UC
   induction snapshots execute the provider contract: one uncertain interval is retained on
   `HOLD`, while one bounded favorable interval advances. Neither surface is a pooled efficacy,
-  safety-acceptability, or therapeutic validation set.
+  safety-acceptability, or therapeutic validation set. A separate real-source run binds induction
+  and maintenance endpoint/safety populations within `NCT02435992` without treating them as
+  independent trials or inferring participant identity.
 - A clinical cohort diagnostics layer binds exact package rosters and can require accepted-state
   hashes plus committed-ledger replay. It separates packages, programs, and synthesis-bound
   evidence units; reports complete decision/dimension/gap/action denominators; performs matched
@@ -312,6 +314,10 @@ Two additional UC induction records (`NCT01647516` and `NCT02435992`) execute th
 path with typed treatment-phase boundaries and direction-aware decisions. Their payload-free
 values, hashes, and non-pooling limits are in
 `docs/uc_clinical_provider_validation_snapshot.json`.
+The `NCT02435992` induction and maintenance analyses additionally execute phase-bound population
+alignment with separate `645` and `457` participant aggregates. The payload-free result is in
+`docs/uc_phase_population_validation_snapshot.json`; it remains one trial and makes no
+participant-identity or longitudinal-exchangeability claim.
 
 The current external validation also runs one continuous source-pinned senicapoc program through
 five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the

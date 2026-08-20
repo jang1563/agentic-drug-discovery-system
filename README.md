@@ -59,6 +59,7 @@ evidence hashes:
 - Implemented generic M6 handoff: `docs/40_upstream_translational_handoff.md`
 - Synthetic immune-disease breadth check: `docs/41_ulcerative_colitis_conformance_slice.md`
 - Public-source UC provider validation: `docs/42_uc_provider_validation.md`
+- Phase-bound UC population alignment: `docs/43_uc_phase_population_alignment.md`
 
 ```bash
 adds-research-readiness validate \
@@ -507,7 +508,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   sealed-board, label-vault, policy-submission, policy-report, held-out protocol,
   curator-manifest, and stage-stratified report schemas;
   one disease/target slice (sickle cell) traversed retrospectively; one synthetic ulcerative-colitis
-  cross-disease conformance slice plus two payload-free public-source UC induction contract runs;
+  cross-disease conformance slice, two payload-free public-source UC induction contract runs, and
+  one payload-free induction/maintenance population-alignment run from a single non-pooled trial;
   an unscored
   prospective scaffold whose stale example is invalidated pending source refresh;
   conditional local RDKit druglikeness screening; and aggregate retrospective

@@ -211,6 +211,7 @@ def _clinical_trial_design_metadata(
     arm_ids: list[str] = []
     source_group_ids: list[str] = []
     roles: list[str] = []
+    endpoint_denominators: list[int] = []
     for arm_index, raw_arm in enumerate(arms_raw):
         arm = _mapping(raw_arm, f"{label}.arms[{arm_index}]")
         _require_text_values(
@@ -256,6 +257,7 @@ def _clinical_trial_design_metadata(
         arm_ids.append(str(arm["arm_id"]))
         source_group_ids.append(str(arm["source_group_id"]))
         roles.append(role)
+        endpoint_denominators.append(denominator)
     if len(set(arm_ids)) != 2 or len(set(source_group_ids)) != 2:
         raise ValueError(f"{label}.arms must have unique arm and source group ids")
     if set(roles) != {"candidate", "comparator"}:
@@ -346,6 +348,35 @@ def _clinical_trial_design_metadata(
         raise ValueError(
             f"{label}.endpoint analysis group ids must preserve selected arm order"
         )
+
+    alignment = _mapping(
+        metadata.get("population_alignment"), f"{label}.population_alignment"
+    )
+    alignment_fields = {
+        "treatment_phase",
+        "study_enrollment_count",
+        "endpoint_analysis_participant_count",
+        "safety_at_risk_participant_count",
+        "rolewise_counts_match",
+        "same_participants_inferred",
+    }
+    if set(alignment) != alignment_fields:
+        raise ValueError(
+            f"{label}.population_alignment must contain exactly "
+            f"{sorted(alignment_fields)}"
+        )
+    if (
+        alignment["treatment_phase"] != endpoint["treatment_phase"]
+        or alignment["study_enrollment_count"] != enrollment_count
+        or alignment["endpoint_analysis_participant_count"]
+        != sum(endpoint_denominators)
+        or not isinstance(alignment["safety_at_risk_participant_count"], int)
+        or isinstance(alignment["safety_at_risk_participant_count"], bool)
+        or alignment["safety_at_risk_participant_count"] <= 0
+        or not isinstance(alignment["rolewise_counts_match"], bool)
+        or alignment["same_participants_inferred"] is not False
+    ):
+        raise ValueError(f"{label}.population_alignment is invalid")
 
 
 def _clinical_disposition_metadata(

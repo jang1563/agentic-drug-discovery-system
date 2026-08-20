@@ -109,6 +109,12 @@ values, artifact hashes, outcomes, and limitations, but no source payload or rev
 induction contract runs under that boundary. It records one retained uncertain result and one
 bounded favorable result, treatment-phase identity, and exact hashes without source bytes or jobs.
 
+`docs/uc_phase_population_validation_snapshot.json` adds induction and maintenance analyses from
+one `NCT02435992` source capture. It records distinct endpoint/safety population counts and exact
+hashes while keeping `same_participants_inferred` false. The shared NCT/source counts as one trial;
+no phase pooling, participant overlap, longitudinal exchangeability, comparative phase effect, or
+clinical acceptability is inferred.
+
 The cross-trial synthesis surface contains explicit synthetic selection examples, typed
 trial-level outputs, source evidence IDs, content hashes, and a payload-free aggregate record of
 one external PALOMA-2/3 execution. It does not include the real review packet, full state, source

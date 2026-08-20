@@ -142,7 +142,7 @@
     {
       "anchor_id": "clinical-synthesis-core",
       "path": "agentic_drug_discovery/clinical_synthesis.py",
-      "sha256": "9b43cc406647a2e5111cd7c8e4f95dca7064c479cabcf9b9083f0a1156b48caa",
+      "sha256": "ccc808cd07450fa8c11d451ec09d5bb246761243fd7a9da6a4f92d9b758c934d",
       "kind": "implementation"
     },
     {
@@ -178,7 +178,7 @@
     {
       "anchor_id": "synthesis-tests",
       "path": "tests/test_clinical_benefit_risk_synthesis.py",
-      "sha256": "dc9ce3bc2726537eba2c3e2d82996e6db9129935f96790fa1ee91ae404b40330",
+      "sha256": "af8355753e17e7ccd2d08860a21dd42e56c3c00be6751db060ca7044b07f1dcd",
       "kind": "test"
     },
     {
@@ -208,7 +208,7 @@
     {
       "anchor_id": "synthesis-document",
       "path": "docs/22_clinical_benefit_risk_synthesis.md",
-      "sha256": "6e28c362b04e58596c6494b6f886430b25c6d1c59bf32b165f59ff3dde58dddb",
+      "sha256": "2055ee726b44898a7319a7594ab24f0443d000e8badd94176383f7303320b337",
       "kind": "document"
     },
     {
@@ -274,7 +274,7 @@
     {
       "anchor_id": "uc-conformance-document",
       "path": "docs/41_ulcerative_colitis_conformance_slice.md",
-      "sha256": "6f49b9fd1b21c7a084c776448077e3a9d52821a97b55a0246e6c4b59683b23ab",
+      "sha256": "3a0d0a0462a1d5e60dcb9e3c0314f14357bd4a3d3625148f3acbbd8f77eb35d1",
       "kind": "document"
     },
     {
@@ -996,7 +996,7 @@
     },
     {
       "gap_id": "gap-disease-breadth",
-      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis currently provides synthetic contract conformance only.",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis now adds real provider-level phase/population validation but not an independently reviewed end-to-end disease slice.",
       "status": "open",
       "closure_evidence_required": [
         "at least one independently reviewed non-synthetic immune or inflammatory disease slice",
@@ -1043,7 +1043,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Decide whether to review one non-sensitive external handoff fixture and nominate a scientifically owned 12-to-20-program immune-perturbation pilot cohort."
+    "next_decision": "Preregister an independent maintenance-trial replication, then nominate a second immune/inflammatory disease with explicit endpoint-family, population, estimand, and safety-window mappings."
   },
-  "integrity_sha256": "a8ace89e6dc67f57773961f88c65c58a1d06d389cb3b3c287a4ba4e3cf41ab6c"
+  "integrity_sha256": "3d5cabdeeeb6ff3c26ca6983b2bc72a74adc011cb406be29bcae75ea63c4daeb"
 }

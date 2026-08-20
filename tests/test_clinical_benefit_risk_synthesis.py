@@ -61,6 +61,7 @@ from agentic_drug_discovery import (
     ToolRegistry,
     ToolResponse,
     ToolStatus,
+    TrialDesignRecord,
     build_default_semantic_mapper_registry,
     capture_source_bytes,
     clinical_endpoint_mapping_spec_to_dict,
@@ -97,19 +98,13 @@ JOB = ROOT / "rl_env/specs/clinicaltrials_gov_ingestion_job.example.json"
 SOURCE = ROOT / "tests/fixtures/clinicaltrials_gov_study.synthetic.json"
 SYNTHESIS_SCHEMA = ROOT / "rl_env/specs/clinical_benefit_risk_synthesis.schema.json"
 SYNTHESIS_EXAMPLE = ROOT / "rl_env/specs/clinical_benefit_risk_synthesis.example.json"
-DECISION_SCHEMA = (
-    ROOT / "rl_env/specs/clinical_evidence_decision_package.schema.json"
-)
-DECISION_EXAMPLE = (
-    ROOT / "rl_env/specs/clinical_evidence_decision_package.example.json"
-)
+DECISION_SCHEMA = ROOT / "rl_env/specs/clinical_evidence_decision_package.schema.json"
+DECISION_EXAMPLE = ROOT / "rl_env/specs/clinical_evidence_decision_package.example.json"
 CLOSED_LOOP_SCHEMA = (
-    ROOT
-    / "rl_env/specs/clinical_evidence_closed_loop_transition.schema.json"
+    ROOT / "rl_env/specs/clinical_evidence_closed_loop_transition.schema.json"
 )
 CLOSED_LOOP_EXAMPLE = (
-    ROOT
-    / "rl_env/specs/clinical_evidence_closed_loop_transition.example.json"
+    ROOT / "rl_env/specs/clinical_evidence_closed_loop_transition.example.json"
 )
 REQUEST_AT = datetime(2025, 1, 2, 1, tzinfo=timezone.utc)
 COMPLETED_AT = REQUEST_AT + timedelta(minutes=1)
@@ -119,11 +114,11 @@ CLOSED_LOOP_REQUEST_AT = REQUEST_AT + timedelta(hours=1)
 CLOSED_LOOP_COMPLETED_AT = CLOSED_LOOP_REQUEST_AT + timedelta(minutes=1)
 CLOSED_LOOP_MAPPING_REQUEST_AT = CLOSED_LOOP_COMPLETED_AT + timedelta(minutes=1)
 CLOSED_LOOP_MAPPING_COMPLETED_AT = CLOSED_LOOP_MAPPING_REQUEST_AT + timedelta(minutes=1)
-CLOSED_LOOP_SYNTHESIS_REQUEST_AT = (
-    CLOSED_LOOP_MAPPING_COMPLETED_AT + timedelta(minutes=1)
+CLOSED_LOOP_SYNTHESIS_REQUEST_AT = CLOSED_LOOP_MAPPING_COMPLETED_AT + timedelta(
+    minutes=1
 )
-CLOSED_LOOP_SYNTHESIS_COMPLETED_AT = (
-    CLOSED_LOOP_SYNTHESIS_REQUEST_AT + timedelta(minutes=1)
+CLOSED_LOOP_SYNTHESIS_COMPLETED_AT = CLOSED_LOOP_SYNTHESIS_REQUEST_AT + timedelta(
+    minutes=1
 )
 
 
@@ -203,9 +198,7 @@ def _manifest(
     candidate_measurement: str = "12.0",
 ) -> dict:
     original_trial_id = "NCT00000001"
-    job_text = JOB.read_text(encoding="utf-8").replace(
-        original_trial_id, trial_id
-    )
+    job_text = JOB.read_text(encoding="utf-8").replace(original_trial_id, trial_id)
     source_text = SOURCE.read_text(encoding="utf-8").replace(
         original_trial_id, trial_id
     )
@@ -213,11 +206,9 @@ def _manifest(
     if candidate_measurement != "12.0":
         job["trial"]["arms"][0]["measurement"]["value"] = candidate_measurement
         source = json.loads(source_text)
-        source["resultsSection"]["outcomeMeasuresModule"]["outcomeMeasures"][
-            0
-        ]["classes"][0]["categories"][0]["measurements"][0][
-            "value"
-        ] = candidate_measurement
+        source["resultsSection"]["outcomeMeasuresModule"]["outcomeMeasures"][0][
+            "classes"
+        ][0]["categories"][0]["measurements"][0]["value"] = candidate_measurement
         source_text = json.dumps(
             source,
             sort_keys=True,
@@ -270,9 +261,7 @@ def _run_clinical_trial(
         pinned_evidence=PinnedEvidenceAdapter(
             _manifest(
                 trial_id,
-                candidate_serious_num_affected=(
-                    candidate_serious_num_affected
-                ),
+                candidate_serious_num_affected=(candidate_serious_num_affected),
                 candidate_measurement=candidate_measurement,
             )
         ),
@@ -348,9 +337,7 @@ def _combined_state(
     second = _run_clinical_trial(
         "NCT00000002",
         "trial-two",
-        candidate_serious_num_affected=(
-            second_candidate_serious_num_affected
-        ),
+        candidate_serious_num_affected=(second_candidate_serious_num_affected),
     )
     first_intervention = first.interventions[0]
     second_intervention = second.interventions[0]
@@ -429,18 +416,14 @@ def _combined_three_trial_state() -> ProgramState:
         as_of_date=first.as_of_date,
         current_stage=Stage.REGULATORY_POSTMARKET,
         budget=BudgetState(limit=3.0),
-        evidence=tuple(
-            item for state in states for item in state.evidence
-        ),
+        evidence=tuple(item for state in states for item in state.evidence),
         claims=tuple(item for state in states for item in state.claims),
         diseases=first.diseases,
         targets=first.targets,
         candidates=first.candidates,
         interventions=(merged_intervention,),
         trials=tuple(item for state in states for item in state.trials),
-        trial_designs=tuple(
-            item for state in states for item in state.trial_designs
-        ),
+        trial_designs=tuple(item for state in states for item in state.trial_designs),
     )
 
 
@@ -678,9 +661,7 @@ def _decision_policy(
         registered_on=date(2025, 1, 1),
         minimum_independent_trials=minimum_independent_trials,
         maximum_log_effect_ci_width=maximum_log_effect_ci_width,
-        minimum_safety_participants_per_arm=(
-            minimum_safety_participants_per_arm
-        ),
+        minimum_safety_participants_per_arm=(minimum_safety_participants_per_arm),
         max_planned_actions=max_planned_actions,
         max_planned_cost=max_planned_cost,
         minimum_bounded_voi=minimum_bounded_voi,
@@ -791,9 +772,7 @@ def _closed_loop_action() -> ClinicalEvidenceActionOption:
             "Verify one captured trial as source-disjoint and eligible for "
             "reviewer harmonization."
         ),
-        targeted_gap_codes=(
-            ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,
-        ),
+        targeted_gap_codes=(ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,),
         expected_gap_resolution_probability=0.9,
         decision_relevance=0.9,
         max_cost=0.05,
@@ -934,9 +913,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         if cls.synthesis_result.status is not StageRunStatus.COMMITTED:
             raise AssertionError(cls.synthesis_result.code)
         cls.committed_state = cls.synthesis_result.final_state
-        cls.committed_synthesis = (
-            cls.committed_state.benefit_risk_syntheses[0]
-        )
+        cls.committed_synthesis = cls.committed_state.benefit_risk_syntheses[0]
 
     def test_mapping_tool_commit_serialization_and_replay(self) -> None:
         result = self.mapping_result
@@ -1129,6 +1106,116 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         ):
             compile_clinical_endpoint_mapping(incompatible_state, _mapping_spec())
 
+    def test_mapping_and_synthesis_reject_phase_population_rebinding(self) -> None:
+        def phase_bound(design: TrialDesignRecord) -> TrialDesignRecord:
+            population = design.populations[0]
+            endpoint = design.endpoints[0]
+            safety = design.safety_records[0]
+            endpoint_count = sum(
+                int(arm.attributes["measurement"]["denominator"])
+                for arm in design.arms
+                if arm.arm_id in endpoint.arm_ids
+            )
+            safety_count = sum(arm.serious_num_at_risk for arm in safety.arm_summaries)
+            alignment = {
+                "treatment_phase": "induction",
+                "study_enrollment_count": population.enrollment_count,
+                "endpoint_analysis_participant_count": endpoint_count,
+                "safety_at_risk_participant_count": safety_count,
+                "rolewise_counts_match": endpoint_count == safety_count,
+                "same_participants_inferred": False,
+            }
+            phase_attributes = {
+                "treatment_phase": "induction",
+                "population_alignment": alignment,
+            }
+            return replace(
+                design,
+                populations=(
+                    replace(
+                        population,
+                        attributes={
+                            **dict(population.attributes),
+                            **phase_attributes,
+                        },
+                    ),
+                ),
+                endpoints=(
+                    replace(
+                        endpoint,
+                        attributes={**dict(endpoint.attributes), **phase_attributes},
+                    ),
+                ),
+                safety_records=(
+                    replace(
+                        safety,
+                        attributes={**dict(safety.attributes), **phase_attributes},
+                    ),
+                ),
+                attributes={**dict(design.attributes), **phase_attributes},
+            )
+
+        phase_bound_designs = tuple(
+            phase_bound(design) for design in self.unmapped_state.trial_designs
+        )
+        phase_bound_design = phase_bound_designs[0]
+        phase_bound_state = replace(
+            self.unmapped_state,
+            trial_designs=phase_bound_designs,
+        )
+        compile_clinical_endpoint_mapping(phase_bound_state, _mapping_spec())
+
+        phase_mapping_result, _ = _run_mapping(
+            phase_bound_state,
+            _mapping_spec(),
+        )
+        self.assertIs(phase_mapping_result.status, StageRunStatus.COMMITTED)
+        phase_bound_mapped = phase_mapping_result.final_state
+        synthesis = compile_benefit_risk_synthesis(phase_bound_mapped, _spec())
+        self.assertEqual(
+            {study.attributes["treatment_phase"] for study in synthesis.studies},
+            {"induction"},
+        )
+        self.assertTrue(
+            all(
+                study.attributes["population_alignment"]
+                == design.attributes["population_alignment"]
+                for study, design in zip(
+                    synthesis.studies,
+                    phase_bound_designs,
+                    strict=True,
+                )
+            )
+        )
+
+        rebound_safety = replace(
+            phase_bound_design.safety_records[0],
+            attributes={
+                **dict(phase_bound_design.safety_records[0].attributes),
+                "treatment_phase": "maintenance",
+            },
+        )
+        rebound_design = replace(
+            phase_bound_design,
+            safety_records=(rebound_safety,),
+        )
+        rebound_unmapped = replace(
+            phase_bound_state,
+            trial_designs=(
+                rebound_design,
+                *phase_bound_designs[1:],
+            ),
+        )
+        with self.assertRaisesRegex(ValueError, "population alignment is invalid"):
+            compile_clinical_endpoint_mapping(rebound_unmapped, _mapping_spec())
+
+        rebound_mapped = replace(
+            phase_bound_mapped,
+            trial_designs=(rebound_design, *phase_bound_designs[1:]),
+        )
+        with self.assertRaisesRegex(ValueError, "mapping failed ledger replay"):
+            compile_benefit_risk_synthesis(rebound_mapped, _spec())
+
     def test_odds_ratio_mapping_synthesis_and_tensor_preserve_direction(self) -> None:
         ratio_designs = []
         for design in self.unmapped_state.trial_designs:
@@ -1191,8 +1278,12 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         )
         self.assertIs(synthesis_result.status, StageRunStatus.COMMITTED)
         synthesis = synthesis_result.final_state.benefit_risk_syntheses[0]
-        self.assertEqual({item.effect_measure for item in synthesis.studies}, {"odds_ratio"})
-        self.assertEqual({item.benefit_direction for item in synthesis.studies}, {"benefit"})
+        self.assertEqual(
+            {item.effect_measure for item in synthesis.studies}, {"odds_ratio"}
+        )
+        self.assertEqual(
+            {item.benefit_direction for item in synthesis.studies}, {"benefit"}
+        )
 
         tensor = compile_clinical_evidence_tensor(
             synthesis_result.final_state,
@@ -1206,7 +1297,9 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             {item.code for item in tensor.gaps},
         )
 
-    def test_synthesis_without_committed_mapping_defers_without_partial_state(self) -> None:
+    def test_synthesis_without_committed_mapping_defers_without_partial_state(
+        self,
+    ) -> None:
         result, _ = _run_synthesis(self.unmapped_state, _spec())
         self.assertIs(result.status, StageRunStatus.COMMITTED)
         self.assertIs(result.accepted_packets[0].decision, Decision.DEFER)
@@ -1478,9 +1571,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         self.assertIs(package.plan.decision, Decision.DEFER)
         self.assertEqual(
             tuple(item.code for item in package.tensor.gaps),
-            (
-                ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT,
-            ),
+            (ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT,),
         )
         dimension = next(
             item
@@ -1492,10 +1583,9 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         self.assertEqual(
             dimension.observed["missing_arms_by_study"],
             {
-                (
-                    "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:"
-                    "study:NCT00000001"
-                ): ("candidate",)
+                ("CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000001"): (
+                    "candidate",
+                )
             },
         )
         schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
@@ -1531,17 +1621,11 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         self.assertTrue(math.isclose(package.plan.planned_cost, 0.1))
         self.assertEqual(
             package.plan.targeted_gap_ids,
-            (
-                "synthetic-gap-tensor:gap:"
-                "insufficient_safety_exposure",
-            ),
+            ("synthetic-gap-tensor:gap:insufficient_safety_exposure",),
         )
         self.assertEqual(
             package.plan.untargeted_gap_ids,
-            (
-                "synthetic-gap-tensor:gap:"
-                "insufficient_independent_trials",
-            ),
+            ("synthetic-gap-tensor:gap:insufficient_independent_trials",),
         )
 
     def test_equal_voi_actions_use_action_id_tie_break(self) -> None:
@@ -1629,9 +1713,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         )
 
     def test_higher_observed_safety_signal_holds_and_never_terminates(self) -> None:
-        safety_unmapped = _combined_state(
-            second_candidate_serious_num_affected=30
-        )
+        safety_unmapped = _combined_state(second_candidate_serious_num_affected=30)
         mapping_result, _ = _run_mapping(
             safety_unmapped,
             _mapping_spec(),
@@ -1739,9 +1821,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         gap = package.tensor.gaps[0]
         forged_gap = replace(
             gap,
-            study_record_ids=(
-                package.tensor.cells[0].study_record_id,
-            ),
+            study_record_ids=(package.tensor.cells[0].study_record_id,),
             source_evidence_ids=package.tensor.source_evidence_ids,
         )
         with self.assertRaisesRegex(
@@ -1812,9 +1892,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             package,
         )
         self.assertEqual(
-            clinical_decision_package_from_json(
-                json.dumps(envelope, sort_keys=True)
-            ),
+            clinical_decision_package_from_json(json.dumps(envelope, sort_keys=True)),
             package,
         )
 
@@ -1925,9 +2003,7 @@ class ClinicalClosedLoopTests(unittest.TestCase):
             cls.closed_loop_policy,
             batch_id="synthetic-closed-loop-batch",
         )
-        tool_registry, mapper_registry, source = _eligibility_provider(
-            cls.before_state
-        )
+        tool_registry, mapper_registry, source = _eligibility_provider(cls.before_state)
         cls.third_source = source
         call_id = cls.execution_batch.calls[0].call_id
         cls.acquisition_run = execute_clinical_evidence_batch(
@@ -2037,8 +2113,7 @@ class ClinicalClosedLoopTests(unittest.TestCase):
         self.assertTrue(math.isclose(transition.total_cost, 0.07))
         self.assertTrue(
             math.isclose(
-                transition.budget_spent_after
-                - transition.budget_spent_before,
+                transition.budget_spent_after - transition.budget_spent_before,
                 transition.total_cost,
             )
         )
@@ -2232,9 +2307,7 @@ class ClinicalClosedLoopTests(unittest.TestCase):
 
     def test_public_closed_loop_schema_matches_compiler_and_reader(self) -> None:
         schema = json.loads(CLOSED_LOOP_SCHEMA.read_text(encoding="utf-8"))
-        decision_schema = json.loads(
-            DECISION_SCHEMA.read_text(encoding="utf-8")
-        )
+        decision_schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
         example = json.loads(CLOSED_LOOP_EXAMPLE.read_text(encoding="utf-8"))
         Draft202012Validator.check_schema(schema)
         registry = Registry().with_resource(
@@ -2283,9 +2356,7 @@ class ClinicalClosedLoopTests(unittest.TestCase):
         ):
             replace(
                 self.transition,
-                selected_action_receipts=(
-                    replace(receipt, outcome=forged_outcome),
-                ),
+                selected_action_receipts=(replace(receipt, outcome=forged_outcome),),
             )
 
     def test_refresh_cost_above_preregistered_bound_is_rejected(self) -> None:

@@ -23,7 +23,8 @@ evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`; independently curat
 preregistration and stage-stratified uncertainty are in
 `docs/26_independent_heldout_evaluation.md`; the synthetic cross-disease UC conformance boundary is
 in `docs/41_ulcerative_colitis_conformance_slice.md`, and the separate public-source UC provider
-execution is in `docs/42_uc_provider_validation.md`. The external scorer is under `benchmark/`,
+execution is in `docs/42_uc_provider_validation.md`; its single-trial induction/maintenance
+population boundary is in `docs/43_uc_phase_population_alignment.md`. The external scorer is under `benchmark/`,
 `scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
@@ -51,6 +52,9 @@ validated.
 - [x] The ulcerative-colitis synthetic conformance surface remains distinct from two public-source
   provider-only induction runs; neither is represented as pooled efficacy, safety acceptability,
   independent disease-slice review, or a therapeutic claim.
+- [x] The UC induction/maintenance population-alignment run preserves distinct phase counts,
+  treats the shared NCT/source as one trial, and never infers participant identity or longitudinal
+  exchangeability.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.

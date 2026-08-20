@@ -473,12 +473,18 @@ def _source_measurement(value: Any) -> tuple[bool, float | None]:
 
 
 def _arm_title_tokens(value: str) -> frozenset[str]:
+    value = re.sub(
+        r"\b\d+(?:\.\d+)?\s*(?:mg|milligrams?)\b",
+        " ",
+        value.casefold(),
+    )
     tokens = [
         "hydrochloride" if token == "hcl" else token
-        for token in re.findall(r"[a-z]+|[0-9]+", value.casefold())
+        for token in re.findall(r"[a-z]+|[0-9]+", value)
         if token
         not in {
             "induction",
+            "intervention",
             "maintenance",
             "period",
             "mg",
@@ -2693,6 +2699,7 @@ def _map_pinned_clinical_trial_design(
     registry_version = _text(metadata.get("registry_version"))
     arms_raw = metadata.get("arms")
     population_raw = metadata.get("population")
+    population_alignment_raw = metadata.get("population_alignment")
     endpoint_raw = metadata.get("endpoint")
     safety_raw = metadata.get("safety")
     if (
@@ -2712,6 +2719,7 @@ def _map_pinned_clinical_trial_design(
         or isinstance(arms_raw, (str, bytes))
         or len(arms_raw) != 2
         or not isinstance(population_raw, Mapping)
+        or not isinstance(population_alignment_raw, Mapping)
         or not isinstance(endpoint_raw, Mapping)
         or not isinstance(safety_raw, Mapping)
     ):
@@ -3006,6 +3014,24 @@ def _map_pinned_clinical_trial_design(
             or len(safety_arm_ids) != 2
         ):
             raise ValueError("safety arm identities must be unique and role-complete")
+        endpoint_counts = {
+            item["role"]: item["measurement"]["denominator"] for item in arm_values
+        }
+        safety_counts = {
+            item["role"]: item["serious_num_at_risk"] for item in safety_arm_values
+        }
+        population_alignment = {
+            "treatment_phase": treatment_phase,
+            "study_enrollment_count": enrollment_count,
+            "endpoint_analysis_participant_count": sum(endpoint_counts.values()),
+            "safety_at_risk_participant_count": sum(safety_counts.values()),
+            "rolewise_counts_match": endpoint_counts == safety_counts,
+            "same_participants_inferred": False,
+        }
+        if dict(population_alignment_raw) != population_alignment:
+            raise ValueError(
+                "population alignment does not match endpoint and safety counts"
+            )
     except (TypeError, ValueError) as exc:
         return _empty_result(
             mapper_id,
@@ -3123,6 +3149,7 @@ def _map_pinned_clinical_trial_design(
         biological_context={
             **base_context,
             "population_id": population["population_id"],
+            **treatment_phase_metadata,
         },
         metadata={
             "enrollment_count": population["enrollment_count"],
@@ -3131,6 +3158,11 @@ def _map_pinned_clinical_trial_design(
             "minimum_age": population["minimum_age"],
             "maximum_age": population.get("maximum_age"),
             "healthy_volunteers": population["healthy_volunteers"],
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
         },
     )
     endpoint_context = {
@@ -3297,7 +3329,15 @@ def _map_pinned_clinical_trial_design(
         stage=outcome.request.stage,
         identifiers={"canonical": population["population_id"]},
         supporting_evidence=(population_draft.evidence_id,),
-        attributes={"source_description_sha256": population.get("description_sha256")},
+        attributes={
+            "source_description_sha256": population.get("description_sha256"),
+            **treatment_phase_metadata,
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
+        },
     )
     endpoint_record = TrialEndpointRecord(
         endpoint_id=endpoint["endpoint_id"],
@@ -3324,6 +3364,11 @@ def _map_pinned_clinical_trial_design(
         attributes={
             "favorable_direction": endpoint["favorable_direction"],
             **treatment_phase_metadata,
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
             "analysis": analysis,
         },
     )
@@ -3372,6 +3417,11 @@ def _map_pinned_clinical_trial_design(
         attributes={
             "interpretation": "posted_aggregate_serious_adverse_event_counts_only",
             **treatment_phase_metadata,
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
             "safety_acceptability_inferred": False,
         },
     )
@@ -3395,6 +3445,12 @@ def _map_pinned_clinical_trial_design(
             "registry_version": registry_version,
             "source_record_id": record.record_id,
             "source_lineage_ids": lineages,
+            **treatment_phase_metadata,
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
         },
     )
     previous_intervention_support = (
@@ -3533,6 +3589,7 @@ def _map_pinned_clinical_trial_design(
             "safety_id": safety["safety_id"],
             "registry_version": registry_version,
             "effect_direction": effect_direction,
+            "population_alignment": population_alignment,
         },
     )
 
