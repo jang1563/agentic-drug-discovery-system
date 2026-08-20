@@ -107,7 +107,8 @@ claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
   hashes in an append-only ledger. It does not infer endpoint similarity or claim live
   ontology-authority validation.
 - A deterministic cross-trial synthesis layer takes explicit reviewed trial/design/endpoint/safety
-  selections that exactly match a committed approved mapping and recompiles hazard ratios,
+  selections that exactly match a committed approved mapping and recompiles supported hazard,
+  odds, or risk ratios under fixed favorable-direction contracts,
   confidence intervals, source arm measurements, and
   serious-event participant risks from committed ledgers. It requires at least two source-disjoint
   trials, retains trial-level values and hashes, and prohibits automatic endpoint mapping, pooling,
@@ -121,6 +122,9 @@ claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
   recompilation bind the synthesis, policy, tensor, catalog, scores, gap partition, and plan.
   `ADVANCE` means evidence-workflow readiness only. Pooling, clinical acceptability, treatment
   recommendations, terminal decisions, and calibrated economic VOI claims are prohibited.
+- A synthetic ulcerative-colitis conformance slice (`MONDO:0005101`) exercises a second disease
+  geometry from contextual M6 handoff through clinical-remission odds-ratio mapping, non-pooled
+  synthesis, and decision-tensor direction checks. It is not a real UC evidence or validation set.
 - A clinical cohort diagnostics layer binds exact package rosters and can require accepted-state
   hashes plus committed-ledger replay. It separates packages, programs, and synthesis-bound
   evidence units; reports complete decision/dimension/gap/action denominators; performs matched

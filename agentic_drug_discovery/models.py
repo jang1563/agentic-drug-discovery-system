@@ -9,6 +9,12 @@ from enum import Enum
 from types import MappingProxyType
 from typing import Any, Mapping
 
+from .clinical_effects import (
+    ratio_benefit_direction,
+    ratio_effect_favorable_direction,
+    validate_ratio_effect_contract,
+)
+
 
 class Stage(str, Enum):
     DISEASE_CONTEXT = "disease_context"
@@ -967,6 +973,7 @@ class ClinicalEndpointMappingRecord(SerializableRecord):
             "reviewer_id",
         ):
             _require_text(getattr(self, field_name), field_name)
+        validate_ratio_effect_contract(self.effect_measure, self.favorable_direction)
         if self.stage is not Stage.REGULATORY_POSTMARKET:
             raise ValueError("endpoint mapping is limited to regulatory_postmarket")
         if self.review_status != "approved":
@@ -1124,6 +1131,13 @@ class StudyBenefitRiskRecord(SerializableRecord):
             <= self.confidence_interval_upper
         ):
             raise ValueError("confidence interval must contain the effect estimate")
+        expected_benefit_direction = ratio_benefit_direction(
+            self.confidence_interval_lower,
+            self.confidence_interval_upper,
+            ratio_effect_favorable_direction(self.effect_measure),
+        )
+        if self.benefit_direction != expected_benefit_direction:
+            raise ValueError("benefit_direction does not match effect interval")
         for field_name in (
             "candidate_serious_num_affected",
             "candidate_serious_num_at_risk",
@@ -1248,6 +1262,7 @@ class BenefitRiskSynthesisRecord(SerializableRecord):
             "pooling_method",
         ):
             _require_text(getattr(self, field_name), field_name)
+        ratio_effect_favorable_direction(self.effect_measure)
         studies = tuple(self.studies)
         object.__setattr__(self, "studies", studies)
         if len(studies) < 2:

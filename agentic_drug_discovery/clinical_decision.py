@@ -12,6 +12,10 @@ from datetime import date
 from enum import Enum
 from typing import Any
 
+from .clinical_effects import (
+    ratio_benefit_direction,
+    ratio_effect_favorable_direction,
+)
 from .clinical_synthesis import validate_benefit_risk_synthesis
 from .models import (
     ActionType,
@@ -437,11 +441,11 @@ class ClinicalEvidenceCell(SerializableRecord):
             abs_tol=1e-12,
         ):
             raise ValueError("log_effect_ci_width does not match confidence interval")
-        expected_benefit_direction = "null_or_uncertain"
-        if self.confidence_interval_upper < 1.0:
-            expected_benefit_direction = "benefit"
-        elif self.confidence_interval_lower > 1.0:
-            expected_benefit_direction = "harm"
+        expected_benefit_direction = ratio_benefit_direction(
+            self.confidence_interval_lower,
+            self.confidence_interval_upper,
+            ratio_effect_favorable_direction(self.effect_measure),
+        )
         if self.benefit_direction != expected_benefit_direction:
             raise ValueError("benefit_direction does not match confidence interval")
         for field_name in (

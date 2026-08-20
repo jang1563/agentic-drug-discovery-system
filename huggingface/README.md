@@ -28,6 +28,11 @@ perturbation, cell/tissue/model, assay/endpoint, uncertainty, sampling, QC, sour
 review context while compiling only `contextualizes` evidence. It includes no Biohub source or
 real experimental payload.
 
+An explicitly synthetic ulcerative-colitis conformance slice broadens the software path to
+clinical-remission odds ratios with `higher_is_better` semantics from M6 context through non-pooled
+clinical synthesis. The disease identity is real; all targets, interventions, trials, measurements,
+sources, and reviews are synthetic.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -256,6 +261,7 @@ outside both public release surfaces.
 | `docs/39_biohub_translational_evidence_bridge.md` | Independent Biohub-context fit review, concrete 90-day pilot, ten-slide narrative, and explicit non-claims. |
 | `docs/biohub_research_readiness.json` | Machine-readable official-source alignment, artifact hashes, maturity ledger, fit matrix, pilot gates, presentation claims, and open gaps. |
 | `docs/40_upstream_translational_handoff.md` | Generic M6 handoff contract, contextual-only compilation semantics, validation boundary, and next external-review decision. |
+| `docs/41_ulcerative_colitis_conformance_slice.md` | Synthetic immune/inflammatory disease conformance across M6, ratio-effect mapping, non-pooled synthesis, and decision-tensor direction checks. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |
@@ -268,7 +274,7 @@ outside both public release surfaces.
 | `agentic_drug_discovery/clinicaltrials_gov.py` | ClinicalTrials.gov study, arm, population, endpoint, statistical-analysis, and serious-adverse-event verification with payload removal. |
 | `agentic_drug_discovery/clinical_portfolio.py` | Atomic exact-set multi-trial extraction with source-hash disjointness and payload-free output. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Strict approved-mapping parser, endpoint/safety fingerprint compiler, approval chronology, and replay validation. |
-| `agentic_drug_discovery/clinical_synthesis.py` | Deterministic source-ledger compiler for trial-level hazard ratios and serious-event risk differences without pooling. |
+| `agentic_drug_discovery/clinical_synthesis.py` | Deterministic source-ledger compiler for supported trial-level ratio effects and serious-event risk differences without pooling. |
 | `agentic_drug_discovery/clinical_decision.py` | Committed-synthesis tensor compiler, typed gaps, deterministic budget-aware bounded VOI planner, integrity envelopes, and state replay. |
 | `agentic_drug_discovery/clinical_cohort.py` | Accepted-state-bindable package rosters, deterministic cohort aggregation, matched policy comparisons, strict readers, and cross-unit provenance overlap. |
 | `agentic_drug_discovery/clinical_outcome_evaluation.py` | Preregistered protocol and submission binding, post-deadline outcome provenance, aggregate Brier/calibration/threshold metrics, paired policy comparisons, and full replay. |

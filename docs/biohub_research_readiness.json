@@ -124,7 +124,13 @@
     {
       "anchor_id": "core-models",
       "path": "agentic_drug_discovery/models.py",
-      "sha256": "82afe3e4e89b1be4a1ce0e22f9d2b5d165c6ad6c53a4cc2029b36392fa694a21",
+      "sha256": "52350d41aba580a812f8b994aabfff62eac887376f3485d0694160532147c94a",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "clinical-effects-core",
+      "path": "agentic_drug_discovery/clinical_effects.py",
+      "sha256": "463dbb17aecc0657b6738357ecfe436f2e70e4feec9501ded1037977949d9986",
       "kind": "implementation"
     },
     {
@@ -136,13 +142,13 @@
     {
       "anchor_id": "clinical-synthesis-core",
       "path": "agentic_drug_discovery/clinical_synthesis.py",
-      "sha256": "d258d9c4c0422e2df34ecfddd0d35bdc6883ab329aaaa010ecdb34131033fea7",
+      "sha256": "9b43cc406647a2e5111cd7c8e4f95dca7064c479cabcf9b9083f0a1156b48caa",
       "kind": "implementation"
     },
     {
       "anchor_id": "clinical-decision-core",
       "path": "agentic_drug_discovery/clinical_decision.py",
-      "sha256": "2eabd68514beeef1b9cdbc2f43228add140b9e6a472bad0b6099080baffd87a8",
+      "sha256": "1fc432ab1eedd49e0385e3c1029c48543dbdc63ba7cf17f451df6e5b5efa05c3",
       "kind": "implementation"
     },
     {
@@ -172,7 +178,7 @@
     {
       "anchor_id": "synthesis-tests",
       "path": "tests/test_clinical_benefit_risk_synthesis.py",
-      "sha256": "f8e55dd29e7805c9d18bb819c9a45772bd818071d59fc52a2bd45a95028f2f39",
+      "sha256": "dc9ce3bc2726537eba2c3e2d82996e6db9129935f96790fa1ee91ae404b40330",
       "kind": "test"
     },
     {
@@ -202,13 +208,13 @@
     {
       "anchor_id": "synthesis-document",
       "path": "docs/22_clinical_benefit_risk_synthesis.md",
-      "sha256": "089c13e413419f5c09b09f9cba6e760dfa8d0ad3e8e7c5dd4b57f1548afea159",
+      "sha256": "6e28c362b04e58596c6494b6f886430b25c6d1c59bf32b165f59ff3dde58dddb",
       "kind": "document"
     },
     {
       "anchor_id": "decision-document",
       "path": "docs/27_clinical_evidence_tensor_and_voi.md",
-      "sha256": "b431b6bc296b3e82707fa3a0bd99a367437511248087a70e9065a9d51f4cb106",
+      "sha256": "02e753237855fbf040eac7ce2bff0555aa587a43fc35da863aeb43be2bb415fb",
       "kind": "document"
     },
     {
@@ -258,6 +264,24 @@
       "path": "rl_env/specs/translational_handoff.example.json",
       "sha256": "0cf7e3ba5fc4729c1b19463e041f6d8019d37f2047f237551a90a358c1a24c10",
       "kind": "synthetic_summary"
+    },
+    {
+      "anchor_id": "cross-disease-conformance-tests",
+      "path": "tests/test_cross_disease_clinical_conformance.py",
+      "sha256": "1c4c35620d744528cad8a8b02d5daecb8f6be41e54960d73658b757b5457c8c8",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "uc-conformance-document",
+      "path": "docs/41_ulcerative_colitis_conformance_slice.md",
+      "sha256": "d3a40590c79cb022b00f899636ae4d0ecb03d04f4c1791360b7e8fa7c1bd47b8",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "uc-translational-fixture",
+      "path": "rl_env/specs/translational_handoff.uc.synthetic.example.json",
+      "sha256": "de6ebdcce6c6b8c8cc14a8f9e8c090a7557fb627e71687c0ed3b95ddcfb7c0a0",
+      "kind": "synthetic_summary"
     }
   ],
   "maturity_ledger": [
@@ -296,8 +320,9 @@
       "capability_id": "cross-trial-synthesis",
       "label": "Source-preserving cross-trial endpoint and safety synthesis",
       "maturity": "implemented_public",
-      "claim": "The implementation recompiles reviewer-approved endpoint and safety selections across source-disjoint trials while retaining trial-level values and provenance.",
+      "claim": "The implementation recompiles reviewer-approved endpoint and safety selections across source-disjoint trials while retaining trial-level values, provenance, and fixed favorable-direction semantics for hazard, odds, and risk ratios.",
       "evidence_anchor_ids": [
+        "clinical-effects-core",
         "clinical-synthesis-core",
         "synthesis-tests",
         "synthesis-document"
@@ -371,6 +396,24 @@
       ]
     },
     {
+      "capability_id": "cross-disease-clinical-conformance",
+      "label": "Cross-disease clinical contract conformance",
+      "maturity": "synthetic_validated",
+      "claim": "A synthetic ulcerative-colitis slice exercises contextual translational handoff, clinical-remission endpoint mapping, higher-is-better odds-ratio synthesis, and provenance-preserving evidence-tensor compilation under one MONDO disease identity.",
+      "evidence_anchor_ids": [
+        "clinical-effects-core",
+        "clinical-synthesis-core",
+        "clinical-decision-core",
+        "cross-disease-conformance-tests",
+        "uc-conformance-document",
+        "uc-translational-fixture"
+      ],
+      "limitations": [
+        "Every target, perturbation, source, trial, endpoint value, and review identity in the conformance slice is synthetic.",
+        "This is not a real ClinicalTrials.gov extraction, an independently reviewed disease slice, clinical validation, or therapeutic evidence."
+      ]
+    },
+    {
       "capability_id": "biohub-data-integration",
       "label": "Biohub platform or data integration",
       "maturity": "proposed_pilot",
@@ -412,6 +455,7 @@
       "capability_ids": [
         "evidence-gap-voi",
         "upstream-cell-state-handoff",
+        "cross-disease-clinical-conformance",
         "biohub-data-integration"
       ],
       "pilot_work_package_ids": [
@@ -433,6 +477,7 @@
       "capability_ids": [
         "evidence-governed-execution",
         "upstream-cell-state-handoff",
+        "cross-disease-clinical-conformance",
         "biohub-data-integration"
       ],
       "pilot_work_package_ids": [
@@ -451,6 +496,7 @@
       "capability_ids": [
         "evidence-governed-execution",
         "cross-trial-synthesis",
+        "cross-disease-clinical-conformance",
         "evidence-gap-voi",
         "cluster-superpopulation-calibration"
       ],
@@ -694,9 +740,10 @@
       },
       {
         "claim_id": "claim-clinical-synthesis",
-        "text": "Endpoint and safety evidence can be harmonized without erasing trial-level values, source identity, reviewer mappings, or non-comparability limits.",
+        "text": "Endpoint and safety evidence can be harmonized under explicit ratio-measure direction semantics without erasing trial-level values, source identity, reviewer mappings, or non-comparability limits.",
         "maturity": "implemented_public",
         "evidence_anchor_ids": [
+          "clinical-effects-core",
           "clinical-synthesis-core",
           "synthesis-tests",
           "synthesis-document"
@@ -704,6 +751,20 @@
         "capability_ids": [
           "cross-trial-synthesis",
           "evidence-gap-voi"
+        ]
+      },
+      {
+        "claim_id": "claim-cross-disease-conformance",
+        "text": "A synthetic ulcerative-colitis slice shows that one immune-inflammatory disease identity can traverse contextual handoff, clinical-remission mapping, higher-is-better odds-ratio synthesis, and evidence-tensor compilation.",
+        "maturity": "synthetic_validated",
+        "evidence_anchor_ids": [
+          "clinical-effects-core",
+          "cross-disease-conformance-tests",
+          "uc-conformance-document",
+          "uc-translational-fixture"
+        ],
+        "capability_ids": [
+          "cross-disease-clinical-conformance"
         ]
       },
       {
@@ -817,14 +878,16 @@
       {
         "slide": 5,
         "title": "Endpoint and safety without provenance loss",
-        "purpose": "Show exact trial mappings, non-pooled synthesis, and typed evidence gaps.",
+        "purpose": "Show exact trial mappings, explicit effect direction, non-pooled synthesis, cross-disease conformance, and typed evidence gaps.",
         "claim_ids": [
-          "claim-clinical-synthesis"
+          "claim-clinical-synthesis",
+          "claim-cross-disease-conformance"
         ],
         "artifact_paths": [
-          "docs/22_clinical_benefit_risk_synthesis.md"
+          "docs/22_clinical_benefit_risk_synthesis.md",
+          "docs/41_ulcerative_colitis_conformance_slice.md"
         ],
-        "speaker_boundary": "No clinical acceptability or treatment recommendation is inferred."
+        "speaker_boundary": "The ulcerative-colitis artifact is synthetic contract conformance, not real clinical validation or a treatment recommendation."
       },
       {
         "slide": 6,
@@ -872,6 +935,7 @@
           "claim-control-plane",
           "claim-calibration-boundary",
           "claim-upstream-handoff",
+          "claim-cross-disease-conformance",
           "claim-pilot"
         ],
         "artifact_paths": [
@@ -897,6 +961,7 @@
       "Biohub endorsement or affiliation",
       "a validated virtual-cell model",
       "autonomous therapeutic design or treatment recommendation",
+      "a real or independently reviewed ulcerative-colitis disease slice",
       "external transportability of synthetic cluster templates",
       "real-world clinical calibration or policy superiority"
     ],
@@ -931,12 +996,13 @@
     },
     {
       "gap_id": "gap-disease-breadth",
-      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice.",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis currently provides synthetic contract conformance only.",
       "status": "open",
       "closure_evidence_required": [
-        "at least one independently reviewed immune or inflammatory disease slice",
-        "cross-disease identity and endpoint tests",
-        "documented failure cases"
+        "at least one independently reviewed non-synthetic immune or inflammatory disease slice",
+        "real source bundles with scientific-owner mapping and review",
+        "cross-disease transport and endpoint-harmonization error analysis",
+        "documented ambiguity, direction-reversal, and rejection cases"
       ]
     },
     {
@@ -979,5 +1045,5 @@
     "public_release_status": "candidate_not_merged_or_uploaded",
     "next_decision": "Decide whether to review one non-sensitive external handoff fixture and nominate a scientifically owned 12-to-20-program immune-perturbation pilot cohort."
   },
-  "integrity_sha256": "063bf0988a07621a08d2777ed938b376bd930cbc9ed1bc6617216119890935f5"
+  "integrity_sha256": "1ee1e38c7c5b857f198e048ffe88506194663152f11d21ad70c584f43e70e977"
 }

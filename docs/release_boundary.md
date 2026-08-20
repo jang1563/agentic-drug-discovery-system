@@ -110,6 +110,13 @@ trial-level outputs, source evidence IDs, content hashes, and a payload-free agg
 one external PALOMA-2/3 execution. It does not include the real review packet, full state, source
 bytes, pooled estimates, benefit-risk scores, clinical judgments, or treatment recommendations.
 
+The ulcerative-colitis surface is a fully synthetic cross-disease conformance slice. It exercises
+one immune-inflammatory disease identity across contextual translational handoff, clinical-remission
+endpoint mapping, higher-is-better odds-ratio synthesis, and evidence-tensor compilation. Synthetic
+trial ids, values, sources, targets, perturbations, and reviewers cannot be represented as real
+ClinicalTrials.gov ingestion, independent scientific review, clinical validation, or a second
+end-to-end disease result.
+
 The portfolio and endpoint-mapping surface likewise contains only executable verifiers, strict
 schemas, synthetic references, and tests. Real multi-trial source bundles, single-trial review jobs,
 portfolio review files, reviewer working identities, and ontology-resolution artifacts remain
@@ -229,7 +236,8 @@ materials, authorization records, timings, adjudications, and program-level resu
 Git and Hugging Face pending a separate joint scientific, privacy, governance, and release review.
 
 The generic upstream translational-handoff surface ships a strict schema and reader, one fully
-synthetic two-source fixture, contextual-only compilation, documentation, and adversarial tests.
+synthetic two-source fixture, a second synthetic ulcerative-colitis conformance fixture,
+contextual-only compilation, documentation, and adversarial tests.
 Real source bytes, cell- or donor-level records, scientific-owner mappings, reviewer identities,
 and non-public fixtures remain outside Git and Hugging Face. A valid handoff proves contract
 consistency, not source truth, mechanism, efficacy, safety, clinical readiness, or transportability.

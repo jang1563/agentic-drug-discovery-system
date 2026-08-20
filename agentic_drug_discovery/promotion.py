@@ -11,6 +11,11 @@ from datetime import date
 from enum import Enum
 from typing import Any
 
+from .clinical_effects import (
+    canonical_ratio_effect_measure,
+    ratio_benefit_direction,
+    ratio_effect_favorable_direction,
+)
 from .execution import EvidenceDraft, ToolOutcome, ToolStatus
 from .clinical_synthesis import (
     ClinicalSynthesisError,
@@ -2893,28 +2898,39 @@ def _map_pinned_clinical_trial_design(
             ci_upper,
         } or not candidate_measurement_valid or not comparator_measurement_valid:
             raise ValueError("endpoint analysis contains non-numeric values")
+        endpoint_direction = _normalized(str(endpoint["favorable_direction"]))
         arm_measurements_support_direction = (
-            candidate_measurement is None
-            or comparator_measurement is None
-            or candidate_measurement > comparator_measurement
+            candidate_measurement is None or comparator_measurement is None
         )
+        if candidate_measurement is not None and comparator_measurement is not None:
+            arm_measurements_support_direction = (
+                candidate_measurement > comparator_measurement
+                if endpoint_direction == "higher_is_better"
+                else candidate_measurement < comparator_measurement
+            )
+        effect_measure = canonical_ratio_effect_measure(
+            str(analysis.get("parameter_type", ""))
+        )
+        ratio_supports_benefit = False
+        if effect_measure is not None:
+            ratio_supports_benefit = (
+                ratio_benefit_direction(
+                    ci_lower,
+                    ci_upper,
+                    ratio_effect_favorable_direction(effect_measure),
+                )
+                == "benefit"
+            )
         if (
             _normalized(str(metadata.get("effect_direction", ""))) != "benefit"
             or _normalized(str(endpoint["outcome_type"])) != "primary"
             or _normalized(str(endpoint["reporting_status"])) != "posted"
-            or _normalized(str(endpoint["favorable_direction"]))
-            != "higher_is_better"
-            or _normalized(str(analysis.get("parameter_type", "")))
-            not in {
-                "cox proportional hazard",
-                "hazard ratio",
-                "hazard ratio (hr)",
-                "hazard ratio, log",
-            }
+            or endpoint_direction not in {"higher_is_better", "lower_is_better"}
+            or effect_measure is None
             or analysis.get("p_value_relation") not in {"lt", "le", "eq"}
             or not 0 < p_value <= 0.05
-            or not 0 < parameter_value < 1
-            or not 0 < ci_lower <= parameter_value <= ci_upper < 1
+            or not 0 < ci_lower <= parameter_value <= ci_upper
+            or not ratio_supports_benefit
             or not 0 < ci_percent <= 100
             or not arm_measurements_support_direction
         ):

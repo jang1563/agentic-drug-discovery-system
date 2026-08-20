@@ -1,7 +1,7 @@
 # Full-Flow Plan — Retrospective Benchmark + Prospective Decision-Support
 
 Date: 2026-08-20
-Status: one audited SCD slice plus a generic M6 handoff; prospective mode remains unscored decision support
+Status: one audited SCD slice, generic M6 handoff, and synthetic UC conformance; prospective mode remains unscored decision support
 
 ## Purpose
 
@@ -97,7 +97,9 @@ node prototype (M4) is documented in `docs/13_target_id_governance_node.md`. A g
 cell-state and perturbation handoff is implemented in
 `docs/40_upstream_translational_handoff.md`, but it contains only a synthetic fixture and cannot
 promote mechanism or efficacy. Integrated M2, M3, and M5 atlases, an externally reviewed M6
-fixture, and cross-disease orchestration remain unbuilt. To reach full flow:
+fixture, real cross-disease orchestration, and external transport remain unbuilt. A synthetic UC
+conformance slice now verifies higher-is-better remission-ratio semantics across M6 and clinical
+contracts, but it is not a second validated vertical slice. To reach full flow:
 
 1. **Honest source-derived labels per stage** — Track A is audited for M1 and a
    small-N M4 node exists; replicate the labeling-function + authority-table
@@ -134,6 +136,7 @@ slice rather than the full M2–M6 system:
 ```
 Track A (A1–A6): source-derived labels + scoped controls + retrospective risk analysis       [audited locally]
   -> Track B: live agent loop + thin SCD vertical slice                                       [audited locally]
+  -> synthetic UC M6-to-clinical ratio-direction conformance                                  [implemented]
   -> validate one independently reviewed external M6 handoff without unsupported promotion     [next]
   -> join an independent held-out outcome board and external transport study before scored use
   -> widen M2/M3/M5 atlases and disease/target breadth; refresh loop for approved live sources

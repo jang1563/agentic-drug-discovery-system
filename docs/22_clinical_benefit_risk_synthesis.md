@@ -14,7 +14,7 @@ intervention is clinically acceptable.
 | Execution stage | `regulatory_postmarket` |
 | Endpoint selection | Exact ordered bindings from a committed `ClinicalEndpointMappingRecord` |
 | Endpoint family | Reviewer-approved canonical family and ontology identity; no name-based automatic mapping |
-| Effect measure | Hazard ratio with `lower_is_better` direction |
+| Effect measure | Hazard ratio with `lower_is_better`, or odds/risk ratio with `higher_is_better` |
 | Safety measure | Candidate minus comparator serious-adverse-event participant risk |
 | Minimum studies | Two distinct trials, designs, endpoints, and safety records |
 | Source rule | Study source-content SHA-256 sets must be pairwise disjoint |
@@ -51,7 +51,7 @@ source-content hashes, and the mapping id remain attached to the output.
 Each `StudyBenefitRiskRecord` retains:
 
 - exact trial, design, endpoint, and safety IDs;
-- endpoint family, hazard ratio, confidence level, and confidence interval;
+- endpoint family, canonical ratio effect, required favorable direction, confidence level, and confidence interval;
 - candidate and comparator source measurements and unit, with approved source missing-value
   markers represented as `null` while the raw marker remains in record attributes;
 - candidate and comparator serious-event affected and at-risk counts;
@@ -92,7 +92,7 @@ These fields make absence of inference machine-readable instead of leaving it to
 The synthesis is not promoted when the approved mapping is absent, fails replay, changes dimensions,
 or does not exactly equal the ordered selection set. It also abstains when any selected identity is
 missing, rebound, duplicated, after the program cutoff, unsupported, or unpinned; the endpoint is not
-a posted primary hazard-ratio result; the safety record is not a posted serious-event summary; or
+a posted primary result with a supported ratio measure and direction; the safety record is not a posted serious-event summary; or
 source hashes overlap across selected trials.
 
 Key promotion and verifier codes:
@@ -116,13 +116,15 @@ ClinicalTrials.gov source bundles, extracts and promotes each exact trial design
 a reviewer-approved endpoint mapping, then runs the synthesis through the real tool, mapper,
 transition, serialization, and replay path. Controls cover missing mapping, endpoint-ID mismatch,
 overlapping source hashes, attempted automatic pooling, forged harmonized values, direct mapping and
-synthesis commit bypass, unrelated derived support, and removal from committed history.
+synthesis commit bypass, unrelated derived support, removal from committed history, and
+higher-is-better odds-ratio propagation into the decision tensor.
 
 ## Current Limitations
 
-- v1 supports only explicitly selected hazard-ratio endpoints.
+- v1 supports only explicitly selected positive ratio measures: hazard ratio, odds ratio, and risk
+  ratio under their fixed favorable-direction contracts.
 - Source-reported missing descriptive arm summaries remain typed gaps; they are not imputed from
-  the hazard ratio or confidence interval.
+  the ratio estimate or confidence interval.
 - Serious-event data are posted aggregate participant counts, not adjudicated event-level causality.
 - Ontology identities are reviewer-declared and ledger-preserved; live ontology-authority lookup,
   synonym resolution, and terminology-version validation are not implemented.

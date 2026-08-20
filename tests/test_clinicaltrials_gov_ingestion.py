@@ -372,6 +372,53 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
             "Test Drug 100 mg (On-treatment)",
         )
 
+    def test_bounded_registry_harmonization_accepts_beneficial_odds_ratio(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        job = clinical_job()
+        source_analysis = source["resultsSection"]["outcomeMeasuresModule"][
+            "outcomeMeasures"
+        ][0]["analyses"][0]
+        source_analysis.update(
+            {
+                "statisticalMethod": "Cochran-Mantel-Haenszel Test",
+                "paramType": "Odds Ratio (OR)",
+                "paramValue": "1.80",
+                "ciLowerLimit": "1.40",
+                "ciUpperLimit": "2.20",
+            }
+        )
+        job_analysis = job["trial"]["endpoint"]["analysis"]
+        job_analysis.update(
+            {
+                "statistical_method": "Cochran-Mantel-Haenszel Test",
+                "parameter_type": "Odds Ratio (OR)",
+                "parameter_value": 1.8,
+                "confidence_interval_lower": 1.4,
+                "confidence_interval_upper": 2.2,
+            }
+        )
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        bundle = clinical_bundle(payload=payload)
+        extracted = extract_clinicaltrials_gov_ingestion_job(
+            job,
+            bundle,
+        )
+
+        analysis = extracted["records"][0]["metadata"]["endpoint"]["analysis"]
+        self.assertEqual(analysis["parameter_type"], "Odds Ratio (OR)")
+        self.assertEqual(analysis["parameter_value"], 1.8)
+        manifest, _ = compile_pinned_evidence_manifest(
+            extracted,
+            {bundle.receipt.receipt_id: bundle},
+        )
+        result = run_manifest(
+            manifest,
+            program_id="clinical-design-odds-ratio",
+        )
+        self.assertEqual(result.accepted_packets[0].decision, Decision.ADVANCE)
+        self.assertEqual(len(result.final_state.trial_designs), 1)
+
     def test_bounded_registry_harmonization_rejects_unfrozen_variants(self) -> None:
         cases = []
 
@@ -429,10 +476,10 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         unsupported_effect_job = clinical_job()
         unsupported_effect_source["resultsSection"][
             "outcomeMeasuresModule"
-        ]["outcomeMeasures"][0]["analyses"][0]["paramType"] = "Odds Ratio"
+        ]["outcomeMeasures"][0]["analyses"][0]["paramType"] = "Mean Difference"
         unsupported_effect_job["trial"]["endpoint"]["analysis"][
             "parameter_type"
-        ] = "Odds Ratio"
+        ] = "Mean Difference"
         cases.append(
             (
                 "unsupported-effect-alias",

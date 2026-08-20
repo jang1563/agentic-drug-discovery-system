@@ -64,6 +64,10 @@ mapping ids, and an explicit `automatic_endpoint_mapping_performed=false` flag.
 - ordered trial/design/endpoint/safety bindings; and
 - `review_status=approved`, reviewer id, and timezone-aware review time.
 
+Supported ratio contracts are `hazard_ratio/lower_is_better`,
+`odds_ratio/higher_is_better`, and `risk_ratio/higher_is_better`. The measure and direction are
+validated as one pair at schema, parser, ledger, synthesis, and decision-tensor boundaries.
+
 Only `review_note` and `review_protocol_id` are accepted as optional metadata. Fields such as effect
 estimates or participant counts cannot be smuggled into mapping metadata.
 
@@ -147,7 +151,8 @@ transition is accepted.
 payload-free extraction, source disjointness, generic manifest compilation, incomplete input sets,
 identity rebound, measurement-metadata rejection, and CLI no-output behavior on failed preflight.
 
-`tests/test_clinical_benefit_risk_synthesis.py` covers the full sequence:
+`tests/test_clinical_benefit_risk_synthesis.py` covers the full sequence for lower-is-better hazard
+ratios and higher-is-better odds ratios:
 
 ```text
 two exact trial designs
@@ -163,7 +168,9 @@ removal.
 
 ## Current Release Status
 
-The executable contract and all public examples are synthetic. No real multi-trial portfolio,
+The executable contract and all public examples are synthetic. The UC conformance artifacts in
+`docs/41_ulcerative_colitis_conformance_slice.md` exercise a second disease and binary remission
+endpoint geometry but do not contain real trials or measurements. No real multi-trial portfolio,
 reviewer approval, or ontology authority resolution is release-approved in this repository.
 `StageGate.minimum_benefit_risk_synthesis_records` therefore remains `0` by default. Enabling it for
 a real program requires an independently reviewed, context-matched portfolio and the corresponding

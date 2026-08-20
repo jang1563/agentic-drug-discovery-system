@@ -39,7 +39,7 @@ An uncommitted, replaced, or non-replayable synthesis cannot enter the tensor.
 Each `ClinicalEvidenceCell` retains one selected trial's:
 
 - trial, design, endpoint, safety, and synthesis study identities;
-- hazard ratio, confidence interval, and log-scale interval width;
+- supported ratio effect, required favorable direction, confidence interval, and log-scale interval width;
 - candidate and comparator endpoint measurements, including source-reported missing values, unit,
   and time frame;
 - serious-event affected/at-risk counts, observed risks, and unadjusted risk difference;

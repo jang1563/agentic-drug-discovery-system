@@ -9,6 +9,11 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from typing import Any
 
+from .clinical_effects import (
+    canonical_ratio_effect_measure,
+    ratio_benefit_direction,
+    validate_ratio_effect_contract,
+)
 from .clinical_endpoint_mapping import validate_clinical_endpoint_mapping
 from .models import (
     BenefitRiskSynthesisRecord,
@@ -100,10 +105,10 @@ class ClinicalSynthesisSpec(SerializableRecord):
             raise ValueError("clinical synthesis is limited to regulatory_postmarket")
         if self.harmonization_policy_id != CLINICAL_SYNTHESIS_POLICY_ID:
             raise ValueError("unsupported harmonization_policy_id")
-        if self.effect_measure != "hazard_ratio":
-            raise ValueError("v1 supports only hazard_ratio effect estimates")
-        if self.effect_measure_favorable_direction != "lower_is_better":
-            raise ValueError("hazard_ratio requires lower_is_better direction")
+        validate_ratio_effect_contract(
+            self.effect_measure,
+            self.effect_measure_favorable_direction,
+        )
         if self.safety_measure != "serious_adverse_event_risk_difference":
             raise ValueError("unsupported safety_measure")
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata, "metadata"))
@@ -258,14 +263,6 @@ def clinical_synthesis_spec_to_dict(spec: ClinicalSynthesisSpec) -> dict[str, An
     return {"schema_version": CLINICAL_SYNTHESIS_SPEC_SCHEMA_VERSION, **value}
 
 
-def _benefit_direction(lower: float, upper: float) -> str:
-    if upper < 1.0:
-        return "benefit"
-    if lower > 1.0:
-        return "harm"
-    return "null_or_uncertain"
-
-
 def _safety_direction(risk_difference: float) -> str:
     if math.isclose(risk_difference, 0.0, rel_tol=0.0, abs_tol=1e-12):
         return "equal_observed_serious_event_risk"
@@ -312,8 +309,10 @@ def _study_record(
     parameter_type = _normalized(
         _text(analysis.get("parameter_type"), "endpoint.analysis.parameter_type")
     )
-    if parameter_type not in {"hazard ratio", "hazard ratio (hr)"}:
-        raise ClinicalSynthesisError("selected endpoint does not report a hazard ratio")
+    if canonical_ratio_effect_measure(parameter_type) != spec.effect_measure:
+        raise ClinicalSynthesisError(
+            f"selected endpoint does not report declared {spec.effect_measure}"
+        )
     effect_estimate = _number(
         analysis.get("parameter_value"), "endpoint.analysis.parameter_value"
     )
@@ -330,7 +329,7 @@ def _study_record(
         "endpoint.analysis.confidence_interval_upper",
     )
     if not 0 < ci_lower <= effect_estimate <= ci_upper:
-        raise ClinicalSynthesisError("hazard-ratio confidence interval is invalid")
+        raise ClinicalSynthesisError("ratio confidence interval is invalid")
     arms_by_role = {item.role: item for item in design.arms}
     safety_by_role = {item.role: item for item in safety.arm_summaries}
     candidate_arm = arms_by_role.get(TrialArmRole.CANDIDATE)
@@ -450,7 +449,11 @@ def _study_record(
         candidate_serious_event_risk=candidate_risk,
         comparator_serious_event_risk=comparator_risk,
         serious_event_risk_difference=risk_difference,
-        benefit_direction=_benefit_direction(ci_lower, ci_upper),
+        benefit_direction=ratio_benefit_direction(
+            ci_lower,
+            ci_upper,
+            spec.effect_measure_favorable_direction,
+        ),
         safety_direction=_safety_direction(risk_difference),
         source_evidence_ids=source_evidence_ids,
         source_content_hashes=tuple(sorted(source_hashes)),

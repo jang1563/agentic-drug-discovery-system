@@ -10,6 +10,10 @@ from dataclasses import dataclass, field, replace
 from datetime import datetime
 from typing import Any
 
+from .clinical_effects import (
+    canonical_ratio_effect_measure,
+    validate_ratio_effect_contract,
+)
 from .models import (
     ClinicalEndpointBindingRecord,
     ClinicalEndpointMappingRecord,
@@ -122,10 +126,10 @@ class ClinicalEndpointMappingSpec(SerializableRecord):
             raise ValueError("endpoint_family_id must be a canonical snake-case id")
         if self.stage is not Stage.REGULATORY_POSTMARKET:
             raise ValueError("endpoint mapping is limited to regulatory_postmarket")
-        if self.effect_measure != "hazard_ratio":
-            raise ValueError("v1 supports only hazard_ratio effect estimates")
-        if self.favorable_direction != "lower_is_better":
-            raise ValueError("hazard_ratio requires lower_is_better direction")
+        validate_ratio_effect_contract(
+            self.effect_measure,
+            self.favorable_direction,
+        )
         if self.safety_measure != "serious_adverse_event_risk_difference":
             raise ValueError("unsupported safety_measure")
         bindings = tuple(self.bindings)
@@ -349,9 +353,9 @@ def _resolve_binding(
     parameter_type = _normalized(
         _text(analysis.get("parameter_type"), "endpoint.analysis.parameter_type")
     )
-    if parameter_type not in {"hazard ratio", "hazard ratio (hr)"}:
+    if canonical_ratio_effect_measure(parameter_type) != spec.effect_measure:
         raise ClinicalEndpointMappingError(
-            "selected endpoint does not report the declared hazard ratio"
+            f"selected endpoint does not report declared {spec.effect_measure}"
         )
     source_evidence_ids = tuple(sorted(set(design.supporting_evidence)))
     source_content_hashes: set[str] = set()

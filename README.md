@@ -57,6 +57,7 @@ evidence hashes:
 - Machine profile: `docs/biohub_research_readiness.json`
 - Strict schema: `rl_env/specs/biohub_research_readiness.schema.json`
 - Implemented generic M6 handoff: `docs/40_upstream_translational_handoff.md`
+- Synthetic immune-disease breadth check: `docs/41_ulcerative_colitis_conformance_slice.md`
 
 ```bash
 adds-research-readiness validate \
@@ -405,7 +406,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   `ClinicalEndpointMappingRecord`. It performs no endpoint-name inference or ontology-authority
   lookup; mapping removal, rebound, and direct-commit bypass fail closed.
 - **Cross-trial endpoint/safety harmonization:** A local deterministic synthesis operation accepts
-  only selections that exactly match a committed approved endpoint mapping. It recompiles hazard ratios,
+  only selections that exactly match a committed approved endpoint mapping. It recompiles supported
+  hazard, odds, or risk ratios under fixed favorable-direction contracts,
   confidence intervals, source arm measurements, and serious-adverse-event affected/at-risk counts
   from at least two source-disjoint committed trial designs. Trial-level values and source hashes
   remain intact; automatic endpoint-name mapping, cross-trial pooling, benefit-risk scoring,
@@ -503,7 +505,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   closed-loop transition,
   sealed-board, label-vault, policy-submission, policy-report, held-out protocol,
   curator-manifest, and stage-stratified report schemas;
-  one disease/target slice (sickle cell) traversed retrospectively; an unscored
+  one disease/target slice (sickle cell) traversed retrospectively; one synthetic ulcerative-colitis
+  cross-disease conformance slice for M6 and higher-is-better remission-ratio semantics; an unscored
   prospective scaffold whose stale example is invalidated pending source refresh;
   conditional local RDKit druglikeness screening; and aggregate retrospective
   risk analysis. Local calibration cards and locked replay artifacts are excluded.

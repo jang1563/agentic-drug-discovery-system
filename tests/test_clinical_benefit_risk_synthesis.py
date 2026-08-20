@@ -1125,9 +1125,86 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(
             ValueError,
-            "does not report the declared hazard ratio",
+            "does not report declared hazard_ratio",
         ):
             compile_clinical_endpoint_mapping(incompatible_state, _mapping_spec())
+
+    def test_odds_ratio_mapping_synthesis_and_tensor_preserve_direction(self) -> None:
+        ratio_designs = []
+        for design in self.unmapped_state.trial_designs:
+            endpoint = design.endpoints[0]
+            ratio_endpoint = replace(
+                endpoint,
+                name="Synthetic clinical remission",
+                time_frame="12 weeks",
+                unit="percentage of participants",
+                attributes={
+                    **dict(endpoint.attributes),
+                    "analysis": {
+                        **dict(endpoint.attributes["analysis"]),
+                        "parameter_type": "Odds Ratio (OR)",
+                        "parameter_value": 1.8,
+                        "confidence_interval_lower": 1.4,
+                        "confidence_interval_upper": 2.2,
+                    },
+                },
+            )
+            ratio_designs.append(
+                replace(
+                    design,
+                    endpoints=(ratio_endpoint, *design.endpoints[1:]),
+                )
+            )
+        ratio_state = replace(
+            self.unmapped_state,
+            trial_designs=tuple(ratio_designs),
+        )
+        mapping_spec = replace(
+            _mapping_spec(),
+            mapping_id="CHEMBL_TEST:MONDO_TEST:remission-map:v1",
+            portfolio_id="CHEMBL_TEST-MONDO_TEST-remission-portfolio-v1",
+            endpoint_family_id="clinical_remission",
+            endpoint_family_label="Clinical remission",
+            ontology=ClinicalEndpointOntology(
+                system="urn:adds:synthetic-uc-endpoint-ontology",
+                version="1.0",
+                code="UC_CLINICAL_REMISSION",
+                label="Clinical remission",
+            ),
+            effect_measure="odds_ratio",
+            favorable_direction="higher_is_better",
+        )
+        mapping_result, _ = _run_mapping(ratio_state, mapping_spec)
+        self.assertIs(mapping_result.status, StageRunStatus.COMMITTED)
+
+        synthesis_spec = replace(
+            _spec(),
+            synthesis_id="CHEMBL_TEST:MONDO_TEST:remission-benefit-risk:v1",
+            endpoint_mapping_id=mapping_spec.mapping_id,
+            endpoint_family="clinical_remission",
+            effect_measure="odds_ratio",
+            effect_measure_favorable_direction="higher_is_better",
+        )
+        synthesis_result, _ = _run_synthesis(
+            mapping_result.final_state,
+            synthesis_spec,
+        )
+        self.assertIs(synthesis_result.status, StageRunStatus.COMMITTED)
+        synthesis = synthesis_result.final_state.benefit_risk_syntheses[0]
+        self.assertEqual({item.effect_measure for item in synthesis.studies}, {"odds_ratio"})
+        self.assertEqual({item.benefit_direction for item in synthesis.studies}, {"benefit"})
+
+        tensor = compile_clinical_evidence_tensor(
+            synthesis_result.final_state,
+            synthesis,
+            _decision_policy(),
+            tensor_id="synthetic-odds-ratio-tensor",
+        )
+        self.assertEqual({item.benefit_direction for item in tensor.cells}, {"benefit"})
+        self.assertNotIn(
+            ClinicalEvidenceGapCode.BENEFIT_HARM_SIGNAL,
+            {item.code for item in tensor.gaps},
+        )
 
     def test_synthesis_without_committed_mapping_defers_without_partial_state(self) -> None:
         result, _ = _run_synthesis(self.unmapped_state, _spec())

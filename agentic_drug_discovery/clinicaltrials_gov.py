@@ -12,6 +12,11 @@ from datetime import date
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
+from .clinical_effects import (
+    canonical_ratio_effect_measure,
+    ratio_benefit_direction,
+    ratio_effect_favorable_direction,
+)
 from .ingestion import (
     INGESTION_JOB_SCHEMA_VERSION,
     SourceBundle,
@@ -412,8 +417,8 @@ def _normalize_endpoint(value: Any) -> dict[str, Any]:
         endpoint["favorable_direction"],
         "job.trial.endpoint.favorable_direction",
     ).casefold()
-    if favorable != "higher_is_better":
-        raise ValueError("v1 supports only higher_is_better posted endpoints")
+    if favorable not in {"higher_is_better", "lower_is_better"}:
+        raise ValueError("job.trial.endpoint favorable direction is unsupported")
     return {
         "endpoint_id": _safe_id(
             endpoint["endpoint_id"], "job.trial.endpoint.endpoint_id"
@@ -1024,29 +1029,41 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
     comparator_value = _optional_measurement_decimal(
         comparator["measurement"]["value"], "comparator measurement"
     )
+    endpoint_direction = endpoint["favorable_direction"]
     arm_measurements_support_direction = (
-        candidate_value is None
-        or comparator_value is None
-        or candidate_value > comparator_value
+        candidate_value is None or comparator_value is None
     )
+    if candidate_value is not None and comparator_value is not None:
+        arm_measurements_support_direction = (
+            candidate_value > comparator_value
+            if endpoint_direction == "higher_is_better"
+            else candidate_value < comparator_value
+        )
     parameter = Decimal(str(expected_analysis["parameter_value"]))
+    ci_lower = Decimal(str(expected_analysis["confidence_interval_lower"]))
     ci_upper = Decimal(str(expected_analysis["confidence_interval_upper"]))
+    effect_measure = canonical_ratio_effect_measure(
+        expected_analysis["parameter_type"]
+    )
+    ratio_supports_benefit = False
+    if effect_measure is not None and 0 < ci_lower <= parameter <= ci_upper:
+        ratio_supports_benefit = (
+            ratio_benefit_direction(
+                float(ci_lower),
+                float(ci_upper),
+                ratio_effect_favorable_direction(effect_measure),
+            )
+            == "benefit"
+        )
     if (
         candidate["role"] != "candidate"
         or comparator["role"] != "comparator"
         or _normalized(endpoint["outcome_type"]) != "primary"
         or _normalized(endpoint["reporting_status"]) != "posted"
-        or _normalized(expected_analysis["parameter_type"])
-        not in {
-            "cox proportional hazard",
-            "hazard ratio",
-            "hazard ratio (hr)",
-            "hazard ratio, log",
-        }
+        or effect_measure is None
         or expected_analysis["p_value_relation"] not in {"lt", "le", "eq"}
         or not 0 < Decimal(str(expected_analysis["p_value"])) <= Decimal("0.05")
-        or not 0 < parameter < 1
-        or not ci_upper < 1
+        or not ratio_supports_benefit
         or not arm_measurements_support_direction
     ):
         raise ValueError("ClinicalTrials.gov endpoint fails the bounded benefit rule")

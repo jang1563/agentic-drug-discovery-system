@@ -55,10 +55,17 @@
       "pattern": "^[a-z][a-z0-9_]{0,127}$"
     },
     "effect_measure": {
-      "const": "hazard_ratio"
+      "enum": [
+        "hazard_ratio",
+        "odds_ratio",
+        "risk_ratio"
+      ]
     },
     "effect_measure_favorable_direction": {
-      "const": "lower_is_better"
+      "enum": [
+        "lower_is_better",
+        "higher_is_better"
+      ]
     },
     "safety_measure": {
       "const": "serious_adverse_event_risk_difference"
@@ -110,5 +117,42 @@
       "type": "object",
       "description": "Review metadata only; source measurements are not accepted here."
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "effect_measure": {
+            "const": "hazard_ratio"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "effect_measure_favorable_direction": {
+            "const": "lower_is_better"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "effect_measure": {
+            "enum": [
+              "odds_ratio",
+              "risk_ratio"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "effect_measure_favorable_direction": {
+            "const": "higher_is_better"
+          }
+        }
+      }
+    }
+  ]
 }

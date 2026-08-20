@@ -4,6 +4,12 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Expanded cross-disease clinical conformance beyond the hazard-ratio-only path. Shared
+  ratio-effect semantics now support hazard ratio with `lower_is_better` and odds/risk ratios with
+  `higher_is_better` across ClinicalTrials.gov ingestion, reviewer mapping, non-pooled synthesis,
+  typed study records, and clinical evidence tensors. Added an explicitly synthetic ulcerative-
+  colitis (`MONDO:0005101`) M6-to-clinical conformance slice; it contains no real intervention,
+  trial, measurement, reviewer, clinical conclusion, or Biohub integration.
 - Added the first generic M6 cell-state and perturbation handoff. A dependency-free strict reader,
   Draft 2020-12 Schema, synthetic two-source fixture, public API, console command, release audit,
   and adversarial tests preserve disease/target/perturbation/cell/tissue/model/assay/endpoint

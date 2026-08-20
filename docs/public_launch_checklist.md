@@ -21,7 +21,8 @@ are in `docs/23_clinical_portfolio_endpoint_mapping.md`; typed policy replanning
 resume are in `docs/24_policy_replanning_and_resume.md`; cutoff-safe matched and sealed policy
 evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`; independently curated held-out
 preregistration and stage-stratified uncertainty are in
-`docs/26_independent_heldout_evaluation.md`. The external scorer is under `benchmark/`,
+`docs/26_independent_heldout_evaluation.md`; the synthetic cross-disease UC conformance boundary is
+in `docs/41_ulcerative_colitis_conformance_slice.md`. The external scorer is under `benchmark/`,
 `scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
@@ -44,6 +45,10 @@ validated.
 - [x] Empirical-template cluster-superpopulation calibration binds the exact conditional report,
   preserves all known truths, reports realized dominance without filtering, and carries an explicit
   no-external-transportability boundary.
+- [x] Hazard-, odds-, and risk-ratio semantics use one fixed measure/direction contract across
+  provider extraction, semantic promotion, endpoint mapping, synthesis, and evidence cells.
+- [x] The ulcerative-colitis artifacts pass synthetic cross-disease conformance while remaining
+  explicitly outside real-source validation, independent disease-slice review, and therapeutic claims.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.
