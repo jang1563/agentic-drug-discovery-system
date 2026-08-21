@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a project-internal, outcome-specific risk-of-bias contract and real two-trial olokizumab
+  MTX-IR execution. Exact ClinicalTrials.gov fields and official protocol/SAP PDF hashes, pages,
+  sections, and dates now support five canonical domain judgments per Week-12 ACR20 outcome.
+  Selected-arm STARTED counts exactly match endpoint denominators, both dated SAPs precede primary
+  completion, and both overall judgments remain conservatively `some_concerns` because public
+  aggregate sources omit allocation-audit, realized-unblinding, and complete protocol-deviation
+  details. The integrity-bound follow-on resolves only `risk_of_bias_not_assessed`; four transport
+  blockers remain and pooling, transport, treatment, and independent-review flags stay false.
 - Added an independent olokizumab MTX-inadequate-response phase 3 replication using
   `NCT02760368` and `NCT02760407`. The exact provider, mapping, non-pooled synthesis, decision, and
   population-diagnostic path now records two trials in one reviewed stratum, removing the prior

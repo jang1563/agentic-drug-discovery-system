@@ -70,6 +70,12 @@ month-precision registry chronology with conservative period-end normalization. 
 blockers and the workflow `HOLD` remain; no pooled, transported, safety, or treatment conclusion is
 made.
 
+The next follow-on binds each Week-12 ACR20 outcome to exact registry fields and the official
+protocol/SAP PDF hash, page, and section. Both project-internal trial assessments are
+`some_concerns`: selected-arm denominators are complete and the dated SAPs precede primary
+completion, while public aggregate sources omit allocation-audit, realized-unblinding, and complete
+deviation details. This resolves only `risk_of_bias_not_assessed`; four transport blockers remain.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -143,6 +149,10 @@ made.
   `docs/ra_olokizumab_mtx_ir_replication_spec.json`, and
   `docs/ra_olokizumab_mtx_ir_replication_report.json` for partial-date provenance, independent
   MTX-IR two-trial support, the exact blocker delta, and the remaining non-transport boundary.
+- Inspect `docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md`,
+  `docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json`, and
+  `docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json` for the outcome-specific public-source
+  judgments, denominator/chronology checks, exact PDF/registry provenance, and narrow blocker delta.
 - Inspect `docs/23_clinical_portfolio_endpoint_mapping.md` and
   `tests/test_clinical_portfolio.py` for exact-set multi-job/bundle preflight, payload-free output,
   reviewer-approved ontology identity, append-only mapping continuity, and atomic failure controls.
@@ -330,6 +340,9 @@ outside both public release surfaces.
 | `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md` | Independent MTX-IR same-stratum execution, source-date precision, blocker delta, and HOLD boundary. |
 | `docs/ra_olokizumab_mtx_ir_replication_spec.json` | Exact reviewed MTX-IR stratum bindings and source-field fingerprints. |
 | `docs/ra_olokizumab_mtx_ir_replication_report.json` | Integrity-bound two-trial support, source effects, safety aggregates, remaining blockers, and prohibited-inference flags. |
+| `docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md` | Outcome-specific judgments, denominator and chronology checks, source provenance, and blocker delta. |
+| `docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json` | Reviewed trial/arm/domain bindings with registry-field and protocol/SAP-page citations. |
+| `docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json` | Integrity-bound judgments, source hashes, diagnostics, cautions, and remaining transport blockers. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |

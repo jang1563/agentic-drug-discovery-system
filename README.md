@@ -590,6 +590,11 @@ system or full trajectory atlas described in the roadmap. Honest status:
   two trials and removes the distinct-strata and no-replication blockers, while retaining five
   transport blockers and a workflow `HOLD`. The provider preserves the registry's month-precision
   primary completion date and exposes its conservative period-end normalization.
+  `docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md` then binds both Week-12 ACR20 outcomes to
+  exact registry fields and official protocol/SAP PDF hashes, pages, and sections. Both trial-level
+  assessments are `some_concerns`; complete selected-arm denominators and pre-completion SAP dates
+  are retained. This resolves only `risk_of_bias_not_assessed`, leaving four transport blockers and
+  every pooling, transport, safety, and treatment-recommendation flag false.
   `docs/22_clinical_benefit_risk_synthesis.md` defines the explicit, source-disjoint, non-pooled
   cross-trial synthesis contract, and `docs/23_clinical_portfolio_endpoint_mapping.md` defines the
   multi-bundle portfolio transaction and append-only reviewer-approved mapping ledger.
@@ -722,6 +727,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md` | Humans + agents | Independent MTX-IR same-stratum selection, partial-date provenance, non-pooled execution, blocker delta, and remaining transport boundary. |
 | `docs/ra_olokizumab_mtx_ir_replication_spec.json` | Machines + reviewers | Exact reviewed two-trial MTX-IR stratum declarations and source-field fingerprints. |
 | `docs/ra_olokizumab_mtx_ir_replication_report.json` | Machines + reviewers | Integrity-bound two-trial stratum support, source effects, safety aggregates, remaining blockers, and prohibited-inference flags. |
+| `docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md` | Humans + agents | Outcome-specific domain judgments, denominator and chronology checks, exact source provenance, and narrow blocker delta. |
+| `docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json` | Machines + reviewers | Reviewer-authored trial/arm/domain bindings with registry field and protocol/SAP page citations. |
+| `docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json` | Machines + reviewers | Integrity-bound trial judgments, source hashes, denominator/chronology diagnostics, cautions, and remaining transport blockers. |
 | `docs/22_clinical_benefit_risk_synthesis.md` | Humans + agents | Explicit cross-trial selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |

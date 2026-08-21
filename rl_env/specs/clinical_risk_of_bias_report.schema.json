@@ -1,0 +1,436 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_risk_of_bias_report.schema.json",
+  "title": "Outcome-specific clinical risk-of-bias assessment report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "analysis_id",
+    "spec_sha256",
+    "method_id",
+    "transport_analysis_id",
+    "transport_report_integrity_sha256",
+    "endpoint_family",
+    "outcome_time_frame",
+    "review",
+    "trials",
+    "status",
+    "prior_transportability_blockers",
+    "resolved_transportability_blockers",
+    "remaining_transportability_blockers",
+    "assessment_cautions",
+    "source_content_hashes",
+    "risk_of_bias_assessed",
+    "pooling_performed",
+    "transport_effect_estimated",
+    "treatment_recommendation_supported",
+    "independent_external_review_completed",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-risk-of-bias-report.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "analysis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spec_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "method_id": {
+      "const": "adds.project-internal-outcome-specific-risk-of-bias.v1"
+    },
+    "transport_analysis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transport_report_integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "endpoint_family": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcome_time_frame": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    },
+    "trials": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/trial"
+      }
+    },
+    "status": {
+      "const": "project_internal_outcome_specific_assessment_complete"
+    },
+    "prior_transportability_blockers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "contains": {
+        "const": "risk_of_bias_not_assessed"
+      },
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "resolved_transportability_blockers": {
+      "const": [
+        "risk_of_bias_not_assessed"
+      ]
+    },
+    "remaining_transportability_blockers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "not": {
+        "contains": {
+          "const": "risk_of_bias_not_assessed"
+        }
+      },
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "assessment_cautions": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_content_hashes": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "risk_of_bias_assessed": {
+      "const": true
+    },
+    "pooling_performed": {
+      "const": false
+    },
+    "transport_effect_estimated": {
+      "const": false
+    },
+    "treatment_recommendation_supported": {
+      "const": false
+    },
+    "independent_external_review_completed": {
+      "const": false
+    },
+    "limitations": {
+      "const": [
+        "This is a project-internal, outcome-specific structured judgment based on the exact public registry and protocol/SAP sources cited; it is not an official Cochrane RoB 2 assessment.",
+        "Public aggregate sources do not establish whether every realized unblinding, protocol deviation, or analysis decision was completely reported.",
+        "A complete assessment resolves only the absence-of-assessment blocker; it does not make trials exchangeable, justify pooling, or estimate transportability.",
+        "The assessment does not establish efficacy, comparative safety, clinical acceptability, or a treatment recommendation.",
+        "Independent external scientific review is not implied by project-internal approval."
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewer_id",
+        "reviewer_role",
+        "reviewed_at",
+        "independent_external_review"
+      ],
+      "properties": {
+        "status": {
+          "const": "approved_for_project_internal_risk_of_bias"
+        },
+        "reviewer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewer_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "independent_external_review": {
+          "const": false
+        }
+      }
+    },
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citation_id",
+        "source_role",
+        "source_document_format",
+        "source_locator",
+        "source_content_sha256",
+        "source_document_date",
+        "source_field_pointer",
+        "source_field_sha256",
+        "source_page",
+        "source_section"
+      ],
+      "properties": {
+        "citation_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,127}$"
+        },
+        "source_role": {
+          "enum": [
+            "registry_results",
+            "protocol_sap"
+          ]
+        },
+        "source_document_format": {
+          "enum": [
+            "clinicaltrials.gov-study-v2",
+            "application/pdf"
+          ]
+        },
+        "source_locator": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "source_content_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_document_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "source_field_pointer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_field_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_page": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "source_section": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain_id",
+        "judgment",
+        "rationale",
+        "citation_ids"
+      ],
+      "properties": {
+        "domain_id": {
+          "enum": [
+            "randomization_process",
+            "deviations_from_intended_interventions",
+            "missing_outcome_data",
+            "measurement_of_the_outcome",
+            "selection_of_the_reported_result"
+          ]
+        },
+        "judgment": {
+          "enum": [
+            "low",
+            "some_concerns",
+            "high",
+            "insufficient_information"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "citation_ids": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "trial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trial_id",
+        "design_id",
+        "endpoint_id",
+        "candidate_result_group_id",
+        "comparator_result_group_id",
+        "candidate_flow_group_id",
+        "comparator_flow_group_id",
+        "candidate_started",
+        "comparator_started",
+        "candidate_primary_endpoint_denominator",
+        "comparator_primary_endpoint_denominator",
+        "primary_endpoint_denominator_complete",
+        "protocol_sap_document_date",
+        "primary_completion_date",
+        "protocol_sap_precedes_primary_completion",
+        "source_content_hashes",
+        "citations",
+        "domains",
+        "overall_judgment",
+        "unresolved_concerns"
+      ],
+      "properties": {
+        "trial_id": {
+          "type": "string",
+          "pattern": "^NCT[0-9]{8}$"
+        },
+        "design_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "endpoint_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_result_group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparator_result_group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_flow_group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparator_flow_group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_started": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "comparator_started": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "candidate_primary_endpoint_denominator": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "comparator_primary_endpoint_denominator": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "primary_endpoint_denominator_complete": {
+          "type": "boolean"
+        },
+        "protocol_sap_document_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "primary_completion_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$"
+        },
+        "protocol_sap_precedes_primary_completion": {
+          "type": "boolean"
+        },
+        "source_content_hashes": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "citations": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/citation"
+          }
+        },
+        "domains": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/domain"
+          }
+        },
+        "overall_judgment": {
+          "enum": [
+            "low",
+            "some_concerns",
+            "high",
+            "insufficient_information"
+          ]
+        },
+        "unresolved_concerns": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

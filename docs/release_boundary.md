@@ -152,6 +152,13 @@ month-precision source date and its conservative period-end normalization. Sourc
 jobs, manifests, full states, and the decision package remain excluded. Five transport blockers,
 non-pooling, a workflow `HOLD`, and all prohibited-inference flags remain explicit.
 
+`docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json` and
+`docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json` add a project-internal outcome-specific
+follow-on. Exact public registry fields and official protocol/SAP PDF hashes, pages, sections, and
+dates are retained without shipping source bytes. This resolves only `risk_of_bias_not_assessed`;
+four transport blockers and all no-pooling, no-transport, no-treatment, and no-independent-review
+boundaries remain explicit. This is not an official Cochrane RoB 2 assessment.
+
 The cross-trial synthesis surface contains explicit synthetic selection examples, typed
 trial-level outputs, source evidence IDs, content hashes, and payload-free aggregate records of
 external PALOMA-2/3 and olokizumab executions. It does not include the real review packets, full

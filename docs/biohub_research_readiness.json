@@ -366,6 +366,36 @@
       "path": "docs/ra_olokizumab_mtx_ir_replication_report.json",
       "sha256": "51b7c96d7e085c983a11748034ca5677934d762b67a5b333354258312046c9bd",
       "kind": "document"
+    },
+    {
+      "anchor_id": "clinical-risk-of-bias-core",
+      "path": "agentic_drug_discovery/clinical_risk_of_bias.py",
+      "sha256": "a5d858cdf38b4c732ec5488906188ef74981919a1de67146296d7c9081fc3e6a",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "clinical-risk-of-bias-tests",
+      "path": "tests/test_clinical_risk_of_bias.py",
+      "sha256": "a349363f3b6dc05fb457ee7bd67ad9dfec0cfe8b41c4222ee10712de60ea680d",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "ra-olokizumab-risk-of-bias-document",
+      "path": "docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md",
+      "sha256": "4ff154acee295555ac70090aa6adee4780a7267fc0f0af29835c0dee214d4e8e",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "ra-olokizumab-risk-of-bias-spec",
+      "path": "docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json",
+      "sha256": "be2ebefe450d7ef5f334e9df217630aa3a0fad18386b73eabfdd1d76993ea147",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "ra-olokizumab-risk-of-bias-report",
+      "path": "docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json",
+      "sha256": "2e6e95177ea562b97f6962324cef5be87050448c4c15d12c7bb781d8247fd96d",
+      "kind": "document"
     }
   ],
   "maturity_ledger": [
@@ -518,9 +548,9 @@
     },
     {
       "capability_id": "ra-public-registry-contract-validation",
-      "label": "Rheumatoid-arthritis public-registry HOLD, additive tensor, and same-stratum replication validation",
+      "label": "Rheumatoid-arthritis public-registry HOLD, additive tensor, same-stratum replication, and outcome-bias validation",
       "maturity": "implemented_public",
-      "claim": "Source-pinned rheumatoid-arthritis runs preserve a null-crossing ACR20 HOLD, compile a same-candidate non-pooled additive tensor across distinct prior-therapy contexts, and independently replicate two olokizumab trials within one reviewed methotrexate-inadequate-response stratum.",
+      "claim": "Source-pinned rheumatoid-arthritis runs preserve a null-crossing ACR20 HOLD, compile a same-candidate non-pooled additive tensor, independently replicate two olokizumab trials within one reviewed methotrexate-inadequate-response stratum, and complete project-internal source-bound outcome-specific bias judgments.",
       "evidence_anchor_ids": [
         "clinical-effects-core",
         "clinical-provider-core",
@@ -533,18 +563,21 @@
         "ra-olokizumab-additive-tensor-snapshot",
         "ra-olokizumab-mtx-ir-replication-document",
         "ra-olokizumab-mtx-ir-replication-spec",
-        "ra-olokizumab-mtx-ir-replication-report"
+        "ra-olokizumab-mtx-ir-replication-report",
+        "ra-olokizumab-risk-of-bias-document",
+        "ra-olokizumab-risk-of-bias-spec",
+        "ra-olokizumab-risk-of-bias-report"
       ],
       "limitations": [
         "The public repository contains hashes and bounded aggregates, not source bytes, reviewer jobs, or participant-level data.",
-        "Same-stratum support removes two structural blockers but does not establish pooled efficacy, comparative safety, target-population transport, independent scientific validation, or a treatment recommendation."
+        "Same-stratum support and project-internal bias assessment do not establish pooled efficacy, comparative safety, target-population transport, independent scientific validation, or a treatment recommendation."
       ]
     },
     {
       "capability_id": "population-stratified-transport-diagnostic",
       "label": "Fail-closed population-stratified transport diagnostic",
       "maturity": "implemented_public",
-      "claim": "A reviewed, source-bound compiler preserves exact trial analysis populations and prior-therapy strata. One cross-stratum run remains separated, while a follow-on MTX-IR run records two-trial within-stratum support without pooling or emitting a transport effect.",
+      "claim": "A reviewed, source-bound compiler preserves exact trial analysis populations and prior-therapy strata. One cross-stratum run remains separated, a follow-on MTX-IR run records two-trial within-stratum support, and an outcome-specific assessment resolves only the absence-of-assessment blocker without pooling or emitting a transport effect.",
       "evidence_anchor_ids": [
         "population-transport-core",
         "synthesis-tests",
@@ -552,11 +585,33 @@
         "ra-olokizumab-population-transport-report",
         "ra-olokizumab-mtx-ir-replication-document",
         "ra-olokizumab-mtx-ir-replication-spec",
-        "ra-olokizumab-mtx-ir-replication-report"
+        "ra-olokizumab-mtx-ir-replication-report",
+        "clinical-risk-of-bias-core",
+        "clinical-risk-of-bias-tests",
+        "ra-olokizumab-risk-of-bias-document",
+        "ra-olokizumab-risk-of-bias-spec",
+        "ra-olokizumab-risk-of-bias-report"
       ],
       "limitations": [
-        "The follow-on public execution has same-stratum replication but no declared target population, individual-level covariates, preregistered transport model, or risk-of-bias assessment.",
-        "Project-internal descriptive approval is not independent scientific review, external transport validation, clinical acceptability, or a treatment recommendation."
+        "The follow-on public execution has same-stratum replication and a project-internal outcome-specific bias assessment, but no declared target population, individual-level covariates, or preregistered transport model.",
+        "Project-internal descriptive and bias-review approval is not independent scientific review, external transport validation, clinical acceptability, or a treatment recommendation."
+      ]
+    },
+    {
+      "capability_id": "outcome-specific-risk-of-bias",
+      "label": "Outcome-specific public-source risk-of-bias assessment",
+      "maturity": "implemented_public",
+      "claim": "A typed compiler binds five ordered trial-outcome domains to exact registry fields and official protocol/SAP PDF hashes, pages, sections, and dates; replays selected-arm denominator and source-chronology diagnostics; and records a narrow transport-blocker delta.",
+      "evidence_anchor_ids": [
+        "clinical-risk-of-bias-core",
+        "clinical-risk-of-bias-tests",
+        "ra-olokizumab-risk-of-bias-document",
+        "ra-olokizumab-risk-of-bias-spec",
+        "ra-olokizumab-risk-of-bias-report"
+      ],
+      "limitations": [
+        "Both current trial judgments are project-internal some_concerns assessments based on aggregate public sources.",
+        "This is not official Cochrane RoB 2, independent adjudication, participant-level verification, pooling, transport estimation, or treatment guidance."
       ]
     },
     {
@@ -1224,12 +1279,12 @@
     },
     {
       "gap_id": "gap-disease-breadth",
-      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis and rheumatoid arthritis add real provider-level validation, and rheumatoid arthritis now adds a source-disjoint additive tensor plus a fail-closed population-stratified diagnostic, but neither is an independently reviewed end-to-end disease slice or an estimable externally validated transport analysis.",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis and rheumatoid arthritis add real provider-level validation, and rheumatoid arthritis now adds a source-disjoint additive tensor, same-stratum replication, and project-internal outcome-specific bias assessment, but neither is an independently reviewed end-to-end disease slice or an estimable externally validated transport analysis.",
       "status": "open",
       "closure_evidence_required": [
         "at least one independently reviewed non-synthetic immune or inflammatory disease slice",
         "scientific-owner review of the olokizumab endpoint mapping and population strata",
-        "a second trial in at least one reviewed stratum or transport-compatible individual-level covariates",
+        "independent outcome-specific risk-of-bias adjudication or transport-compatible individual-level covariates",
         "a declared target population and preregistered transport model",
         "documented ambiguity, direction-reversal, and rejection cases"
       ]
@@ -1272,7 +1327,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Preregister and execute a source-bound trial-level risk-of-bias assessment for the two MTX-IR trials, while treating target-population declaration, transport-compatible covariates, and an estimable transport model as separate prerequisites."
+    "next_decision": "Declare a target population and preregister an estimable transport model only after obtaining transport-compatible covariates; separately seek independent adjudication of the completed project-internal outcome-specific bias assessment."
   },
-  "integrity_sha256": "d6eb91a6d222974f44817043d60ca8f5f079adbb7ffe58d38b3a60bec8fbc291"
+  "integrity_sha256": "807de398516756d283d594d3f0cd61c14eb82fa0055e64feed04d917bc2f2d0f"
 }

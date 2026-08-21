@@ -353,6 +353,16 @@ model, and risk-of-bias assessment remain absent, so transport is still not esti
 `docs/ra_olokizumab_mtx_ir_replication_spec.json`, and
 `docs/ra_olokizumab_mtx_ir_replication_report.json`.
 
+The outcome-specific follow-on binds both Week-12 ACR20 assessments to exact registry fields and
+official protocol/SAP PDF hashes, pages, sections, and chronology. Selected-arm STARTED counts
+match primary endpoint denominators in both trials, while public-source limits on allocation audits,
+realized unblinding, and complete protocol deviations retain `some_concerns` overall. The new
+integrity-bound report resolves only the absence-of-assessment blocker; target population,
+aggregate-only evidence, individual covariates, and a preregistered transport model remain open.
+See `docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md`,
+`docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json`, and
+`docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json`.
+
 The current external validation also runs one continuous source-pinned senicapoc program through
 five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the
 approved PALOMA-2/3 exact-set portfolio through typed replan, endpoint mapping, and non-pooled

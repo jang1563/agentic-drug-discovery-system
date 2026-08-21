@@ -13,6 +13,9 @@ Script groups:
 - `audit/validate_policy_evaluation_snapshot.py`: binds the public payload-free sealed-evaluation
   aggregate to the current evaluation and clinical-promotion implementations and checks its
   claim and release boundaries.
+- `audit/compile_olokizumab_mtx_ir_risk_of_bias.py`: replays the reviewed two-trial Week-12
+  ACR20 risk-of-bias spec and report from exact external ClinicalTrials.gov JSON and official
+  protocol/SAP PDF bytes; source payloads remain outside Git.
 - `adds-pinned-ingestion` is installed from `agentic_drug_discovery.ingestion_cli`. It captures
   immutable raw source bundles outside Git, verifies reviewer-selected CDC MMWR evidence with
   `extract-cdc-mmwr`, verifies NCBI PubMed treatment-gap evidence with `extract-ncbi-pubmed`, and
