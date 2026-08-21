@@ -98,7 +98,9 @@ auditable. It is not a meta-analysis, adjusted indirect comparison, causal trans
 comparative-safety conclusion, efficacy validation, clinical acceptability judgment, or treatment
 recommendation.
 
-The next research decision is narrower and testable: obtain independent scientific-owner review of
-the two stratum declarations, then select a target population and acquire either a same-stratum
-replication or individual-level/transport-compatible covariates before preregistering an estimable
-transport model.
+The same-stratum replication branch is now complete for the MTX-inadequate-response context; see
+`docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`. That follow-on removes the distinct-
+strata and no-within-stratum-replication blockers, but it does not retrofit exchangeability or a
+transport effect into this original cross-stratum report. Independent scientific review, a target
+population, individual-level or transport-compatible covariates, a preregistered transport model,
+and risk-of-bias assessment remain separate requirements.

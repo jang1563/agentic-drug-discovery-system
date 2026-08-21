@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added an independent olokizumab MTX-inadequate-response phase 3 replication using
+  `NCT02760368` and `NCT02760407`. The exact provider, mapping, non-pooled synthesis, decision, and
+  population-diagnostic path now records two trials in one reviewed stratum, removing the prior
+  distinct-strata and no-within-stratum-replication blockers without estimating a pooled or
+  transported effect. ClinicalTrials.gov day, month, and year date precision is now preserved in
+  sanitized chronology metadata; partial periods use a declared conservative period-end boundary
+  and incorrect boundaries fail closed. The public research note, reviewed spec, integrity-bound
+  report, and regression tests retain five unresolved transport blockers and a workflow `HOLD`.
 - Added a reviewed, source-bound population-stratified transport diagnostic. Exact olokizumab
   synthesis, trial, endpoint, ITT population, registry-document, and official-title hashes now
   preserve methotrexate- and TNF-inhibitor-inadequate-response strata without free-text inference.

@@ -63,6 +63,13 @@ inadequate-response strata. Descriptive stratification completes, but transport 
 blocked because the release has no declared target population, within-stratum replication,
 individual-level covariates, preregistered transport model, or risk-of-bias assessment.
 
+An independent follow-on replaces the TNFi-IR member with MTX-IR phase 3 trial `NCT02760368`.
+The exact non-pooled report now has two trials in one reviewed MTX-IR stratum and removes the
+distinct-strata and no-within-stratum-replication blockers. It also exercises explicit
+month-precision registry chronology with conservative period-end normalization. Five transport
+blockers and the workflow `HOLD` remain; no pooled, transported, safety, or treatment conclusion is
+made.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -132,6 +139,10 @@ individual-level covariates, preregistered transport model, or risk-of-bias asse
 - Inspect `docs/47_ra_olokizumab_population_stratified_transport.md` and
   `docs/ra_olokizumab_population_transport_report.json` for exact prior-therapy strata and the
   fail-closed transport estimability result.
+- Inspect `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`,
+  `docs/ra_olokizumab_mtx_ir_replication_spec.json`, and
+  `docs/ra_olokizumab_mtx_ir_replication_report.json` for partial-date provenance, independent
+  MTX-IR two-trial support, the exact blocker delta, and the remaining non-transport boundary.
 - Inspect `docs/23_clinical_portfolio_endpoint_mapping.md` and
   `tests/test_clinical_portfolio.py` for exact-set multi-job/bundle preflight, payload-free output,
   reviewer-approved ontology identity, append-only mapping continuity, and atomic failure controls.
@@ -316,6 +327,9 @@ outside both public release surfaces.
 | `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` | Payload-free two-source trial aggregates, hashes, normalized precision, decision result, and negative claims. |
 | `docs/47_ra_olokizumab_population_stratified_transport.md` | Source-bound prior-therapy stratification and explicit transport estimability boundary. |
 | `docs/ra_olokizumab_population_transport_report.json` | Integrity-bound strata, trial-level effects, support counts, blockers, and prohibited-inference flags. |
+| `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md` | Independent MTX-IR same-stratum execution, source-date precision, blocker delta, and HOLD boundary. |
+| `docs/ra_olokizumab_mtx_ir_replication_spec.json` | Exact reviewed MTX-IR stratum bindings and source-field fingerprints. |
+| `docs/ra_olokizumab_mtx_ir_replication_report.json` | Integrity-bound two-trial support, source effects, safety aggregates, remaining blockers, and prohibited-inference flags. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |
@@ -325,7 +339,7 @@ outside both public release surfaces.
 | `agentic_drug_discovery/cdc_mmwr.py` | CDC MMWR article and reviewer-selected evidence verification with excerpt removal. |
 | `agentic_drug_discovery/ncbi_pubmed.py` | NCBI PubMed EFetch article and treatment-gap evidence verification with excerpt and anchor removal. |
 | `agentic_drug_discovery/chembl_activity.py` | ChEMBL release/resource reconciliation and typed functional-activity verification with assay-text removal. |
-| `agentic_drug_discovery/clinicaltrials_gov.py` | ClinicalTrials.gov study, arm, population, endpoint, statistical-analysis, and serious-adverse-event verification with payload removal. |
+| `agentic_drug_discovery/clinicaltrials_gov.py` | ClinicalTrials.gov study, arm, population, endpoint, statistical-analysis, serious-adverse-event, and day/month/year chronology verification with payload removal. |
 | `agentic_drug_discovery/clinical_portfolio.py` | Atomic exact-set multi-trial extraction with source-hash disjointness and payload-free output. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Strict approved-mapping parser, endpoint/safety fingerprint compiler, approval chronology, and replay validation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Deterministic source-ledger compiler for supported trial-level ratio or percentage-point effects and serious-event risk differences without pooling. |

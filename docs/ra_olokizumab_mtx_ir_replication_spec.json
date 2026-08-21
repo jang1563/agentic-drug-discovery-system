@@ -1,0 +1,48 @@
+{
+  "analysis_id": "CHEMBL1743050:MONDO:0008383:mtx-ir-same-stratum-replication:v1",
+  "analysis_mode": "descriptive_population_stratification",
+  "bindings": [
+    {
+      "citation": {
+        "source_content_sha256": "62415b71d08c8d5ccbe0b03be45bad4ad8bd734d43de461be52278314fbb59d8",
+        "source_document_format": "clinicaltrials.gov-study-v2",
+        "source_field_pointer": "/protocolSection/identificationModule/officialTitle",
+        "source_field_sha256": "9da94dc8b9604e29c6f8805f4344f3d6cff0130741665a9b8f8db4e39b9f495b"
+      },
+      "design_id": "NCT02760407:design",
+      "endpoint_id": "NCT02760407:endpoint:primary-0",
+      "population_context": "Moderately to severely active rheumatoid arthritis inadequately controlled by methotrexate therapy",
+      "population_id": "NCT02760407:population:itt",
+      "stratum_id": "methotrexate_inadequate_response",
+      "stratum_label": "Methotrexate inadequate response",
+      "trial_id": "NCT02760407"
+    },
+    {
+      "citation": {
+        "source_content_sha256": "7d0f38ee584e2af66cc7b4ebec8d2cc8b86327183a887eba6c5ce1ff96a2d1e7",
+        "source_document_format": "clinicaltrials.gov-study-v2",
+        "source_field_pointer": "/protocolSection/identificationModule/officialTitle",
+        "source_field_sha256": "f141b8f74b9350933d626c57d063cc67fce7aabaf83c8ac48ec3aff270170229"
+      },
+      "design_id": "NCT02760368:design",
+      "endpoint_id": "NCT02760368:endpoint:primary-0",
+      "population_context": "Moderately to severely active rheumatoid arthritis inadequately controlled by methotrexate therapy",
+      "population_id": "NCT02760368:population:itt",
+      "stratum_id": "methotrexate_inadequate_response",
+      "stratum_label": "Methotrexate inadequate response",
+      "trial_id": "NCT02760368"
+    }
+  ],
+  "review": {
+    "independent_external_review": false,
+    "reviewed_at": "2026-08-21T02:50:00+00:00",
+    "reviewer_id": "project-scientific-owner",
+    "reviewer_role": "project_scientific_owner",
+    "status": "approved_for_descriptive_stratification"
+  },
+  "schema_version": "adds.clinical-population-transport-spec.v1",
+  "stratification_axis_id": "prior_therapy_response_context",
+  "stratification_axis_label": "Prior inadequate-response therapy",
+  "synthesis_id": "CHEMBL1743050:MONDO:0008383:acr20-rd-mtx-ir-replication-benefit-risk:v1",
+  "target_population_id": null
+}

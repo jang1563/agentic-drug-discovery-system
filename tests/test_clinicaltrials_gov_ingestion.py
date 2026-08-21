@@ -230,9 +230,7 @@ def run_manifest(
 
 class ClinicalTrialsGovIngestionTests(unittest.TestCase):
     def test_ra_acr20_risk_difference_snapshot_retains_hold_boundary(self) -> None:
-        snapshot_path = (
-            ROOT / "docs/ra_acr20_risk_difference_validation_snapshot.json"
-        )
+        snapshot_path = ROOT / "docs/ra_acr20_risk_difference_validation_snapshot.json"
         snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
         self.assertEqual(
             snapshot["schema_version"],
@@ -276,9 +274,7 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
             },
         )
         self.assertFalse(selected["population_boundary"]["rolewise_counts_match"])
-        self.assertFalse(
-            selected["population_boundary"]["same_participants_inferred"]
-        )
+        self.assertFalse(selected["population_boundary"]["same_participants_inferred"])
         self.assertFalse(
             snapshot["decision_layer"]["real_multi_trial_additive_tensor_compiled"]
         )
@@ -297,8 +293,7 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
 
     def test_uc_maintenance_risk_difference_snapshot_is_bounded(self) -> None:
         snapshot_path = (
-            ROOT
-            / "docs/uc_maintenance_risk_difference_validation_snapshot.json"
+            ROOT / "docs/uc_maintenance_risk_difference_validation_snapshot.json"
         )
         snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
         self.assertEqual(
@@ -373,9 +368,7 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
                 "promotion_status": "promoted",
                 "recommended_decision": "advance",
                 "final_stage": "regulatory_postmarket",
-                "bounded_interpretation": (
-                    "posted_primary_risk_difference_benefit"
-                ),
+                "bounded_interpretation": ("posted_primary_risk_difference_benefit"),
             },
         )
         self.assertEqual(len(snapshot["screened_controls"]), 5)
@@ -656,6 +649,7 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         )
         self.assertEqual(metadata["safety"]["event_category"], "SERIOUS")
         self.assertEqual(metadata["safety"]["event_term_count"], 2)
+        self.assertNotIn("source_chronology", metadata)
         self.assertEqual(
             metadata["population_alignment"],
             {
@@ -673,15 +667,71 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         self.assertNotIn("resultsection", encoded)
         self.assertNotIn("raw_payload", encoded)
 
+    def test_partial_registry_dates_use_conservative_period_end(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        source["protocolSection"]["statusModule"]["primaryCompletionDateStruct"][
+            "date"
+        ] = "2024-02"
+        source["protocolSection"]["statusModule"]["resultsFirstPostDateStruct"][
+            "date"
+        ] = "2024"
+        job = clinical_job()
+        job["record"]["observed_at"] = "2024-02-29"
+        job["record"]["available_at"] = "2024-12-31"
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        extracted = extract_clinicaltrials_gov_ingestion_job(
+            job, clinical_bundle(payload=payload)
+        )
+
+        self.assertEqual(
+            extracted["records"][0]["metadata"]["source_chronology"],
+            {
+                "observed_at_source": "2024-02",
+                "observed_at_precision": "month",
+                "observed_at_normalized": "2024-02-29",
+                "available_at_source": "2024",
+                "available_at_precision": "year",
+                "available_at_normalized": "2024-12-31",
+                "partial_date_normalization": "conservative_period_end",
+            },
+        )
+
+    def test_partial_registry_date_rejects_non_period_end_job_date(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        source["protocolSection"]["statusModule"]["primaryCompletionDateStruct"][
+            "date"
+        ] = "2024-06"
+        job = clinical_job()
+        job["record"]["observed_at"] = "2024-06-29"
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        with self.assertRaisesRegex(ValueError, "evidence chronology mismatch"):
+            extract_clinicaltrials_gov_ingestion_job(
+                job, clinical_bundle(payload=payload)
+            )
+
+    def test_malformed_registry_period_fails_closed(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        source["protocolSection"]["statusModule"]["primaryCompletionDateStruct"][
+            "date"
+        ] = "2024-13"
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        with self.assertRaisesRegex(ValueError, "not a valid calendar period"):
+            extract_clinicaltrials_gov_ingestion_job(
+                clinical_job(), clinical_bundle(payload=payload)
+            )
+
     def test_source_candidate_acronym_requires_ledger_preapproval(self) -> None:
         source = json.loads(SOURCE.read_text())
         job = clinical_job()
         source["protocolSection"]["armsInterventionsModule"]["interventions"][0][
             "otherNames"
         ].append("TD")
-        source["resultsSection"]["adverseEventsModule"]["eventGroups"][0][
-            "title"
-        ] = "TD"
+        source["resultsSection"]["adverseEventsModule"]["eventGroups"][0]["title"] = (
+            "TD"
+        )
         job["trial"]["candidate_aliases"] = ["Test Drug", "TD"]
         job["trial"]["safety"]["arms"][0]["source_group_title"] = "TD"
         payload = (json.dumps(source, sort_keys=True) + "\n").encode()
@@ -692,9 +742,7 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
             extracted,
             {bundle.receipt.receipt_id: bundle},
         )
-        approved_state = clinical_state(
-            program_id="clinical-design-approved-acronym"
-        )
+        approved_state = clinical_state(program_id="clinical-design-approved-acronym")
         approved_candidate = replace(
             approved_state.candidates[0],
             attributes={
@@ -729,9 +777,9 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
     def test_unrelated_source_acronym_cannot_prove_candidate_alias(self) -> None:
         source = json.loads(SOURCE.read_text())
         job = clinical_job()
-        source["resultsSection"]["adverseEventsModule"]["seriousEvents"][0][
-            "term"
-        ] = "TD"
+        source["resultsSection"]["adverseEventsModule"]["seriousEvents"][0]["term"] = (
+            "TD"
+        )
         job["trial"]["candidate_aliases"] = ["Test Drug", "TD"]
         payload = (json.dumps(source, sort_keys=True) + "\n").encode()
 
@@ -907,9 +955,9 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
     ) -> None:
         source = json.loads(SOURCE.read_text())
         job = clinical_job()
-        outcome = source["resultsSection"]["outcomeMeasuresModule"][
-            "outcomeMeasures"
-        ][0]
+        outcome = source["resultsSection"]["outcomeMeasuresModule"]["outcomeMeasures"][
+            0
+        ]
         outcome.update(
             {
                 "title": "Percentage of Participants in Remission",
@@ -917,9 +965,9 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
                 "unitOfMeasure": "Percentage of Participants",
             }
         )
-        source["protocolSection"]["outcomesModule"]["primaryOutcomes"][0][
-            "measure"
-        ] = "Percentage of Participants in Remission"
+        source["protocolSection"]["outcomesModule"]["primaryOutcomes"][0]["measure"] = (
+            "Percentage of Participants in Remission"
+        )
         measurements = outcome["classes"][0]["categories"][0]["measurements"]
         measurements[0]["value"] = "34.3"
         measurements[1]["value"] = "11.1"
@@ -999,9 +1047,9 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
     def test_proportion_risk_difference_accepts_bounded_binary_counts(self) -> None:
         source = json.loads(SOURCE.read_text())
         job = clinical_job()
-        outcome = source["resultsSection"]["outcomeMeasuresModule"][
-            "outcomeMeasures"
-        ][0]
+        outcome = source["resultsSection"]["outcomeMeasuresModule"]["outcomeMeasures"][
+            0
+        ]
         outcome.update(
             {
                 "title": "Participants Achieving ACR20 at Week 12",
@@ -1009,9 +1057,9 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
                 "unitOfMeasure": "Participants",
             }
         )
-        source["protocolSection"]["outcomesModule"]["primaryOutcomes"][0][
-            "measure"
-        ] = "Participants Achieving ACR20 at Week 12"
+        source["protocolSection"]["outcomesModule"]["primaryOutcomes"][0]["measure"] = (
+            "Participants Achieving ACR20 at Week 12"
+        )
         measurements = outcome["classes"][0]["categories"][0]["measurements"]
         measurements[0]["value"] = "36"
         measurements[1]["value"] = "18"

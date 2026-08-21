@@ -184,7 +184,7 @@
     {
       "anchor_id": "synthesis-tests",
       "path": "tests/test_clinical_benefit_risk_synthesis.py",
-      "sha256": "960af3fe240c581f5f19768f26a8b130092fd17d3e5d63498b5bb9c6992f702a",
+      "sha256": "da9e8d87cac5c632573b6ab007ee1c0a350a38d8b481aad195a8ee605cf67f13",
       "kind": "test"
     },
     {
@@ -292,13 +292,13 @@
     {
       "anchor_id": "clinical-provider-core",
       "path": "agentic_drug_discovery/clinicaltrials_gov.py",
-      "sha256": "28a9e2d3ba4ffbf716b209f04c8a2f3624473d0cbffa862b52c54e6e93e05009",
+      "sha256": "8e5c9c0e243f5ac9e9819e96727f618c8ea24b97034b18a69560935eab308399",
       "kind": "implementation"
     },
     {
       "anchor_id": "clinical-provider-tests",
       "path": "tests/test_clinicaltrials_gov_ingestion.py",
-      "sha256": "c80e8428a75a321354518a2eea0d56f5f765bec99c5e6e4a2ef85751fb3be215",
+      "sha256": "89e0b1c0061dc50373e1e01f61e28d10c5d3005e435f0e67812e96b7d3532702",
       "kind": "test"
     },
     {
@@ -341,13 +341,31 @@
       "anchor_id": "ra-olokizumab-population-transport-document",
       "path": "docs/47_ra_olokizumab_population_stratified_transport.md",
       "kind": "document",
-      "sha256": "50bef59436609e490c2e2c64c15f6d7a7855ff35be0322db4c9a1576f82cead8"
+      "sha256": "a663f526df73aaa4b0c22802b84a1c2ec99243e450692015f593962deff6939e"
     },
     {
       "anchor_id": "ra-olokizumab-population-transport-report",
       "path": "docs/ra_olokizumab_population_transport_report.json",
       "kind": "document",
       "sha256": "7bd1edfb99167051962a7c1e9669c0d1c9b79b450a19b4c2680ad692f94fa893"
+    },
+    {
+      "anchor_id": "ra-olokizumab-mtx-ir-replication-document",
+      "path": "docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md",
+      "sha256": "298a50986e2f7d0ebee0b5b46318091689159947f8f6e7862957f924eb29d7d2",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "ra-olokizumab-mtx-ir-replication-spec",
+      "path": "docs/ra_olokizumab_mtx_ir_replication_spec.json",
+      "sha256": "c947e8581bfbf153080db05c3937c6991be5461b27398c639db223cd03ea7a89",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "ra-olokizumab-mtx-ir-replication-report",
+      "path": "docs/ra_olokizumab_mtx_ir_replication_report.json",
+      "sha256": "51b7c96d7e085c983a11748034ca5677934d762b67a5b333354258312046c9bd",
+      "kind": "document"
     }
   ],
   "maturity_ledger": [
@@ -500,9 +518,9 @@
     },
     {
       "capability_id": "ra-public-registry-contract-validation",
-      "label": "Rheumatoid-arthritis public-registry HOLD and additive tensor validation",
+      "label": "Rheumatoid-arthritis public-registry HOLD, additive tensor, and same-stratum replication validation",
       "maturity": "implemented_public",
-      "claim": "Source-pinned rheumatoid-arthritis runs preserve a null-crossing ACR20 HOLD and compile two same-candidate Week-12 ACR20 trials into a real source-disjoint, non-pooled additive tensor with source-scale precision.",
+      "claim": "Source-pinned rheumatoid-arthritis runs preserve a null-crossing ACR20 HOLD, compile a same-candidate non-pooled additive tensor across distinct prior-therapy contexts, and independently replicate two olokizumab trials within one reviewed methotrexate-inadequate-response stratum.",
       "evidence_anchor_ids": [
         "clinical-effects-core",
         "clinical-provider-core",
@@ -512,26 +530,32 @@
         "ra-acr20-risk-difference-document",
         "ra-acr20-risk-difference-snapshot",
         "ra-olokizumab-additive-tensor-document",
-        "ra-olokizumab-additive-tensor-snapshot"
+        "ra-olokizumab-additive-tensor-snapshot",
+        "ra-olokizumab-mtx-ir-replication-document",
+        "ra-olokizumab-mtx-ir-replication-spec",
+        "ra-olokizumab-mtx-ir-replication-report"
       ],
       "limitations": [
         "The public repository contains hashes and bounded aggregates, not source bytes, reviewer jobs, or participant-level data.",
-        "The two olokizumab populations are not treated as exchangeable; this is not pooled efficacy, comparative safety, independent scientific validation, or a treatment recommendation."
+        "Same-stratum support removes two structural blockers but does not establish pooled efficacy, comparative safety, target-population transport, independent scientific validation, or a treatment recommendation."
       ]
     },
     {
       "capability_id": "population-stratified-transport-diagnostic",
       "label": "Fail-closed population-stratified transport diagnostic",
       "maturity": "implemented_public",
-      "claim": "A reviewed, source-bound compiler preserves exact trial analysis populations and prior-therapy strata, emits trial-level effects without pooling, and records why an aggregate transport effect is not estimable.",
+      "claim": "A reviewed, source-bound compiler preserves exact trial analysis populations and prior-therapy strata. One cross-stratum run remains separated, while a follow-on MTX-IR run records two-trial within-stratum support without pooling or emitting a transport effect.",
       "evidence_anchor_ids": [
         "population-transport-core",
         "synthesis-tests",
         "ra-olokizumab-population-transport-document",
-        "ra-olokizumab-population-transport-report"
+        "ra-olokizumab-population-transport-report",
+        "ra-olokizumab-mtx-ir-replication-document",
+        "ra-olokizumab-mtx-ir-replication-spec",
+        "ra-olokizumab-mtx-ir-replication-report"
       ],
       "limitations": [
-        "The public execution has one trial per reviewed stratum, no declared target population, no individual-level covariates, and no preregistered transport model.",
+        "The follow-on public execution has same-stratum replication but no declared target population, individual-level covariates, preregistered transport model, or risk-of-bias assessment.",
         "Project-internal descriptive approval is not independent scientific review, external transport validation, clinical acceptability, or a treatment recommendation."
       ]
     },
@@ -1248,7 +1272,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Obtain independent scientific-owner review of the olokizumab endpoint mapping and two prior-therapy strata, then declare a target population and acquire same-stratum replication or transport-compatible individual-level covariates before preregistering an estimable transport model."
+    "next_decision": "Preregister and execute a source-bound trial-level risk-of-bias assessment for the two MTX-IR trials, while treating target-population declaration, transport-compatible covariates, and an estimable transport model as separate prerequisites."
   },
-  "integrity_sha256": "881cba980490d48aa2f0eee21ed396ef1bd80476836bc06c8d6108bf19cd7e59"
+  "integrity_sha256": "d6eb91a6d222974f44817043d60ca8f5f079adbb7ffe58d38b3a60bec8fbc291"
 }

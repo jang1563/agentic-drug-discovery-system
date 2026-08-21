@@ -144,6 +144,14 @@ contrast and emits no transport estimate because the target population, within-s
 replication, individual-level covariates, preregistered transport model, and risk-of-bias
 assessment are absent. Project-internal approval is not independent scientific review.
 
+`docs/ra_olokizumab_mtx_ir_replication_spec.json` and
+`docs/ra_olokizumab_mtx_ir_replication_report.json` add the follow-on same-stratum execution. Two
+source-disjoint MTX-inadequate-response phase 3 trials now support one reviewed stratum, removing
+the distinct-strata and no-within-stratum-replication blockers. The provider retains the exact
+month-precision source date and its conservative period-end normalization. Source bytes, real
+jobs, manifests, full states, and the decision package remain excluded. Five transport blockers,
+non-pooling, a workflow `HOLD`, and all prohibited-inference flags remain explicit.
+
 The cross-trial synthesis surface contains explicit synthetic selection examples, typed
 trial-level outputs, source evidence IDs, content hashes, and payload-free aggregate records of
 external PALOMA-2/3 and olokizumab executions. It does not include the real review packets, full
@@ -153,7 +161,8 @@ recommendations.
 The ulcerative-colitis M6, endpoint-mapping, synthesis, and evidence-tensor conformance surface
 remains fully synthetic. Separate UC and RA surfaces use real public ClinicalTrials.gov snapshots
 to validate exact ingestion, direction-aware gating, phase identity, retained uncertainty, and one
-RA source-disjoint additive tensor. They do not extend real-source validation upstream to M6,
+RA source-disjoint additive tensor plus one same-stratum MTX-IR replication. They do not extend
+real-source validation upstream to M6,
 establish population transportability or independent scientific review, or constitute a second
 end-to-end therapeutic result.
 

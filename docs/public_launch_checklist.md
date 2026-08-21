@@ -73,6 +73,10 @@ validated.
 - [x] The follow-on population diagnostic binds exact source fields to the two prior-therapy
   strata, preserves one trial per stratum, and emits no transport estimate while target,
   replication, covariate, transport-model, risk-of-bias, and independent-review gaps remain.
+- [x] The independent MTX-IR follow-on binds `NCT02760407` and `NCT02760368` to one reviewed
+  stratum with two-trial support. It preserves month-precision source chronology, removes only the
+  distinct-strata and no-within-stratum-replication blockers, and retains non-pooling, `HOLD`, five
+  transport blockers, and all prohibited-inference flags.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.

@@ -342,6 +342,17 @@ individual-level covariates, preregistered transport model, or risk-of-bias asse
 See `docs/47_ra_olokizumab_population_stratified_transport.md` and
 `docs/ra_olokizumab_population_transport_report.json`.
 
+An independent MTX-inadequate-response phase 3 trial (`NCT02760368`) now replicates
+`NCT02760407` under the same candidate, dose, comparator, Week-12 ACR20, and source risk-difference
+contract. The provider preserves the source's month-precision primary completion date and applies
+a declared conservative period-end normalization. The exact non-pooled population report records
+two trials in one reviewed MTX-IR stratum, removing the prior distinct-strata and no-within-stratum-
+replication blockers. A target population, individual-level covariates, preregistered transport
+model, and risk-of-bias assessment remain absent, so transport is still not estimable. See
+`docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`,
+`docs/ra_olokizumab_mtx_ir_replication_spec.json`, and
+`docs/ra_olokizumab_mtx_ir_replication_report.json`.
+
 The current external validation also runs one continuous source-pinned senicapoc program through
 five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the
 approved PALOMA-2/3 exact-set portfolio through typed replan, endpoint mapping, and non-pooled

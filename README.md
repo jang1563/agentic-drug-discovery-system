@@ -64,6 +64,7 @@ evidence hashes:
 - RA ACR20 risk-difference HOLD replication: `docs/45_ra_acr20_risk_difference_hold_replication.md`
 - Real source-disjoint RA additive tensor: `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`
 - Fail-closed RA population transport diagnostic: `docs/47_ra_olokizumab_population_stratified_transport.md`
+- Same-stratum RA MTX-IR replication: `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`
 
 ```bash
 adds-research-readiness validate \
@@ -584,6 +585,11 @@ system or full trajectory atlas described in the roadmap. Honest status:
   reviewed prior-therapy stratum and completes descriptive stratification while refusing a
   transport estimate because no target population, same-stratum replication, individual-level
   covariates, preregistered transport model, or risk-of-bias assessment is available.
+  `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md` then replaces the TNFi-IR member with
+  independent MTX-IR phase 3 trial `NCT02760368`. Its exact non-pooled run gives the MTX-IR stratum
+  two trials and removes the distinct-strata and no-replication blockers, while retaining five
+  transport blockers and a workflow `HOLD`. The provider preserves the registry's month-precision
+  primary completion date and exposes its conservative period-end normalization.
   `docs/22_clinical_benefit_risk_synthesis.md` defines the explicit, source-disjoint, non-pooled
   cross-trial synthesis contract, and `docs/23_clinical_portfolio_endpoint_mapping.md` defines the
   multi-bundle portfolio transaction and append-only reviewer-approved mapping ledger.
@@ -713,6 +719,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` | Machines + reviewers | Payload-free two-source hashes, trial-level ACR20 and serious-event aggregates, normalized precision, decision result, and negative claims. |
 | `docs/47_ra_olokizumab_population_stratified_transport.md` | Humans + agents | Reviewed prior-therapy strata, exact source-field binding, estimability blockers, and the non-transport interpretation boundary. |
 | `docs/ra_olokizumab_population_transport_report.json` | Machines + reviewers | Integrity-bound trial cells, population and source hashes, stratum support, explicit blockers, and all prohibited inference flags. |
+| `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md` | Humans + agents | Independent MTX-IR same-stratum selection, partial-date provenance, non-pooled execution, blocker delta, and remaining transport boundary. |
+| `docs/ra_olokizumab_mtx_ir_replication_spec.json` | Machines + reviewers | Exact reviewed two-trial MTX-IR stratum declarations and source-field fingerprints. |
+| `docs/ra_olokizumab_mtx_ir_replication_report.json` | Machines + reviewers | Integrity-bound two-trial stratum support, source effects, safety aggregates, remaining blockers, and prohibited-inference flags. |
 | `docs/22_clinical_benefit_risk_synthesis.md` | Humans + agents | Explicit cross-trial selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |

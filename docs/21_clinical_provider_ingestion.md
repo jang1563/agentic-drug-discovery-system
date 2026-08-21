@@ -118,6 +118,13 @@ safety at-risk total, role-wise count equality, and an invariant
 design, population, endpoint, and safety layer carries the same phase and alignment. Matching
 aggregate counts never establish participant identity.
 
+Registry chronology retains source precision. Day-precision dates pass through unchanged;
+month- and year-precision dates are normalized to a conservative period end for the typed event
+date. Sanitized metadata retains the source value, declared precision, normalized date, and rule.
+A reviewer job that supplies a different boundary, or a source with an invalid calendar period,
+fails closed. The real `NCT02760368` month-precision execution is documented in
+`docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`.
+
 An approved missing descriptive arm summary does not disappear downstream. The promoted endpoint
 evidence retains the raw marker, synthesis serializes the numeric field as `null`, and the evidence
 tensor emits `missing_descriptive_arm_measurement`.
@@ -139,6 +146,8 @@ The second-disease RA ACR20 HOLD replication is documented in
 The first real source-disjoint additive multi-trial tensor is documented in
 `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` and
 `docs/ra_olokizumab_additive_tensor_validation_snapshot.json`.
+The independent MTX-IR same-stratum replication and its exact population artifacts are documented
+in `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`.
 
 ## Stage Gate
 

@@ -42,7 +42,7 @@ class ResearchReadinessTests(unittest.TestCase):
 
         self.assertEqual(summary["profile_id"], RESEARCH_READINESS_PROFILE_ID)
         self.assertEqual(summary["official_source_count"], 4)
-        self.assertEqual(summary["evidence_anchor_count"], 38)
+        self.assertEqual(summary["evidence_anchor_count"], 41)
         self.assertEqual(
             summary["maturity_counts"],
             {
@@ -152,14 +152,18 @@ class ResearchReadinessTests(unittest.TestCase):
         profile = copy.deepcopy(_profile())
         profile["organization_context"]["affiliation_claimed"] = True
         _rehash(profile)
-        with self.assertRaisesRegex(ResearchReadinessError, "must not claim affiliation"):
+        with self.assertRaisesRegex(
+            ResearchReadinessError, "must not claim affiliation"
+        ):
             validate_research_readiness_profile(profile, root=ROOT)
 
     def test_rehashed_empty_official_sources_are_rejected(self) -> None:
         profile = copy.deepcopy(_profile())
         profile["organization_context"]["official_sources"] = []
         _rehash(profile)
-        with self.assertRaisesRegex(ResearchReadinessError, "official_sources must not be empty"):
+        with self.assertRaisesRegex(
+            ResearchReadinessError, "official_sources must not be empty"
+        ):
             validate_research_readiness_profile(profile, root=ROOT)
 
     def test_rehashed_duplicate_pilot_phase_is_rejected(self) -> None:
@@ -175,7 +179,9 @@ class ResearchReadinessTests(unittest.TestCase):
         profile = copy.deepcopy(_profile())
         profile["known_gaps"].pop()
         _rehash(profile)
-        with self.assertRaisesRegex(ResearchReadinessError, "preserve the reviewed gap set"):
+        with self.assertRaisesRegex(
+            ResearchReadinessError, "preserve the reviewed gap set"
+        ):
             validate_research_readiness_profile(profile, root=ROOT)
 
     def test_cli_validate_and_summarize(self) -> None:

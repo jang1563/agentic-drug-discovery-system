@@ -132,6 +132,8 @@ POPULATION_TRANSPORT_REPORT_SCHEMA = (
 POPULATION_TRANSPORT_REPORT = (
     ROOT / "docs/ra_olokizumab_population_transport_report.json"
 )
+MTX_IR_REPLICATION_SPEC = ROOT / "docs/ra_olokizumab_mtx_ir_replication_spec.json"
+MTX_IR_REPLICATION_REPORT = ROOT / "docs/ra_olokizumab_mtx_ir_replication_report.json"
 REQUEST_AT = datetime(2025, 1, 2, 1, tzinfo=timezone.utc)
 COMPLETED_AT = REQUEST_AT + timedelta(minutes=1)
 MAPPING_REQUEST_AT = REQUEST_AT - timedelta(minutes=2)
@@ -1168,6 +1170,76 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         ):
             clinical_population_transport_report_from_dict(tampered)
 
+    def test_real_mtx_ir_same_stratum_replication_removes_only_supported_blockers(
+        self,
+    ) -> None:
+        spec_schema = json.loads(
+            POPULATION_TRANSPORT_SPEC_SCHEMA.read_text(encoding="utf-8")
+        )
+        report_schema = json.loads(
+            POPULATION_TRANSPORT_REPORT_SCHEMA.read_text(encoding="utf-8")
+        )
+        spec_payload = json.loads(MTX_IR_REPLICATION_SPEC.read_text(encoding="utf-8"))
+        report_payload = json.loads(
+            MTX_IR_REPLICATION_REPORT.read_text(encoding="utf-8")
+        )
+        for schema, payload in (
+            (spec_schema, spec_payload),
+            (report_schema, report_payload),
+        ):
+            Draft202012Validator(
+                schema,
+                format_checker=FormatChecker(),
+            ).validate(payload)
+
+        spec = clinical_population_transport_spec_from_dict(spec_payload)
+        report = clinical_population_transport_report_from_dict(report_payload)
+        self.assertEqual(
+            report.spec_sha256,
+            clinical_population_transport_spec_integrity_sha256(spec),
+        )
+        self.assertEqual(
+            report.synthesis_id,
+            "CHEMBL1743050:MONDO:0008383:acr20-rd-mtx-ir-replication-benefit-risk:v1",
+        )
+        self.assertEqual(
+            [(item.stratum_id, item.trial_count) for item in report.stratum_support],
+            [("methotrexate_inadequate_response", 2)],
+        )
+        self.assertNotIn(
+            "distinct_reviewed_population_strata",
+            report.transportability_blockers,
+        )
+        self.assertNotIn(
+            "no_within_stratum_replication",
+            report.transportability_blockers,
+        )
+        self.assertEqual(
+            report.transportability_blockers,
+            (
+                "target_population_not_declared",
+                "aggregate_registry_results_only",
+                "individual_level_covariates_unavailable",
+                "transport_model_not_preregistered",
+                "risk_of_bias_not_assessed",
+            ),
+        )
+        studies = {item.trial_id: item for item in report.strata}
+        self.assertEqual(set(studies), {"NCT02760407", "NCT02760368"})
+        self.assertEqual(studies["NCT02760368"].effect_estimate, 0.445)
+        self.assertEqual(
+            studies["NCT02760368"].source_content_sha256,
+            "7d0f38ee584e2af66cc7b4ebec8d2cc8b86327183a887eba6c5ce1ff96a2d1e7",
+        )
+        self.assertFalse(report.pooling_performed)
+        self.assertFalse(report.cross_stratum_effect_contrast_computed)
+        self.assertFalse(report.transport_effect_estimated)
+
+        encoded = MTX_IR_REPLICATION_REPORT.read_text(encoding="utf-8")
+        self.assertNotRegex(encoded, r"/(Users|home|tmp|private)/")
+        self.assertNotIn("eligibilityCriteria", encoded)
+        self.assertNotIn("raw_payload", encoded)
+
     def test_real_ra_additive_tensor_snapshot_is_bounded_and_scale_exact(
         self,
     ) -> None:
@@ -1739,10 +1811,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             {"higher_is_better"},
         )
         self.assertEqual(
-            {
-                item.risk_difference_ci_width_percentage_points
-                for item in tensor.cells
-            },
+            {item.risk_difference_ci_width_percentage_points for item in tensor.cells},
             {15.9},
         )
         self.assertEqual({item.log_effect_ci_width for item in tensor.cells}, {None})
@@ -1822,11 +1891,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
                         **dict(arm.attributes),
                         "measurement": {
                             **dict(arm.attributes["measurement"]),
-                            "value": (
-                                "36"
-                                if arm.role.value == "candidate"
-                                else "18"
-                            ),
+                            "value": ("36" if arm.role.value == "candidate" else "18"),
                         },
                     },
                 )
@@ -1911,10 +1976,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             tensor_id="synthetic-proportion-risk-difference-tensor",
         )
         self.assertEqual(
-            {
-                item.risk_difference_ci_width_percentage_points
-                for item in tensor.cells
-            },
+            {item.risk_difference_ci_width_percentage_points for item in tensor.cells},
             {40.0},
         )
         precision = next(

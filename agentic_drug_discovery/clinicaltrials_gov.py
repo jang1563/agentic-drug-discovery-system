@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import calendar
 import hashlib
 import json
 import math
@@ -148,6 +149,9 @@ _ADVERSE_EVENT_GROUP_ID = re.compile(r"^EG[0-9]{3,}$")
 _P_VALUE = re.compile(
     r"^\s*(?P<relation><=|>=|<|>|=)?\s*(?P<value>[0-9]+(?:\.[0-9]+)?)\s*$"
 )
+_SOURCE_DATE = re.compile(
+    r"^(?P<year>[0-9]{4})(?:-(?P<month>[0-9]{2})(?:-(?P<day>[0-9]{2}))?)?$"
+)
 _RELATION = {"<": "lt", "<=": "le", "=": "eq", ">=": "ge", ">": "gt"}
 _TREATMENT_PHASES = frozenset({"induction", "maintenance", "not_applicable"})
 
@@ -218,6 +222,33 @@ def _iso_date(value: Any, field_name: str) -> date:
         return date.fromisoformat(text)
     except ValueError as exc:
         raise ValueError(f"{field_name} must be an ISO 8601 calendar date") from exc
+
+
+def _source_date_period_end(value: Any, field_name: str) -> tuple[date, str, str]:
+    """Normalize a registry day, month, or year to a conservative period end."""
+
+    source_value = _text(value, field_name)
+    match = _SOURCE_DATE.fullmatch(source_value)
+    if match is None:
+        raise ValueError(
+            f"{field_name} must be an ISO 8601 day, month, or year precision date"
+        )
+    year = int(match.group("year"))
+    month_text = match.group("month")
+    day_text = match.group("day")
+    try:
+        if month_text is None:
+            return date(year, 12, 31), "year", source_value
+        month = int(month_text)
+        if day_text is None:
+            return (
+                date(year, month, calendar.monthrange(year, month)[1]),
+                "month",
+                source_value,
+            )
+        return date(year, month, int(day_text)), "day", source_value
+    except (ValueError, calendar.IllegalMonthError) as exc:
+        raise ValueError(f"{field_name} is not a valid calendar period") from exc
 
 
 def _normalized(value: str) -> str:
@@ -329,9 +360,7 @@ def _source_declared_acronyms(value: Any) -> set[str]:
         }
     if isinstance(value, Sequence) and not isinstance(value, (str, bytes)):
         return {
-            acronym
-            for item in value
-            for acronym in _source_declared_acronyms(item)
+            acronym for item in value for acronym in _source_declared_acronyms(item)
         }
     if isinstance(value, str):
         return set(re.findall(r"\b[A-Z][A-Z0-9-]{1,15}\b", value))
@@ -721,14 +750,16 @@ def _generic_job(
     job: Mapping[str, Any],
     *,
     linked_receipt: Mapping[str, Any] | None,
+    source_chronology: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     trial = job["trial"]
     endpoint = trial["endpoint"]
     analysis = endpoint["analysis"]
     safety = trial["safety"]
-    if not 0 < analysis["p_value"] <= 1 or not 0 < analysis[
-        "confidence_interval_percent"
-    ] <= 100:
+    if (
+        not 0 < analysis["p_value"] <= 1
+        or not 0 < analysis["confidence_interval_percent"] <= 100
+    ):
         raise ValueError("ClinicalTrials.gov endpoint effect analysis is invalid")
     effect_measure = canonical_effect_measure(analysis["parameter_type"])
     if effect_measure is None:
@@ -859,6 +890,8 @@ def _generic_job(
     }
     if linked_receipt is not None:
         metadata["linked_source_receipt"] = dict(linked_receipt)
+    if source_chronology is not None:
+        metadata["source_chronology"] = dict(source_chronology)
     return normalize_pinned_ingestion_job(
         {
             "schema_version": INGESTION_JOB_SCHEMA_VERSION,
@@ -968,7 +1001,9 @@ def _validate_receipt(bundle: SourceBundle, job: Mapping[str, Any]) -> None:
         raise ValueError("ClinicalTrials.gov snapshot predates its versionHolder")
 
 
-def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
+def _validate_source(
+    source: Mapping[str, Any], job: Mapping[str, Any]
+) -> dict[str, Any] | None:
     trial = job["trial"]
     protocol = _module(source, "protocolSection", "protocolSection")
     derived = _module(source, "derivedSection", "derivedSection")
@@ -1015,13 +1050,30 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         status.get("resultsFirstPostDateStruct"),
         "ClinicalTrials.gov resultsFirstPostDateStruct",
     )
+    observed_at, observed_precision, observed_source = _source_date_period_end(
+        primary_completion.get("date"),
+        "ClinicalTrials.gov primaryCompletionDateStruct.date",
+    )
+    available_at, available_precision, available_source = _source_date_period_end(
+        results_post.get("date"),
+        "ClinicalTrials.gov resultsFirstPostDateStruct.date",
+    )
     if (
-        _source_text(primary_completion, "date", "primaryCompletionDateStruct")
-        != job["record"]["observed_at"]
-        or _source_text(results_post, "date", "resultsFirstPostDateStruct")
-        != job["record"]["available_at"]
+        observed_at.isoformat() != job["record"]["observed_at"]
+        or available_at.isoformat() != job["record"]["available_at"]
     ):
         raise ValueError("ClinicalTrials.gov evidence chronology mismatch")
+    source_chronology = None
+    if observed_precision != "day" or available_precision != "day":
+        source_chronology = {
+            "observed_at_source": observed_source,
+            "observed_at_precision": observed_precision,
+            "observed_at_normalized": observed_at.isoformat(),
+            "available_at_source": available_source,
+            "available_at_precision": available_precision,
+            "available_at_normalized": available_at.isoformat(),
+            "partial_date_normalization": "conservative_period_end",
+        }
 
     source_interventions = _sequence(
         arms_interventions.get("interventions"),
@@ -1036,9 +1088,7 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         for alias in intervention.get("otherNames", ()):
             source_aliases.add(_normalized(_text(alias, "intervention.otherNames")))
     candidate_endpoint_group_ids = {
-        item["source_group_id"]
-        for item in trial["arms"]
-        if item["role"] == "candidate"
+        item["source_group_id"] for item in trial["arms"] if item["role"] == "candidate"
     }
     candidate_safety_group_ids = {
         item["source_group_id"]
@@ -1456,6 +1506,7 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
             raise ValueError(
                 "ClinicalTrials.gov serious-adverse-event arm summary mismatch"
             )
+    return source_chronology
 
 
 def extract_clinicaltrials_gov_ingestion_job(
@@ -1469,7 +1520,7 @@ def extract_clinicaltrials_gov_ingestion_job(
         raise TypeError("bundle must be a SourceBundle")
     _validate_receipt(bundle, job)
     source = _json_object(bundle.payload)
-    _validate_source(source, job)
+    source_chronology = _validate_source(source, job)
     return _generic_job(
         job,
         linked_receipt={
@@ -1478,4 +1529,5 @@ def extract_clinicaltrials_gov_ingestion_job(
             "source_version": bundle.receipt.source_version,
             "content_hash": bundle.receipt.content_hash,
         },
+        source_chronology=source_chronology,
     )
