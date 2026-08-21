@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import unittest
@@ -7,7 +8,7 @@ from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
 from adapters.clinical_synthesis_adapter import ClinicalSynthesisAdapter
@@ -28,6 +29,11 @@ from agentic_drug_discovery import (
     ClinicalEndpointMappingSpec,
     ClinicalEndpointOntology,
     ClinicalEndpointSelection,
+    ClinicalPopulationSourceCitation,
+    ClinicalPopulationStratumBinding,
+    ClinicalPopulationTransportError,
+    ClinicalPopulationTransportReview,
+    ClinicalPopulationTransportSpec,
     ClinicalEvidenceActionOption,
     ClinicalEvidenceTransitionPackage,
     ClinicalEvidenceDimension,
@@ -65,6 +71,13 @@ from agentic_drug_discovery import (
     build_default_semantic_mapper_registry,
     capture_source_bytes,
     clinical_endpoint_mapping_spec_to_dict,
+    clinical_population_transport_report_envelope,
+    clinical_population_transport_report_from_dict,
+    clinical_population_transport_report_from_json,
+    clinical_population_transport_spec_from_dict,
+    clinical_population_transport_spec_from_json,
+    clinical_population_transport_spec_integrity_sha256,
+    clinical_population_transport_spec_to_dict,
     clinical_decision_package_envelope,
     clinical_decision_package_from_dict,
     clinical_decision_package_from_json,
@@ -79,6 +92,7 @@ from agentic_drug_discovery import (
     compile_clinical_execution_batch,
     compile_benefit_risk_synthesis,
     compile_clinical_endpoint_mapping,
+    compile_clinical_population_transport_report,
     compile_pinned_evidence_manifest,
     default_stage_gates,
     execute_clinical_evidence_batch,
@@ -105,6 +119,18 @@ CLOSED_LOOP_SCHEMA = (
 )
 CLOSED_LOOP_EXAMPLE = (
     ROOT / "rl_env/specs/clinical_evidence_closed_loop_transition.example.json"
+)
+POPULATION_TRANSPORT_SPEC_SCHEMA = (
+    ROOT / "rl_env/specs/clinical_population_transport_spec.schema.json"
+)
+POPULATION_TRANSPORT_SPEC_EXAMPLE = (
+    ROOT / "rl_env/specs/clinical_population_transport_spec.example.json"
+)
+POPULATION_TRANSPORT_REPORT_SCHEMA = (
+    ROOT / "rl_env/specs/clinical_population_transport_report.schema.json"
+)
+POPULATION_TRANSPORT_REPORT = (
+    ROOT / "docs/ra_olokizumab_population_transport_report.json"
 )
 REQUEST_AT = datetime(2025, 1, 2, 1, tzinfo=timezone.utc)
 COMPLETED_AT = REQUEST_AT + timedelta(minutes=1)
@@ -918,6 +944,229 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             raise AssertionError(cls.synthesis_result.code)
         cls.committed_state = cls.synthesis_result.final_state
         cls.committed_synthesis = cls.committed_state.benefit_risk_syntheses[0]
+
+    def _population_transport_fixture(self):
+        pointer = "/protocolSection/identificationModule/nctId"
+        documents = {}
+        bindings = []
+        for index, study in enumerate(self.committed_synthesis.studies):
+            payload = (
+                SOURCE.read_text(encoding="utf-8")
+                .replace("NCT00000001", study.trial_id)
+                .encode("utf-8")
+            )
+            digest = hashlib.sha256(payload).hexdigest()
+            documents[digest] = payload
+            design = self.committed_state.trial_designs_by_id[study.design_id]
+            endpoint = next(
+                item
+                for item in design.endpoints
+                if item.endpoint_id == study.endpoint_id
+            )
+            bindings.append(
+                ClinicalPopulationStratumBinding(
+                    trial_id=study.trial_id,
+                    design_id=study.design_id,
+                    endpoint_id=study.endpoint_id,
+                    population_id=endpoint.population_id,
+                    stratum_id=f"prior_therapy_context_{index + 1}",
+                    stratum_label=f"Prior therapy context {index + 1}",
+                    population_context=f"Synthetic prior therapy context {index + 1}",
+                    citation=ClinicalPopulationSourceCitation(
+                        source_document_format="clinicaltrials.gov-study-v2",
+                        source_content_sha256=digest,
+                        source_field_pointer=pointer,
+                        source_field_sha256=hashlib.sha256(
+                            study.trial_id.encode("utf-8")
+                        ).hexdigest(),
+                    ),
+                )
+            )
+        spec = ClinicalPopulationTransportSpec(
+            analysis_id="CHEMBL_TEST:MONDO_TEST:population-strata:v1",
+            synthesis_id=self.committed_synthesis.synthesis_id,
+            stratification_axis_id="prior_therapy_response_context",
+            stratification_axis_label="Prior inadequate-response therapy",
+            bindings=tuple(bindings),
+            review=ClinicalPopulationTransportReview(
+                status="approved_for_descriptive_stratification",
+                reviewer_id="reviewer:synthetic-test",
+                reviewer_role="synthetic_test_owner",
+                reviewed_at=datetime(2025, 1, 2, tzinfo=timezone.utc),
+                independent_external_review=False,
+            ),
+        )
+        designs = tuple(
+            self.committed_state.trial_designs_by_id[item.design_id]
+            for item in bindings
+        )
+        return spec, designs, documents
+
+    def test_population_stratified_transport_diagnostic_is_fail_closed(self) -> None:
+        spec, designs, documents = self._population_transport_fixture()
+        report = compile_clinical_population_transport_report(
+            self.committed_synthesis,
+            designs,
+            documents,
+            spec,
+        )
+
+        self.assertEqual(
+            report.status,
+            "descriptive_stratification_complete_transport_not_estimable",
+        )
+        self.assertEqual(len(report.strata), 2)
+        self.assertEqual(
+            {item.trial_count for item in report.stratum_support},
+            {1},
+        )
+        self.assertIn("no_within_stratum_replication", report.transportability_blockers)
+        self.assertIn(
+            "target_population_not_declared", report.transportability_blockers
+        )
+        self.assertFalse(report.population_homogeneity_inferred)
+        self.assertFalse(report.population_exchangeability_inferred)
+        self.assertFalse(report.pooling_performed)
+        self.assertFalse(report.cross_stratum_effect_contrast_computed)
+        self.assertFalse(report.transport_effect_estimated)
+        self.assertFalse(report.independent_external_review_completed)
+
+        spec_payload = clinical_population_transport_spec_to_dict(spec)
+        self.assertEqual(
+            clinical_population_transport_spec_from_dict(spec_payload), spec
+        )
+        envelope = clinical_population_transport_report_envelope(report)
+        self.assertEqual(
+            report.spec_sha256,
+            clinical_population_transport_spec_integrity_sha256(spec),
+        )
+        self.assertEqual(
+            clinical_population_transport_report_from_dict(envelope), report
+        )
+        self.assertEqual(
+            clinical_population_transport_report_from_json(json.dumps(envelope)),
+            report,
+        )
+
+    def test_population_transport_rejects_population_and_source_rebinding(self) -> None:
+        spec, designs, documents = self._population_transport_fixture()
+        rebound_binding = replace(
+            spec.bindings[0],
+            population_id="NCT00000001:population:rebound",
+        )
+        rebound_spec = replace(
+            spec,
+            bindings=(rebound_binding, *spec.bindings[1:]),
+        )
+        with self.assertRaisesRegex(
+            ClinicalPopulationTransportError,
+            "analysis population is missing",
+        ):
+            compile_clinical_population_transport_report(
+                self.committed_synthesis,
+                designs,
+                documents,
+                rebound_spec,
+            )
+
+        changed_documents = dict(documents)
+        first_hash = spec.bindings[0].citation.source_content_sha256
+        changed_documents[first_hash] += b"\n"
+        with self.assertRaisesRegex(
+            ClinicalPopulationTransportError,
+            "source document hash changed",
+        ):
+            compile_clinical_population_transport_report(
+                self.committed_synthesis,
+                designs,
+                changed_documents,
+                spec,
+            )
+
+    def test_population_transport_rejects_field_hash_and_target_overclaim(self) -> None:
+        spec, designs, documents = self._population_transport_fixture()
+        changed_citation = replace(
+            spec.bindings[0].citation,
+            source_field_sha256="0" * 64,
+        )
+        changed_binding = replace(spec.bindings[0], citation=changed_citation)
+        changed_spec = replace(
+            spec,
+            bindings=(changed_binding, *spec.bindings[1:]),
+        )
+        with self.assertRaisesRegex(
+            ClinicalPopulationTransportError,
+            "source field hash changed",
+        ):
+            compile_clinical_population_transport_report(
+                self.committed_synthesis,
+                designs,
+                documents,
+                changed_spec,
+            )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "target_population_id to remain null",
+        ):
+            replace(spec, target_population_id="target:unsupported")
+
+    def test_real_population_transport_contract_is_strict_and_integrity_bound(
+        self,
+    ) -> None:
+        spec_schema = json.loads(
+            POPULATION_TRANSPORT_SPEC_SCHEMA.read_text(encoding="utf-8")
+        )
+        report_schema = json.loads(
+            POPULATION_TRANSPORT_REPORT_SCHEMA.read_text(encoding="utf-8")
+        )
+        spec_payload = json.loads(
+            POPULATION_TRANSPORT_SPEC_EXAMPLE.read_text(encoding="utf-8")
+        )
+        report_payload = json.loads(
+            POPULATION_TRANSPORT_REPORT.read_text(encoding="utf-8")
+        )
+        for schema, payload in (
+            (spec_schema, spec_payload),
+            (report_schema, report_payload),
+        ):
+            Draft202012Validator.check_schema(schema)
+            Draft202012Validator(
+                schema,
+                format_checker=FormatChecker(),
+            ).validate(payload)
+
+        parsed_spec = clinical_population_transport_spec_from_dict(spec_payload)
+        self.assertEqual(
+            clinical_population_transport_spec_from_json(json.dumps(spec_payload)),
+            parsed_spec,
+        )
+        self.assertEqual(len(parsed_spec.bindings), 2)
+        self.assertFalse(parsed_spec.review.independent_external_review)
+        report = clinical_population_transport_report_from_dict(report_payload)
+        self.assertEqual(
+            {item.stratum_id for item in report.strata},
+            {
+                "methotrexate_inadequate_response",
+                "tnf_inhibitor_inadequate_response",
+            },
+        )
+        self.assertEqual(
+            len({item.population_description_sha256 for item in report.strata}),
+            1,
+        )
+        self.assertEqual(
+            len({item.source_field_sha256 for item in report.strata}),
+            2,
+        )
+
+        tampered = json.loads(json.dumps(report_payload))
+        tampered["strata"][0]["effect_estimate"] = 0.28
+        with self.assertRaisesRegex(
+            ClinicalPopulationTransportError,
+            "integrity_sha256 mismatch",
+        ):
+            clinical_population_transport_report_from_dict(tampered)
 
     def test_real_ra_additive_tensor_snapshot_is_bounded_and_scale_exact(
         self,

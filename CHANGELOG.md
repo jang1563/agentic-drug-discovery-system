@@ -4,6 +4,13 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a reviewed, source-bound population-stratified transport diagnostic. Exact olokizumab
+  synthesis, trial, endpoint, ITT population, registry-document, and official-title hashes now
+  preserve methotrexate- and TNF-inhibitor-inadequate-response strata without free-text inference.
+  The real replay completes descriptive stratification but emits `transport_not_estimable`: each
+  stratum has one trial and the evidence lacks a target population, individual-level covariates, a
+  preregistered transport model, and risk-of-bias assessment. Strict specs, schemas, integrity
+  readers, source-rebinding tests, a human research note, and a machine report are public.
 - Added the first real source-disjoint additive clinical evidence tensor. Two phase 3 olokizumab
   rheumatoid-arthritis records (`NCT02760407` and `NCT02760433`) now execute through exact provider
   promotion, reviewer-declared Week-12 ACR20 mapping, non-pooled synthesis, tensor compilation, and

@@ -42,11 +42,11 @@ class ResearchReadinessTests(unittest.TestCase):
 
         self.assertEqual(summary["profile_id"], RESEARCH_READINESS_PROFILE_ID)
         self.assertEqual(summary["official_source_count"], 4)
-        self.assertEqual(summary["evidence_anchor_count"], 35)
+        self.assertEqual(summary["evidence_anchor_count"], 38)
         self.assertEqual(
             summary["maturity_counts"],
             {
-                "implemented_public": 7,
+                "implemented_public": 8,
                 "proposed_pilot": 1,
                 "synthetic_validated": 3,
             },
@@ -80,7 +80,7 @@ class ResearchReadinessTests(unittest.TestCase):
             {item["claim_id"] for item in profile["presentation"]["claims"]},
         )
         self.assertIn(
-            "population-stratified transport analysis",
+            "estimable transport model",
             profile["decision"]["next_decision"],
         )
 

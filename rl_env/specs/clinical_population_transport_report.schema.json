@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_population_transport_report.schema.json",
+  "title": "Clinical population-stratified transport diagnostic report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "analysis_id",
+    "spec_sha256",
+    "method_id",
+    "synthesis_id",
+    "synthesis_sha256",
+    "candidate_id",
+    "intervention_id",
+    "disease_id",
+    "endpoint_mapping_id",
+    "endpoint_family",
+    "effect_measure",
+    "safety_measure",
+    "stratification_axis_id",
+    "stratification_axis_label",
+    "analysis_mode",
+    "review",
+    "strata",
+    "stratum_support",
+    "status",
+    "transportability_blockers",
+    "source_evidence_ids",
+    "source_content_hashes",
+    "target_population_defined",
+    "population_homogeneity_inferred",
+    "population_exchangeability_inferred",
+    "pooling_performed",
+    "cross_stratum_effect_contrast_computed",
+    "transport_effect_estimated",
+    "risk_of_bias_assessed",
+    "independent_external_review_completed",
+    "limitations"
+  ],
+  "properties": {
+    "analysis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "synthesis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intervention_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "disease_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "endpoint_mapping_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "endpoint_family": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effect_measure": {
+      "type": "string",
+      "minLength": 1
+    },
+    "safety_measure": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stratification_axis_label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "const": "adds.clinical-population-transport-report.v1"
+    },
+    "integrity_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "spec_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "synthesis_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "method_id": {
+      "const": "adds.descriptive-population-stratified-transport-diagnostic.v1"
+    },
+    "stratification_axis_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,127}$"
+    },
+    "analysis_mode": {
+      "const": "descriptive_population_stratification"
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    },
+    "strata": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stratum"
+      }
+    },
+    "stratum_support": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/support"
+      }
+    },
+    "status": {
+      "const": "descriptive_stratification_complete_transport_not_estimable"
+    },
+    "transportability_blockers": {
+      "type": "array",
+      "minItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "target_population_not_declared",
+          "distinct_reviewed_population_strata",
+          "no_within_stratum_replication",
+          "aggregate_registry_results_only",
+          "individual_level_covariates_unavailable",
+          "transport_model_not_preregistered",
+          "risk_of_bias_not_assessed"
+        ]
+      }
+    },
+    "source_evidence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_content_hashes": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "target_population_defined": {
+      "const": false
+    },
+    "population_homogeneity_inferred": {
+      "const": false
+    },
+    "population_exchangeability_inferred": {
+      "const": false
+    },
+    "pooling_performed": {
+      "const": false
+    },
+    "cross_stratum_effect_contrast_computed": {
+      "const": false
+    },
+    "transport_effect_estimated": {
+      "const": false
+    },
+    "risk_of_bias_assessed": {
+      "const": false
+    },
+    "independent_external_review_completed": {
+      "const": false
+    },
+    "limitations": {
+      "const": [
+        "Population strata are reviewer-declared and hash-bound to exact registry fields; no free-text similarity model or automatic eligibility inference is used.",
+        "Trial-level effects and serious-event aggregates are displayed side by side without pooling or a cross-stratum effect contrast.",
+        "Distinct source strata are not treated as homogeneous, exchangeable, or representative of an undeclared target population.",
+        "Aggregate registry results do not provide individual-level covariates, overlap, positivity, conditional exchangeability, or risk-of-bias adjustment.",
+        "Completing this diagnostic does not establish efficacy, comparative safety, clinical acceptability, transportability, or a treatment recommendation.",
+        "Independent external scientific review is not implied by project-internal approval."
+      ]
+    }
+  },
+  "$defs": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewer_id",
+        "reviewer_role",
+        "reviewed_at",
+        "independent_external_review"
+      ],
+      "properties": {
+        "status": {
+          "const": "approved_for_descriptive_stratification"
+        },
+        "reviewer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewer_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "independent_external_review": {
+          "const": false
+        }
+      }
+    },
+    "stratum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trial_id",
+        "study_record_id",
+        "design_id",
+        "endpoint_id",
+        "population_id",
+        "population_description_sha256",
+        "stratum_id",
+        "stratum_label",
+        "population_context",
+        "source_content_sha256",
+        "source_field_pointer",
+        "source_field_sha256",
+        "effect_estimate",
+        "confidence_interval_percent",
+        "confidence_interval_lower",
+        "confidence_interval_upper",
+        "measurement_unit",
+        "endpoint_time_frame",
+        "safety_time_frame",
+        "candidate_serious_num_affected",
+        "candidate_serious_num_at_risk",
+        "comparator_serious_num_affected",
+        "comparator_serious_num_at_risk",
+        "serious_event_risk_difference",
+        "benefit_direction",
+        "safety_direction"
+      ],
+      "properties": {
+        "trial_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "study_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "design_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "endpoint_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stratum_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "population_context": {
+          "type": "string",
+          "minLength": 1
+        },
+        "measurement_unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "endpoint_time_frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "safety_time_frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "population_description_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_field_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "stratum_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,127}$"
+        },
+        "source_field_pointer": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "effect_estimate": {
+          "type": "number"
+        },
+        "confidence_interval_percent": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        },
+        "confidence_interval_lower": {
+          "type": "number"
+        },
+        "confidence_interval_upper": {
+          "type": "number"
+        },
+        "candidate_serious_num_affected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "candidate_serious_num_at_risk": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "comparator_serious_num_affected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "comparator_serious_num_at_risk": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "serious_event_risk_difference": {
+          "type": "number"
+        },
+        "benefit_direction": {
+          "enum": [
+            "benefit",
+            "harm",
+            "null_or_uncertain"
+          ]
+        },
+        "safety_direction": {
+          "enum": [
+            "lower_observed_serious_event_risk",
+            "higher_observed_serious_event_risk",
+            "equal_observed_serious_event_risk"
+          ]
+        }
+      }
+    },
+    "support": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stratum_id",
+        "trial_count"
+      ],
+      "properties": {
+        "stratum_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,127}$"
+        },
+        "trial_count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

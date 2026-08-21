@@ -1,0 +1,48 @@
+{
+  "schema_version": "adds.clinical-population-transport-spec.v1",
+  "analysis_id": "CHEMBL1743050:MONDO:0008383:prior-therapy-stratification:v1",
+  "synthesis_id": "CHEMBL1743050:MONDO:0008383:acr20-rd-benefit-risk:v1",
+  "stratification_axis_id": "prior_therapy_response_context",
+  "stratification_axis_label": "Prior inadequate-response therapy",
+  "bindings": [
+    {
+      "trial_id": "NCT02760407",
+      "design_id": "NCT02760407:design",
+      "endpoint_id": "NCT02760407:endpoint:primary-0",
+      "population_id": "NCT02760407:population:itt",
+      "stratum_id": "methotrexate_inadequate_response",
+      "stratum_label": "Methotrexate inadequate response",
+      "population_context": "Moderately to severely active rheumatoid arthritis inadequately controlled by methotrexate therapy",
+      "citation": {
+        "source_document_format": "clinicaltrials.gov-study-v2",
+        "source_content_sha256": "62415b71d08c8d5ccbe0b03be45bad4ad8bd734d43de461be52278314fbb59d8",
+        "source_field_pointer": "/protocolSection/identificationModule/officialTitle",
+        "source_field_sha256": "9da94dc8b9604e29c6f8805f4344f3d6cff0130741665a9b8f8db4e39b9f495b"
+      }
+    },
+    {
+      "trial_id": "NCT02760433",
+      "design_id": "NCT02760433:design",
+      "endpoint_id": "NCT02760433:endpoint:primary-0",
+      "population_id": "NCT02760433:population:itt",
+      "stratum_id": "tnf_inhibitor_inadequate_response",
+      "stratum_label": "TNF inhibitor inadequate response",
+      "population_context": "Active rheumatoid arthritis inadequately controlled by a tumor necrosis factor inhibitor",
+      "citation": {
+        "source_document_format": "clinicaltrials.gov-study-v2",
+        "source_content_sha256": "b087ef355db040907d7ae81c34b34fec7f9b4743df7414c8f519eee6e3abc051",
+        "source_field_pointer": "/protocolSection/identificationModule/officialTitle",
+        "source_field_sha256": "fe68e108b8df5ea259facf89c02d617e32457722b4e93e13c267372f300b3e7d"
+      }
+    }
+  ],
+  "review": {
+    "status": "approved_for_descriptive_stratification",
+    "reviewer_id": "project-scientific-owner",
+    "reviewer_role": "project_scientific_owner",
+    "reviewed_at": "2026-08-20T22:40:00+00:00",
+    "independent_external_review": false
+  },
+  "analysis_mode": "descriptive_population_stratification",
+  "target_population_id": null
+}

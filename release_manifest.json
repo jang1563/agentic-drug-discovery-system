@@ -78,6 +78,8 @@
       "docs/ra_acr20_risk_difference_validation_snapshot.json",
       "docs/46_ra_olokizumab_source_disjoint_additive_tensor.md",
       "docs/ra_olokizumab_additive_tensor_validation_snapshot.json",
+      "docs/47_ra_olokizumab_population_stratified_transport.md",
+      "docs/ra_olokizumab_population_transport_report.json",
       "docs/retrospective_policy_evaluation_snapshot.json",
       "docs/public_evidence_summary.json",
       "agentic_drug_discovery/",

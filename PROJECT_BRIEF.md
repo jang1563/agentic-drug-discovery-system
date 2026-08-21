@@ -335,6 +335,12 @@ response populations are not treated as exchangeable, and the safety-triggered d
 `HOLD`. Bounded aggregates and hashes are in
 `docs/ra_olokizumab_additive_tensor_validation_snapshot.json`; full source and decision artifacts
 remain external.
+The follow-on population diagnostic now binds each exact study, ITT population, source document,
+and official-title field to a reviewed prior-therapy stratum. Stratification completes, while the
+compiler refuses to estimate transport because no target population, same-stratum replication,
+individual-level covariates, preregistered transport model, or risk-of-bias assessment is present.
+See `docs/47_ra_olokizumab_population_stratified_transport.md` and
+`docs/ra_olokizumab_population_transport_report.json`.
 
 The current external validation also runs one continuous source-pinned senicapoc program through
 five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the

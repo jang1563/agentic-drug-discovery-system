@@ -58,6 +58,11 @@ normalized to percentage points, and the two distinct inadequate-response popula
 pooled or treated as exchangeable. A higher observed serious-event risk in one trial keeps the
 bounded plan on `HOLD`; no comparative safety or treatment claim is made.
 
+The next diagnostic hash-binds the same records to reviewed methotrexate- and TNF-inhibitor-
+inadequate-response strata. Descriptive stratification completes, but transport estimation remains
+blocked because the release has no declared target population, within-stratum replication,
+individual-level covariates, preregistered transport model, or risk-of-bias assessment.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -124,6 +129,9 @@ bounded plan on `HOLD`; no comparative safety or treatment claim is made.
 - Inspect `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` and
   `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` for the first real source-disjoint
   additive tensor, source-scale preservation, population non-exchangeability, and bounded HOLD.
+- Inspect `docs/47_ra_olokizumab_population_stratified_transport.md` and
+  `docs/ra_olokizumab_population_transport_report.json` for exact prior-therapy strata and the
+  fail-closed transport estimability result.
 - Inspect `docs/23_clinical_portfolio_endpoint_mapping.md` and
   `tests/test_clinical_portfolio.py` for exact-set multi-job/bundle preflight, payload-free output,
   reviewer-approved ontology identity, append-only mapping continuity, and atomic failure controls.
@@ -306,6 +314,8 @@ outside both public release surfaces.
 | `docs/ra_acr20_risk_difference_validation_snapshot.json` | Payload-free RA source and artifact hashes, additive endpoint and safety aggregates, decision result, and limitations. |
 | `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` | Same-candidate RA source selection, proportion-scale risk differences, non-pooled synthesis, and safety-triggered HOLD. |
 | `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` | Payload-free two-source trial aggregates, hashes, normalized precision, decision result, and negative claims. |
+| `docs/47_ra_olokizumab_population_stratified_transport.md` | Source-bound prior-therapy stratification and explicit transport estimability boundary. |
+| `docs/ra_olokizumab_population_transport_report.json` | Integrity-bound strata, trial-level effects, support counts, blockers, and prohibited-inference flags. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |

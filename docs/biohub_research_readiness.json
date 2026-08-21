@@ -146,6 +146,12 @@
       "kind": "implementation"
     },
     {
+      "anchor_id": "population-transport-core",
+      "path": "agentic_drug_discovery/clinical_population_transport.py",
+      "sha256": "b00eab234af4292e1a7f69e22c2847fff03dc9f352e9be277a1ef1bd1e4cfca0",
+      "kind": "implementation"
+    },
+    {
       "anchor_id": "clinical-decision-core",
       "path": "agentic_drug_discovery/clinical_decision.py",
       "sha256": "6a4c63c03be398c20c621d3746e00b62dc832eef1b696221987f7b4b9d8b8b13",
@@ -178,7 +184,7 @@
     {
       "anchor_id": "synthesis-tests",
       "path": "tests/test_clinical_benefit_risk_synthesis.py",
-      "sha256": "ebdc390716da7e716af98d8e2fb9514784ba3a3745f73d9ba42f9f81120b9c0a",
+      "sha256": "960af3fe240c581f5f19768f26a8b130092fd17d3e5d63498b5bb9c6992f702a",
       "kind": "test"
     },
     {
@@ -330,6 +336,18 @@
       "path": "docs/ra_olokizumab_additive_tensor_validation_snapshot.json",
       "kind": "document",
       "sha256": "3aaecc3c6ddb89bcd58b1899fa7823be89c00a02ab065cde12cfd1b21dbaf222"
+    },
+    {
+      "anchor_id": "ra-olokizumab-population-transport-document",
+      "path": "docs/47_ra_olokizumab_population_stratified_transport.md",
+      "kind": "document",
+      "sha256": "50bef59436609e490c2e2c64c15f6d7a7855ff35be0322db4c9a1576f82cead8"
+    },
+    {
+      "anchor_id": "ra-olokizumab-population-transport-report",
+      "path": "docs/ra_olokizumab_population_transport_report.json",
+      "kind": "document",
+      "sha256": "7bd1edfb99167051962a7c1e9669c0d1c9b79b450a19b4c2680ad692f94fa893"
     }
   ],
   "maturity_ledger": [
@@ -499,6 +517,22 @@
       "limitations": [
         "The public repository contains hashes and bounded aggregates, not source bytes, reviewer jobs, or participant-level data.",
         "The two olokizumab populations are not treated as exchangeable; this is not pooled efficacy, comparative safety, independent scientific validation, or a treatment recommendation."
+      ]
+    },
+    {
+      "capability_id": "population-stratified-transport-diagnostic",
+      "label": "Fail-closed population-stratified transport diagnostic",
+      "maturity": "implemented_public",
+      "claim": "A reviewed, source-bound compiler preserves exact trial analysis populations and prior-therapy strata, emits trial-level effects without pooling, and records why an aggregate transport effect is not estimable.",
+      "evidence_anchor_ids": [
+        "population-transport-core",
+        "synthesis-tests",
+        "ra-olokizumab-population-transport-document",
+        "ra-olokizumab-population-transport-report"
+      ],
+      "limitations": [
+        "The public execution has one trial per reviewed stratum, no declared target population, no individual-level covariates, and no preregistered transport model.",
+        "Project-internal descriptive approval is not independent scientific review, external transport validation, clinical acceptability, or a treatment recommendation."
       ]
     },
     {
@@ -910,6 +944,22 @@
         ]
       },
       {
+        "claim_id": "claim-ra-population-stratified-transport-diagnostic",
+        "text": "The olokizumab pair now replays through a reviewed prior-therapy stratification contract: exact ITT identities and source fields remain bound, while target-population, replication, covariate, transport-model, and risk-of-bias gaps prevent a transport estimate.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "population-transport-core",
+          "synthesis-tests",
+          "ra-olokizumab-population-transport-document",
+          "ra-olokizumab-population-transport-report"
+        ],
+        "capability_ids": [
+          "cross-trial-synthesis",
+          "ra-public-registry-contract-validation",
+          "population-stratified-transport-diagnostic"
+        ]
+      },
+      {
         "claim_id": "claim-calibration-boundary",
         "text": "Synthetic known-truth studies expose when estimand, missingness, dependence, and cluster sampling choices alter uncertainty; they do not establish external clinical calibration.",
         "maturity": "synthetic_validated",
@@ -1026,7 +1076,8 @@
           "claim-cross-disease-conformance",
           "claim-uc-public-registry-validation",
           "claim-ra-public-registry-hold",
-          "claim-ra-source-disjoint-additive-tensor"
+          "claim-ra-source-disjoint-additive-tensor",
+          "claim-ra-population-stratified-transport-diagnostic"
         ],
         "artifact_paths": [
           "docs/22_clinical_benefit_risk_synthesis.md",
@@ -1036,9 +1087,11 @@
           "docs/45_ra_acr20_risk_difference_hold_replication.md",
           "docs/ra_acr20_risk_difference_validation_snapshot.json",
           "docs/46_ra_olokizumab_source_disjoint_additive_tensor.md",
-          "docs/ra_olokizumab_additive_tensor_validation_snapshot.json"
+          "docs/ra_olokizumab_additive_tensor_validation_snapshot.json",
+          "docs/47_ra_olokizumab_population_stratified_transport.md",
+          "docs/ra_olokizumab_population_transport_report.json"
         ],
-        "speaker_boundary": "Separate synthetic end-to-end conformance from real UC and RA provider runs; the olokizumab pair is non-pooled and population-stratified, not clinical validation, comparative safety, or a treatment recommendation."
+        "speaker_boundary": "Separate synthetic end-to-end conformance from real UC and RA provider runs; olokizumab population stratification is complete but transport remains non-estimable, with no clinical validation, comparative-safety, or treatment claim."
       },
       {
         "slide": 6,
@@ -1147,12 +1200,13 @@
     },
     {
       "gap_id": "gap-disease-breadth",
-      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis and rheumatoid arthritis now add real provider-level validation and rheumatoid arthritis adds one real source-disjoint additive tensor, but neither is an independently reviewed end-to-end disease slice or an externally validated population-transport analysis.",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis and rheumatoid arthritis add real provider-level validation, and rheumatoid arthritis now adds a source-disjoint additive tensor plus a fail-closed population-stratified diagnostic, but neither is an independently reviewed end-to-end disease slice or an estimable externally validated transport analysis.",
       "status": "open",
       "closure_evidence_required": [
         "at least one independently reviewed non-synthetic immune or inflammatory disease slice",
         "scientific-owner review of the olokizumab endpoint mapping and population strata",
-        "prespecified same-population replication or population-stratified transport analysis",
+        "a second trial in at least one reviewed stratum or transport-compatible individual-level covariates",
+        "a declared target population and preregistered transport model",
         "documented ambiguity, direction-reversal, and rejection cases"
       ]
     },
@@ -1194,7 +1248,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Obtain independent scientific-owner review of the olokizumab endpoint mapping and distinct inadequate-response populations, then preregister either a same-population replication or a population-stratified transport analysis."
+    "next_decision": "Obtain independent scientific-owner review of the olokizumab endpoint mapping and two prior-therapy strata, then declare a target population and acquire same-stratum replication or transport-compatible individual-level covariates before preregistering an estimable transport model."
   },
-  "integrity_sha256": "b80771f8feb200d92e08647585d72d4160ea7620aea64265f07f40805be85442"
+  "integrity_sha256": "881cba980490d48aa2f0eee21ed396ef1bd80476836bc06c8d6108bf19cd7e59"
 }

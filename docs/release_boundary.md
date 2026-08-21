@@ -136,6 +136,14 @@ a safety-triggered `HOLD`. It does not contain source bytes, review jobs, full s
 decision package and does not claim population exchangeability, pooling, comparative safety,
 clinical acceptability, or treatment choice.
 
+`docs/ra_olokizumab_population_transport_report.json` adds a reviewed descriptive
+population-stratification diagnostic. It binds the exact synthesis, trial, endpoint, ITT
+population, registry source, and official-title field before retaining methotrexate- and
+TNF-inhibitor-inadequate-response strata side by side. It performs no pooling or cross-stratum
+contrast and emits no transport estimate because the target population, within-stratum
+replication, individual-level covariates, preregistered transport model, and risk-of-bias
+assessment are absent. Project-internal approval is not independent scientific review.
+
 The cross-trial synthesis surface contains explicit synthetic selection examples, typed
 trial-level outputs, source evidence IDs, content hashes, and payload-free aggregate records of
 external PALOMA-2/3 and olokizumab executions. It does not include the real review packets, full

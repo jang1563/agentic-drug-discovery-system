@@ -70,6 +70,9 @@ validated.
 - [x] The olokizumab RA pair compiles two source-disjoint Week-12 ACR20 cells, preserves source
   proportions and distinct inadequate-response populations, and remains on `HOLD` without a
   pooled efficacy, comparative-safety, population-exchangeability, or treatment claim.
+- [x] The follow-on population diagnostic binds exact source fields to the two prior-therapy
+  strata, preserves one trial per stratum, and emits no transport estimate while target,
+  replication, covariate, transport-model, risk-of-bias, and independent-review gaps remain.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.

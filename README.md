@@ -63,6 +63,7 @@ evidence hashes:
 - Independent UC maintenance risk-difference replication: `docs/44_uc_maintenance_risk_difference_replication.md`
 - RA ACR20 risk-difference HOLD replication: `docs/45_ra_acr20_risk_difference_hold_replication.md`
 - Real source-disjoint RA additive tensor: `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`
+- Fail-closed RA population transport diagnostic: `docs/47_ra_olokizumab_population_stratified_transport.md`
 
 ```bash
 adds-research-readiness validate \
@@ -579,6 +580,10 @@ system or full trajectory atlas described in the roadmap. Honest status:
   `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` then binds two independent phase 3
   olokizumab records to the same Week-12 ACR20 family, preserves proportion-scale source effects,
   compiles a non-pooled two-cell tensor, and retains the safety signal as a bounded `HOLD`.
+  `docs/47_ra_olokizumab_population_stratified_transport.md` then hash-binds each trial to a
+  reviewed prior-therapy stratum and completes descriptive stratification while refusing a
+  transport estimate because no target population, same-stratum replication, individual-level
+  covariates, preregistered transport model, or risk-of-bias assessment is available.
   `docs/22_clinical_benefit_risk_synthesis.md` defines the explicit, source-disjoint, non-pooled
   cross-trial synthesis contract, and `docs/23_clinical_portfolio_endpoint_mapping.md` defines the
   multi-bundle portfolio transaction and append-only reviewer-approved mapping ledger.
@@ -706,6 +711,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/ra_acr20_risk_difference_validation_snapshot.json` | Machines + reviewers | Payload-free RA source hashes, typed HOLD result, population boundary, additive precision width, and screened reason codes. |
 | `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` | Humans + agents | Same-candidate RA trial selection, proportion-scale risk differences, non-pooled endpoint/safety harmonization, and bounded HOLD interpretation. |
 | `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` | Machines + reviewers | Payload-free two-source hashes, trial-level ACR20 and serious-event aggregates, normalized precision, decision result, and negative claims. |
+| `docs/47_ra_olokizumab_population_stratified_transport.md` | Humans + agents | Reviewed prior-therapy strata, exact source-field binding, estimability blockers, and the non-transport interpretation boundary. |
+| `docs/ra_olokizumab_population_transport_report.json` | Machines + reviewers | Integrity-bound trial cells, population and source hashes, stratum support, explicit blockers, and all prohibited inference flags. |
 | `docs/22_clinical_benefit_risk_synthesis.md` | Humans + agents | Explicit cross-trial selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
@@ -1011,6 +1018,9 @@ Public-release readiness is tracked in:
 - `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` and
   `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` — first real source-disjoint
   additive tensor, with two same-candidate Week-12 ACR20 trials retained as distinct populations.
+- `docs/47_ra_olokizumab_population_stratified_transport.md` and
+  `docs/ra_olokizumab_population_transport_report.json` — exact prior-therapy stratification with
+  source-field hashes and a fail-closed, non-estimable transport result.
 - `docs/public_evidence_summary.json` — machine-readable aggregate claim ledger.
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
 - `docs/public_launch_checklist.md` — final human launch checklist.
