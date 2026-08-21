@@ -591,10 +591,12 @@ system or full trajectory atlas described in the roadmap. Honest status:
   transport blockers and a workflow `HOLD`. The provider preserves the registry's month-precision
   primary completion date and exposes its conservative period-end normalization.
   `docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md` then binds both Week-12 ACR20 outcomes to
-  exact registry fields and official protocol/SAP PDF hashes, pages, and sections. Both trial-level
-  assessments are `some_concerns`; complete selected-arm denominators and pre-completion SAP dates
-  are retained. This resolves only `risk_of_bias_not_assessed`, leaving four transport blockers and
-  every pooling, transport, safety, and treatment-recommendation flag false.
+  exact registry fields and registry-labeled protocol/SAP PDF hashes, pages, sections, and excerpts.
+  Both trial-level assessments are `some_concerns`; source-specific arm/endpoint identities, ITT
+  analysis denominators, PDF dates, and 173/181-page citation checks are executable. Observed
+  outcome completeness and a standalone final pre-unblinding SAP are not claimed. This resolves
+  only `risk_of_bias_not_assessed`, leaving four transport blockers and every pooling, transport,
+  safety, and treatment-recommendation flag false.
   `docs/22_clinical_benefit_risk_synthesis.md` defines the explicit, source-disjoint, non-pooled
   cross-trial synthesis contract, and `docs/23_clinical_portfolio_endpoint_mapping.md` defines the
   multi-bundle portfolio transaction and append-only reviewer-approved mapping ledger.

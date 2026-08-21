@@ -354,11 +354,13 @@ model, and risk-of-bias assessment remain absent, so transport is still not esti
 `docs/ra_olokizumab_mtx_ir_replication_report.json`.
 
 The outcome-specific follow-on binds both Week-12 ACR20 assessments to exact registry fields and
-official protocol/SAP PDF hashes, pages, sections, and chronology. Selected-arm STARTED counts
-match primary endpoint denominators in both trials, while public-source limits on allocation audits,
-realized unblinding, and complete protocol deviations retain `some_concerns` overall. The new
-integrity-bound report resolves only the absence-of-assessment blocker; target population,
-aggregate-only evidence, individual covariates, and a preregistered transport model remain open.
+registry-labeled protocol/SAP PDF hashes, pages, sections, excerpts, and chronology. Source-specific
+flow/result arm titles and endpoint pointers are verified, as are 173/181-page PDF boundaries and
+title-page dates. Selected-arm STARTED counts match ITT analysis denominators, but observed outcome
+completeness and a standalone final pre-unblinding SAP are not established. Four of five domains
+therefore remain `some_concerns`; only outcome measurement is `low`. The integrity-bound report
+resolves only the absence-of-assessment blocker; target population, aggregate-only evidence,
+individual covariates, and a preregistered transport model remain open.
 See `docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md`,
 `docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json`, and
 `docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json`.

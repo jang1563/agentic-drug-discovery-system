@@ -70,11 +70,12 @@ month-precision registry chronology with conservative period-end normalization. 
 blockers and the workflow `HOLD` remain; no pooled, transported, safety, or treatment conclusion is
 made.
 
-The next follow-on binds each Week-12 ACR20 outcome to exact registry fields and the official
-protocol/SAP PDF hash, page, and section. Both project-internal trial assessments are
-`some_concerns`: selected-arm denominators are complete and the dated SAPs precede primary
-completion, while public aggregate sources omit allocation-audit, realized-unblinding, and complete
-deviation details. This resolves only `risk_of_bias_not_assessed`; four transport blockers remain.
+The next follow-on binds each Week-12 ACR20 outcome to exact registry fields and registry-labeled
+protocol/SAP PDF hashes, pages, sections, and excerpts. Both project-internal trial assessments are
+`some_concerns`: source-specific arm/endpoint identities and ITT analysis denominators replay, but
+complete observed outcomes and a standalone final pre-unblinding SAP are not established. PDF
+page counts, title-page dates, and cited text are executable checks. This resolves only
+`risk_of_bias_not_assessed`; four transport blockers remain.
 
 ## At a Glance
 

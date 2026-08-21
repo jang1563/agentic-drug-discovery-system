@@ -40,6 +40,10 @@ TRIAL_CONFIG = {
         "document_date": "2018-05-28",
         "candidate_group": "000",
         "comparator_group": "003",
+        "candidate_flow_arm_title": "Arm 1: Olokizumab q4w + Methotrexate",
+        "comparator_flow_arm_title": "Arm 4: Placebo q2w + Methotrexate",
+        "candidate_result_arm_title": "Arm 1: Olokizumab q4w + Methotrexate",
+        "comparator_result_arm_title": "Arm 4: Placebo q2w + Methotrexate",
         "pages": {
             "randomization": 89,
             "blinding": 95,
@@ -52,6 +56,10 @@ TRIAL_CONFIG = {
         "document_date": "2018-03-30",
         "candidate_group": "000",
         "comparator_group": "002",
+        "candidate_flow_arm_title": "Arm 1: Olokizumab q4w + Methotrexate",
+        "comparator_flow_arm_title": "Arm 3: Placebo + Methotrexate",
+        "candidate_result_arm_title": "Arm 1: Olokizumab q4w + Methotrexate",
+        "comparator_result_arm_title": "Arm 3: Placebo q2w + Methotrexate",
         "pages": {
             "randomization": 96,
             "blinding": 101,
@@ -107,6 +115,7 @@ def _pdf_citation(
     document_date: str,
     page: int,
     section: str,
+    excerpt: str,
 ) -> ClinicalRiskOfBiasSourceCitation:
     suffix = trial_id[-2:]
     return ClinicalRiskOfBiasSourceCitation(
@@ -121,6 +130,7 @@ def _pdf_citation(
         source_document_date=document_date,
         source_page=page,
         source_section=section,
+        source_excerpt=excerpt,
     )
 
 
@@ -163,6 +173,12 @@ def _assessment(
             config["document_date"],
             pages["randomization"],
             "6.5 Method of Assigning Subjects to Treatment Group",
+            (
+                "subjects will be randomized in a 2:2:2:1 ratio by blinded study staff "
+                "using the IWRS"
+                if trial_id == "NCT02760407"
+                else "subjects will be randomized in a 1:1:1 ratio by blinded study staff using IWRS"
+            ),
         ),
         _pdf_citation(
             "protocol_blinding",
@@ -171,6 +187,7 @@ def _assessment(
             config["document_date"],
             pages["blinding"],
             "6.12 Blinding",
+            "Access to randomization codes will be restricted",
         ),
         _pdf_citation(
             "protocol_measurement",
@@ -178,7 +195,8 @@ def _assessment(
             pdf_hash,
             config["document_date"],
             pages["measurement"],
-            "Schedule of Events joint-assessor footnote",
+            "Schedule of Events",
+            "Joint assessor will be independent to the rest of the study team",
         ),
         _pdf_citation(
             "sap_missing_data",
@@ -186,7 +204,14 @@ def _assessment(
             pdf_hash,
             config["document_date"],
             pages["missing"],
-            "9.4.9.1 Primary Analysis of Efficacy Endpoints",
+            (
+                "9.4.9.1 Primary Analysis of Primary, Secondary, and Other "
+                "Efficacy Endpoints"
+            ),
+            (
+                "inability to remain on randomized treatment through the time point of "
+                "interest is defined as treatment failure"
+            ),
         ),
         _pdf_citation(
             "sap_primary_analysis",
@@ -195,16 +220,31 @@ def _assessment(
             config["document_date"],
             pages["analysis"],
             "9.4.7 Primary Efficacy Analysis",
+            (
+                "The primary efficacy endpoint is the percentage of subjects achieving "
+                "an ACR20 response"
+            ),
         ),
     )
     return ClinicalRiskOfBiasTrialAssessment(
         trial_id=trial_id,
         design_id=f"{trial_id}:design",
         endpoint_id=f"{trial_id}:endpoint:primary-0",
+        outcome_source_pointer=REGISTRY_POINTERS["outcome"],
+        outcome_title=(
+            "Percentage of Subjects Achieving American College of Rheumatology 20% "
+            "(ACR20) Response"
+        ),
         candidate_result_group_id=f"OG{config['candidate_group']}",
         comparator_result_group_id=f"OG{config['comparator_group']}",
         candidate_flow_group_id=f"FG{config['candidate_group']}",
         comparator_flow_group_id=f"FG{config['comparator_group']}",
+        candidate_flow_arm_title=config["candidate_flow_arm_title"],
+        comparator_flow_arm_title=config["comparator_flow_arm_title"],
+        candidate_result_arm_title=config["candidate_result_arm_title"],
+        comparator_result_arm_title=config["comparator_result_arm_title"],
+        observed_outcome_data_status="observed_outcome_data_not_reported",
+        analysis_plan_status="protocol_only_final_sap_unverified",
         citations=citations,
         domains=(
             ClinicalRiskOfBiasDomainAssessment(
@@ -229,11 +269,12 @@ def _assessment(
             ),
             ClinicalRiskOfBiasDomainAssessment(
                 domain_id="missing_outcome_data",
-                judgment="low",
+                judgment="some_concerns",
                 rationale=(
-                    "The Week-12 ACR20 denominators equal the randomized STARTED counts in "
-                    "both selected arms, and the SAP classifies premature discontinuation as "
-                    "non-response for binary endpoints."
+                    "The Week-12 ACR20 analysis denominators equal randomized STARTED counts "
+                    "and the protocol prespecifies treatment-failure and missing-data rules. "
+                    "Public aggregate records do not separate observed Week-12 values from "
+                    "assigned non-response or intermediate imputation by selected arm."
                 ),
                 citation_ids=("registry_flow", "sap_missing_data"),
             ),
@@ -249,11 +290,13 @@ def _assessment(
             ),
             ClinicalRiskOfBiasDomainAssessment(
                 domain_id="selection_of_the_reported_result",
-                judgment="low",
+                judgment="some_concerns",
                 rationale=(
-                    "The dated protocol/SAP precedes primary completion and prespecifies the "
-                    "Week-12 ACR20 ITT analysis, multiplicity control, risk difference, and "
-                    "97.5% two-sided interval reported in the registry."
+                    "The dated registry-labeled protocol/SAP artifact precedes primary "
+                    "completion and prespecifies the Week-12 ACR20 ITT analysis, multiplicity "
+                    "control, risk difference, and 97.5% interval. The reviewed PDF is a "
+                    "clinical protocol/local amendment; a standalone final SAP finalized "
+                    "before unblinding was not verified."
                 ),
                 citation_ids=("registry_outcome", "sap_primary_analysis"),
             ),
@@ -262,6 +305,8 @@ def _assessment(
         unresolved_concerns=(
             "The public protocol/SAP does not disclose the IWRS sequence-generation algorithm or allocation audit.",
             "Aggregate public sources do not enumerate realized unblinding or all important protocol deviations.",
+            "Public aggregate sources do not report observed versus assigned or imputed Week-12 ACR20 status by selected arm.",
+            "A standalone final SAP finalized before unblinding was not verified in the reviewed public artifact.",
         ),
     )
 

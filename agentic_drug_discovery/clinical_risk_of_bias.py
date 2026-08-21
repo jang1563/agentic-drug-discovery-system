@@ -8,6 +8,7 @@ import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime
+from io import BytesIO
 from typing import Any
 from urllib.parse import urlparse
 
@@ -25,10 +26,10 @@ from .models import (
 from .serialization import RecordParseError
 
 
-CLINICAL_RISK_OF_BIAS_SPEC_SCHEMA_VERSION = "adds.clinical-risk-of-bias-spec.v1"
-CLINICAL_RISK_OF_BIAS_REPORT_SCHEMA_VERSION = "adds.clinical-risk-of-bias-report.v1"
+CLINICAL_RISK_OF_BIAS_SPEC_SCHEMA_VERSION = "adds.clinical-risk-of-bias-spec.v2"
+CLINICAL_RISK_OF_BIAS_REPORT_SCHEMA_VERSION = "adds.clinical-risk-of-bias-report.v2"
 CLINICAL_RISK_OF_BIAS_METHOD_ID = (
-    "adds.project-internal-outcome-specific-risk-of-bias.v1"
+    "adds.project-internal-outcome-specific-risk-of-bias.v2"
 )
 CLINICAL_RISK_OF_BIAS_STATUS = "project_internal_outcome_specific_assessment_complete"
 
@@ -45,6 +46,16 @@ RISK_OF_BIAS_JUDGMENTS = (
     "high",
     "insufficient_information",
 )
+OBSERVED_OUTCOME_DATA_STATUSES = (
+    "complete_observed_outcome_data",
+    "incomplete_observed_outcome_data",
+    "observed_outcome_data_not_reported",
+)
+ANALYSIS_PLAN_STATUSES = (
+    "final_pre_unblinding_plan_verified",
+    "protocol_only_final_sap_unverified",
+    "post_completion_or_unverified",
+)
 
 _CANONICAL_ID = re.compile(r"^[a-z][a-z0-9_]{0,127}$")
 _NCT_ID = re.compile(r"^NCT[0-9]{8}$")
@@ -52,6 +63,7 @@ _PDF_FORMAT = "application/pdf"
 _REGISTRY_FORMAT = "clinicaltrials.gov-study-v2"
 _REGISTRY_ROLE = "registry_results"
 _PROTOCOL_SAP_ROLE = "protocol_sap"
+_PDF_SECTION_PAGE_RADIUS = 5
 _RISK_NOT_ASSESSED_BLOCKER = "risk_of_bias_not_assessed"
 _REQUIRED_LIMITATIONS = (
     (
@@ -156,6 +168,15 @@ def _date_lower_bound(value: str, path: str) -> date:
     raise ClinicalRiskOfBiasError(f"{path} has unsupported date precision")
 
 
+def _normalized_evidence_text(value: str) -> str:
+    return " ".join(value.replace("\x00", "").split()).casefold()
+
+
+def _display_date(value: str, path: str) -> str:
+    parsed = _parse_iso_date(value, path)
+    return f"{parsed.day} {parsed.strftime('%B')} {parsed.year}"
+
+
 def _load_registry_document(payload: bytes, path: str) -> dict[str, Any]:
     if not isinstance(payload, bytes):
         raise ClinicalRiskOfBiasError(f"{path} must be bytes")
@@ -230,6 +251,7 @@ class ClinicalRiskOfBiasSourceCitation(SerializableRecord):
     source_field_sha256: str | None = None
     source_page: int | None = None
     source_section: str | None = None
+    source_excerpt: str | None = None
 
     def __post_init__(self) -> None:
         for field_name in (
@@ -259,10 +281,12 @@ class ClinicalRiskOfBiasSourceCitation(SerializableRecord):
                     "source_field_pointer must be an absolute JSON pointer"
                 )
             _require_sha256(self.source_field_sha256, "source_field_sha256")
-            if self.source_page is not None or self.source_section is not None:
-                raise ValueError(
-                    "registry citation cannot declare a PDF page or section"
-                )
+            if (
+                self.source_page is not None
+                or self.source_section is not None
+                or self.source_excerpt is not None
+            ):
+                raise ValueError("registry citation cannot declare PDF page evidence")
         elif self.source_role == _PROTOCOL_SAP_ROLE:
             if self.source_document_format != _PDF_FORMAT:
                 raise ValueError("protocol/SAP citation format is unsupported")
@@ -287,6 +311,9 @@ class ClinicalRiskOfBiasSourceCitation(SerializableRecord):
             if self.source_section is None:
                 raise ValueError("protocol/SAP citation requires source_section")
             _require_text(self.source_section, "source_section")
+            if self.source_excerpt is None:
+                raise ValueError("protocol/SAP citation requires source_excerpt")
+            _require_text(self.source_excerpt, "source_excerpt")
         else:
             raise ValueError("source_role is unsupported")
 
@@ -322,10 +349,18 @@ class ClinicalRiskOfBiasTrialAssessment(SerializableRecord):
     trial_id: str
     design_id: str
     endpoint_id: str
+    outcome_source_pointer: str
+    outcome_title: str
     candidate_result_group_id: str
     comparator_result_group_id: str
     candidate_flow_group_id: str
     comparator_flow_group_id: str
+    candidate_flow_arm_title: str
+    comparator_flow_arm_title: str
+    candidate_result_arm_title: str
+    comparator_result_arm_title: str
+    observed_outcome_data_status: str
+    analysis_plan_status: str
     citations: tuple[ClinicalRiskOfBiasSourceCitation, ...]
     domains: tuple[ClinicalRiskOfBiasDomainAssessment, ...]
     overall_judgment: str
@@ -336,10 +371,18 @@ class ClinicalRiskOfBiasTrialAssessment(SerializableRecord):
             "trial_id",
             "design_id",
             "endpoint_id",
+            "outcome_source_pointer",
+            "outcome_title",
             "candidate_result_group_id",
             "comparator_result_group_id",
             "candidate_flow_group_id",
             "comparator_flow_group_id",
+            "candidate_flow_arm_title",
+            "comparator_flow_arm_title",
+            "candidate_result_arm_title",
+            "comparator_result_arm_title",
+            "observed_outcome_data_status",
+            "analysis_plan_status",
             "overall_judgment",
         ):
             _require_text(getattr(self, field_name), field_name)
@@ -347,6 +390,41 @@ class ClinicalRiskOfBiasTrialAssessment(SerializableRecord):
             raise ValueError("trial_id must be an NCT identifier")
         if self.overall_judgment not in RISK_OF_BIAS_JUDGMENTS:
             raise ValueError("overall_judgment is unsupported")
+        if self.observed_outcome_data_status not in OBSERVED_OUTCOME_DATA_STATUSES:
+            raise ValueError("observed_outcome_data_status is unsupported")
+        if self.analysis_plan_status not in ANALYSIS_PLAN_STATUSES:
+            raise ValueError("analysis_plan_status is unsupported")
+        outcome_match = re.fullmatch(
+            r"/resultsSection/outcomeMeasuresModule/outcomeMeasures/(0|[1-9][0-9]*)",
+            self.outcome_source_pointer,
+        )
+        if outcome_match is None:
+            raise ValueError("outcome_source_pointer is unsupported")
+        endpoint_match = re.search(r":endpoint:primary-([0-9]+)$", self.endpoint_id)
+        if endpoint_match is None or endpoint_match.group(1) != outcome_match.group(1):
+            raise ValueError("endpoint_id does not match outcome_source_pointer")
+        if self.candidate_result_group_id == self.comparator_result_group_id:
+            raise ValueError("candidate and comparator result groups must be distinct")
+        if self.candidate_flow_group_id == self.comparator_flow_group_id:
+            raise ValueError("candidate and comparator flow groups must be distinct")
+        for source_role, candidate_title, comparator_title in (
+            (
+                "flow",
+                self.candidate_flow_arm_title,
+                self.comparator_flow_arm_title,
+            ),
+            (
+                "result",
+                self.candidate_result_arm_title,
+                self.comparator_result_arm_title,
+            ),
+        ):
+            if _normalized_evidence_text(candidate_title) == (
+                _normalized_evidence_text(comparator_title)
+            ):
+                raise ValueError(
+                    f"candidate and comparator {source_role} arm titles must be distinct"
+                )
         citations = tuple(self.citations)
         domains = tuple(self.domains)
         concerns = tuple(self.unresolved_concerns)
@@ -387,6 +465,21 @@ class ClinicalRiskOfBiasTrialAssessment(SerializableRecord):
             raise ValueError("every citation must support at least one domain")
         if self.overall_judgment != _overall_judgment(domains):
             raise ValueError("overall_judgment does not match domain judgments")
+        domain_by_id = {item.domain_id: item for item in domains}
+        if (
+            domain_by_id["missing_outcome_data"].judgment == "low"
+            and self.observed_outcome_data_status != "complete_observed_outcome_data"
+        ):
+            raise ValueError(
+                "low missing-outcome-data judgment requires complete observed data"
+            )
+        if (
+            domain_by_id["selection_of_the_reported_result"].judgment == "low"
+            and self.analysis_plan_status != "final_pre_unblinding_plan_verified"
+        ):
+            raise ValueError(
+                "low reported-result-selection judgment requires a verified final plan"
+            )
         if self.overall_judgment == "low" and concerns:
             raise ValueError("low overall judgment cannot declare unresolved concerns")
         if self.overall_judgment != "low" and not concerns:
@@ -473,10 +566,18 @@ class ClinicalRiskOfBiasTrialRecord(SerializableRecord):
     trial_id: str
     design_id: str
     endpoint_id: str
+    outcome_source_pointer: str
+    outcome_title: str
     candidate_result_group_id: str
     comparator_result_group_id: str
     candidate_flow_group_id: str
     comparator_flow_group_id: str
+    candidate_flow_arm_title: str
+    comparator_flow_arm_title: str
+    candidate_result_arm_title: str
+    comparator_result_arm_title: str
+    observed_outcome_data_status: str
+    analysis_plan_status: str
     candidate_started: int
     comparator_started: int
     candidate_primary_endpoint_denominator: int
@@ -485,6 +586,10 @@ class ClinicalRiskOfBiasTrialRecord(SerializableRecord):
     protocol_sap_document_date: str
     primary_completion_date: str
     protocol_sap_precedes_primary_completion: bool
+    protocol_sap_page_count: int
+    protocol_sap_citations_verified: bool
+    arm_identity_verified: bool
+    outcome_identity_verified: bool
     source_content_hashes: tuple[str, ...]
     citations: tuple[ClinicalRiskOfBiasSourceCitation, ...]
     domains: tuple[ClinicalRiskOfBiasDomainAssessment, ...]
@@ -496,10 +601,18 @@ class ClinicalRiskOfBiasTrialRecord(SerializableRecord):
             "trial_id",
             "design_id",
             "endpoint_id",
+            "outcome_source_pointer",
+            "outcome_title",
             "candidate_result_group_id",
             "comparator_result_group_id",
             "candidate_flow_group_id",
             "comparator_flow_group_id",
+            "candidate_flow_arm_title",
+            "comparator_flow_arm_title",
+            "candidate_result_arm_title",
+            "comparator_result_arm_title",
+            "observed_outcome_data_status",
+            "analysis_plan_status",
             "protocol_sap_document_date",
             "primary_completion_date",
             "overall_judgment",
@@ -510,6 +623,7 @@ class ClinicalRiskOfBiasTrialRecord(SerializableRecord):
             "comparator_started",
             "candidate_primary_endpoint_denominator",
             "comparator_primary_endpoint_denominator",
+            "protocol_sap_page_count",
         ):
             value = getattr(self, field_name)
             if not isinstance(value, int) or isinstance(value, bool) or value < 1:
@@ -522,6 +636,14 @@ class ClinicalRiskOfBiasTrialRecord(SerializableRecord):
             self.protocol_sap_precedes_primary_completion,
             "protocol_sap_precedes_primary_completion",
         )
+        for field_name in (
+            "protocol_sap_citations_verified",
+            "arm_identity_verified",
+            "outcome_identity_verified",
+        ):
+            _require_bool(getattr(self, field_name), field_name)
+            if not getattr(self, field_name):
+                raise ValueError(f"{field_name} must be true")
         if self.primary_endpoint_denominator_complete != (
             self.candidate_started == self.candidate_primary_endpoint_denominator
             and self.comparator_started == self.comparator_primary_endpoint_denominator
@@ -552,10 +674,18 @@ class ClinicalRiskOfBiasTrialRecord(SerializableRecord):
             trial_id=self.trial_id,
             design_id=self.design_id,
             endpoint_id=self.endpoint_id,
+            outcome_source_pointer=self.outcome_source_pointer,
+            outcome_title=self.outcome_title,
             candidate_result_group_id=self.candidate_result_group_id,
             comparator_result_group_id=self.comparator_result_group_id,
             candidate_flow_group_id=self.candidate_flow_group_id,
             comparator_flow_group_id=self.comparator_flow_group_id,
+            candidate_flow_arm_title=self.candidate_flow_arm_title,
+            comparator_flow_arm_title=self.comparator_flow_arm_title,
+            candidate_result_arm_title=self.candidate_result_arm_title,
+            comparator_result_arm_title=self.comparator_result_arm_title,
+            observed_outcome_data_status=self.observed_outcome_data_status,
+            analysis_plan_status=self.analysis_plan_status,
             citations=citations,
             domains=domains,
             overall_judgment=self.overall_judgment,
@@ -792,8 +922,11 @@ def clinical_risk_of_bias_spec_from_json(
 
 
 def _measurement_count(outcome: Mapping[str, Any], group_id: str, path: str) -> int:
+    matches: list[int] = []
     for denom in _tuple(outcome.get("denoms"), f"{path}.denoms"):
         denom_data = _mapping(denom, f"{path}.denoms item")
+        if denom_data.get("units") != "Participants":
+            continue
         for count in _tuple(denom_data.get("counts"), f"{path}.denoms.counts"):
             count_data = _mapping(count, f"{path}.denoms.counts item")
             if count_data.get("groupId") == group_id:
@@ -802,14 +935,19 @@ def _measurement_count(outcome: Mapping[str, Any], group_id: str, path: str) -> 
                     raise ClinicalRiskOfBiasError(
                         f"{path} has an invalid denominator for {group_id}"
                     )
-                return int(raw)
-    raise ClinicalRiskOfBiasError(f"{path} has no denominator for {group_id}")
+                matches.append(int(raw))
+    if len(matches) != 1:
+        raise ClinicalRiskOfBiasError(
+            f"{path} must have exactly one participant denominator for {group_id}"
+        )
+    return matches[0]
 
 
 def _started_count(document: Mapping[str, Any], group_id: str, path: str) -> int:
     periods = _json_pointer(
         document, "/resultsSection/participantFlowModule/periods", f"{path}.periods"
     )
+    matches: list[int] = []
     for period in _tuple(periods, f"{path}.periods"):
         for milestone in _tuple(
             _mapping(period, f"{path}.period").get("milestones"),
@@ -828,8 +966,144 @@ def _started_count(document: Mapping[str, Any], group_id: str, path: str) -> int
                         raise ClinicalRiskOfBiasError(
                             f"{path} has an invalid STARTED count for {group_id}"
                         )
-                    return int(raw)
-    raise ClinicalRiskOfBiasError(f"{path} has no STARTED count for {group_id}")
+                    matches.append(int(raw))
+    if len(matches) != 1:
+        raise ClinicalRiskOfBiasError(
+            f"{path} must have exactly one STARTED count for {group_id}"
+        )
+    return matches[0]
+
+
+def _group_by_id(value: Any, group_id: str, path: str) -> dict[str, Any]:
+    matches = [
+        _mapping(item, f"{path} item")
+        for item in _tuple(value, path)
+        if isinstance(item, Mapping) and item.get("id") == group_id
+    ]
+    if len(matches) != 1:
+        raise ClinicalRiskOfBiasError(
+            f"{path} must contain exactly one group with id {group_id}"
+        )
+    _text(matches[0].get("title"), f"{path}.{group_id}.title")
+    return matches[0]
+
+
+def _verify_arm_identity(
+    registry: Mapping[str, Any],
+    outcome: Mapping[str, Any],
+    assessment: ClinicalRiskOfBiasTrialAssessment,
+) -> None:
+    flow_groups = _json_pointer(
+        registry,
+        "/resultsSection/participantFlowModule/groups",
+        f"{assessment.trial_id}.flow_groups",
+    )
+    outcome_groups = outcome.get("groups")
+    for role, flow_id, result_id, reviewed_flow_title, reviewed_result_title in (
+        (
+            "candidate",
+            assessment.candidate_flow_group_id,
+            assessment.candidate_result_group_id,
+            assessment.candidate_flow_arm_title,
+            assessment.candidate_result_arm_title,
+        ),
+        (
+            "comparator",
+            assessment.comparator_flow_group_id,
+            assessment.comparator_result_group_id,
+            assessment.comparator_flow_arm_title,
+            assessment.comparator_result_arm_title,
+        ),
+    ):
+        flow_group = _group_by_id(
+            flow_groups, flow_id, f"{assessment.trial_id}.flow_groups"
+        )
+        outcome_group = _group_by_id(
+            outcome_groups, result_id, f"{assessment.trial_id}.outcome_groups"
+        )
+        expected_flow = _normalized_evidence_text(reviewed_flow_title)
+        expected_result = _normalized_evidence_text(reviewed_result_title)
+        if _normalized_evidence_text(flow_group["title"]) != expected_flow:
+            raise ClinicalRiskOfBiasError(f"{role} flow-group arm title changed")
+        if _normalized_evidence_text(outcome_group["title"]) != expected_result:
+            raise ClinicalRiskOfBiasError(f"{role} result-group arm title changed")
+
+    selected_pair = (
+        assessment.candidate_result_group_id,
+        assessment.comparator_result_group_id,
+    )
+    analysis_pairs = []
+    for item in _tuple(outcome.get("analyses"), f"{assessment.trial_id}.analyses"):
+        analysis = _mapping(item, f"{assessment.trial_id}.analysis")
+        group_ids = _tuple(
+            analysis.get("groupIds"), f"{assessment.trial_id}.analysis.groupIds"
+        )
+        analysis_pairs.append(tuple(group_ids))
+    if selected_pair not in analysis_pairs:
+        raise ClinicalRiskOfBiasError(
+            "selected candidate/comparator result pair has no source analysis"
+        )
+
+
+def _verify_pdf_citations(
+    pdf_payload: bytes,
+    citations: Sequence[ClinicalRiskOfBiasSourceCitation],
+    document_date: str,
+    path: str,
+) -> int:
+    try:
+        from pypdf import PdfReader
+
+        reader = PdfReader(BytesIO(pdf_payload), strict=True)
+        if reader.is_encrypted:
+            raise ClinicalRiskOfBiasError(f"{path} must not be encrypted")
+        page_count = len(reader.pages)
+        if page_count < 1:
+            raise ClinicalRiskOfBiasError(f"{path} has no pages")
+        page_text_cache: dict[int, str] = {}
+
+        def page_text(page_number: int) -> str:
+            if page_number not in page_text_cache:
+                page_text_cache[page_number] = _normalized_evidence_text(
+                    reader.pages[page_number - 1].extract_text() or ""
+                )
+            return page_text_cache[page_number]
+
+        title_page_text = page_text(1)
+        expected_date = _normalized_evidence_text(
+            _display_date(document_date, f"{path}.document_date")
+        )
+        if expected_date not in title_page_text:
+            raise ClinicalRiskOfBiasError(
+                f"{path} title page does not contain the declared document date"
+            )
+        for citation in citations:
+            page = citation.source_page
+            if page is None or page > page_count:
+                raise ClinicalRiskOfBiasError(
+                    f"{path}.{citation.citation_id} source page is outside the PDF"
+                )
+            cited_page_text = page_text(page)
+            excerpt = _normalized_evidence_text(citation.source_excerpt or "")
+            if not excerpt or excerpt not in cited_page_text:
+                raise ClinicalRiskOfBiasError(
+                    f"{path}.{citation.citation_id} evidence excerpt is not on the cited page"
+                )
+            section = _normalized_evidence_text(citation.source_section or "")
+            first_page = max(1, page - _PDF_SECTION_PAGE_RADIUS)
+            last_page = min(page_count, page + _PDF_SECTION_PAGE_RADIUS)
+            if not section or not any(
+                section in page_text(page_number)
+                for page_number in range(first_page, last_page + 1)
+            ):
+                raise ClinicalRiskOfBiasError(
+                    f"{path}.{citation.citation_id} section anchor is not near the cited page"
+                )
+    except ClinicalRiskOfBiasError:
+        raise
+    except Exception as exc:
+        raise ClinicalRiskOfBiasError(f"{path} could not be parsed as a PDF") from exc
+    return page_count
 
 
 def compile_clinical_risk_of_bias_report(
@@ -937,6 +1211,12 @@ def compile_clinical_risk_of_bias_report(
         protocol_date = next(iter(pdf_dates))
         if protocol_date is None:  # narrowed above; retained for type checkers
             raise ClinicalRiskOfBiasError("protocol/SAP document date is missing")
+        protocol_sap_page_count = _verify_pdf_citations(
+            pdf_payload,
+            pdf_citations,
+            protocol_date,
+            f"{assessment.trial_id}.protocol_sap",
+        )
         primary_completion = _json_pointer(
             registry,
             "/protocolSection/statusModule/primaryCompletionDateStruct/date",
@@ -953,18 +1233,26 @@ def compile_clinical_risk_of_bias_report(
         outcome = _mapping(
             _json_pointer(
                 registry,
-                "/resultsSection/outcomeMeasuresModule/outcomeMeasures/0",
+                assessment.outcome_source_pointer,
                 f"{assessment.trial_id}.primary_outcome",
             ),
             f"{assessment.trial_id}.primary_outcome",
         )
+        if assessment.outcome_source_pointer not in {
+            item.source_field_pointer for item in registry_citations
+        }:
+            raise ClinicalRiskOfBiasError(
+                "outcome source pointer is not covered by a registry citation"
+            )
         if (
             outcome.get("type") != "PRIMARY"
             or outcome.get("timeFrame") != spec.outcome_time_frame
+            or outcome.get("title") != assessment.outcome_title
         ):
             raise ClinicalRiskOfBiasError(
-                "primary outcome identity or time frame changed"
+                "primary outcome identity, title, or time frame changed"
             )
+        _verify_arm_identity(registry, outcome, assessment)
         candidate_started = _started_count(
             registry, assessment.candidate_flow_group_id, assessment.trial_id
         )
@@ -992,21 +1280,44 @@ def compile_clinical_risk_of_bias_report(
             raise ClinicalRiskOfBiasError(
                 "missing-outcome-data judgment cannot be low with incomplete denominators"
             )
+        if (
+            domain_by_id["missing_outcome_data"].judgment == "low"
+            and assessment.observed_outcome_data_status
+            != "complete_observed_outcome_data"
+        ):
+            raise ClinicalRiskOfBiasError(
+                "missing-outcome-data judgment cannot be low without complete observed data"
+            )
         if not protocol_precedes_completion and (
             domain_by_id["selection_of_the_reported_result"].judgment == "low"
         ):
             raise ClinicalRiskOfBiasError(
                 "reported-result selection judgment cannot be low with a post-completion SAP"
             )
+        if (
+            domain_by_id["selection_of_the_reported_result"].judgment == "low"
+            and assessment.analysis_plan_status != "final_pre_unblinding_plan_verified"
+        ):
+            raise ClinicalRiskOfBiasError(
+                "reported-result selection judgment cannot be low without a verified final plan"
+            )
         records.append(
             ClinicalRiskOfBiasTrialRecord(
                 trial_id=assessment.trial_id,
                 design_id=assessment.design_id,
                 endpoint_id=assessment.endpoint_id,
+                outcome_source_pointer=assessment.outcome_source_pointer,
+                outcome_title=assessment.outcome_title,
                 candidate_result_group_id=assessment.candidate_result_group_id,
                 comparator_result_group_id=assessment.comparator_result_group_id,
                 candidate_flow_group_id=assessment.candidate_flow_group_id,
                 comparator_flow_group_id=assessment.comparator_flow_group_id,
+                candidate_flow_arm_title=assessment.candidate_flow_arm_title,
+                comparator_flow_arm_title=assessment.comparator_flow_arm_title,
+                candidate_result_arm_title=assessment.candidate_result_arm_title,
+                comparator_result_arm_title=assessment.comparator_result_arm_title,
+                observed_outcome_data_status=assessment.observed_outcome_data_status,
+                analysis_plan_status=assessment.analysis_plan_status,
                 candidate_started=candidate_started,
                 comparator_started=comparator_started,
                 candidate_primary_endpoint_denominator=candidate_denominator,
@@ -1015,6 +1326,10 @@ def compile_clinical_risk_of_bias_report(
                 protocol_sap_document_date=protocol_date,
                 primary_completion_date=primary_completion,
                 protocol_sap_precedes_primary_completion=protocol_precedes_completion,
+                protocol_sap_page_count=protocol_sap_page_count,
+                protocol_sap_citations_verified=True,
+                arm_identity_verified=True,
+                outcome_identity_verified=True,
                 source_content_hashes=tuple(sorted((registry_hash, pdf_hash))),
                 citations=assessment.citations,
                 domains=assessment.domains,
@@ -1029,6 +1344,16 @@ def compile_clinical_risk_of_bias_report(
         "aggregate_public_sources_do_not_report_all_realized_protocol_deviations",
         "independent_external_risk_of_bias_review_not_completed",
     }
+    if any(
+        item.observed_outcome_data_status != "complete_observed_outcome_data"
+        for item in records
+    ):
+        cautions.add("complete_observed_primary_outcome_availability_not_established")
+    if any(
+        item.analysis_plan_status != "final_pre_unblinding_plan_verified"
+        for item in records
+    ):
+        cautions.add("standalone_final_pre_unblinding_analysis_plan_not_verified")
     if any(item.overall_judgment == "some_concerns" for item in records):
         cautions.add("some_concerns_in_at_least_one_trial")
     if any(item.overall_judgment == "high" for item in records):

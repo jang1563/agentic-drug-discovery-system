@@ -77,10 +77,11 @@ validated.
   stratum with two-trial support. It preserves month-precision source chronology, removes only the
   distinct-strata and no-within-stratum-replication blockers, and retains non-pooling, `HOLD`, five
   transport blockers, and all prohibited-inference flags.
-- [x] The outcome-specific follow-on binds exact registry fields and protocol/SAP PDF hashes,
-  pages, sections, and dates; records complete selected-arm denominators and two `some_concerns`
-  overall judgments; and resolves only `risk_of_bias_not_assessed` without pooling, transport,
-  treatment, or independent-review claims.
+- [x] The outcome-specific follow-on binds exact registry fields and registry-labeled protocol/SAP
+  PDF hashes, pages, sections, excerpts, and dates; verifies source-specific arm/endpoint identity;
+  distinguishes complete ITT analysis denominators from unverified observed-outcome completeness;
+  records two `some_concerns` overall judgments; and resolves only `risk_of_bias_not_assessed`
+  without pooling, transport, treatment, or independent-review claims.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.

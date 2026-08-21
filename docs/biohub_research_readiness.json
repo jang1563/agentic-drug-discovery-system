@@ -370,31 +370,31 @@
     {
       "anchor_id": "clinical-risk-of-bias-core",
       "path": "agentic_drug_discovery/clinical_risk_of_bias.py",
-      "sha256": "a5d858cdf38b4c732ec5488906188ef74981919a1de67146296d7c9081fc3e6a",
+      "sha256": "5216dfc038ed67a11b6779a6d8c42e8d4f14aa3a1d3eb4be236a8aae3f9cec3b",
       "kind": "implementation"
     },
     {
       "anchor_id": "clinical-risk-of-bias-tests",
       "path": "tests/test_clinical_risk_of_bias.py",
-      "sha256": "a349363f3b6dc05fb457ee7bd67ad9dfec0cfe8b41c4222ee10712de60ea680d",
+      "sha256": "a1a3deff755121d510e4503c3efde04cf3eb5fdbfd8e9f3ba1ee1cccd7ab28c7",
       "kind": "test"
     },
     {
       "anchor_id": "ra-olokizumab-risk-of-bias-document",
       "path": "docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md",
-      "sha256": "4ff154acee295555ac70090aa6adee4780a7267fc0f0af29835c0dee214d4e8e",
+      "sha256": "84c624ce37a634598a685f222aac6bc6dd42d7d5a7803cfe30f7dcff9c032e24",
       "kind": "document"
     },
     {
       "anchor_id": "ra-olokizumab-risk-of-bias-spec",
       "path": "docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json",
-      "sha256": "be2ebefe450d7ef5f334e9df217630aa3a0fad18386b73eabfdd1d76993ea147",
+      "sha256": "ffda74cbcdcd8e670c5536828fea708f95a592b79ebfc617724747bd773434bd",
       "kind": "document"
     },
     {
       "anchor_id": "ra-olokizumab-risk-of-bias-report",
       "path": "docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json",
-      "sha256": "2e6e95177ea562b97f6962324cef5be87050448c4c15d12c7bb781d8247fd96d",
+      "sha256": "4e257c7f82f3322d066c5097c706bc7f0d319224c1a4ad08f40c960a29203cd7",
       "kind": "document"
     }
   ],
@@ -601,7 +601,7 @@
       "capability_id": "outcome-specific-risk-of-bias",
       "label": "Outcome-specific public-source risk-of-bias assessment",
       "maturity": "implemented_public",
-      "claim": "A typed compiler binds five ordered trial-outcome domains to exact registry fields and official protocol/SAP PDF hashes, pages, sections, and dates; replays selected-arm denominator and source-chronology diagnostics; and records a narrow transport-blocker delta.",
+      "claim": "A typed compiler binds five ordered trial-outcome domains to exact registry fields and registry-labeled protocol/SAP PDF hashes, pages, sections, excerpts, and dates; verifies source-specific flow/result arm titles, endpoint identity, analysis pairs, PDF page bounds, and cited text; replays ITT analysis-denominator and chronology diagnostics; and records a narrow transport-blocker delta.",
       "evidence_anchor_ids": [
         "clinical-risk-of-bias-core",
         "clinical-risk-of-bias-tests",
@@ -610,7 +610,8 @@
         "ra-olokizumab-risk-of-bias-report"
       ],
       "limitations": [
-        "Both current trial judgments are project-internal some_concerns assessments based on aggregate public sources.",
+        "Both current trial judgments are project-internal some_concerns assessments based on aggregate public sources; only outcome measurement is low.",
+        "Equal STARTED and analysis denominators do not establish complete observed outcomes, and a standalone final pre-unblinding SAP was not verified.",
         "This is not official Cochrane RoB 2, independent adjudication, participant-level verification, pooling, transport estimation, or treatment guidance."
       ]
     },
@@ -1329,5 +1330,5 @@
     "public_release_status": "candidate_not_merged_or_uploaded",
     "next_decision": "Declare a target population and preregister an estimable transport model only after obtaining transport-compatible covariates; separately seek independent adjudication of the completed project-internal outcome-specific bias assessment."
   },
-  "integrity_sha256": "807de398516756d283d594d3f0cd61c14eb82fa0055e64feed04d917bc2f2d0f"
+  "integrity_sha256": "f79d45fc622939dbd543a55fe12c12d576fc3cc5f848a2a22d604b92429a39c9"
 }

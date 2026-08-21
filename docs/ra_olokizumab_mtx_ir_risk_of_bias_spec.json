@@ -1,5 +1,5 @@
 {
-  "schema_version": "adds.clinical-risk-of-bias-spec.v1",
+  "schema_version": "adds.clinical-risk-of-bias-spec.v2",
   "analysis_id": "CHEMBL1743050:MONDO:0008383:acr20-mtx-ir-risk-of-bias:v1",
   "transport_analysis_id": "CHEMBL1743050:MONDO:0008383:mtx-ir-same-stratum-replication:v1",
   "transport_report_integrity_sha256": "3102fa78eec99959e0a2b5025ec5232b7abb2e51c81065fd98be73ec36e7b2cd",
@@ -10,10 +10,18 @@
       "trial_id": "NCT02760407",
       "design_id": "NCT02760407:design",
       "endpoint_id": "NCT02760407:endpoint:primary-0",
+      "outcome_source_pointer": "/resultsSection/outcomeMeasuresModule/outcomeMeasures/0",
+      "outcome_title": "Percentage of Subjects Achieving American College of Rheumatology 20% (ACR20) Response",
       "candidate_result_group_id": "OG000",
       "comparator_result_group_id": "OG003",
       "candidate_flow_group_id": "FG000",
       "comparator_flow_group_id": "FG003",
+      "candidate_flow_arm_title": "Arm 1: Olokizumab q4w + Methotrexate",
+      "comparator_flow_arm_title": "Arm 4: Placebo q2w + Methotrexate",
+      "candidate_result_arm_title": "Arm 1: Olokizumab q4w + Methotrexate",
+      "comparator_result_arm_title": "Arm 4: Placebo q2w + Methotrexate",
+      "observed_outcome_data_status": "observed_outcome_data_not_reported",
+      "analysis_plan_status": "protocol_only_final_sap_unverified",
       "citations": [
         {
           "citation_id": "registry_design",
@@ -25,7 +33,8 @@
           "source_field_pointer": "/protocolSection/designModule/designInfo",
           "source_field_sha256": "f261fdd524504956082216c1299b9c81ab83569fc9f0e352eed05768e540a435",
           "source_page": null,
-          "source_section": null
+          "source_section": null,
+          "source_excerpt": null
         },
         {
           "citation_id": "registry_flow",
@@ -37,7 +46,8 @@
           "source_field_pointer": "/resultsSection/participantFlowModule/periods",
           "source_field_sha256": "7c5d228b4b31703fbedee08f6735d1074815cadf5a7bfd73ab3946ee76f3e39c",
           "source_page": null,
-          "source_section": null
+          "source_section": null,
+          "source_excerpt": null
         },
         {
           "citation_id": "registry_outcome",
@@ -49,7 +59,8 @@
           "source_field_pointer": "/resultsSection/outcomeMeasuresModule/outcomeMeasures/0",
           "source_field_sha256": "863a3679acd7e1fa1ff977b95906a243702e4b8fc5fda8c5e15ff8a3e105e9ce",
           "source_page": null,
-          "source_section": null
+          "source_section": null,
+          "source_excerpt": null
         },
         {
           "citation_id": "protocol_randomization",
@@ -61,7 +72,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 89,
-          "source_section": "6.5 Method of Assigning Subjects to Treatment Group"
+          "source_section": "6.5 Method of Assigning Subjects to Treatment Group",
+          "source_excerpt": "subjects will be randomized in a 2:2:2:1 ratio by blinded study staff using the IWRS"
         },
         {
           "citation_id": "protocol_blinding",
@@ -73,7 +85,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 95,
-          "source_section": "6.12 Blinding"
+          "source_section": "6.12 Blinding",
+          "source_excerpt": "Access to randomization codes will be restricted"
         },
         {
           "citation_id": "protocol_measurement",
@@ -85,7 +98,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 54,
-          "source_section": "Schedule of Events joint-assessor footnote"
+          "source_section": "Schedule of Events",
+          "source_excerpt": "Joint assessor will be independent to the rest of the study team"
         },
         {
           "citation_id": "sap_missing_data",
@@ -97,7 +111,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 143,
-          "source_section": "9.4.9.1 Primary Analysis of Efficacy Endpoints"
+          "source_section": "9.4.9.1 Primary Analysis of Primary, Secondary, and Other Efficacy Endpoints",
+          "source_excerpt": "inability to remain on randomized treatment through the time point of interest is defined as treatment failure"
         },
         {
           "citation_id": "sap_primary_analysis",
@@ -109,7 +124,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 141,
-          "source_section": "9.4.7 Primary Efficacy Analysis"
+          "source_section": "9.4.7 Primary Efficacy Analysis",
+          "source_excerpt": "The primary efficacy endpoint is the percentage of subjects achieving an ACR20 response"
         }
       ],
       "domains": [
@@ -133,8 +149,8 @@
         },
         {
           "domain_id": "missing_outcome_data",
-          "judgment": "low",
-          "rationale": "The Week-12 ACR20 denominators equal the randomized STARTED counts in both selected arms, and the SAP classifies premature discontinuation as non-response for binary endpoints.",
+          "judgment": "some_concerns",
+          "rationale": "The Week-12 ACR20 analysis denominators equal randomized STARTED counts and the protocol prespecifies treatment-failure and missing-data rules. Public aggregate records do not separate observed Week-12 values from assigned non-response or intermediate imputation by selected arm.",
           "citation_ids": [
             "registry_flow",
             "sap_missing_data"
@@ -151,8 +167,8 @@
         },
         {
           "domain_id": "selection_of_the_reported_result",
-          "judgment": "low",
-          "rationale": "The dated protocol/SAP precedes primary completion and prespecifies the Week-12 ACR20 ITT analysis, multiplicity control, risk difference, and 97.5% two-sided interval reported in the registry.",
+          "judgment": "some_concerns",
+          "rationale": "The dated registry-labeled protocol/SAP artifact precedes primary completion and prespecifies the Week-12 ACR20 ITT analysis, multiplicity control, risk difference, and 97.5% interval. The reviewed PDF is a clinical protocol/local amendment; a standalone final SAP finalized before unblinding was not verified.",
           "citation_ids": [
             "registry_outcome",
             "sap_primary_analysis"
@@ -162,17 +178,27 @@
       "overall_judgment": "some_concerns",
       "unresolved_concerns": [
         "The public protocol/SAP does not disclose the IWRS sequence-generation algorithm or allocation audit.",
-        "Aggregate public sources do not enumerate realized unblinding or all important protocol deviations."
+        "Aggregate public sources do not enumerate realized unblinding or all important protocol deviations.",
+        "Public aggregate sources do not report observed versus assigned or imputed Week-12 ACR20 status by selected arm.",
+        "A standalone final SAP finalized before unblinding was not verified in the reviewed public artifact."
       ]
     },
     {
       "trial_id": "NCT02760368",
       "design_id": "NCT02760368:design",
       "endpoint_id": "NCT02760368:endpoint:primary-0",
+      "outcome_source_pointer": "/resultsSection/outcomeMeasuresModule/outcomeMeasures/0",
+      "outcome_title": "Percentage of Subjects Achieving American College of Rheumatology 20% (ACR20) Response",
       "candidate_result_group_id": "OG000",
       "comparator_result_group_id": "OG002",
       "candidate_flow_group_id": "FG000",
       "comparator_flow_group_id": "FG002",
+      "candidate_flow_arm_title": "Arm 1: Olokizumab q4w + Methotrexate",
+      "comparator_flow_arm_title": "Arm 3: Placebo + Methotrexate",
+      "candidate_result_arm_title": "Arm 1: Olokizumab q4w + Methotrexate",
+      "comparator_result_arm_title": "Arm 3: Placebo q2w + Methotrexate",
+      "observed_outcome_data_status": "observed_outcome_data_not_reported",
+      "analysis_plan_status": "protocol_only_final_sap_unverified",
       "citations": [
         {
           "citation_id": "registry_design",
@@ -184,7 +210,8 @@
           "source_field_pointer": "/protocolSection/designModule/designInfo",
           "source_field_sha256": "f261fdd524504956082216c1299b9c81ab83569fc9f0e352eed05768e540a435",
           "source_page": null,
-          "source_section": null
+          "source_section": null,
+          "source_excerpt": null
         },
         {
           "citation_id": "registry_flow",
@@ -196,7 +223,8 @@
           "source_field_pointer": "/resultsSection/participantFlowModule/periods",
           "source_field_sha256": "24f6043fb1c056650a84c373b4ebdf4d479a2d737e42a2ea499f6f4f32d3e3b7",
           "source_page": null,
-          "source_section": null
+          "source_section": null,
+          "source_excerpt": null
         },
         {
           "citation_id": "registry_outcome",
@@ -208,7 +236,8 @@
           "source_field_pointer": "/resultsSection/outcomeMeasuresModule/outcomeMeasures/0",
           "source_field_sha256": "b1a3eb599aa0db8ee03c83cc389c93f1c9f65e0ded562dd753180b7d8f26809b",
           "source_page": null,
-          "source_section": null
+          "source_section": null,
+          "source_excerpt": null
         },
         {
           "citation_id": "protocol_randomization",
@@ -220,7 +249,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 96,
-          "source_section": "6.5 Method of Assigning Subjects to Treatment Group"
+          "source_section": "6.5 Method of Assigning Subjects to Treatment Group",
+          "source_excerpt": "subjects will be randomized in a 1:1:1 ratio by blinded study staff using IWRS"
         },
         {
           "citation_id": "protocol_blinding",
@@ -232,7 +262,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 101,
-          "source_section": "6.12 Blinding"
+          "source_section": "6.12 Blinding",
+          "source_excerpt": "Access to randomization codes will be restricted"
         },
         {
           "citation_id": "protocol_measurement",
@@ -244,7 +275,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 53,
-          "source_section": "Schedule of Events joint-assessor footnote"
+          "source_section": "Schedule of Events",
+          "source_excerpt": "Joint assessor will be independent to the rest of the study team"
         },
         {
           "citation_id": "sap_missing_data",
@@ -256,7 +288,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 152,
-          "source_section": "9.4.9.1 Primary Analysis of Efficacy Endpoints"
+          "source_section": "9.4.9.1 Primary Analysis of Primary, Secondary, and Other Efficacy Endpoints",
+          "source_excerpt": "inability to remain on randomized treatment through the time point of interest is defined as treatment failure"
         },
         {
           "citation_id": "sap_primary_analysis",
@@ -268,7 +301,8 @@
           "source_field_pointer": null,
           "source_field_sha256": null,
           "source_page": 151,
-          "source_section": "9.4.7 Primary Efficacy Analysis"
+          "source_section": "9.4.7 Primary Efficacy Analysis",
+          "source_excerpt": "The primary efficacy endpoint is the percentage of subjects achieving an ACR20 response"
         }
       ],
       "domains": [
@@ -292,8 +326,8 @@
         },
         {
           "domain_id": "missing_outcome_data",
-          "judgment": "low",
-          "rationale": "The Week-12 ACR20 denominators equal the randomized STARTED counts in both selected arms, and the SAP classifies premature discontinuation as non-response for binary endpoints.",
+          "judgment": "some_concerns",
+          "rationale": "The Week-12 ACR20 analysis denominators equal randomized STARTED counts and the protocol prespecifies treatment-failure and missing-data rules. Public aggregate records do not separate observed Week-12 values from assigned non-response or intermediate imputation by selected arm.",
           "citation_ids": [
             "registry_flow",
             "sap_missing_data"
@@ -310,8 +344,8 @@
         },
         {
           "domain_id": "selection_of_the_reported_result",
-          "judgment": "low",
-          "rationale": "The dated protocol/SAP precedes primary completion and prespecifies the Week-12 ACR20 ITT analysis, multiplicity control, risk difference, and 97.5% two-sided interval reported in the registry.",
+          "judgment": "some_concerns",
+          "rationale": "The dated registry-labeled protocol/SAP artifact precedes primary completion and prespecifies the Week-12 ACR20 ITT analysis, multiplicity control, risk difference, and 97.5% interval. The reviewed PDF is a clinical protocol/local amendment; a standalone final SAP finalized before unblinding was not verified.",
           "citation_ids": [
             "registry_outcome",
             "sap_primary_analysis"
@@ -321,7 +355,9 @@
       "overall_judgment": "some_concerns",
       "unresolved_concerns": [
         "The public protocol/SAP does not disclose the IWRS sequence-generation algorithm or allocation audit.",
-        "Aggregate public sources do not enumerate realized unblinding or all important protocol deviations."
+        "Aggregate public sources do not enumerate realized unblinding or all important protocol deviations.",
+        "Public aggregate sources do not report observed versus assigned or imputed Week-12 ACR20 status by selected arm.",
+        "A standalone final SAP finalized before unblinding was not verified in the reviewed public artifact."
       ]
     }
   ],
@@ -332,5 +368,5 @@
     "reviewed_at": "2026-08-21T16:45:00+00:00",
     "independent_external_review": false
   },
-  "method_id": "adds.project-internal-outcome-specific-risk-of-bias.v1"
+  "method_id": "adds.project-internal-outcome-specific-risk-of-bias.v2"
 }

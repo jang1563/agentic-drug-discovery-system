@@ -17,7 +17,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "adds.clinical-risk-of-bias-spec.v1"
+      "const": "adds.clinical-risk-of-bias-spec.v2"
     },
     "analysis_id": {
       "type": "string",
@@ -50,7 +50,7 @@
       "$ref": "#/$defs/review"
     },
     "method_id": {
-      "const": "adds.project-internal-outcome-specific-risk-of-bias.v1"
+      "const": "adds.project-internal-outcome-specific-risk-of-bias.v2"
     }
   },
   "$defs": {
@@ -102,7 +102,8 @@
         "source_field_pointer",
         "source_field_sha256",
         "source_page",
-        "source_section"
+        "source_section",
+        "source_excerpt"
       ],
       "properties": {
         "citation_id": {
@@ -164,6 +165,12 @@
             "string",
             "null"
           ]
+        },
+        "source_excerpt": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "allOf": [
@@ -194,6 +201,9 @@
                 "type": "null"
               },
               "source_section": {
+                "type": "null"
+              },
+              "source_excerpt": {
                 "type": "null"
               }
             }
@@ -227,6 +237,10 @@
                 "minimum": 1
               },
               "source_section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_excerpt": {
                 "type": "string",
                 "minLength": 1
               }
@@ -284,10 +298,18 @@
         "trial_id",
         "design_id",
         "endpoint_id",
+        "outcome_source_pointer",
+        "outcome_title",
         "candidate_result_group_id",
         "comparator_result_group_id",
         "candidate_flow_group_id",
         "comparator_flow_group_id",
+        "candidate_flow_arm_title",
+        "comparator_flow_arm_title",
+        "candidate_result_arm_title",
+        "comparator_result_arm_title",
+        "observed_outcome_data_status",
+        "analysis_plan_status",
         "citations",
         "domains",
         "overall_judgment",
@@ -306,6 +328,14 @@
           "type": "string",
           "minLength": 1
         },
+        "outcome_source_pointer": {
+          "type": "string",
+          "pattern": "^/resultsSection/outcomeMeasuresModule/outcomeMeasures/(0|[1-9][0-9]*)$"
+        },
+        "outcome_title": {
+          "type": "string",
+          "minLength": 1
+        },
         "candidate_result_group_id": {
           "type": "string",
           "minLength": 1
@@ -321,6 +351,36 @@
         "comparator_flow_group_id": {
           "type": "string",
           "minLength": 1
+        },
+        "candidate_flow_arm_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparator_flow_arm_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_result_arm_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparator_result_arm_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_outcome_data_status": {
+          "enum": [
+            "complete_observed_outcome_data",
+            "incomplete_observed_outcome_data",
+            "observed_outcome_data_not_reported"
+          ]
+        },
+        "analysis_plan_status": {
+          "enum": [
+            "final_pre_unblinding_plan_verified",
+            "protocol_only_final_sap_unverified",
+            "post_completion_or_unverified"
+          ]
         },
         "citations": {
           "type": "array",

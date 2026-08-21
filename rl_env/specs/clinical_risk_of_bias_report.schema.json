@@ -31,7 +31,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "adds.clinical-risk-of-bias-report.v1"
+      "const": "adds.clinical-risk-of-bias-report.v2"
     },
     "integrity_sha256": {
       "$ref": "#/$defs/sha256"
@@ -44,7 +44,7 @@
       "$ref": "#/$defs/sha256"
     },
     "method_id": {
-      "const": "adds.project-internal-outcome-specific-risk-of-bias.v1"
+      "const": "adds.project-internal-outcome-specific-risk-of-bias.v2"
     },
     "transport_analysis_id": {
       "type": "string",
@@ -197,7 +197,8 @@
         "source_field_pointer",
         "source_field_sha256",
         "source_page",
-        "source_section"
+        "source_section",
+        "source_excerpt"
       ],
       "properties": {
         "citation_id": {
@@ -259,8 +260,89 @@
             "string",
             "null"
           ]
+        },
+        "source_excerpt": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_role": {
+                "const": "registry_results"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_document_format": {
+                "const": "clinicaltrials.gov-study-v2"
+              },
+              "source_document_date": {
+                "type": "null"
+              },
+              "source_field_pointer": {
+                "type": "string",
+                "pattern": "^/"
+              },
+              "source_field_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "source_page": {
+                "type": "null"
+              },
+              "source_section": {
+                "type": "null"
+              },
+              "source_excerpt": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source_role": {
+                "const": "protocol_sap"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_document_format": {
+                "const": "application/pdf"
+              },
+              "source_document_date": {
+                "type": "string",
+                "format": "date"
+              },
+              "source_field_pointer": {
+                "type": "null"
+              },
+              "source_field_sha256": {
+                "type": "null"
+              },
+              "source_page": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "source_section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_excerpt": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
     },
     "domain": {
       "type": "object",
@@ -311,10 +393,18 @@
         "trial_id",
         "design_id",
         "endpoint_id",
+        "outcome_source_pointer",
+        "outcome_title",
         "candidate_result_group_id",
         "comparator_result_group_id",
         "candidate_flow_group_id",
         "comparator_flow_group_id",
+        "candidate_flow_arm_title",
+        "comparator_flow_arm_title",
+        "candidate_result_arm_title",
+        "comparator_result_arm_title",
+        "observed_outcome_data_status",
+        "analysis_plan_status",
         "candidate_started",
         "comparator_started",
         "candidate_primary_endpoint_denominator",
@@ -323,6 +413,10 @@
         "protocol_sap_document_date",
         "primary_completion_date",
         "protocol_sap_precedes_primary_completion",
+        "protocol_sap_page_count",
+        "protocol_sap_citations_verified",
+        "arm_identity_verified",
+        "outcome_identity_verified",
         "source_content_hashes",
         "citations",
         "domains",
@@ -342,6 +436,14 @@
           "type": "string",
           "minLength": 1
         },
+        "outcome_source_pointer": {
+          "type": "string",
+          "pattern": "^/resultsSection/outcomeMeasuresModule/outcomeMeasures/(0|[1-9][0-9]*)$"
+        },
+        "outcome_title": {
+          "type": "string",
+          "minLength": 1
+        },
         "candidate_result_group_id": {
           "type": "string",
           "minLength": 1
@@ -357,6 +459,36 @@
         "comparator_flow_group_id": {
           "type": "string",
           "minLength": 1
+        },
+        "candidate_flow_arm_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparator_flow_arm_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_result_arm_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparator_result_arm_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_outcome_data_status": {
+          "enum": [
+            "complete_observed_outcome_data",
+            "incomplete_observed_outcome_data",
+            "observed_outcome_data_not_reported"
+          ]
+        },
+        "analysis_plan_status": {
+          "enum": [
+            "final_pre_unblinding_plan_verified",
+            "protocol_only_final_sap_unverified",
+            "post_completion_or_unverified"
+          ]
         },
         "candidate_started": {
           "type": "integer",
@@ -387,6 +519,19 @@
         },
         "protocol_sap_precedes_primary_completion": {
           "type": "boolean"
+        },
+        "protocol_sap_page_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "protocol_sap_citations_verified": {
+          "const": true
+        },
+        "arm_identity_verified": {
+          "const": true
+        },
+        "outcome_identity_verified": {
+          "const": true
         },
         "source_content_hashes": {
           "type": "array",

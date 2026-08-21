@@ -5,10 +5,13 @@ import json
 import unittest
 from dataclasses import replace
 from datetime import datetime, timezone
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
+from pypdf import PdfWriter
+from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
 
 from agentic_drug_discovery import (
     ClinicalRiskOfBiasDomainAssessment,
@@ -47,6 +50,39 @@ def _canonical_sha256(value: Any) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def _pdf_document(source_date: str) -> bytes:
+    writer = PdfWriter()
+    page_text = {
+        1: f"Clinical Study Protocol {source_date}",
+        10: "Method of Assigning Subjects to Treatment Group automated allocation",
+        11: "Blinding and restricted treatment-code access",
+        12: "Schedule of Events independent joint assessment",
+        19: "Primary Efficacy Analysis Week-12 ACR20",
+        20: "Handling of Missing Data treatment failure non-response",
+    }
+    font = DictionaryObject(
+        {
+            NameObject("/Type"): NameObject("/Font"),
+            NameObject("/Subtype"): NameObject("/Type1"),
+            NameObject("/BaseFont"): NameObject("/Helvetica"),
+        }
+    )
+    font_ref = writer._add_object(font)
+    for page_number in range(1, 21):
+        page = writer.add_blank_page(width=612, height=792)
+        page[NameObject("/Resources")] = DictionaryObject(
+            {NameObject("/Font"): DictionaryObject({NameObject("/F1"): font_ref})}
+        )
+        text = page_text.get(page_number, f"Protocol page {page_number}")
+        escaped = text.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
+        stream = DecodedStreamObject()
+        stream.set_data(f"BT /F1 10 Tf 72 720 Td ({escaped}) Tj ET".encode("ascii"))
+        page[NameObject("/Contents")] = writer._add_object(stream)
+    output = BytesIO()
+    writer.write(output)
+    return output.getvalue()
+
+
 def _registry_document(
     trial_id: str,
     candidate_started: int,
@@ -62,6 +98,8 @@ def _registry_document(
     primary_completion_date = primary_completion_date or (
         "2019-08-02" if trial_id.endswith("407") else "2018-08"
     )
+    candidate_title = "Candidate q4w arm"
+    comparator_title = "Placebo comparator arm"
     return {
         "protocolSection": {
             "identificationModule": {"nctId": trial_id},
@@ -81,6 +119,13 @@ def _registry_document(
         },
         "resultsSection": {
             "participantFlowModule": {
+                "groups": [
+                    {"id": "FG000", "title": candidate_title},
+                    {
+                        "id": f"FG{comparator_group_suffix}",
+                        "title": comparator_title,
+                    },
+                ],
                 "periods": [
                     {
                         "title": "Overall Study",
@@ -100,7 +145,7 @@ def _registry_document(
                             }
                         ],
                     }
-                ]
+                ],
             },
             "outcomeMeasuresModule": {
                 "outcomeMeasures": [
@@ -110,6 +155,13 @@ def _registry_document(
                         "description": "Week-12 ACR20 response while remaining on treatment and in study.",
                         "populationDescription": "All randomized participants were analyzed as assigned.",
                         "timeFrame": "at Week 12",
+                        "groups": [
+                            {"id": "OG000", "title": candidate_title},
+                            {
+                                "id": f"OG{comparator_group_suffix}",
+                                "title": comparator_title,
+                            },
+                        ],
                         "denoms": [
                             {
                                 "units": "Participants",
@@ -123,6 +175,14 @@ def _registry_document(
                                         "value": str(comparator_started),
                                     },
                                 ],
+                            }
+                        ],
+                        "analyses": [
+                            {
+                                "groupIds": [
+                                    "OG000",
+                                    f"OG{comparator_group_suffix}",
+                                ]
                             }
                         ],
                     }
@@ -157,6 +217,7 @@ def _pdf_citation(
     source_date: str,
     page: int,
     section: str,
+    excerpt: str,
 ) -> ClinicalRiskOfBiasSourceCitation:
     return ClinicalRiskOfBiasSourceCitation(
         citation_id=citation_id,
@@ -169,6 +230,7 @@ def _pdf_citation(
         source_document_date=source_date,
         source_page=page,
         source_section=section,
+        source_excerpt=excerpt,
     )
 
 
@@ -211,6 +273,7 @@ def _assessment(
             "2018-03-30",
             10,
             "Method of Assigning Subjects to Treatment Group",
+            "Method of Assigning Subjects to Treatment Group automated allocation",
         ),
         _pdf_citation(
             "protocol_blinding",
@@ -219,6 +282,7 @@ def _assessment(
             "2018-03-30",
             11,
             "Blinding",
+            "Blinding and restricted treatment-code access",
         ),
         _pdf_citation(
             "protocol_measurement",
@@ -227,6 +291,7 @@ def _assessment(
             "2018-03-30",
             12,
             "Schedule of Events",
+            "Schedule of Events independent joint assessment",
         ),
         _pdf_citation(
             "sap_missing_data",
@@ -235,6 +300,7 @@ def _assessment(
             "2018-03-30",
             20,
             "Handling of Missing Data",
+            "Handling of Missing Data treatment failure non-response",
         ),
         _pdf_citation(
             "sap_primary_analysis",
@@ -243,16 +309,27 @@ def _assessment(
             "2018-03-30",
             19,
             "Primary Efficacy Analysis",
+            "Primary Efficacy Analysis Week-12 ACR20",
         ),
     )
     return ClinicalRiskOfBiasTrialAssessment(
         trial_id=trial_id,
         design_id=f"{trial_id}:design",
         endpoint_id=f"{trial_id}:endpoint:primary-0",
+        outcome_source_pointer=(
+            "/resultsSection/outcomeMeasuresModule/outcomeMeasures/0"
+        ),
+        outcome_title="ACR20 response",
         candidate_result_group_id="OG000",
         comparator_result_group_id=f"OG{comparator_group_suffix}",
         candidate_flow_group_id="FG000",
         comparator_flow_group_id=f"FG{comparator_group_suffix}",
+        candidate_flow_arm_title="Candidate q4w arm",
+        comparator_flow_arm_title="Placebo comparator arm",
+        candidate_result_arm_title="Candidate q4w arm",
+        comparator_result_arm_title="Placebo comparator arm",
+        observed_outcome_data_status="observed_outcome_data_not_reported",
+        analysis_plan_status="protocol_only_final_sap_unverified",
         citations=citations,
         domains=(
             ClinicalRiskOfBiasDomainAssessment(
@@ -269,8 +346,8 @@ def _assessment(
             ),
             ClinicalRiskOfBiasDomainAssessment(
                 domain_id="missing_outcome_data",
-                judgment="low",
-                rationale="The endpoint denominator includes every randomized participant in both arms.",
+                judgment="some_concerns",
+                rationale="Observed and assigned or imputed outcomes are not separated.",
                 citation_ids=("registry_flow", "sap_missing_data"),
             ),
             ClinicalRiskOfBiasDomainAssessment(
@@ -281,15 +358,28 @@ def _assessment(
             ),
             ClinicalRiskOfBiasDomainAssessment(
                 domain_id="selection_of_the_reported_result",
-                judgment="low",
-                rationale="The primary outcome and analysis preceded completion and match posted results.",
+                judgment="some_concerns",
+                rationale="A standalone final pre-unblinding analysis plan was not verified.",
                 citation_ids=("registry_outcome", "sap_primary_analysis"),
             ),
         ),
         overall_judgment="some_concerns",
         unresolved_concerns=(
             "Aggregate public sources do not enumerate every realized unblinding or protocol deviation.",
+            "Observed and assigned or imputed outcomes are not separated.",
+            "A standalone final pre-unblinding analysis plan was not verified.",
         ),
+    )
+
+
+def _replace_domain_judgment(
+    assessment: ClinicalRiskOfBiasTrialAssessment,
+    domain_id: str,
+    judgment: str,
+) -> tuple[ClinicalRiskOfBiasDomainAssessment, ...]:
+    return tuple(
+        replace(item, judgment=judgment) if item.domain_id == domain_id else item
+        for item in assessment.domains
     )
 
 
@@ -321,7 +411,10 @@ class ClinicalRiskOfBiasTest(unittest.TestCase):
         registry_hashes = tuple(
             hashlib.sha256(item).hexdigest() for item in registry_payloads
         )
-        pdf_payloads = (b"%PDF-1.7\nsynthetic-credo-2", b"%PDF-1.7\nsynthetic-credo-1")
+        pdf_payloads = (
+            _pdf_document("30 March 2018"),
+            _pdf_document("30 March 2018"),
+        )
         pdf_hashes = tuple(hashlib.sha256(item).hexdigest() for item in pdf_payloads)
         strata = tuple(
             replace(item, source_content_sha256=registry_hash)
@@ -404,6 +497,19 @@ class ClinicalRiskOfBiasTest(unittest.TestCase):
         self.assertTrue(
             all(item.protocol_sap_precedes_primary_completion for item in report.trials)
         )
+        self.assertTrue(all(item.arm_identity_verified for item in report.trials))
+        self.assertTrue(all(item.outcome_identity_verified for item in report.trials))
+        self.assertTrue(
+            all(item.protocol_sap_citations_verified for item in report.trials)
+        )
+        self.assertEqual(
+            {item.observed_outcome_data_status for item in report.trials},
+            {"observed_outcome_data_not_reported"},
+        )
+        self.assertEqual(
+            {item.analysis_plan_status for item in report.trials},
+            {"protocol_only_final_sap_unverified"},
+        )
         self.assertEqual(
             {item.overall_judgment for item in report.trials}, {"some_concerns"}
         )
@@ -440,8 +546,103 @@ class ClinicalRiskOfBiasTest(unittest.TestCase):
         ):
             compile_clinical_risk_of_bias_report(transport, documents, bad_spec)
 
+    def test_rejects_duplicate_candidate_and_comparator_groups(self) -> None:
+        _, _, spec = self._fixture()
+        first = spec.assessments[0]
+        with self.assertRaisesRegex(ValueError, "result groups must be distinct"):
+            replace(
+                first,
+                comparator_result_group_id=first.candidate_result_group_id,
+                comparator_flow_group_id=first.candidate_flow_group_id,
+            )
+
+    def test_rejects_flow_and_result_arm_title_rebinding(self) -> None:
+        transport, documents, spec = self._fixture()
+        first = replace(
+            spec.assessments[0], candidate_flow_arm_title="Changed candidate"
+        )
+        bad_spec = replace(spec, assessments=(first, spec.assessments[1]))
+        with self.assertRaisesRegex(
+            ClinicalRiskOfBiasError, "candidate flow-group arm title changed"
+        ):
+            compile_clinical_risk_of_bias_report(transport, documents, bad_spec)
+
+    def test_rejects_endpoint_pointer_identity_mismatch(self) -> None:
+        _, _, spec = self._fixture()
+        with self.assertRaisesRegex(
+            ValueError, "endpoint_id does not match outcome_source_pointer"
+        ):
+            replace(spec.assessments[0], endpoint_id="NCT02760407:endpoint:primary-1")
+
+    def test_rejects_low_missingness_without_complete_observed_data(self) -> None:
+        _, _, spec = self._fixture()
+        first = spec.assessments[0]
+        with self.assertRaisesRegex(ValueError, "requires complete observed data"):
+            replace(
+                first,
+                domains=_replace_domain_judgment(first, "missing_outcome_data", "low"),
+            )
+
+    def test_rejects_low_selection_without_verified_final_plan(self) -> None:
+        _, _, spec = self._fixture()
+        first = spec.assessments[0]
+        with self.assertRaisesRegex(ValueError, "requires a verified final plan"):
+            replace(
+                first,
+                domains=_replace_domain_judgment(
+                    first, "selection_of_the_reported_result", "low"
+                ),
+            )
+
+    def test_rejects_pdf_page_excerpt_rebinding(self) -> None:
+        transport, documents, spec = self._fixture()
+        first = spec.assessments[0]
+        bad_citation = replace(first.citations[3], source_excerpt="not on this page")
+        bad_assessment = replace(
+            first, citations=(*first.citations[:3], bad_citation, *first.citations[4:])
+        )
+        bad_spec = replace(spec, assessments=(bad_assessment, spec.assessments[1]))
+        with self.assertRaisesRegex(ClinicalRiskOfBiasError, "excerpt is not on"):
+            compile_clinical_risk_of_bias_report(transport, documents, bad_spec)
+
+    def test_rejects_pdf_section_rebinding(self) -> None:
+        transport, documents, spec = self._fixture()
+        first = spec.assessments[0]
+        bad_citation = replace(
+            first.citations[3], source_section="section absent from nearby pages"
+        )
+        bad_assessment = replace(
+            first, citations=(*first.citations[:3], bad_citation, *first.citations[4:])
+        )
+        bad_spec = replace(spec, assessments=(bad_assessment, spec.assessments[1]))
+        with self.assertRaisesRegex(ClinicalRiskOfBiasError, "section anchor is not"):
+            compile_clinical_risk_of_bias_report(transport, documents, bad_spec)
+
+    def test_rejects_pdf_document_date_rebinding(self) -> None:
+        transport, documents, spec = self._fixture()
+        first = spec.assessments[0]
+        citations = tuple(
+            replace(item, source_document_date="2010-01-01")
+            if item.source_role == "protocol_sap"
+            else item
+            for item in first.citations
+        )
+        bad_spec = replace(
+            spec,
+            assessments=(replace(first, citations=citations), spec.assessments[1]),
+        )
+        with self.assertRaisesRegex(ClinicalRiskOfBiasError, "declared document date"):
+            compile_clinical_risk_of_bias_report(transport, documents, bad_spec)
+
     def test_rejects_low_missingness_judgment_with_incomplete_denominator(self) -> None:
         transport, documents, spec = self._fixture(first_candidate_denominator=478)
+        first = spec.assessments[0]
+        first = replace(
+            first,
+            observed_outcome_data_status="complete_observed_outcome_data",
+            domains=_replace_domain_judgment(first, "missing_outcome_data", "low"),
+        )
+        spec = replace(spec, assessments=(first, spec.assessments[1]))
         with self.assertRaisesRegex(
             ClinicalRiskOfBiasError,
             "missing-outcome-data judgment cannot be low with incomplete denominators",
@@ -454,6 +655,15 @@ class ClinicalRiskOfBiasTest(unittest.TestCase):
         transport, documents, spec = self._fixture(
             first_primary_completion_date="2018-03"
         )
+        first = spec.assessments[0]
+        first = replace(
+            first,
+            analysis_plan_status="final_pre_unblinding_plan_verified",
+            domains=_replace_domain_judgment(
+                first, "selection_of_the_reported_result", "low"
+            ),
+        )
+        spec = replace(spec, assessments=(first, spec.assessments[1]))
         with self.assertRaisesRegex(
             ClinicalRiskOfBiasError,
             "reported-result selection judgment cannot be low with a post-completion SAP",
@@ -544,6 +754,31 @@ class ClinicalRiskOfBiasTest(unittest.TestCase):
         )
         self.assertEqual(
             {item.overall_judgment for item in trials.values()}, {"some_concerns"}
+        )
+        for trial in trials.values():
+            domains = {item.domain_id: item.judgment for item in trial.domains}
+            self.assertEqual(domains["missing_outcome_data"], "some_concerns")
+            self.assertEqual(
+                domains["selection_of_the_reported_result"], "some_concerns"
+            )
+            self.assertEqual(
+                trial.observed_outcome_data_status,
+                "observed_outcome_data_not_reported",
+            )
+            self.assertEqual(
+                trial.analysis_plan_status,
+                "protocol_only_final_sap_unverified",
+            )
+            self.assertTrue(trial.arm_identity_verified)
+            self.assertTrue(trial.outcome_identity_verified)
+            self.assertTrue(trial.protocol_sap_citations_verified)
+        self.assertIn(
+            "complete_observed_primary_outcome_availability_not_established",
+            report.assessment_cautions,
+        )
+        self.assertIn(
+            "standalone_final_pre_unblinding_analysis_plan_not_verified",
+            report.assessment_cautions,
         )
         self.assertFalse(report.pooling_performed)
         self.assertFalse(report.transport_effect_estimated)

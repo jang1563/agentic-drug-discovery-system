@@ -4,12 +4,14 @@
 from __future__ import annotations
 
 import argparse
+import email
 import hashlib
 import json
 import os
 import subprocess
 import sys
 import tempfile
+import zipfile
 from pathlib import Path
 
 
@@ -45,6 +47,21 @@ def main() -> int:
         return fail(
             f"expected exactly one core wheel in {wheel_dir}, found {len(wheels)}"
         )
+    with zipfile.ZipFile(wheels[0]) as archive:
+        metadata_names = [
+            name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
+        ]
+        if len(metadata_names) != 1:
+            return fail("wheel must contain exactly one METADATA file")
+        metadata = email.message_from_bytes(archive.read(metadata_names[0]))
+    requirements = metadata.get_all("Requires-Dist", [])
+    if not any(
+        requirement.lower().startswith("pypdf")
+        and ">=6.14" in requirement
+        and "<7" in requirement
+        for requirement in requirements
+    ):
+        return fail("wheel metadata is missing the bounded pypdf runtime dependency")
 
     clean_env = os.environ.copy()
     clean_env.pop("PYTHONPATH", None)
@@ -743,6 +760,8 @@ def main() -> int:
                         "CLINICAL_OUTCOME_PATTERN_MIXTURE_UNCERTAINTY_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_STRESS_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_RISK_OF_BIAS_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_RISK_OF_BIAS_SPEC_SCHEMA_VERSION, "
                         "RESEARCH_READINESS_SCHEMA_VERSION, "
                         "TRANSLATIONAL_HANDOFF_ALLOWED_USE, "
                         "TRANSLATIONAL_HANDOFF_SCHEMA_VERSION, "
@@ -771,6 +790,7 @@ def main() -> int:
                         "compile_clinical_evidence_transition, "
                         "compile_clinical_cohort_report, "
                         "compile_clinical_execution_batch, "
+                        "compile_clinical_risk_of_bias_report, "
                         "clinical_evidence_transition_from_json, "
                         "evaluate_policy_submission, "
                         "evaluate_clinical_outcomes, "
@@ -824,6 +844,10 @@ def main() -> int:
                         "'adds.clinical-outcome-stress-simulation-report.v1'; "
                         "assert CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION == "
                         "'adds.clinical-outcome-uncertainty-report.v1'; "
+                        "assert CLINICAL_RISK_OF_BIAS_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-risk-of-bias-report.v2'; "
+                        "assert CLINICAL_RISK_OF_BIAS_SPEC_SCHEMA_VERSION == "
+                        "'adds.clinical-risk-of-bias-spec.v2'; "
                         "assert RESEARCH_READINESS_SCHEMA_VERSION == "
                         "'adds.biohub-research-readiness.v1'; "
                         "assert TRANSLATIONAL_HANDOFF_SCHEMA_VERSION == "
@@ -859,6 +883,7 @@ def main() -> int:
                         "compile_clinical_cohort_report, "
                         "compile_clinical_evidence_transition, "
                         "compile_clinical_execution_batch, "
+                        "compile_clinical_risk_of_bias_report, "
                         "clinical_evidence_transition_from_json, "
                         "evaluate_policy_submission, "
                         "evaluate_clinical_outcomes, "
