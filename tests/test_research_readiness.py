@@ -42,7 +42,7 @@ class ResearchReadinessTests(unittest.TestCase):
 
         self.assertEqual(summary["profile_id"], RESEARCH_READINESS_PROFILE_ID)
         self.assertEqual(summary["official_source_count"], 4)
-        self.assertEqual(summary["evidence_anchor_count"], 33)
+        self.assertEqual(summary["evidence_anchor_count"], 35)
         self.assertEqual(
             summary["maturity_counts"],
             {
@@ -74,6 +74,14 @@ class ResearchReadinessTests(unittest.TestCase):
         self.assertIn(
             "claim-ra-public-registry-hold",
             {item["claim_id"] for item in profile["presentation"]["claims"]},
+        )
+        self.assertIn(
+            "claim-ra-source-disjoint-additive-tensor",
+            {item["claim_id"] for item in profile["presentation"]["claims"]},
+        )
+        self.assertIn(
+            "population-stratified transport analysis",
+            profile["decision"]["next_decision"],
         )
 
     def test_public_profile_matches_strict_json_schema(self) -> None:

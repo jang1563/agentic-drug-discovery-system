@@ -1,0 +1,209 @@
+{
+  "schema_version": "adds.ra-olokizumab-additive-tensor-validation-snapshot.v1",
+  "generated_at": "2026-08-20T22:05:00Z",
+  "research_question": "Can two source-disjoint phase 3 rheumatoid-arthritis trials for the same candidate and Week-12 ACR20 endpoint be compiled into a provenance-preserving additive benefit-risk tensor without pooling or inferring population exchangeability?",
+  "public_payload_policy": {
+    "contains_source_bytes": false,
+    "contains_reviewer_text": false,
+    "contains_review_jobs": false,
+    "contains_local_paths": false,
+    "contains_decision_package": false,
+    "external_artifacts_required_for_exact_replay": true
+  },
+  "screening": {
+    "registry": "ClinicalTrials.gov",
+    "registry_version": "2026-08-20",
+    "completed_interventional_ra_records_with_results_screened": 615,
+    "primary_risk_difference_trials_identified": 13,
+    "primary_risk_difference_analyses_identified": 21,
+    "selection_rule": [
+      "same ChEMBL candidate identity",
+      "source-disjoint ClinicalTrials.gov records",
+      "phase 3 rheumatoid arthritis",
+      "olokizumab 64 mg every four weeks versus placebo",
+      "posted primary ACR20 response at Week 12",
+      "source-reported candidate-first risk difference",
+      "exact endpoint and serious-safety arm identities"
+    ],
+    "systematic_review_claimed": false
+  },
+  "identity": {
+    "candidate_id": "CHEMBL1743050",
+    "canonical_name": "Olokizumab",
+    "candidate_identity_source": "https://www.ebi.ac.uk/chembl/api/data/molecule/CHEMBL1743050.json",
+    "candidate_identity_source_sha256": "aaaaab74d0864edc24775ac78d704deb374cc0918bff827d260d11cf78d28e77",
+    "target_id": "P05231",
+    "target_symbol": "IL6",
+    "target_chembl_id": "CHEMBL1795129",
+    "target_identity_source_sha256": "886cf4c324c35d0e45a3790cf75d48b3d3f26b94e5b4c4af86bdf065d9c6d4de",
+    "mechanism_source_sha256": "5d40649bed1a07044c760dd035f510ad3ef1b2d476031d0f2471718813e26a28",
+    "disease_id": "MONDO:0008383",
+    "disease_name": "rheumatoid arthritis"
+  },
+  "harmonization_contract": {
+    "mapping_id": "CHEMBL1743050:MONDO:0008383:acr20-rd-map:v1",
+    "synthesis_id": "CHEMBL1743050:MONDO:0008383:acr20-rd-benefit-risk:v1",
+    "endpoint_family_id": "acr20_response_week_12",
+    "effect_measure": "risk_difference",
+    "favorable_direction": "higher_is_better",
+    "source_measurement_unit": "Participants",
+    "source_effect_scale": "proportion",
+    "decision_precision_scale": "percentage_points",
+    "source_candidate_aliases_required": true,
+    "candidate_ledger_preapproval_required": true,
+    "pooling_requested": false,
+    "pooling_performed": false,
+    "population_homogeneity_inferred": false,
+    "population_exchangeability_inferred": false,
+    "ontology_authority_inferred": false
+  },
+  "trials": [
+    {
+      "trial_id": "NCT02760407",
+      "registry_locator": "https://clinicaltrials.gov/api/v2/studies/NCT02760407",
+      "source_content_sha256": "62415b71d08c8d5ccbe0b03be45bad4ad8bd734d43de461be52278314fbb59d8",
+      "source_byte_size": 143107,
+      "sanitized_provider_output_sha256": "6e8b60b682a4660cd3c530ae67c92af04e902f27921685a4d5a7350935690f8a",
+      "compiled_manifest_sha256": "b3da72166a62f94d64131dc14ffd8b9cc5f21884f79b2e3500ffdee778369a2e",
+      "compile_review_sha256": "234b834e45dbc8fbfeb6908f0fc80f638a01ca8a88b6eef16d9510010851e293",
+      "primary_completion_date": "2019-08-02",
+      "results_first_post_date": "2021-04-30",
+      "phase": "PHASE3",
+      "population_context": "active rheumatoid arthritis inadequately controlled by methotrexate",
+      "candidate_aliases": [
+        "Olokizumab 64mg q4w",
+        "OKZ"
+      ],
+      "endpoint": {
+        "endpoint_id": "NCT02760407:endpoint:primary-0",
+        "name": "ACR20 response",
+        "time_frame": "Week 12",
+        "candidate_responders": 342,
+        "candidate_denominator": 479,
+        "comparator_responders": 108,
+        "comparator_denominator": 243,
+        "effect_estimate_proportion": 0.27,
+        "confidence_interval_percent": 97.5,
+        "confidence_interval_lower_proportion": 0.183,
+        "confidence_interval_upper_proportion": 0.352,
+        "confidence_interval_width_percentage_points": 16.9,
+        "p_value_relation": "lt",
+        "p_value": 0.0001,
+        "benefit_direction": "benefit"
+      },
+      "safety": {
+        "candidate_serious_num_affected": 20,
+        "candidate_serious_num_at_risk": 477,
+        "comparator_serious_num_affected": 12,
+        "comparator_serious_num_at_risk": 243,
+        "observed_direction": "lower_observed_serious_event_risk"
+      },
+      "provider_execution": {
+        "run_status": "committed",
+        "promotion_status": "promoted",
+        "promotion_code": "pinned_clinical_trial_design_promoted",
+        "decision": "advance",
+        "final_stage": "regulatory_postmarket"
+      }
+    },
+    {
+      "trial_id": "NCT02760433",
+      "registry_locator": "https://clinicaltrials.gov/api/v2/studies/NCT02760433",
+      "source_content_sha256": "b087ef355db040907d7ae81c34b34fec7f9b4743df7414c8f519eee6e3abc051",
+      "source_byte_size": 100141,
+      "sanitized_provider_output_sha256": "3ef5b755df7062f53559d89c46ebc4b11e2a3c9a0b66330e77b4f9041e551f0a",
+      "compiled_manifest_sha256": "6dc07af1f3e226de764387c2e0b19543a06072519eba93db92da415fede72437",
+      "compile_review_sha256": "42662c4bf5de3e5fcc0986b10e24f55cff98ac1ff0b5000863f5407860e6292d",
+      "primary_completion_date": "2019-09-12",
+      "results_first_post_date": "2021-07-21",
+      "phase": "PHASE3",
+      "population_context": "active rheumatoid arthritis inadequately controlled by a tumor-necrosis-factor-alpha inhibitor",
+      "candidate_aliases": [
+        "Olokizumab",
+        "OKZ"
+      ],
+      "endpoint": {
+        "endpoint_id": "NCT02760433:endpoint:primary-0",
+        "name": "ACR20 response",
+        "time_frame": "Week 12",
+        "candidate_responders": 96,
+        "candidate_denominator": 161,
+        "comparator_responders": 28,
+        "comparator_denominator": 69,
+        "effect_estimate_proportion": 0.19,
+        "confidence_interval_percent": 97.5,
+        "confidence_interval_lower_proportion": 0.03,
+        "confidence_interval_upper_proportion": 0.337,
+        "confidence_interval_width_percentage_points": 30.7,
+        "p_value_relation": "eq",
+        "p_value": 0.004,
+        "benefit_direction": "benefit"
+      },
+      "safety": {
+        "candidate_serious_num_affected": 6,
+        "candidate_serious_num_at_risk": 160,
+        "comparator_serious_num_affected": 0,
+        "comparator_serious_num_at_risk": 69,
+        "observed_direction": "higher_observed_serious_event_risk"
+      },
+      "provider_execution": {
+        "run_status": "committed",
+        "promotion_status": "promoted",
+        "promotion_code": "pinned_clinical_trial_design_promoted",
+        "decision": "advance",
+        "final_stage": "regulatory_postmarket"
+      }
+    }
+  ],
+  "decision_layer": {
+    "policy_id": "olokizumab-ra-acr20-additive-workflow-policy",
+    "minimum_independent_trials": 2,
+    "maximum_risk_difference_ci_width_percentage_points": 35.0,
+    "minimum_safety_participants_per_arm": 60,
+    "cell_count": 2,
+    "source_content_hash_count": 2,
+    "gap_codes": [
+      "higher_observed_serious_event_risk"
+    ],
+    "blocking_gap_codes": [
+      "higher_observed_serious_event_risk"
+    ],
+    "safety_direction_conflict_observed": true,
+    "conflict_gap_suppressed_by_stronger_blocking_signal": true,
+    "decision": "hold",
+    "selected_action_ids": [
+      "retrieve-source-disjoint-safety-followup"
+    ],
+    "clinical_acceptability_inferred": false,
+    "terminal_decision_issued": false,
+    "exact_replay_validation_errors": 0
+  },
+  "external_artifact_hashes": {
+    "merged_state_sha256": "97ceb44b5ac31c72c25c85c2f7970f34d24deac54b8006cdd50e3c4c36960c9f",
+    "mapped_state_sha256": "04c803c75f49f229d0d81bb153909bd6a5ef1596e6e567ab4d5bfd66cc94ccde",
+    "synthesized_state_sha256": "68855c37f10ad4892206c7537eac6e037da1ae017f293ed0aa39b02f0bf09874",
+    "decision_package_sha256": "6d8d20000e7fe6c78254bc3e16152817b154261e9cd5a762eb49cb937d5188d9",
+    "run_summary_sha256": "ea0da4f3408496ab4504fc7b1d0b7ec70bae8267886f64fb030570214bef2ed0"
+  },
+  "claims": {
+    "first_real_source_disjoint_additive_tensor_in_project": true,
+    "same_candidate_identity_preserved": true,
+    "same_endpoint_family_preserved": true,
+    "source_provenance_preserved": true,
+    "raw_source_effects_preserved": true,
+    "cross_trial_pooling_performed": false,
+    "population_homogeneity_inferred": false,
+    "population_exchangeability_inferred": false,
+    "comparative_safety_claim_made": false,
+    "clinical_acceptability_inferred": false,
+    "therapeutic_recommendation_made": false
+  },
+  "limitations": [
+    "This is a contract-level replication of posted aggregate registry results, not an independent participant-level reanalysis.",
+    "The methotrexate-inadequate-response and TNF-inhibitor-inadequate-response populations are retained as distinct contexts and are not treated as exchangeable.",
+    "The synthesis is descriptive and non-pooled; it does not estimate a combined olokizumab effect.",
+    "Observed serious-event counts are not adjudicated comparative-safety evidence and trigger a workflow HOLD rather than a safety conclusion.",
+    "Exact replay requires excluded source captures, reviewer jobs, manifests, states, and decision-package artifacts.",
+    "No independent external scientific review or clinical validation is claimed."
+  ]
+}

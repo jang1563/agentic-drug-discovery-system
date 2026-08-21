@@ -125,20 +125,29 @@ review, manifest, and run artifacts remain outside Git.
 `docs/ra_acr20_risk_difference_validation_snapshot.json` adds a second real immune-inflammatory
 disease through `NCT00383188`. It preserves a candidate-first ACR20 percentage-point interval that
 crosses null, commits the evidence on `HOLD`, records endpoint/safety denominator mismatch, and
-keeps four screened exclusions or deferrals. It does not claim a real source-disjoint multi-trial
-tensor, efficacy replication, safety acceptability, or a treatment recommendation.
+keeps four screened exclusions or deferrals. It does not claim efficacy replication, safety
+acceptability, or a treatment recommendation.
+
+`docs/ra_olokizumab_additive_tensor_validation_snapshot.json` adds the first real source-disjoint
+additive tensor under the same release boundary. It retains two olokizumab Week-12 ACR20 risk
+differences on their proportion source scale, normalizes only decision precision to percentage
+points, preserves distinct methotrexate- and TNF-inhibitor-inadequate-response contexts, and records
+a safety-triggered `HOLD`. It does not contain source bytes, review jobs, full states, or the real
+decision package and does not claim population exchangeability, pooling, comparative safety,
+clinical acceptability, or treatment choice.
 
 The cross-trial synthesis surface contains explicit synthetic selection examples, typed
-trial-level outputs, source evidence IDs, content hashes, and a payload-free aggregate record of
-one external PALOMA-2/3 execution. It does not include the real review packet, full state, source
-bytes, pooled estimates, benefit-risk scores, clinical judgments, or treatment recommendations.
+trial-level outputs, source evidence IDs, content hashes, and payload-free aggregate records of
+external PALOMA-2/3 and olokizumab executions. It does not include the real review packets, full
+states, source bytes, pooled estimates, benefit-risk scores, clinical judgments, or treatment
+recommendations.
 
 The ulcerative-colitis M6, endpoint-mapping, synthesis, and evidence-tensor conformance surface
-remains fully synthetic. Separate provider-only UC and RA surfaces use real public
-ClinicalTrials.gov snapshots to validate exact ingestion, direction-aware gating, phase identity,
-and retained uncertainty. They do not extend real-source validation upstream to M6 or downstream
-to a source-disjoint multi-trial tensor, establish independent scientific review, or constitute a
-second end-to-end therapeutic result.
+remains fully synthetic. Separate UC and RA surfaces use real public ClinicalTrials.gov snapshots
+to validate exact ingestion, direction-aware gating, phase identity, retained uncertainty, and one
+RA source-disjoint additive tensor. They do not extend real-source validation upstream to M6,
+establish population transportability or independent scientific review, or constitute a second
+end-to-end therapeutic result.
 
 The portfolio and endpoint-mapping surface likewise contains only executable verifiers, strict
 schemas, synthetic references, and tests. Real multi-trial source bundles, single-trial review jobs,

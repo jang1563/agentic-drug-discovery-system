@@ -296,7 +296,7 @@ evaluation contract. The current candidate also completes disease, target-to-can
 model-system identity continuity for the implemented pinned preclinical path, plus intervention,
 trial, arm, population, endpoint, safety-record, and safety-arm continuity for source-pinned
 ClinicalTrials.gov evidence and EMA extension. It additionally completes an explicit two-or-more
-   trial hazard-ratio/serious-event synthesis path through local tool execution, semantic promotion,
+   trial ratio- or bounded-risk-difference/serious-event synthesis path through local tool execution, semantic promotion,
    typed state, serialization, fail-closed recompilation, and exact replay without automatic pooling
    or clinical judgment. The path now includes atomic multi-job/multi-bundle portfolio extraction and
    an independently committed reviewer-approved endpoint mapping ledger. It also completes the generic
@@ -328,6 +328,13 @@ promotion, mapping, and non-pooled synthesis semantics with a 23.2 percentage-po
 and exact 198/198 endpoint/safety denominators per selected role. Its payload-free result and
 screened exclusion ledger are in
 `docs/uc_maintenance_risk_difference_validation_snapshot.json`.
+Two source-disjoint phase 3 olokizumab trials (`NCT02760407` and `NCT02760433`) now execute the
+first real additive tensor. Their Week-12 ACR20 source effects remain proportions, downstream
+precision is normalized to percentage points, distinct methotrexate- and TNF-inhibitor-inadequate-
+response populations are not treated as exchangeable, and the safety-triggered decision remains
+`HOLD`. Bounded aggregates and hashes are in
+`docs/ra_olokizumab_additive_tensor_validation_snapshot.json`; full source and decision artifacts
+remain external.
 
 The current external validation also runs one continuous source-pinned senicapoc program through
 five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the

@@ -14,7 +14,7 @@ intervention is clinically acceptable.
 | Execution stage | `regulatory_postmarket` |
 | Endpoint selection | Exact ordered bindings from a committed `ClinicalEndpointMappingRecord` |
 | Endpoint family | Reviewer-approved canonical family and ontology identity; no name-based automatic mapping |
-| Effect measure | Hazard ratio with `lower_is_better`; odds/risk ratio with `higher_is_better`; or explicit percentage-point `risk_difference` with endpoint-declared direction |
+| Effect measure | Hazard ratio with `lower_is_better`; odds/risk ratio with `higher_is_better`; or bounded `risk_difference` on an explicit percentage-point or binary-count/proportion source scale with endpoint-declared direction |
 | Safety measure | Candidate minus comparator serious-adverse-event participant risk |
 | Phase/population rule | Any declared phase alignment must replay exactly across design, population, endpoint, and safety records |
 | Minimum studies | Two distinct trials, designs, endpoints, and safety records |
@@ -131,11 +131,13 @@ thresholds, and rejection when the matching additive threshold is absent.
 
 ## Current Limitations
 
-- v1 supports explicitly selected hazard, odds, and risk ratios plus percentage-point risk
-  differences. Additive effects require an explicit percent unit, candidate-first sign binding,
-  and endpoint-declared favorable direction.
-- The downstream clinical decision tensor uses log-CI width for ratios and raw percentage-point CI
-  width for risk differences. The matching scale-specific policy threshold must be preregistered.
+- v1 supports explicitly selected hazard, odds, and risk ratios plus bounded risk differences.
+  Additive effects require either an explicit percent unit or a binary count unit, candidate-first
+  sign binding, and endpoint-declared favorable direction. Count-unit intervals remain proportions
+  and must be bounded by `[-1, 1]`.
+- The downstream clinical decision tensor uses log-CI width for ratios. Risk-difference precision
+  is expressed in percentage points: percent-unit widths are retained and proportion-unit widths
+  are multiplied by 100. The matching scale-specific policy threshold must be preregistered.
 - Source-reported missing descriptive arm summaries remain typed gaps; they are not imputed from
   the ratio estimate or confidence interval.
 - Serious-event data are posted aggregate participant counts, not adjudicated event-level causality.

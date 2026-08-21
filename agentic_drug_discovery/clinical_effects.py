@@ -53,6 +53,18 @@ _PERCENTAGE_POINT_MEASUREMENT_UNITS = {
     "percentage of subjects",
 }
 
+_BINARY_COUNT_MEASUREMENT_UNITS = {
+    "participant",
+    "participants",
+    "patient",
+    "patients",
+    "subject",
+    "subjects",
+}
+
+RISK_DIFFERENCE_PERCENTAGE_POINT_SCALE = "percentage_points"
+RISK_DIFFERENCE_PROPORTION_SCALE = "proportion"
+
 
 def _normalized(value: str) -> str:
     if not isinstance(value, str) or not value.strip():
@@ -195,19 +207,60 @@ def validate_effect_measure_unit(
     effect_measure: str,
     measurement_unit: str,
 ) -> None:
-    """Require an explicit percentage scale for supported risk differences."""
+    """Require a bounded binary endpoint unit for supported risk differences."""
 
     normalized = _normalized(effect_measure).replace(" ", "_")
     if normalized not in EFFECT_MEASURE_NULL_VALUES:
         raise ValueError(f"unsupported effect measure: {effect_measure}")
+    if normalized == "risk_difference":
+        risk_difference_effect_scale(measurement_unit)
+
+
+def risk_difference_effect_scale(measurement_unit: str) -> str:
+    """Resolve whether a source risk difference uses points or proportions."""
+
+    normalized = _normalized(measurement_unit)
+    if normalized in _PERCENTAGE_POINT_MEASUREMENT_UNITS:
+        return RISK_DIFFERENCE_PERCENTAGE_POINT_SCALE
+    if normalized in _BINARY_COUNT_MEASUREMENT_UNITS:
+        return RISK_DIFFERENCE_PROPORTION_SCALE
+    raise ValueError(
+        "risk_difference requires a bounded percentage or binary-count "
+        "measurement unit"
+    )
+
+
+def validate_effect_scale_interval(
+    estimate: float,
+    lower: float,
+    upper: float,
+    effect_measure: str,
+    measurement_unit: str,
+) -> None:
+    """Validate an effect interval against both measure and source scale."""
+
+    validate_effect_interval(estimate, lower, upper, effect_measure)
+    validate_effect_measure_unit(effect_measure, measurement_unit)
+    normalized = _normalized(effect_measure).replace(" ", "_")
     if (
         normalized == "risk_difference"
-        and _normalized(measurement_unit) not in _PERCENTAGE_POINT_MEASUREMENT_UNITS
+        and risk_difference_effect_scale(measurement_unit)
+        == RISK_DIFFERENCE_PROPORTION_SCALE
+        and not -1 <= lower <= estimate <= upper <= 1
     ):
-        raise ValueError(
-            "risk_difference requires a bounded percentage-of-participants "
-            "measurement unit"
-        )
+        raise ValueError("proportion risk difference interval must be within [-1, 1]")
+
+
+def risk_difference_ci_width_percentage_points(
+    lower: float,
+    upper: float,
+    measurement_unit: str,
+) -> float:
+    """Return a risk-difference interval width on one common point scale."""
+
+    scale = risk_difference_effect_scale(measurement_unit)
+    factor = 100.0 if scale == RISK_DIFFERENCE_PROPORTION_SCALE else 1.0
+    return (upper - lower) * factor
 
 
 def effect_benefit_direction(

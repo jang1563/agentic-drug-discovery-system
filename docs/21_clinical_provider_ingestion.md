@@ -86,13 +86,16 @@ must retain complete nonnegative affected counts and positive at-risk counts.
 ## Bounded Effect-Evidence Rule
 
 Version 3 preserves structurally valid posted primary effect evidence before making a decision. It
-supports frozen hazard-ratio, odds-ratio, and risk-ratio aliases plus bounded percentage-point
-`risk_difference` aliases. Ratio intervals must be positive and are classified against null 1.
-Risk differences are classified against null 0 and additionally require a bounded participant-,
-patient-, or subject-proportion percent unit (or bare percent unit), endpoint-declared favorable
-direction, and candidate-then-comparator analysis-group order. Continuous percent-change units are
-not accepted. Every measure requires an ordered finite confidence interval containing the estimate,
-a typed p-value between 0 and 1, and exact source agreement. The interval is classified as
+supports frozen hazard-ratio, odds-ratio, and risk-ratio aliases plus bounded `risk_difference`
+aliases. Ratio intervals must be positive and are classified against null 1. Risk differences are
+classified against null 0 and additionally require either a bounded participant-, patient-, or
+subject-proportion percent unit, a bare percent unit, or a binary count unit such as `Participants`.
+Percent units retain percentage-point effects. Binary count units retain source effects as
+proportions in `[-1, 1]`; arm measurements must be integer counts within their denominators.
+Continuous percent-change units are not accepted. Every additive record also requires an
+endpoint-declared favorable direction and candidate-then-comparator analysis-group order. Every
+measure requires an ordered finite confidence interval containing the estimate, a typed p-value
+between 0 and 1, and exact source agreement. The interval is classified as
 `benefit`, `harm`, or
 `null_or_uncertain` under the shared effect contract.
 
@@ -133,6 +136,9 @@ The independent primary-maintenance percentage-point replication is documented i
 The second-disease RA ACR20 HOLD replication is documented in
 `docs/45_ra_acr20_risk_difference_hold_replication.md` and
 `docs/ra_acr20_risk_difference_validation_snapshot.json`.
+The first real source-disjoint additive multi-trial tensor is documented in
+`docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` and
+`docs/ra_olokizumab_additive_tensor_validation_snapshot.json`.
 
 ## Stage Gate
 

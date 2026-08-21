@@ -13,8 +13,8 @@ from .clinical_effects import (
     canonical_effect_measure,
     effect_benefit_direction,
     validate_effect_contract,
-    validate_effect_interval,
     validate_effect_measure_unit,
+    validate_effect_scale_interval,
 )
 from .clinical_endpoint_mapping import validate_clinical_endpoint_mapping
 from .clinical_population import (
@@ -347,11 +347,12 @@ def _study_record(
         "endpoint.analysis.confidence_interval_upper",
     )
     try:
-        validate_effect_interval(
+        validate_effect_scale_interval(
             effect_estimate,
             ci_lower,
             ci_upper,
             spec.effect_measure,
+            endpoint.unit,
         )
     except ValueError as exc:
         raise ClinicalSynthesisError("effect confidence interval is invalid") from exc

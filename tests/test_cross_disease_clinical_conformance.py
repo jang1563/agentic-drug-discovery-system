@@ -12,9 +12,12 @@ from agentic_drug_discovery.clinical_effects import (
     effect_benefit_direction,
     ratio_benefit_direction,
     ratio_effect_favorable_direction,
+    risk_difference_ci_width_percentage_points,
+    risk_difference_effect_scale,
     validate_effect_contract,
     validate_effect_interval,
     validate_effect_measure_unit,
+    validate_effect_scale_interval,
     validate_ratio_effect_contract,
 )
 from agentic_drug_discovery.clinical_endpoint_mapping import (
@@ -88,7 +91,7 @@ class CrossDiseaseClinicalConformanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "requires higher_is_better"):
             validate_ratio_effect_contract("odds_ratio", "lower_is_better")
 
-    def test_percentage_point_risk_difference_contract_is_direction_aware(
+    def test_additive_risk_difference_contract_is_direction_and_scale_aware(
         self,
     ) -> None:
         aliases = (
@@ -144,9 +147,39 @@ class CrossDiseaseClinicalConformanceTests(unittest.TestCase):
             "risk_difference",
             "percentage of participants",
         )
-        with self.assertRaisesRegex(ValueError, "percentage-of-participants"):
-            validate_effect_measure_unit("risk_difference", "participants")
-        with self.assertRaisesRegex(ValueError, "percentage-of-participants"):
+        validate_effect_measure_unit("risk_difference", "participants")
+        self.assertEqual(
+            risk_difference_effect_scale("Percentage of Participants"),
+            "percentage_points",
+        )
+        self.assertEqual(
+            risk_difference_effect_scale("Participants"),
+            "proportion",
+        )
+        validate_effect_scale_interval(
+            0.19,
+            0.03,
+            0.337,
+            "risk_difference",
+            "Participants",
+        )
+        self.assertAlmostEqual(
+            risk_difference_ci_width_percentage_points(
+                0.03,
+                0.337,
+                "Participants",
+            ),
+            30.7,
+        )
+        with self.assertRaisesRegex(ValueError, r"within \[-1, 1\]"):
+            validate_effect_scale_interval(
+                1.1,
+                1.0,
+                1.2,
+                "risk_difference",
+                "Participants",
+            )
+        with self.assertRaisesRegex(ValueError, "binary-count"):
             validate_effect_measure_unit(
                 "risk_difference",
                 "percent change from baseline",

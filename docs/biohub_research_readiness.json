@@ -124,13 +124,13 @@
     {
       "anchor_id": "core-models",
       "path": "agentic_drug_discovery/models.py",
-      "sha256": "1a6f9c88471d070b41344ec609fff29e93b7a9ead3fc897ff8c49ed76c7ff7bf",
+      "sha256": "6dec39f6a4354648ad3410a513ac70d54af7abea3f5930e9ad265932095c0a31",
       "kind": "implementation"
     },
     {
       "anchor_id": "clinical-effects-core",
       "path": "agentic_drug_discovery/clinical_effects.py",
-      "sha256": "4431dca32b94cb3f7e8eede8c5e544ddd0a0a1e9de8cb02317200f62f70d2897",
+      "sha256": "7920d62373bdb8b7b37a9b96960536c5c289dc8ec5e09c2484b3c987ba80fb44",
       "kind": "implementation"
     },
     {
@@ -142,13 +142,13 @@
     {
       "anchor_id": "clinical-synthesis-core",
       "path": "agentic_drug_discovery/clinical_synthesis.py",
-      "sha256": "1c061f56d00336d023c646888111313cb407a52c0b8d0bcd839dd9671160e806",
+      "sha256": "2ac48d2af80edc7211d7e4aa2ac85fc37f1180847981530e6ccae1ba2824ca25",
       "kind": "implementation"
     },
     {
       "anchor_id": "clinical-decision-core",
       "path": "agentic_drug_discovery/clinical_decision.py",
-      "sha256": "8c8c056ca640a14558b6c342d81b1a6d388b42ceec88ba46b2b572adee9006b4",
+      "sha256": "6a4c63c03be398c20c621d3746e00b62dc832eef1b696221987f7b4b9d8b8b13",
       "kind": "implementation"
     },
     {
@@ -178,7 +178,7 @@
     {
       "anchor_id": "synthesis-tests",
       "path": "tests/test_clinical_benefit_risk_synthesis.py",
-      "sha256": "a51700287c23092187d76462826d01d8d15686ecf7d7bf7355d388a2d70ce38c",
+      "sha256": "ebdc390716da7e716af98d8e2fb9514784ba3a3745f73d9ba42f9f81120b9c0a",
       "kind": "test"
     },
     {
@@ -208,13 +208,13 @@
     {
       "anchor_id": "synthesis-document",
       "path": "docs/22_clinical_benefit_risk_synthesis.md",
-      "sha256": "cdc80b8e58112ba3205cb85dae015e62bdde6ce8ab41de3697ef033f260ca653",
+      "sha256": "9789d1cde8a35951f9dc43e97a8ffc1bea535de2de9578f1194cc9bd8b7296d9",
       "kind": "document"
     },
     {
       "anchor_id": "decision-document",
       "path": "docs/27_clinical_evidence_tensor_and_voi.md",
-      "sha256": "48f0f5094b5b892731ffb3d5ca24d9465033e1a83b088c07d320c09b4f2bc2ea",
+      "sha256": "b411645782b112a0c112e4d01d27eaaf594293743b0020d714445123feb77828",
       "kind": "document"
     },
     {
@@ -268,7 +268,7 @@
     {
       "anchor_id": "cross-disease-conformance-tests",
       "path": "tests/test_cross_disease_clinical_conformance.py",
-      "sha256": "799cd9bd059bb6e99a98d98b4f4c19bb13cf8b28e549215dcf27158146190456",
+      "sha256": "b10c90eb5b13c1060dada72f76efccdcb7ea8f0ae413c6bac3df0cbf4b4cfdcd",
       "kind": "test"
     },
     {
@@ -286,13 +286,13 @@
     {
       "anchor_id": "clinical-provider-core",
       "path": "agentic_drug_discovery/clinicaltrials_gov.py",
-      "sha256": "e54477be9fed07ceafa860ce76bbbff7edd6fb9bc8a2c9d58e61fb25d96cc205",
+      "sha256": "28a9e2d3ba4ffbf716b209f04c8a2f3624473d0cbffa862b52c54e6e93e05009",
       "kind": "implementation"
     },
     {
       "anchor_id": "clinical-provider-tests",
       "path": "tests/test_clinicaltrials_gov_ingestion.py",
-      "sha256": "aaa349d55496532465407199355ac8a8532e8a79b5358099e9344c066a8ac182",
+      "sha256": "c80e8428a75a321354518a2eea0d56f5f765bec99c5e6e4a2ef85751fb3be215",
       "kind": "test"
     },
     {
@@ -311,13 +311,25 @@
       "anchor_id": "ra-acr20-risk-difference-document",
       "path": "docs/45_ra_acr20_risk_difference_hold_replication.md",
       "kind": "document",
-      "sha256": "1881b673b907be4611cea5d841ac59efd9c4567ef009b3ffe9419ec25cc5d277"
+      "sha256": "9aeaaf8a21974da836c9a844526028e691fc96dc21b85c47475f3a855cf7c4de"
     },
     {
       "anchor_id": "ra-acr20-risk-difference-snapshot",
       "path": "docs/ra_acr20_risk_difference_validation_snapshot.json",
       "kind": "document",
       "sha256": "d16645889e093d795d2bb5bfd6bc1754cb5007bff6444fe97a2eefb7563dbc5f"
+    },
+    {
+      "anchor_id": "ra-olokizumab-additive-tensor-document",
+      "path": "docs/46_ra_olokizumab_source_disjoint_additive_tensor.md",
+      "kind": "document",
+      "sha256": "44b354639bad93c48b1b54e9e790369552d46f09c7fe3e6a9fb87c5b7748ca37"
+    },
+    {
+      "anchor_id": "ra-olokizumab-additive-tensor-snapshot",
+      "path": "docs/ra_olokizumab_additive_tensor_validation_snapshot.json",
+      "kind": "document",
+      "sha256": "3aaecc3c6ddb89bcd58b1899fa7823be89c00a02ab065cde12cfd1b21dbaf222"
     }
   ],
   "maturity_ledger": [
@@ -356,16 +368,18 @@
       "capability_id": "cross-trial-synthesis",
       "label": "Source-preserving cross-trial endpoint and safety synthesis",
       "maturity": "implemented_public",
-      "claim": "The implementation recompiles reviewer-approved endpoint and safety selections across source-disjoint trials while retaining trial-level values, provenance, and bounded direction semantics for ratio and percentage-point risk-difference effects.",
+      "claim": "The implementation recompiles reviewer-approved endpoint and safety selections across source-disjoint trials while retaining trial-level values, provenance, and bounded direction semantics for ratio, percentage-point, and binary-count/proportion risk-difference effects; one real olokizumab additive pair is public as bounded aggregates and hashes.",
       "evidence_anchor_ids": [
         "clinical-effects-core",
         "clinical-synthesis-core",
         "synthesis-tests",
-        "synthesis-document"
+        "synthesis-document",
+        "ra-olokizumab-additive-tensor-document",
+        "ra-olokizumab-additive-tensor-snapshot"
       ],
       "limitations": [
-        "It does not infer endpoint similarity, pool effects, or decide clinical acceptability.",
-        "Real reviewer mappings and source bundles remain external."
+        "It does not infer endpoint similarity, pool effects, establish population exchangeability, or decide clinical acceptability.",
+        "Real reviewer mappings, source bundles, full states, and decision packages remain external."
       ]
     },
     {
@@ -468,9 +482,9 @@
     },
     {
       "capability_id": "ra-public-registry-contract-validation",
-      "label": "Rheumatoid-arthritis public-registry HOLD replication",
+      "label": "Rheumatoid-arthritis public-registry HOLD and additive tensor validation",
       "maturity": "implemented_public",
-      "claim": "A source-pinned rheumatoid-arthritis run preserves a primary ACR20 percentage-point interval crossing null, exact candidate-first sign and safety arms, and a committed HOLD without silent advance.",
+      "claim": "Source-pinned rheumatoid-arthritis runs preserve a null-crossing ACR20 HOLD and compile two same-candidate Week-12 ACR20 trials into a real source-disjoint, non-pooled additive tensor with source-scale precision.",
       "evidence_anchor_ids": [
         "clinical-effects-core",
         "clinical-provider-core",
@@ -478,11 +492,13 @@
         "clinical-provider-tests",
         "synthesis-tests",
         "ra-acr20-risk-difference-document",
-        "ra-acr20-risk-difference-snapshot"
+        "ra-acr20-risk-difference-snapshot",
+        "ra-olokizumab-additive-tensor-document",
+        "ra-olokizumab-additive-tensor-snapshot"
       ],
       "limitations": [
         "The public repository contains hashes and bounded aggregates, not source bytes, reviewer jobs, or participant-level data.",
-        "Only one eligible source-pinned RA trial was executed; this is not a real multi-trial tensor, independent efficacy replication, safety judgment, or treatment recommendation."
+        "The two olokizumab populations are not treated as exchangeable; this is not pooled efficacy, comparative safety, independent scientific validation, or a treatment recommendation."
       ]
     },
     {
@@ -875,6 +891,25 @@
         ]
       },
       {
+        "claim_id": "claim-ra-source-disjoint-additive-tensor",
+        "text": "Two source-disjoint phase 3 olokizumab records compile into a non-pooled Week-12 ACR20 additive tensor while preserving source proportions, distinct inadequate-response populations, and a safety-triggered HOLD.",
+        "maturity": "implemented_public",
+        "evidence_anchor_ids": [
+          "clinical-effects-core",
+          "clinical-provider-core",
+          "clinical-decision-core",
+          "clinical-provider-tests",
+          "synthesis-tests",
+          "ra-olokizumab-additive-tensor-document",
+          "ra-olokizumab-additive-tensor-snapshot"
+        ],
+        "capability_ids": [
+          "cross-trial-synthesis",
+          "evidence-gap-voi",
+          "ra-public-registry-contract-validation"
+        ]
+      },
+      {
         "claim_id": "claim-calibration-boundary",
         "text": "Synthetic known-truth studies expose when estimand, missingness, dependence, and cluster sampling choices alter uncertainty; they do not establish external clinical calibration.",
         "maturity": "synthetic_validated",
@@ -990,7 +1025,8 @@
           "claim-clinical-synthesis",
           "claim-cross-disease-conformance",
           "claim-uc-public-registry-validation",
-          "claim-ra-public-registry-hold"
+          "claim-ra-public-registry-hold",
+          "claim-ra-source-disjoint-additive-tensor"
         ],
         "artifact_paths": [
           "docs/22_clinical_benefit_risk_synthesis.md",
@@ -998,9 +1034,11 @@
           "docs/44_uc_maintenance_risk_difference_replication.md",
           "docs/uc_maintenance_risk_difference_validation_snapshot.json",
           "docs/45_ra_acr20_risk_difference_hold_replication.md",
-          "docs/ra_acr20_risk_difference_validation_snapshot.json"
+          "docs/ra_acr20_risk_difference_validation_snapshot.json",
+          "docs/46_ra_olokizumab_source_disjoint_additive_tensor.md",
+          "docs/ra_olokizumab_additive_tensor_validation_snapshot.json"
         ],
-        "speaker_boundary": "Separate synthetic end-to-end conformance from real UC and RA provider runs; the RA run is one HOLD trial, not a multi-trial tensor, clinical validation, or treatment recommendation."
+        "speaker_boundary": "Separate synthetic end-to-end conformance from real UC and RA provider runs; the olokizumab pair is non-pooled and population-stratified, not clinical validation, comparative safety, or a treatment recommendation."
       },
       {
         "slide": 6,
@@ -1109,12 +1147,12 @@
     },
     {
       "gap_id": "gap-disease-breadth",
-      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis and rheumatoid arthritis now add real provider-level validation, but neither is an independently reviewed end-to-end disease slice or a real source-disjoint additive multi-trial tensor.",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis and rheumatoid arthritis now add real provider-level validation and rheumatoid arthritis adds one real source-disjoint additive tensor, but neither is an independently reviewed end-to-end disease slice or an externally validated population-transport analysis.",
       "status": "open",
       "closure_evidence_required": [
         "at least one independently reviewed non-synthetic immune or inflammatory disease slice",
-        "real source bundles with scientific-owner mapping and review",
-        "cross-disease transport and endpoint-harmonization error analysis",
+        "scientific-owner review of the olokizumab endpoint mapping and population strata",
+        "prespecified same-population replication or population-stratified transport analysis",
         "documented ambiguity, direction-reversal, and rejection cases"
       ]
     },
@@ -1156,7 +1194,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Nominate a second source-disjoint rheumatoid-arthritis trial under the same endpoint-family, population, additive estimand, and safety-window contract, then execute the first real multi-trial percentage-point evidence tensor."
+    "next_decision": "Obtain independent scientific-owner review of the olokizumab endpoint mapping and distinct inadequate-response populations, then preregister either a same-population replication or a population-stratified transport analysis."
   },
-  "integrity_sha256": "2022cbd9975d52fa762b85d5bd46ff16a5b685779b39b7483784dab4dfccf9fa"
+  "integrity_sha256": "b80771f8feb200d92e08647585d72d4160ea7620aea64265f07f40805be85442"
 }

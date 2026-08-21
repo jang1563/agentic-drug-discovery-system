@@ -16,8 +16,7 @@ from .clinical_effects import (
     effect_benefit_direction,
     effect_favorable_direction,
     validate_effect_contract,
-    validate_effect_interval,
-    validate_effect_measure_unit,
+    validate_effect_scale_interval,
 )
 from .execution import EvidenceDraft, ToolOutcome, ToolStatus
 from .clinical_synthesis import (
@@ -475,11 +474,22 @@ def _source_measurement(value: Any) -> tuple[bool, float | None]:
     return number is not None, number
 
 
-def _arm_title_tokens(value: str) -> frozenset[str]:
+def _arm_title_tokens(
+    value: str,
+    identity_aliases: Sequence[str] = (),
+) -> frozenset[str]:
+    normalized = value.casefold()
+    for alias in sorted(identity_aliases, key=len, reverse=True):
+        pattern = re.escape(alias.casefold())
+        normalized = re.sub(
+            rf"(?<![a-z0-9]){pattern}(?![a-z0-9])",
+            "candidate",
+            normalized,
+        )
     value = re.sub(
         r"\b\d+(?:\.\d+)?\s*(?:mg|milligrams?)\b",
         " ",
-        value.casefold(),
+        normalized,
     )
     tokens = [
         "hydrochloride" if token == "hcl" else token
@@ -500,9 +510,13 @@ def _arm_title_tokens(value: str) -> frozenset[str]:
     return frozenset(tokens)
 
 
-def _compatible_arm_titles(left: str, right: str) -> bool:
-    left_tokens = _arm_title_tokens(left)
-    right_tokens = _arm_title_tokens(right)
+def _compatible_arm_titles(
+    left: str,
+    right: str,
+    identity_aliases: Sequence[str] = (),
+) -> bool:
+    left_tokens = _arm_title_tokens(left, identity_aliases)
+    right_tokens = _arm_title_tokens(right, identity_aliases)
     if not left_tokens or not right_tokens:
         return False
     return left_tokens == right_tokens
@@ -2924,13 +2938,13 @@ def _map_pinned_clinical_trial_design(
                     endpoint_direction,
                 )
                 validate_effect_contract(effect_measure, effect_direction_contract)
-                validate_effect_interval(
+                validate_effect_scale_interval(
                     parameter_value,
                     ci_lower,
                     ci_upper,
                     effect_measure,
+                    str(endpoint["unit"]),
                 )
-                validate_effect_measure_unit(effect_measure, str(endpoint["unit"]))
                 if effect_measure == "risk_difference" and list(
                     analysis.get("source_group_ids") or ()
                 ) != [
@@ -3028,6 +3042,7 @@ def _map_pinned_clinical_trial_design(
                 or not _compatible_arm_titles(
                     str(canonical_arm.get("label", "")),
                     source_group_title,
+                    aliases if role == "candidate" else (),
                 )
                 or not isinstance(affected, int)
                 or isinstance(affected, bool)

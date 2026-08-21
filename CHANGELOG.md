@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added the first real source-disjoint additive clinical evidence tensor. Two phase 3 olokizumab
+  rheumatoid-arthritis records (`NCT02760407` and `NCT02760433`) now execute through exact provider
+  promotion, reviewer-declared Week-12 ACR20 mapping, non-pooled synthesis, tensor compilation, and
+  package replay. Binary-count endpoints retain source risk differences as bounded proportions;
+  only decision precision is normalized to percentage points. Explicit source-declared and
+  candidate-ledger-approved aliases reconcile `Olokizumab` with `OKZ`. The two inadequate-response
+  populations remain non-exchangeable, a higher observed serious-event risk triggers `HOLD`, and
+  the payload-free public snapshot makes no pooled efficacy, comparative-safety, clinical-
+  acceptability, or treatment claim.
 - Added independent public-source UC maintenance replication for `NCT01458574`. The shared
   clinical effect contract now supports explicit percentage-point `risk_difference` labels with
   null 0, endpoint-declared direction, percent-unit validation, and candidate-then-comparator sign

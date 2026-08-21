@@ -12,8 +12,7 @@ from typing import Any, Mapping
 from .clinical_effects import (
     effect_benefit_direction,
     validate_effect_contract,
-    validate_effect_interval,
-    validate_effect_measure_unit,
+    validate_effect_scale_interval,
 )
 
 
@@ -1128,13 +1127,13 @@ class StudyBenefitRiskRecord(SerializableRecord):
                 raise ValueError(f"{field_name} must be finite when present")
         if not 0 < self.confidence_interval_percent <= 100:
             raise ValueError("confidence_interval_percent must be in (0, 100]")
-        validate_effect_interval(
+        validate_effect_scale_interval(
             self.effect_estimate,
             self.confidence_interval_lower,
             self.confidence_interval_upper,
             self.effect_measure,
+            self.measurement_unit,
         )
-        validate_effect_measure_unit(self.effect_measure, self.measurement_unit)
         favorable_direction = self.attributes.get(
             "effect_measure_favorable_direction"
         )

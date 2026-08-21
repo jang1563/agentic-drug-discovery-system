@@ -13,12 +13,13 @@ from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from .clinical_effects import (
+    RISK_DIFFERENCE_PROPORTION_SCALE,
     canonical_effect_measure,
     effect_benefit_direction,
     effect_favorable_direction,
+    risk_difference_effect_scale,
     validate_effect_contract,
-    validate_effect_interval,
-    validate_effect_measure_unit,
+    validate_effect_scale_interval,
 )
 from .ingestion import (
     INGESTION_JOB_SCHEMA_VERSION,
@@ -223,11 +224,22 @@ def _normalized(value: str) -> str:
     return " ".join(value.casefold().split())
 
 
-def _arm_title_tokens(value: str) -> frozenset[str]:
+def _arm_title_tokens(
+    value: str,
+    identity_aliases: Sequence[str] = (),
+) -> frozenset[str]:
+    normalized = value.casefold()
+    for alias in sorted(identity_aliases, key=len, reverse=True):
+        pattern = re.escape(alias.casefold())
+        normalized = re.sub(
+            rf"(?<![a-z0-9]){pattern}(?![a-z0-9])",
+            "candidate",
+            normalized,
+        )
     value = re.sub(
         r"\b\d+(?:\.\d+)?\s*(?:mg|milligrams?)\b",
         " ",
-        value.casefold(),
+        normalized,
     )
     tokens = [
         "hydrochloride" if token == "hcl" else token
@@ -248,9 +260,13 @@ def _arm_title_tokens(value: str) -> frozenset[str]:
     return frozenset(tokens)
 
 
-def _compatible_arm_titles(left: str, right: str) -> bool:
-    left_tokens = _arm_title_tokens(left)
-    right_tokens = _arm_title_tokens(right)
+def _compatible_arm_titles(
+    left: str,
+    right: str,
+    identity_aliases: Sequence[str] = (),
+) -> bool:
+    left_tokens = _arm_title_tokens(left, identity_aliases)
+    right_tokens = _arm_title_tokens(right, identity_aliases)
     if not left_tokens or not right_tokens:
         return False
     return left_tokens == right_tokens
@@ -302,6 +318,24 @@ def _text_list(value: Any, field_name: str) -> list[str]:
     if len(normalized) != len(set(normalized)):
         raise ValueError(f"{field_name} must not contain duplicate values")
     return result
+
+
+def _source_declared_acronyms(value: Any) -> set[str]:
+    if isinstance(value, Mapping):
+        return {
+            acronym
+            for item in value.values()
+            for acronym in _source_declared_acronyms(item)
+        }
+    if isinstance(value, Sequence) and not isinstance(value, (str, bytes)):
+        return {
+            acronym
+            for item in value
+            for acronym in _source_declared_acronyms(item)
+        }
+    if isinstance(value, str):
+        return set(re.findall(r"\b[A-Z][A-Z0-9-]{1,15}\b", value))
+    return set()
 
 
 def _exact_fields(
@@ -515,7 +549,11 @@ def _normalize_safety_arm(value: Any, index: int) -> dict[str, Any]:
     }
 
 
-def _normalize_safety(value: Any, arms: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+def _normalize_safety(
+    value: Any,
+    arms: Sequence[Mapping[str, Any]],
+    candidate_aliases: Sequence[str],
+) -> dict[str, Any]:
     safety = _mapping(value, "job.trial.safety")
     _exact_fields(safety, _SAFETY_FIELDS, "job.trial.safety")
     safety_id = _safe_id(safety["safety_id"], "job.trial.safety.safety_id")
@@ -559,6 +597,7 @@ def _normalize_safety(value: Any, arms: Sequence[Mapping[str, Any]]) -> dict[str
             or not _compatible_arm_titles(
                 canonical["source_group_title"],
                 item["source_group_title"],
+                candidate_aliases if item["role"] == "candidate" else (),
             )
         ):
             raise ValueError(
@@ -618,7 +657,7 @@ def _normalize_trial(value: Any) -> dict[str, Any]:
     candidate_name = _text(trial["candidate_name"], "job.trial.candidate_name")
     if _normalized(candidate_name) not in {_normalized(item) for item in aliases}:
         raise ValueError("candidate_aliases must include candidate_name")
-    safety = _normalize_safety(trial["safety"], arms)
+    safety = _normalize_safety(trial["safety"], arms, aliases)
     if endpoint["treatment_phase"] != safety["treatment_phase"]:
         raise ValueError("endpoint and safety treatment phases must match")
     expected_safety_id = f"{nct_id}:safety:serious-adverse-events"
@@ -700,13 +739,13 @@ def _generic_job(
             endpoint["favorable_direction"],
         )
         validate_effect_contract(effect_measure, effect_direction_contract)
-        validate_effect_interval(
+        validate_effect_scale_interval(
             analysis["parameter_value"],
             analysis["confidence_interval_lower"],
             analysis["confidence_interval_upper"],
             effect_measure,
+            endpoint["unit"],
         )
-        validate_effect_measure_unit(effect_measure, endpoint["unit"])
         if effect_measure == "risk_difference" and [
             item["role"] for item in trial["arms"]
         ] != ["candidate", "comparator"]:
@@ -717,6 +756,26 @@ def _generic_job(
         raise ValueError(
             "ClinicalTrials.gov endpoint effect analysis is invalid"
         ) from exc
+    if (
+        effect_measure == "risk_difference"
+        and risk_difference_effect_scale(endpoint["unit"])
+        == RISK_DIFFERENCE_PROPORTION_SCALE
+    ):
+        for arm in trial["arms"]:
+            measurement = _decimal(
+                arm["measurement"]["value"],
+                f"{arm['role']} binary endpoint measurement",
+            )
+            denominator = arm["measurement"]["denominator"]
+            if (
+                measurement != measurement.to_integral_value()
+                or measurement < 0
+                or measurement > denominator
+            ):
+                raise ValueError(
+                    "binary-count risk difference requires integer arm "
+                    "measurements within denominators"
+                )
     effect_direction = effect_benefit_direction(
         analysis["confidence_interval_lower"],
         analysis["confidence_interval_upper"],
@@ -976,6 +1035,35 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
         )
         for alias in intervention.get("otherNames", ()):
             source_aliases.add(_normalized(_text(alias, "intervention.otherNames")))
+    candidate_endpoint_group_ids = {
+        item["source_group_id"]
+        for item in trial["arms"]
+        if item["role"] == "candidate"
+    }
+    candidate_safety_group_ids = {
+        item["source_group_id"]
+        for item in trial["safety"]["arms"]
+        if item["role"] == "candidate"
+    }
+    candidate_source_titles: list[str] = []
+    for raw_outcome in outcome_measures.get("outcomeMeasures", ()):
+        outcome = _mapping(raw_outcome, "ClinicalTrials.gov outcomeMeasure")
+        for raw_group in outcome.get("groups", ()):
+            group = _mapping(raw_group, "ClinicalTrials.gov outcome group")
+            if group.get("id") in candidate_endpoint_group_ids:
+                candidate_source_titles.append(
+                    _source_text(group, "title", "outcome group")
+                )
+    for raw_group in adverse_events.get("eventGroups", ()):
+        group = _mapping(raw_group, "ClinicalTrials.gov adverse event group")
+        if group.get("id") in candidate_safety_group_ids:
+            candidate_source_titles.append(
+                _source_text(group, "title", "adverse event group")
+            )
+    source_aliases.update(
+        _normalized(alias)
+        for alias in _source_declared_acronyms(candidate_source_titles)
+    )
     missing_aliases = sorted(
         alias
         for alias in trial["candidate_aliases"]
@@ -1219,13 +1307,13 @@ def _validate_source(source: Mapping[str, Any], job: Mapping[str, Any]) -> None:
                 endpoint["favorable_direction"],
             )
             validate_effect_contract(effect_measure, effect_direction_contract)
-            validate_effect_interval(
+            validate_effect_scale_interval(
                 float(parameter),
                 float(ci_lower),
                 float(ci_upper),
                 effect_measure,
+                endpoint["unit"],
             )
-            validate_effect_measure_unit(effect_measure, endpoint["unit"])
         except ValueError:
             interval_is_valid = False
     if (

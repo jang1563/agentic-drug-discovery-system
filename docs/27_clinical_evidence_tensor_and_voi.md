@@ -70,8 +70,11 @@ risk does not establish safety.
 Precision policy is effect-scale specific. Ratio synthesis requires
 `maximum_log_effect_ci_width`; risk-difference synthesis requires
 `maximum_risk_difference_ci_width_percentage_points`. Applying a log width to an additive interval,
-or compiling without the matching threshold, fails closed. Optional additive fields are omitted
-from ratio serialization so existing ratio package fingerprints remain stable.
+or compiling without the matching threshold, fails closed. Percentage-point source intervals retain
+their width; proportion-scale source intervals derived from binary count endpoints are multiplied by
+100 only for the decision precision metric. Raw study estimates and intervals remain on their source
+scale. Optional additive fields are omitted from ratio serialization so existing ratio package
+fingerprints remain stable.
 
 ## Gap Ontology
 
@@ -152,9 +155,10 @@ Public machine contracts:
 The adjacent example is fully synthetic and compiler-generated from two source-disjoint test
 bundles. It is a contract example, not a clinical result or calibrated action policy.
 
-A source-pinned rheumatoid-arthritis HOLD replication and the boundary between one real trial and
-the two-source tensor minimum are documented in
-`docs/45_ra_acr20_risk_difference_hold_replication.md`.
+A source-pinned rheumatoid-arthritis HOLD replication is documented in
+`docs/45_ra_acr20_risk_difference_hold_replication.md`. The follow-on same-candidate olokizumab pair
+executes the first real two-source additive tensor in
+`docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`.
 
 ## Minimal API
 

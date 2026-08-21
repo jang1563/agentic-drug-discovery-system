@@ -71,6 +71,10 @@ This real execution stops at one eligible source-pinned RA trial. It is not dupl
 the tensor's minimum of two source-disjoint trials. Additive tensor and bounded-VOI behavior are
 verified by adversarial compiler tests, while a real RA multi-trial tensor remains open work.
 
+That open milestone was subsequently completed with a different same-candidate olokizumab pair;
+see `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`. The PH-797804 result remains an
+independent historical HOLD replication and is not included in the olokizumab tensor.
+
 ## Interpretation Boundary
 
 The run demonstrates correct retention of uncertainty: a structurally valid result is committed,

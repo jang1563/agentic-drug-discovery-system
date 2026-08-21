@@ -673,6 +673,74 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         self.assertNotIn("resultsection", encoded)
         self.assertNotIn("raw_payload", encoded)
 
+    def test_source_candidate_acronym_requires_ledger_preapproval(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        job = clinical_job()
+        source["protocolSection"]["armsInterventionsModule"]["interventions"][0][
+            "otherNames"
+        ].append("TD")
+        source["resultsSection"]["adverseEventsModule"]["eventGroups"][0][
+            "title"
+        ] = "TD"
+        job["trial"]["candidate_aliases"] = ["Test Drug", "TD"]
+        job["trial"]["safety"]["arms"][0]["source_group_title"] = "TD"
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+        bundle = clinical_bundle(payload=payload)
+
+        extracted = extract_clinicaltrials_gov_ingestion_job(job, bundle)
+        manifest, _ = compile_pinned_evidence_manifest(
+            extracted,
+            {bundle.receipt.receipt_id: bundle},
+        )
+        approved_state = clinical_state(
+            program_id="clinical-design-approved-acronym"
+        )
+        approved_candidate = replace(
+            approved_state.candidates[0],
+            attributes={
+                **dict(approved_state.candidates[0].attributes),
+                "identity_aliases": ("TestDrug-1", "TD"),
+            },
+        )
+        approved = run_manifest(
+            manifest,
+            program_id="clinical-design-approved-acronym",
+            state=replace(approved_state, candidates=(approved_candidate,)),
+        )
+        unapproved = run_manifest(
+            manifest,
+            program_id="clinical-design-unapproved-acronym",
+        )
+
+        self.assertEqual(
+            extracted["records"][0]["metadata"]["safety"]["arms"][0][
+                "source_group_title"
+            ],
+            "TD",
+        )
+        self.assertEqual(approved.promotions[0].status, PromotionStatus.PROMOTED)
+        self.assertEqual(len(approved.final_state.trial_designs), 1)
+        self.assertEqual(unapproved.promotions[0].status, PromotionStatus.REJECTED)
+        self.assertEqual(
+            unapproved.promotions[0].code,
+            "pinned_clinical_design_candidate_alias_unapproved",
+        )
+
+    def test_unrelated_source_acronym_cannot_prove_candidate_alias(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        job = clinical_job()
+        source["resultsSection"]["adverseEventsModule"]["seriousEvents"][0][
+            "term"
+        ] = "TD"
+        job["trial"]["candidate_aliases"] = ["Test Drug", "TD"]
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+
+        with self.assertRaisesRegex(ValueError, "missing aliases.*TD"):
+            extract_clinicaltrials_gov_ingestion_job(
+                job,
+                clinical_bundle(payload=payload),
+            )
+
     def test_rolewise_population_count_difference_is_preserved(self) -> None:
         source = json.loads(SOURCE.read_text())
         job = clinical_job()
@@ -917,7 +985,7 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         )
 
         invalid_unit_job = copy.deepcopy(job)
-        invalid_unit_job["trial"]["endpoint"]["unit"] = "participants"
+        invalid_unit_job["trial"]["endpoint"]["unit"] = "months"
         with self.assertRaisesRegex(ValueError, "effect analysis is invalid"):
             normalize_clinicaltrials_gov_ingestion_job(invalid_unit_job)
 
@@ -927,6 +995,86 @@ class ClinicalTrialsGovIngestionTests(unittest.TestCase):
         reversed_job["trial"]["endpoint"]["analysis"]["source_group_ids"].reverse()
         with self.assertRaisesRegex(ValueError, "effect analysis is invalid"):
             normalize_clinicaltrials_gov_ingestion_job(reversed_job)
+
+    def test_proportion_risk_difference_accepts_bounded_binary_counts(self) -> None:
+        source = json.loads(SOURCE.read_text())
+        job = clinical_job()
+        outcome = source["resultsSection"]["outcomeMeasuresModule"][
+            "outcomeMeasures"
+        ][0]
+        outcome.update(
+            {
+                "title": "Participants Achieving ACR20 at Week 12",
+                "paramType": "NUMBER",
+                "unitOfMeasure": "Participants",
+            }
+        )
+        source["protocolSection"]["outcomesModule"]["primaryOutcomes"][0][
+            "measure"
+        ] = "Participants Achieving ACR20 at Week 12"
+        measurements = outcome["classes"][0]["categories"][0]["measurements"]
+        measurements[0]["value"] = "36"
+        measurements[1]["value"] = "18"
+        outcome["analyses"][0].update(
+            {
+                "pValue": "0.01",
+                "statisticalMethod": "CMH chi-square test",
+                "paramType": "Risk Difference (RD)",
+                "paramValue": "0.30",
+                "ciLowerLimit": "0.10",
+                "ciUpperLimit": "0.50",
+            }
+        )
+        endpoint = job["trial"]["endpoint"]
+        endpoint.update(
+            {
+                "name": "Participants Achieving ACR20 at Week 12",
+                "parameter_type": "NUMBER",
+                "unit": "Participants",
+                "favorable_direction": "higher_is_better",
+            }
+        )
+        job["trial"]["arms"][0]["measurement"]["value"] = "36"
+        job["trial"]["arms"][1]["measurement"]["value"] = "18"
+        endpoint["analysis"].update(
+            {
+                "p_value_relation": "eq",
+                "p_value": 0.01,
+                "statistical_method": "CMH chi-square test",
+                "parameter_type": "Risk Difference (RD)",
+                "parameter_value": 0.30,
+                "confidence_interval_lower": 0.10,
+                "confidence_interval_upper": 0.50,
+            }
+        )
+        payload = (json.dumps(source, sort_keys=True) + "\n").encode()
+        extracted = extract_clinicaltrials_gov_ingestion_job(
+            job,
+            clinical_bundle(payload=payload),
+        )
+        metadata = extracted["records"][0]["metadata"]
+        self.assertEqual(metadata["effect_direction"], "benefit")
+        self.assertEqual(metadata["endpoint"]["unit"], "Participants")
+        self.assertEqual(
+            metadata["endpoint"]["analysis"]["parameter_value"],
+            0.30,
+        )
+
+        invalid_count = copy.deepcopy(job)
+        invalid_count["trial"]["arms"][0]["measurement"]["value"] = "61"
+        with self.assertRaisesRegex(ValueError, "within denominators"):
+            normalize_clinicaltrials_gov_ingestion_job(invalid_count)
+
+        invalid_interval = copy.deepcopy(job)
+        invalid_interval["trial"]["endpoint"]["analysis"].update(
+            {
+                "parameter_value": 1.1,
+                "confidence_interval_lower": 1.0,
+                "confidence_interval_upper": 1.2,
+            }
+        )
+        with self.assertRaisesRegex(ValueError, "effect analysis is invalid"):
+            normalize_clinicaltrials_gov_ingestion_job(invalid_interval)
 
     def test_valid_uncertain_and_harmful_ratio_results_are_retained_on_hold(
         self,

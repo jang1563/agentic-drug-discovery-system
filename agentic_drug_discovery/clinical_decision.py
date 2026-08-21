@@ -15,10 +15,10 @@ from typing import Any
 from .clinical_effects import (
     RATIO_EFFECT_FAVORABLE_DIRECTIONS,
     effect_benefit_direction,
+    risk_difference_ci_width_percentage_points,
     ratio_effect_favorable_direction,
     validate_effect_contract,
-    validate_effect_interval,
-    validate_effect_measure_unit,
+    validate_effect_scale_interval,
 )
 from .clinical_synthesis import validate_benefit_risk_synthesis
 from .models import (
@@ -182,7 +182,7 @@ _GAP_SUMMARIES = {
         "the declared unfavorable direction."
     ),
     ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE: (
-        "At least one log-scale effect confidence interval is wider than the "
+        "At least one effect-scale confidence interval is wider than its "
         "preregistered workflow threshold."
     ),
     ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT: (
@@ -463,13 +463,13 @@ class ClinicalEvidenceCell(SerializableRecord):
                 raise TypeError(f"{field_name} must be numeric or null")
             if not math.isfinite(float(value)):
                 raise ValueError(f"{field_name} must be finite when present")
-        validate_effect_interval(
+        validate_effect_scale_interval(
             self.effect_estimate,
             self.confidence_interval_lower,
             self.confidence_interval_upper,
             self.effect_measure,
+            self.measurement_unit,
         )
-        validate_effect_measure_unit(self.effect_measure, self.measurement_unit)
         if not 0 < self.confidence_interval_percent <= 100:
             raise ValueError("confidence_interval_percent must be in (0, 100]")
         if self.effect_measure in RATIO_EFFECT_FAVORABLE_DIRECTIONS:
@@ -512,8 +512,10 @@ class ClinicalEvidenceCell(SerializableRecord):
                 raise ValueError(
                     "risk_difference requires percentage-point CI width"
                 )
-            expected_width = (
-                self.confidence_interval_upper - self.confidence_interval_lower
+            expected_width = risk_difference_ci_width_percentage_points(
+                self.confidence_interval_lower,
+                self.confidence_interval_upper,
+                self.measurement_unit,
             )
             if not math.isclose(
                 self.risk_difference_ci_width_percentage_points,
@@ -1298,8 +1300,11 @@ def _cell_from_study(
             None
             if is_ratio_effect
             else _round_metric(
-                study.confidence_interval_upper
-                - study.confidence_interval_lower
+                risk_difference_ci_width_percentage_points(
+                    study.confidence_interval_lower,
+                    study.confidence_interval_upper,
+                    study.measurement_unit,
+                )
             )
         ),
     )

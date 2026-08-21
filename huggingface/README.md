@@ -52,6 +52,12 @@ aggregates through the same additive contract. Its uncertain 8.05 percentage-poi
 on `HOLD`, demonstrating scale-specific decision precision without claiming efficacy, safety
 acceptability, or a real multi-trial additive tensor.
 
+A follow-on olokizumab execution binds source-disjoint `NCT02760407` and `NCT02760433` records to
+one Week-12 ACR20 family. Source risk differences remain proportions, decision precision is
+normalized to percentage points, and the two distinct inadequate-response populations are not
+pooled or treated as exchangeable. A higher observed serious-event risk in one trial keeps the
+bounded plan on `HOLD`; no comparative safety or treatment claim is made.
+
 ## At a Glance
 
 - **Surface:** Hugging Face Dataset repository.
@@ -114,8 +120,10 @@ acceptability, or a real multi-trial additive tensor.
   non-pooling boundaries, exact replay, and tamper controls.
 - Inspect `docs/45_ra_acr20_risk_difference_hold_replication.md` and
   `docs/ra_acr20_risk_difference_validation_snapshot.json` for the payload-free public-source RA
-  ACR20 replication, source and artifact hashes, uncertain interval, HOLD outcome, and explicit
-  one-trial boundary.
+  ACR20 replication, source and artifact hashes, uncertain interval, and HOLD outcome.
+- Inspect `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` and
+  `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` for the first real source-disjoint
+  additive tensor, source-scale preservation, population non-exchangeability, and bounded HOLD.
 - Inspect `docs/23_clinical_portfolio_endpoint_mapping.md` and
   `tests/test_clinical_portfolio.py` for exact-set multi-job/bundle preflight, payload-free output,
   reviewer-approved ontology identity, append-only mapping continuity, and atomic failure controls.
@@ -296,6 +304,8 @@ outside both public release surfaces.
 | `docs/uc_maintenance_risk_difference_validation_snapshot.json` | Payload-free source/output hashes, additive effect, role-wise safety/population alignment, execution result, and exclusion codes. |
 | `docs/45_ra_acr20_risk_difference_hold_replication.md` | Public-source RA ACR20 percentage-point replication with uncertain-interval HOLD behavior and a real multi-trial boundary. |
 | `docs/ra_acr20_risk_difference_validation_snapshot.json` | Payload-free RA source and artifact hashes, additive endpoint and safety aggregates, decision result, and limitations. |
+| `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` | Same-candidate RA source selection, proportion-scale risk differences, non-pooled synthesis, and safety-triggered HOLD. |
+| `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` | Payload-free two-source trial aggregates, hashes, normalized precision, decision result, and negative claims. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Payload-free machine aggregate with policy metrics, artifact hashes, gate outcomes, and withheld-data boundary. |
 | `docs/public_evidence_summary.json` | Machine-readable aggregate claims and limitations. |
 | `agentic_drug_discovery/` | Bounded planning, typed tool execution, semantic promotion, stage and program orchestration, matched evaluation, replay, and fail-closed transitions. |

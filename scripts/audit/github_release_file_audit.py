@@ -106,6 +106,8 @@ REQUIRED_PUBLIC_FILES = (
     "docs/uc_maintenance_risk_difference_validation_snapshot.json",
     "docs/45_ra_acr20_risk_difference_hold_replication.md",
     "docs/ra_acr20_risk_difference_validation_snapshot.json",
+    "docs/46_ra_olokizumab_source_disjoint_additive_tensor.md",
+    "docs/ra_olokizumab_additive_tensor_validation_snapshot.json",
     "docs/22_clinical_benefit_risk_synthesis.md",
     "docs/23_clinical_portfolio_endpoint_mapping.md",
     "docs/24_policy_replanning_and_resume.md",

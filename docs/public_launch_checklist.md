@@ -27,7 +27,8 @@ execution is in `docs/42_uc_provider_validation.md`; its single-trial induction/
 population boundary is in `docs/43_uc_phase_population_alignment.md`, and the independent primary
 maintenance percentage-point replication is in
 `docs/44_uc_maintenance_risk_difference_replication.md`; the second-disease RA HOLD replication is
-in `docs/45_ra_acr20_risk_difference_hold_replication.md`. The external scorer is under `benchmark/`,
+in `docs/45_ra_acr20_risk_difference_hold_replication.md`; the first real source-disjoint additive
+tensor is in `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`. The external scorer is under `benchmark/`,
 `scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
@@ -65,7 +66,10 @@ validated.
   and is not represented as same-candidate replication, pooled efficacy, safety acceptability, or
   a treatment recommendation.
 - [x] The RA ACR20 replication commits a source-valid null-crossing result on `HOLD`, records
-  denominator mismatch and screened controls, and does not claim a real multi-trial tensor.
+  denominator mismatch and screened controls.
+- [x] The olokizumab RA pair compiles two source-disjoint Week-12 ACR20 cells, preserves source
+  proportions and distinct inadequate-response populations, and remains on `HOLD` without a
+  pooled efficacy, comparative-safety, population-exchangeability, or treatment claim.
 - [x] Release metadata records an unmerged and not-uploaded candidate.
 - [ ] The exact committed source and generated Hugging Face package pass every blocking command.
 - [ ] GitHub Actions passes for the exact candidate commit.

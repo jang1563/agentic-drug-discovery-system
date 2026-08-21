@@ -62,6 +62,7 @@ evidence hashes:
 - Phase-bound UC population alignment: `docs/43_uc_phase_population_alignment.md`
 - Independent UC maintenance risk-difference replication: `docs/44_uc_maintenance_risk_difference_replication.md`
 - RA ACR20 risk-difference HOLD replication: `docs/45_ra_acr20_risk_difference_hold_replication.md`
+- Real source-disjoint RA additive tensor: `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`
 
 ```bash
 adds-research-readiness validate \
@@ -411,7 +412,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
   lookup; mapping removal, rebound, and direct-commit bypass fail closed.
 - **Cross-trial endpoint/safety harmonization:** A local deterministic synthesis operation accepts
   only selections that exactly match a committed approved endpoint mapping. It recompiles supported
-  hazard, odds, or risk ratios under fixed favorable-direction contracts,
+  hazard, odds, or risk ratios under fixed favorable-direction contracts and bounded risk
+  differences on explicit percentage-point or binary-count/proportion source scales,
   confidence intervals, source arm measurements, and serious-adverse-event affected/at-risk counts
   from at least two source-disjoint committed trial designs. Trial-level values and source hashes
   remain intact; automatic endpoint-name mapping, cross-trial pooling, benefit-risk scoring,
@@ -574,6 +576,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
   ledger and additive-scale decision boundary. `docs/45_ra_acr20_risk_difference_hold_replication.md`
   adds a second real immune-inflammatory disease where a source-valid but null-crossing ACR20
   interval is committed on `HOLD` rather than advanced.
+  `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` then binds two independent phase 3
+  olokizumab records to the same Week-12 ACR20 family, preserves proportion-scale source effects,
+  compiles a non-pooled two-cell tensor, and retains the safety signal as a bounded `HOLD`.
   `docs/22_clinical_benefit_risk_synthesis.md` defines the explicit, source-disjoint, non-pooled
   cross-trial synthesis contract, and `docs/23_clinical_portfolio_endpoint_mapping.md` defines the
   multi-bundle portfolio transaction and append-only reviewer-approved mapping ledger.
@@ -699,6 +704,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/uc_maintenance_risk_difference_validation_snapshot.json` | Machines + reviewers | Payload-free selected-trial hashes, additive effect, role-wise safety/population alignment, execution result, and exclusion reason codes. |
 | `docs/45_ra_acr20_risk_difference_hold_replication.md` | Humans + agents | Source-pinned RA ACR20 additive-effect replication, retained uncertainty, scale-specific decision policy, and real multi-trial boundary. |
 | `docs/ra_acr20_risk_difference_validation_snapshot.json` | Machines + reviewers | Payload-free RA source hashes, typed HOLD result, population boundary, additive precision width, and screened reason codes. |
+| `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` | Humans + agents | Same-candidate RA trial selection, proportion-scale risk differences, non-pooled endpoint/safety harmonization, and bounded HOLD interpretation. |
+| `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` | Machines + reviewers | Payload-free two-source hashes, trial-level ACR20 and serious-event aggregates, normalized precision, decision result, and negative claims. |
 | `docs/22_clinical_benefit_risk_synthesis.md` | Humans + agents | Explicit cross-trial selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed behavior. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
@@ -1000,8 +1007,10 @@ Public-release readiness is tracked in:
   no-pooling/no-participant-identity limits.
 - `docs/45_ra_acr20_risk_difference_hold_replication.md` and
   `docs/ra_acr20_risk_difference_validation_snapshot.json` — second-disease public-source RA
-  replication that commits a null-crossing ACR20 result on `HOLD` and records the one-trial tensor
-  boundary.
+  replication that commits a null-crossing ACR20 result on `HOLD`.
+- `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` and
+  `docs/ra_olokizumab_additive_tensor_validation_snapshot.json` — first real source-disjoint
+  additive tensor, with two same-candidate Week-12 ACR20 trials retained as distinct populations.
 - `docs/public_evidence_summary.json` — machine-readable aggregate claim ledger.
 - `docs/public_release_readiness_plan.md` — current public GitHub readiness plan.
 - `docs/public_launch_checklist.md` — final human launch checklist.
