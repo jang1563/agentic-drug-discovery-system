@@ -1,0 +1,309 @@
+{
+  "integrity_sha256": "409a3dc91cfbc95b6f52d699aa74e0b6d3de49e28e8727d616cdd7bf8dcf1f48",
+  "report": {
+    "aggregate_outcomes_included": true,
+    "cluster_assignments_included": false,
+    "cohort_id": "synthetic-clinical-policy-sensitivity",
+    "cohort_report_fingerprint": "fbb96d09fad8cbe8e38443d2907e95b94a38f639a1dfa66d65d0d6411fa37872",
+    "dependence_manifest_fingerprint": "3fd7c1f41ffb66cbfcc3a5d2962ecb955c431a9f4f28d9713271d8fd0ed54f48",
+    "ece_cluster_interval_included": false,
+    "generated_on": "2025-01-31",
+    "known_dependence_link_count": 0,
+    "limitations": [
+      "Cluster assignments are preregistered evaluator commitments; hashes and known-overlap checks do not prove that clusters are mutually independent.",
+      "CR1 intervals allow arbitrary dependence within declared clusters but rely on asymptotic independence, bounded influence, and adequate count across clusters.",
+      "Intervals are withheld when evaluable clusters are too few, one cluster exceeds the preregistered share limit, or observed cluster uncertainty is zero at the 12-decimal reporting precision.",
+      "Stage-by-endpoint strata are fixed from package identity before outcome access; small strata remain visible as attrition and are not pooled post hoc.",
+      "Paired policy intervals preserve shared units and cluster covariance; repeated policies are not treated as independent clinical observations.",
+      "No cluster-robust interval is reported for fixed-bin expected calibration error, which is retained only in the bound base outcome report.",
+      "Aggregate uncertainty does not establish calibration transportability, policy superiority, treatment efficacy, safety, clinical utility, or acceptability."
+    ],
+    "matched_policy_comparisons": [
+      {
+        "brier_difference_b_minus_a": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": -0.45,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "policy_a": {
+          "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+          "policy_id": "synthetic-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "policy_b": {
+          "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+          "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "shared_evaluable_units": 1,
+        "shared_indeterminate_units": 0,
+        "shared_units": 1
+      }
+    ],
+    "method_id": "adds.cluster-robust-clinical-outcome-uncertainty.cr1.v1",
+    "outcome_manifest_fingerprint": "4eb4017716925adbb565f86624f8e83f04c0535305615376b0e08e552047b5dd",
+    "outcome_protocol_fingerprint": "69bf56014455a8818b370818683a2a27662c671194c9f7e825c317535dceb156",
+    "outcome_protocol_id": "synthetic-clinical-outcome-evaluation",
+    "outcome_report_fingerprint": "f61e48d7225fad800b798d47eb31abf960f22fd29a659adbf7cea3c2c87b31c9",
+    "overall_cluster_diagnostic": {
+      "cluster_count": 1,
+      "clusters_without_evaluable_units": 0,
+      "effective_evaluable_cluster_count": 1.0,
+      "evaluable_cluster_count": 1,
+      "evaluable_units": 1,
+      "indeterminate_units": 0,
+      "largest_evaluable_cluster_fraction": 1.0,
+      "largest_evaluable_cluster_size": 1,
+      "maximum_allowed_cluster_fraction": 0.5,
+      "minimum_required_clusters": 2,
+      "requirement_met": false,
+      "status": "not_estimable_insufficient_clusters",
+      "total_units": 1
+    },
+    "policy_summaries": [
+      {
+        "brier_score": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": 0.49,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "calibration_in_the_large": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": -0.7,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "classification_accuracy": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": 0.0,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "evaluable_units": 1,
+        "indeterminate_units": 0,
+        "observed_favorable_rate": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "policy": {
+          "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+          "policy_id": "synthetic-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "submission_fingerprint": "2670d6b3e88bf713d2a997e5f213f63e204afb6ed56bce3fabfb50a2f3ce0722",
+        "submission_id": "synthetic-clinical-workflow-policy:submission:v1",
+        "total_units": 1
+      },
+      {
+        "brier_score": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": 0.04,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "calibration_in_the_large": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": -0.2,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "classification_accuracy": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "evaluable_units": 1,
+        "indeterminate_units": 0,
+        "observed_favorable_rate": {
+          "cluster_count": 1,
+          "confidence_level": 0.95,
+          "estimate": 1.0,
+          "lower": null,
+          "standard_error": null,
+          "status": "not_estimable_insufficient_clusters",
+          "unit_count": 1,
+          "upper": null
+        },
+        "policy": {
+          "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+          "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "submission_fingerprint": "8b0de8e2fb70ce0faf452ad06ecb8df63acb0a4d5ae0dcf4fe205c0127cc1c79",
+        "submission_id": "synthetic-relaxed-clinical-workflow-policy:submission:v1",
+        "total_units": 1
+      }
+    ],
+    "policy_superiority_test_included": false,
+    "stratum_summaries": [
+      {
+        "cluster_diagnostic": {
+          "cluster_count": 1,
+          "clusters_without_evaluable_units": 0,
+          "effective_evaluable_cluster_count": 1.0,
+          "evaluable_cluster_count": 1,
+          "evaluable_units": 1,
+          "indeterminate_units": 0,
+          "largest_evaluable_cluster_fraction": 1.0,
+          "largest_evaluable_cluster_size": 1,
+          "maximum_allowed_cluster_fraction": 0.5,
+          "minimum_required_clusters": 2,
+          "requirement_met": false,
+          "status": "not_estimable_insufficient_clusters",
+          "total_units": 1
+        },
+        "endpoint_family": "progression_free_survival",
+        "policy_summaries": [
+          {
+            "brier_score": {
+              "cluster_count": 1,
+              "confidence_level": 0.95,
+              "estimate": 0.49,
+              "lower": null,
+              "standard_error": null,
+              "status": "not_estimable_insufficient_clusters",
+              "unit_count": 1,
+              "upper": null
+            },
+            "calibration_in_the_large": {
+              "cluster_count": 1,
+              "confidence_level": 0.95,
+              "estimate": -0.7,
+              "lower": null,
+              "standard_error": null,
+              "status": "not_estimable_insufficient_clusters",
+              "unit_count": 1,
+              "upper": null
+            },
+            "classification_accuracy": {
+              "cluster_count": 1,
+              "confidence_level": 0.95,
+              "estimate": 0.0,
+              "lower": null,
+              "standard_error": null,
+              "status": "not_estimable_insufficient_clusters",
+              "unit_count": 1,
+              "upper": null
+            },
+            "evaluable_units": 1,
+            "indeterminate_units": 0,
+            "observed_favorable_rate": {
+              "cluster_count": 1,
+              "confidence_level": 0.95,
+              "estimate": 1.0,
+              "lower": null,
+              "standard_error": null,
+              "status": "not_estimable_insufficient_clusters",
+              "unit_count": 1,
+              "upper": null
+            },
+            "policy": {
+              "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+              "policy_id": "synthetic-clinical-workflow-policy",
+              "policy_version": "1"
+            },
+            "submission_fingerprint": "2670d6b3e88bf713d2a997e5f213f63e204afb6ed56bce3fabfb50a2f3ce0722",
+            "submission_id": "synthetic-clinical-workflow-policy:submission:v1",
+            "total_units": 1
+          },
+          {
+            "brier_score": {
+              "cluster_count": 1,
+              "confidence_level": 0.95,
+              "estimate": 0.04,
+              "lower": null,
+              "standard_error": null,
+              "status": "not_estimable_insufficient_clusters",
+              "unit_count": 1,
+              "upper": null
+            },
+            "calibration_in_the_large": {
+              "cluster_count": 1,
+              "confidence_level": 0.95,
+              "estimate": -0.2,
+              "lower": null,
+              "standard_error": null,
+              "status": "not_estimable_insufficient_clusters",
+              "unit_count": 1,
+              "upper": null
+            },
+            "classification_accuracy": {
+              "cluster_count": 1,
+              "confidence_level": 0.95,
+              "estimate": 1.0,
+              "lower": null,
+              "standard_error": null,
+              "status": "not_estimable_insufficient_clusters",
+              "unit_count": 1,
+              "upper": null
+            },
+            "evaluable_units": 1,
+            "indeterminate_units": 0,
+            "observed_favorable_rate": {
+              "cluster_count": 1,
+              "confidence_level": 0.95,
+              "estimate": 1.0,
+              "lower": null,
+              "standard_error": null,
+              "status": "not_estimable_insufficient_clusters",
+              "unit_count": 1,
+              "upper": null
+            },
+            "policy": {
+              "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+              "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+              "policy_version": "1"
+            },
+            "submission_fingerprint": "8b0de8e2fb70ce0faf452ad06ecb8df63acb0a4d5ae0dcf4fe205c0127cc1c79",
+            "submission_id": "synthetic-relaxed-clinical-workflow-policy:submission:v1",
+            "total_units": 1
+          }
+        ],
+        "stage": "regulatory_postmarket",
+        "stratum_id": "b8229f32c9e5deb4b619d14a99b5030bdfb2e718ca74db056795c7a008cb5ae9"
+      }
+    ],
+    "uncertainty_protocol_fingerprint": "280001a5287941ce36f5f3c52a9bb123c537500d63903d111fd7f0f7267eb315",
+    "uncertainty_protocol_id": "synthetic-clinical-outcome-uncertainty",
+    "unit_level_outcomes_included": false,
+    "unit_level_predictions_included": false
+  },
+  "schema_version": "adds.clinical-outcome-uncertainty-report.v1"
+}

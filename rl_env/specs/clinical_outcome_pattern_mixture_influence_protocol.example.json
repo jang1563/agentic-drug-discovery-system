@@ -1,0 +1,34 @@
+{
+  "integrity_sha256": "a57300753f0467f7589aa54c86f94bd7c25448ed37e92abba6c757af61376694",
+  "protocol": {
+    "confidence_level": 0.95,
+    "coverage_tolerance": 0.08,
+    "maximum_production_cluster_unit_fraction": 0.15,
+    "maximum_standard_error_calibration_deviation": 0.2,
+    "metadata": {
+      "design_scope": "unequal and influential dependence-block calibration",
+      "public_example": true,
+      "webb_method_operational": false
+    },
+    "method_id": "adds.pattern-mixture.unequal-cluster-influence-calibration.v1",
+    "methods": [
+      "delete_one_normal",
+      "delete_one_student_t",
+      "delete_mj_student_t",
+      "delete_mj_webb_multiplier"
+    ],
+    "minimum_interval_yield": 0.95,
+    "minimum_production_clusters": 8,
+    "monte_carlo_confidence_level": 0.95,
+    "multiplier_draws": 99,
+    "multiplier_seed": 20260803,
+    "pattern_mixture_protocol_fingerprint": "c638c88456d065ae26562516a25317591573a0aba892cc36d2b8283890b591d0",
+    "pattern_mixture_report_fingerprint": "5321f2dc596c1d9b29200adb4610ac6a69870c440da8bf883ca18dfbe7fe39ed",
+    "primary_metric": "observed_favorable_rate",
+    "protocol_id": "synthetic-unequal-cluster-influence-calibration",
+    "registered_on": "2026-08-03",
+    "stress_protocol_fingerprint": "7952aa48e2eb5cecd26196b7c3ba599bc44933e8c1d92e8b56da8be946f72f7d",
+    "version": "1.0.0"
+  },
+  "schema_version": "adds.clinical-outcome-pattern-mixture-influence-calibration-protocol.v1"
+}

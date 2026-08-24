@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/frontier_pilot_seed_manifest.schema.json",
+  "title": "ADDS-Frontier pilot seed manifest",
+  "description": "Design-only seed coverage for the five frontier task families. These records are not benchmark episodes or performance evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "manifest_status",
+    "benchmark_evidence_claimed",
+    "seeds",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.frontier-pilot-seed-manifest.v1"
+    },
+    "protocol_id": {
+      "const": "adds-frontier-v1"
+    },
+    "manifest_status": {
+      "const": "design_seeds_only"
+    },
+    "benchmark_evidence_claimed": {
+      "const": false
+    },
+    "seeds": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "$ref": "#/$defs/seed"
+      }
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "seed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seed_id",
+        "family_id",
+        "maturity",
+        "evidence_geometry",
+        "source_artifacts",
+        "planned_stage_count",
+        "planned_mutations",
+        "nonclaim"
+      ],
+      "properties": {
+        "seed_id": {
+          "$ref": "#/$defs/text"
+        },
+        "family_id": {
+          "enum": [
+            "evidence_lineage_trap",
+            "temporal_reversal",
+            "translational_handoff",
+            "non_exchangeable_replication",
+            "budgeted_evidence_resolution"
+          ]
+        },
+        "maturity": {
+          "const": "design_seed"
+        },
+        "evidence_geometry": {
+          "$ref": "#/$defs/text"
+        },
+        "source_artifacts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "planned_stage_count": {
+          "type": "integer",
+          "minimum": 6,
+          "maximum": 12
+        },
+        "planned_mutations": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "nonclaim": {
+          "const": "This design seed is not benchmark performance evidence."
+        }
+      }
+    }
+  }
+}

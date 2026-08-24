@@ -1,6 +1,6 @@
 # Public Release Readiness Plan
 
-Status: 0.3.0.dev2 public development release active after exact-package approval
+Status: 0.3.0.dev3 public-update candidate; 0.3.0.dev2 remains the approved public baseline
 Release posture: GitHub and Hugging Face public; publish refreshes only from reviewed Git commits after all blocking gates pass
 Target surface: public GitHub repository with a commit-pinned Hugging Face Dataset mirror
 
@@ -14,7 +14,7 @@ The public GitHub surface includes:
 
 - Top-level orientation: `README.md`, `PROJECT_BRIEF.md`, `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`, and `CHANGELOG.md`.
 - Design, evidence, and boundary docs: `docs/00_*` through `docs/07_*`,
-  `docs/11_*` through `docs/28_*`, the payload-free preclinical, clinical provider, and sealed
+  `docs/11_*` through `docs/37_*`, the payload-free preclinical, clinical provider, and sealed
   policy-evaluation snapshots, `docs/public_evidence_summary.json`, `docs/release_boundary.md`, and
   this plan.
 - Machine-readable release metadata: `release_manifest.json`, `codemeta.json`, and `.zenodo.json`.
@@ -26,6 +26,49 @@ The public GitHub surface includes:
   compiler-generated synthetic examples, tests, and documentation. Real policies,
   execution batches, provider requests or outcomes, receipts, reviewer refresh
   records, before/after tensors, and transition packages remain excluded.
+- The clinical cohort surface is limited to implementation, strict schemas/readers,
+  compiler-generated synthetic manifest/report examples, tests, and documentation. Real cohort
+  manifests, accepted-state bindings, package diagnostics, source/trial overlaps, and reports
+  remain excluded.
+- The clinical outcome-evaluation surface is limited to implementation, strict schemas/readers,
+  compiler-generated synthetic protocol/submission/manifest/report examples, aggregate summaries,
+  tests, and documentation. Real submissions, outcome manifests, unit-level endpoint/safety labels,
+  source assessments, curator material, and per-unit scores remain excluded.
+- The dependence-aware outcome-uncertainty surface is limited to implementation, strict
+  schemas/readers, public protocol and aggregate-report examples, tests, and documentation. Real
+  dependence manifests, unit-to-cluster assignments, cluster-level diagnostics, and unit-level
+  metric contributions remain evaluator-only.
+- The prospective clustered-board design surface is limited to bounded implementation, strict
+  protocol/report/summary schemas and readers, aggregate synthetic examples, tests, and
+  documentation. Real scenario ranges, pilot elicitation, replicate records, and gate-selection
+  deliberations remain excluded.
+- The informative-evaluability and dependence-closure stress surface is limited to bounded
+  implementation, strict protocol/report/summary schemas and readers, aggregate synthetic
+  examples, tests, and documentation. Real missingness-model elicitation, hidden-dependence
+  working records, replicate records, and correction-selection deliberations remain excluded.
+- The prediction-stratified binary pattern-mixture surface is limited to exact stress-bound
+  implementation, strict protocol/report/summary schemas and readers, aggregate synthetic
+  examples, tests, and documentation. Real log-IMOR elicitation, prediction-stratum working
+  records, latent outcomes, and correction-selection deliberations remain excluded.
+- The pattern-mixture sampling-uncertainty surface is limited to exact stress/protocol/report-bound
+  implementation, strict protocol/report/summary schemas and readers, aggregate synthetic
+  cluster-jackknife examples, tests, and documentation. Real dependence manifests, cluster
+  influence records, elicited log-IMOR ranges, and replicate- or cluster-level results remain
+  excluded.
+- The unequal-cluster influence-calibration surface is limited to four bound synthetic scenarios,
+  strict aggregate schemas/readers, a deterministic builder, exact replay tests, and documented
+  method comparisons. Real cluster influence records, dependence rosters, method-selection
+  deliberations, and any operational use of the experimental multiplier remain excluded.
+- The informative-cluster-size surface is limited to five fixed synthetic profiles, strict
+  aggregate schemas/readers, a deterministic builder, exact replay tests, and documented
+  estimand and influence comparisons. Real size-outcome profiles, block rosters, conditional or
+  superpopulation design deliberations, and replicate-, block-, or unit-level results remain
+  excluded.
+- The cluster-superpopulation surface is limited to uniform resampling from those finite public
+  template supports, exact fixed-report binding, strict aggregate schemas/readers, a deterministic
+  builder, replay tests, and documented conditional comparisons. External sampling frames,
+  cluster covariates, transport models, post-hoc eligibility filtering, and replicate-, cluster-,
+  or unit-level records remain excluded.
 - GitHub automation: `.github/workflows/release-audit.yml`, pull request template, and issue templates.
 - Empty directory markers needed to preserve the scaffold layout.
 
@@ -41,6 +84,18 @@ The following stay outside Git unless a separate audited release package explici
   and per-episode evaluation outputs.
 - Real held-out curator identities, affiliation records, attestations, evidence snapshots, votes,
   rationales, adjudications, curation manifests, and per-episode curation outputs.
+- Real clinical decision and cohort policies, manifests, accepted-state bindings, package
+  diagnostics, evidence tensors, action catalogs, compiled packages, and cohort reports.
+- Real clinical prediction submissions, outcome manifests, unit-level endpoint/safety labels,
+  source assessments, curator materials, and per-unit clinical outcome evaluations.
+- Real clinical outcome dependence manifests, unit-to-cluster assignments, cluster-level results,
+  and unit-level uncertainty contributions.
+- Real clinical outcome design scenarios, pilot parameter elicitation, replicate-level simulation
+  records, and non-public gate-selection deliberations.
+- Real clinical outcome stress scenarios, missingness-model elicitation, hidden-dependence working
+  records, replicate-level simulation records, and correction-selection deliberations.
+- Real clinical outcome sensitivity protocols, log-IMOR elicitation, prediction-stratum working
+  records, latent outcomes, and correction-selection deliberations.
 - Local working notes, imported research packs, private opportunity records, and machine-specific source maps.
 - Scheduler logs, root-level run outputs, generated caches, Python bytecode, and large experiment directories.
 - Credentials, API tokens, `.env*`, key material, local account names, absolute local paths, and internal compute-location breadcrumbs.

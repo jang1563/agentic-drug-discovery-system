@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_informative_cluster_size_summary.schema.json",
+  "title": "Clinical Outcome Informative Cluster Size Summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "report_fingerprint",
+    "primary_metric",
+    "reference_log_imor",
+    "direction_threshold",
+    "automatic_estimand_selection_included",
+    "delete_mj_estimand_correction_claimed",
+    "fixed_block_profiles_across_replicates",
+    "cluster_superpopulation_resampling_included",
+    "scenarios"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-outcome-informative-cluster-size-summary.v1"
+    },
+    "report_fingerprint": {"$ref": "#/$defs/sha256"},
+    "primary_metric": {"const": "observed_favorable_rate"},
+    "reference_log_imor": {"type": "number", "minimum": -8.0, "maximum": 8.0},
+    "direction_threshold": {"$ref": "#/$defs/probability"},
+    "automatic_estimand_selection_included": {"const": false},
+    "delete_mj_estimand_correction_claimed": {"const": false},
+    "fixed_block_profiles_across_replicates": {"const": true},
+    "cluster_superpopulation_resampling_included": {"const": false},
+    "scenarios": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/scenario"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "probability": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+    "optionalNumber": {
+      "anyOf": [{"type": "number"}, {"type": "null"}]
+    },
+    "method": {
+      "enum": [
+        "unit_weighted_delete_one_student_t",
+        "unit_weighted_delete_mj_student_t",
+        "cluster_balanced_delete_one_student_t"
+      ]
+    },
+    "estimand": {"enum": ["unit_weighted", "cluster_balanced"]},
+    "direction": {"enum": ["below", "at", "above"]},
+    "rate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_count", "total_count", "rate", "lower", "upper"],
+      "properties": {
+        "event_count": {"type": "integer", "minimum": 0},
+        "total_count": {"type": "integer", "minimum": 0},
+        "rate": {"anyOf": [{"$ref": "#/$defs/probability"}, {"type": "null"}]},
+        "lower": {"anyOf": [{"$ref": "#/$defs/probability"}, {"type": "null"}]},
+        "upper": {"anyOf": [{"$ref": "#/$defs/probability"}, {"type": "null"}]}
+      }
+    },
+    "methodResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "target_estimand",
+        "reference_target_truth",
+        "reference_alternate_truth",
+        "reference_mean_estimate",
+        "reference_target_bias",
+        "reference_alternate_estimand_bias",
+        "reference_interval_yield",
+        "reference_target_coverage",
+        "reference_standard_error_to_empirical_sd_ratio",
+        "reference_calibration_target_met",
+        "all_metric_calibration_targets_met",
+        "influence_basis",
+        "mean_maximum_absolute_influence",
+        "p95_maximum_absolute_influence",
+        "mean_maximum_absolute_influence_share",
+        "unique_largest_block_most_influential",
+        "largest_block_deletion_direction_flip"
+      ],
+      "properties": {
+        "method": {"$ref": "#/$defs/method"},
+        "target_estimand": {"$ref": "#/$defs/estimand"},
+        "reference_target_truth": {"type": "number", "minimum": -1.0, "maximum": 1.0},
+        "reference_alternate_truth": {"type": "number", "minimum": -1.0, "maximum": 1.0},
+        "reference_mean_estimate": {"$ref": "#/$defs/optionalNumber"},
+        "reference_target_bias": {"$ref": "#/$defs/optionalNumber"},
+        "reference_alternate_estimand_bias": {"$ref": "#/$defs/optionalNumber"},
+        "reference_interval_yield": {"$ref": "#/$defs/rate"},
+        "reference_target_coverage": {"$ref": "#/$defs/rate"},
+        "reference_standard_error_to_empirical_sd_ratio": {"$ref": "#/$defs/optionalNumber"},
+        "reference_calibration_target_met": {"type": "boolean"},
+        "all_metric_calibration_targets_met": {"type": "boolean"},
+        "influence_basis": {"enum": ["leave_one_out_shift", "pseudovalue_contribution"]},
+        "mean_maximum_absolute_influence": {"$ref": "#/$defs/optionalNumber"},
+        "p95_maximum_absolute_influence": {"$ref": "#/$defs/optionalNumber"},
+        "mean_maximum_absolute_influence_share": {
+          "anyOf": [{"$ref": "#/$defs/probability"}, {"type": "null"}]
+        },
+        "unique_largest_block_most_influential": {"$ref": "#/$defs/rate"},
+        "largest_block_deletion_direction_flip": {"$ref": "#/$defs/rate"}
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "cluster_count",
+        "minimum_cluster_size",
+        "maximum_cluster_size",
+        "maximum_cluster_fraction",
+        "unit_weighted_favorable_prevalence",
+        "cluster_balanced_favorable_prevalence",
+        "favorable_prevalence_contrast_unit_minus_cluster",
+        "size_outcome_covariance",
+        "size_outcome_correlation",
+        "unit_weighted_reference_direction",
+        "cluster_balanced_reference_direction",
+        "truth_direction_disagrees",
+        "production_eligible",
+        "production_ineligibility_reasons",
+        "methods"
+      ],
+      "properties": {
+        "scenario_id": {"type": "string", "minLength": 1},
+        "cluster_count": {"type": "integer", "minimum": 1},
+        "minimum_cluster_size": {"type": "integer", "minimum": 1},
+        "maximum_cluster_size": {"type": "integer", "minimum": 1},
+        "maximum_cluster_fraction": {"$ref": "#/$defs/probability"},
+        "unit_weighted_favorable_prevalence": {"$ref": "#/$defs/probability"},
+        "cluster_balanced_favorable_prevalence": {"$ref": "#/$defs/probability"},
+        "favorable_prevalence_contrast_unit_minus_cluster": {
+          "type": "number",
+          "minimum": -1.0,
+          "maximum": 1.0
+        },
+        "size_outcome_covariance": {"type": "number"},
+        "size_outcome_correlation": {
+          "anyOf": [
+            {"type": "number", "minimum": -1.0, "maximum": 1.0},
+            {"type": "null"}
+          ]
+        },
+        "unit_weighted_reference_direction": {"$ref": "#/$defs/direction"},
+        "cluster_balanced_reference_direction": {"$ref": "#/$defs/direction"},
+        "truth_direction_disagrees": {"type": "boolean"},
+        "production_eligible": {"type": "boolean"},
+        "production_ineligibility_reasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["insufficient_clusters", "dominant_cluster"]}
+        },
+        "methods": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/methodResult"}
+        }
+      }
+    }
+  }
+}

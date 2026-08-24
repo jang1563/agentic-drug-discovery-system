@@ -1,0 +1,1005 @@
+{
+  "cluster_count_rule": "match_template_count",
+  "comparison_cell_count": 600,
+  "direction_threshold": 0.5,
+  "external_transportability_claimed": false,
+  "fixed_profile_full_calibration_pass_count": 280,
+  "fixed_profile_known_truths_preserved": true,
+  "fixed_profile_protocol_fingerprint": "23918d52ed465928701ddd70ca40f5a7dc139a75afe84bafca691529997d0317",
+  "fixed_profile_report_fingerprint": "1b0d6a6d8b4bead1b5ad06df5b83dac1296f1be39d072feb6de25bdd7aab8eda",
+  "fixed_profile_standard_error_calibration_pass_count": 280,
+  "full_calibration_recovered_cell_count": 240,
+  "post_hoc_design_filtering_included": false,
+  "primary_metric": "observed_favorable_rate",
+  "protocol_fingerprint": "50f8494d73d32452f02a15595bae3b39549bc13069a65211af4d03500c8bafa4",
+  "reference_log_imor": -1.996553881874,
+  "replicates": 500,
+  "report_fingerprint": "f9600e89c2e1f04800cdcc07e9ca573e76a13de26f05dbbeee8e745b53b94ef4",
+  "sampling_model": "uniform_empirical_template_with_replacement",
+  "scenarios": [
+    {
+      "cluster_balanced_reference_direction": "at",
+      "dominant_cluster_rate": {
+        "event_count": 0,
+        "lower": 0.0,
+        "rate": 0.0,
+        "total_count": 500,
+        "upper": 0.007624340462
+      },
+      "favorable_prevalence_contrast_unit_minus_cluster": 0.0,
+      "maximum_template_cluster_size": 128,
+      "mean_maximum_cluster_fraction": 0.083333333333,
+      "mean_realized_total_units": 1536.0,
+      "mean_unique_template_types": 7.754,
+      "methods": [
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": 0.0,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.004746813546,
+          "fixed_profile_target_bias": -0.000337593217,
+          "fixed_profile_target_coverage": {
+            "event_count": 472,
+            "lower": 0.920255206353,
+            "rate": 0.944,
+            "total_count": 500,
+            "upper": 0.960974379317
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "mean_maximum_absolute_influence": 0.020222738935,
+          "mean_maximum_absolute_influence_share": 0.198480429465,
+          "method": "unit_weighted_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.028897258883,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.5,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": false,
+          "standard_error_ratio_change": -0.053641648113,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 0.951105165433,
+          "superpopulation_target_bias": 0.000535691174,
+          "superpopulation_target_coverage": {
+            "event_count": 472,
+            "lower": 0.920255206353,
+            "rate": 0.944,
+            "total_count": 500,
+            "upper": 0.960974379317
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 0,
+            "lower": 0.0,
+            "rate": 0.0,
+            "total_count": 500,
+            "upper": 0.007624340462
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": 0.0,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.004746813546,
+          "fixed_profile_target_bias": -0.000337593217,
+          "fixed_profile_target_coverage": {
+            "event_count": 472,
+            "lower": 0.920255206353,
+            "rate": 0.944,
+            "total_count": 500,
+            "upper": 0.960974379317
+          },
+          "influence_basis": "pseudovalue_contribution",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "mean_maximum_absolute_influence": 0.01853751069,
+          "mean_maximum_absolute_influence_share": 0.198480429465,
+          "method": "unit_weighted_delete_mj_student_t",
+          "p95_maximum_absolute_influence": 0.026489153976,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.5,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": false,
+          "standard_error_ratio_change": -0.053641648113,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 0.951105165433,
+          "superpopulation_target_bias": 0.000535691174,
+          "superpopulation_target_coverage": {
+            "event_count": 472,
+            "lower": 0.920255206353,
+            "rate": 0.944,
+            "total_count": 500,
+            "upper": 0.960974379317
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 0,
+            "lower": 0.0,
+            "rate": 0.0,
+            "total_count": 500,
+            "upper": 0.007624340462
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": 0.0,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.004746813546,
+          "fixed_profile_target_bias": -0.000337593217,
+          "fixed_profile_target_coverage": {
+            "event_count": 472,
+            "lower": 0.920255206353,
+            "rate": 0.944,
+            "total_count": 500,
+            "upper": 0.960974379317
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "mean_maximum_absolute_influence": 0.020222738935,
+          "mean_maximum_absolute_influence_share": 0.198480429465,
+          "method": "cluster_balanced_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.028897258883,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.5,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": false,
+          "standard_error_ratio_change": -0.053641648113,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 0.951105165433,
+          "superpopulation_target_bias": 0.000535691174,
+          "superpopulation_target_coverage": {
+            "event_count": 472,
+            "lower": 0.920255206353,
+            "rate": 0.944,
+            "total_count": 500,
+            "upper": 0.960974379317
+          },
+          "target_estimand": "cluster_balanced",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 0,
+            "lower": 0.0,
+            "rate": 0.0,
+            "total_count": 500,
+            "upper": 0.007624340462
+          }
+        }
+      ],
+      "minimum_template_cluster_size": 128,
+      "p95_maximum_cluster_fraction": 0.083333333333,
+      "production_eligible_rate": {
+        "event_count": 500,
+        "lower": 0.992375659538,
+        "rate": 1.0,
+        "total_count": 500,
+        "upper": 1.0
+      },
+      "scenario_id": "balanced-null-12",
+      "size_outcome_correlation": null,
+      "size_outcome_covariance": 0.0,
+      "superpopulation_cluster_balanced_favorable_prevalence": 0.5,
+      "superpopulation_unit_weighted_favorable_prevalence": 0.5,
+      "template_cluster_count": 12,
+      "truth_direction_disagrees": false,
+      "unit_weighted_reference_direction": "at"
+    },
+    {
+      "cluster_balanced_reference_direction": "below",
+      "dominant_cluster_rate": {
+        "event_count": 314,
+        "lower": 0.58480891733,
+        "rate": 0.628,
+        "total_count": 500,
+        "upper": 0.669239251511
+      },
+      "favorable_prevalence_contrast_unit_minus_cluster": 0.055,
+      "maximum_template_cluster_size": 512,
+      "mean_maximum_cluster_fraction": 0.184555555556,
+      "mean_realized_total_units": 1906.944,
+      "mean_unique_template_types": 7.74,
+      "methods": [
+        {
+          "all_superpopulation_metric_calibration_targets_met": false,
+          "coverage_rate_change": -0.198,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 2.31595876144,
+          "fixed_profile_target_bias": -0.000389695713,
+          "fixed_profile_target_coverage": {
+            "event_count": 491,
+            "lower": 0.966148329091,
+            "rate": 0.982,
+            "total_count": 500,
+            "upper": 0.990501806704
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 133,
+            "lower": 0.650196801982,
+            "rate": 0.718918918919,
+            "total_count": 185,
+            "upper": 0.778734432217
+          },
+          "mean_maximum_absolute_influence": 0.052718004198,
+          "mean_maximum_absolute_influence_share": 0.33068810959,
+          "method": "unit_weighted_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.110291411417,
+          "reference_superpopulation_calibration_target_met": false,
+          "reference_target_truth": 0.53,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": true,
+          "standard_error_ratio_change": -1.313625871212,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.002332890228,
+          "superpopulation_target_bias": -0.013737859159,
+          "superpopulation_target_coverage": {
+            "event_count": 392,
+            "lower": 0.745837119472,
+            "rate": 0.784,
+            "total_count": 500,
+            "upper": 0.817832255146
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 181,
+            "lower": 0.945733766018,
+            "rate": 0.978378378378,
+            "total_count": 185,
+            "upper": 0.991560412418
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 185,
+            "lower": 0.328822263774,
+            "rate": 0.37,
+            "total_count": 500,
+            "upper": 0.413160064746
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": false,
+          "coverage_rate_change": -0.202,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.45456199352,
+          "fixed_profile_target_bias": -0.000389695713,
+          "fixed_profile_target_coverage": {
+            "event_count": 488,
+            "lower": 0.958522942536,
+            "rate": 0.976,
+            "total_count": 500,
+            "upper": 0.986218685345
+          },
+          "influence_basis": "pseudovalue_contribution",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "mean_maximum_absolute_influence": 0.040845459973,
+          "mean_maximum_absolute_influence_share": 0.302048224266,
+          "method": "unit_weighted_delete_mj_student_t",
+          "p95_maximum_absolute_influence": 0.080880368373,
+          "reference_superpopulation_calibration_target_met": false,
+          "reference_target_truth": 0.53,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": true,
+          "standard_error_ratio_change": -0.747302747188,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 0.707259246332,
+          "superpopulation_target_bias": -0.013737859159,
+          "superpopulation_target_coverage": {
+            "event_count": 387,
+            "lower": 0.735331642293,
+            "rate": 0.774,
+            "total_count": 500,
+            "upper": 0.808490219134
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 181,
+            "lower": 0.945733766018,
+            "rate": 0.978378378378,
+            "total_count": 185,
+            "upper": 0.991560412418
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 185,
+            "lower": 0.328822263774,
+            "rate": 0.37,
+            "total_count": 500,
+            "upper": 0.413160064746
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.044,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.23839176857,
+          "fixed_profile_target_bias": 0.000205141101,
+          "fixed_profile_target_coverage": {
+            "event_count": 491,
+            "lower": 0.966148329091,
+            "rate": 0.982,
+            "total_count": 500,
+            "upper": 0.990501806704
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 27,
+            "lower": 0.102281254396,
+            "rate": 0.145945945946,
+            "total_count": 185,
+            "upper": 0.204015144614
+          },
+          "mean_maximum_absolute_influence": 0.024755816458,
+          "mean_maximum_absolute_influence_share": 0.211593070529,
+          "method": "cluster_balanced_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.037479693111,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.475,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": false,
+          "standard_error_ratio_change": -0.239860478445,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 0.998531290125,
+          "superpopulation_target_bias": -0.00153517695,
+          "superpopulation_target_coverage": {
+            "event_count": 469,
+            "lower": 0.913340286898,
+            "rate": 0.938,
+            "total_count": 500,
+            "upper": 0.955980790857
+          },
+          "target_estimand": "cluster_balanced",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 136,
+            "lower": 0.667235029915,
+            "rate": 0.735135135135,
+            "total_count": 185,
+            "upper": 0.793468888299
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 185,
+            "lower": 0.328822263774,
+            "rate": 0.37,
+            "total_count": 500,
+            "upper": 0.413160064746
+          }
+        }
+      ],
+      "minimum_template_cluster_size": 128,
+      "p95_maximum_cluster_fraction": 0.266666666667,
+      "production_eligible_rate": {
+        "event_count": 186,
+        "lower": 0.330760748489,
+        "rate": 0.372,
+        "total_count": 500,
+        "upper": 0.41519108267
+      },
+      "scenario_id": "dominant-informative-benefit-12",
+      "size_outcome_correlation": 1.0,
+      "size_outcome_covariance": 8.8,
+      "superpopulation_cluster_balanced_favorable_prevalence": 0.475,
+      "superpopulation_unit_weighted_favorable_prevalence": 0.53,
+      "template_cluster_count": 12,
+      "truth_direction_disagrees": true,
+      "unit_weighted_reference_direction": "above"
+    },
+    {
+      "cluster_balanced_reference_direction": "below",
+      "dominant_cluster_rate": {
+        "event_count": 6,
+        "lower": 0.005510995174,
+        "rate": 0.012,
+        "total_count": 500,
+        "upper": 0.025930361116
+      },
+      "favorable_prevalence_contrast_unit_minus_cluster": 0.046086956522,
+      "maximum_template_cluster_size": 192,
+      "mean_maximum_cluster_fraction": 0.122647057047,
+      "mean_realized_total_units": 1485.824,
+      "mean_unique_template_types": 7.804,
+      "methods": [
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.029971943888,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.526307970805,
+          "fixed_profile_target_bias": -0.000812443146,
+          "fixed_profile_target_coverage": {
+            "event_count": 492,
+            "lower": 0.9713301646,
+            "rate": 0.985971943888,
+            "total_count": 499,
+            "upper": 0.993188554954
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 50,
+            "lower": 0.196092378777,
+            "rate": 0.251256281407,
+            "total_count": 199,
+            "upper": 0.315841717066
+          },
+          "mean_maximum_absolute_influence": 0.033797091561,
+          "mean_maximum_absolute_influence_share": 0.216090156433,
+          "method": "unit_weighted_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.052799171164,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.526086956522,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": true,
+          "standard_error_ratio_change": -0.479259931731,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.047048039074,
+          "superpopulation_target_bias": 0.001656797974,
+          "superpopulation_target_coverage": {
+            "event_count": 478,
+            "lower": 0.934280557128,
+            "rate": 0.956,
+            "total_count": 500,
+            "upper": 0.970766044371
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 139,
+            "lower": 0.63146776102,
+            "rate": 0.698492462312,
+            "total_count": 199,
+            "upper": 0.75799897058
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 199,
+            "lower": 0.356029977904,
+            "rate": 0.398,
+            "total_count": 500,
+            "upper": 0.44152538755
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.029971943888,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.465329678653,
+          "fixed_profile_target_bias": -0.000812443146,
+          "fixed_profile_target_coverage": {
+            "event_count": 492,
+            "lower": 0.9713301646,
+            "rate": 0.985971943888,
+            "total_count": 499,
+            "upper": 0.993188554954
+          },
+          "influence_basis": "pseudovalue_contribution",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "mean_maximum_absolute_influence": 0.029787530105,
+          "mean_maximum_absolute_influence_share": 0.209678454867,
+          "method": "unit_weighted_delete_mj_student_t",
+          "p95_maximum_absolute_influence": 0.045756256193,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.526086956522,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": true,
+          "standard_error_ratio_change": -0.45051756434,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.014812114313,
+          "superpopulation_target_bias": 0.001656797974,
+          "superpopulation_target_coverage": {
+            "event_count": 478,
+            "lower": 0.934280557128,
+            "rate": 0.956,
+            "total_count": 500,
+            "upper": 0.970766044371
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 136,
+            "lower": 0.615838050479,
+            "rate": 0.683417085427,
+            "total_count": 199,
+            "upper": 0.744048929354
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 199,
+            "lower": 0.356029977904,
+            "rate": 0.398,
+            "total_count": 500,
+            "upper": 0.44152538755
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.037987975952,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.585506842833,
+          "fixed_profile_target_bias": -0.000644014227,
+          "fixed_profile_target_coverage": {
+            "event_count": 496,
+            "lower": 0.982475000466,
+            "rate": 0.993987975952,
+            "total_count": 499,
+            "upper": 0.997953306214
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 27,
+            "lower": 0.094949365852,
+            "rate": 0.13567839196,
+            "total_count": 199,
+            "upper": 0.190206633109
+          },
+          "mean_maximum_absolute_influence": 0.030227706281,
+          "mean_maximum_absolute_influence_share": 0.190048096466,
+          "method": "cluster_balanced_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.040567125397,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.48,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": true,
+          "standard_error_ratio_change": -0.550598050375,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.034908792458,
+          "superpopulation_target_bias": 0.005499363429,
+          "superpopulation_target_coverage": {
+            "event_count": 478,
+            "lower": 0.934280557128,
+            "rate": 0.956,
+            "total_count": 500,
+            "upper": 0.970766044371
+          },
+          "target_estimand": "cluster_balanced",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 69,
+            "lower": 0.284076262965,
+            "rate": 0.346733668342,
+            "total_count": 199,
+            "upper": 0.415196260736
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 199,
+            "lower": 0.356029977904,
+            "rate": 0.398,
+            "total_count": 500,
+            "upper": 0.44152538755
+          }
+        }
+      ],
+      "minimum_template_cluster_size": 64,
+      "p95_maximum_cluster_fraction": 0.143031358885,
+      "production_eligible_rate": {
+        "event_count": 494,
+        "lower": 0.974069638884,
+        "rate": 0.988,
+        "total_count": 500,
+        "upper": 0.994489004826
+      },
+      "scenario_id": "unequal-informative-benefit-12",
+      "size_outcome_correlation": 1.0,
+      "size_outcome_covariance": 5.653333333333,
+      "superpopulation_cluster_balanced_favorable_prevalence": 0.48,
+      "superpopulation_unit_weighted_favorable_prevalence": 0.526086956522,
+      "template_cluster_count": 12,
+      "truth_direction_disagrees": true,
+      "unit_weighted_reference_direction": "above"
+    },
+    {
+      "cluster_balanced_reference_direction": "above",
+      "dominant_cluster_rate": {
+        "event_count": 9,
+        "lower": 0.009498193296,
+        "rate": 0.018,
+        "total_count": 500,
+        "upper": 0.033851670909
+      },
+      "favorable_prevalence_contrast_unit_minus_cluster": -0.046086956522,
+      "maximum_template_cluster_size": 192,
+      "mean_maximum_cluster_fraction": 0.122741866833,
+      "mean_realized_total_units": 1464.064,
+      "mean_unique_template_types": 7.72,
+      "methods": [
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.04430566483,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.476733477869,
+          "fixed_profile_target_bias": 0.001016145232,
+          "fixed_profile_target_coverage": {
+            "event_count": 489,
+            "lower": 0.982227848198,
+            "rate": 0.993902439024,
+            "total_count": 492,
+            "upper": 0.997924156751
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 50,
+            "lower": 0.185520788319,
+            "rate": 0.238095238095,
+            "total_count": 210,
+            "upper": 0.300079428745
+          },
+          "mean_maximum_absolute_influence": 0.034766986204,
+          "mean_maximum_absolute_influence_share": 0.223026702987,
+          "method": "unit_weighted_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.054331426815,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.473913043478,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": true,
+          "standard_error_ratio_change": -0.458556936313,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.018176541556,
+          "superpopulation_target_bias": 0.007429527605,
+          "superpopulation_target_coverage": {
+            "event_count": 471,
+            "lower": 0.92665348519,
+            "rate": 0.949596774194,
+            "total_count": 496,
+            "upper": 0.965629441985
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 146,
+            "lower": 0.629936318129,
+            "rate": 0.695238095238,
+            "total_count": 210,
+            "upper": 0.753525338241
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 210,
+            "lower": 0.380656431463,
+            "rate": 0.423387096774,
+            "total_count": 496,
+            "upper": 0.467295356731
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.048337922895,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.428414885004,
+          "fixed_profile_target_bias": 0.001016145232,
+          "fixed_profile_target_coverage": {
+            "event_count": 489,
+            "lower": 0.982227848198,
+            "rate": 0.993902439024,
+            "total_count": 492,
+            "upper": 0.997924156751
+          },
+          "influence_basis": "pseudovalue_contribution",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "mean_maximum_absolute_influence": 0.030609567117,
+          "mean_maximum_absolute_influence_share": 0.216309140146,
+          "method": "unit_weighted_delete_mj_student_t",
+          "p95_maximum_absolute_influence": 0.047087236573,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.473913043478,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": true,
+          "standard_error_ratio_change": -0.446066786192,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 0.982348098812,
+          "superpopulation_target_bias": 0.007429527605,
+          "superpopulation_target_coverage": {
+            "event_count": 469,
+            "lower": 0.921958307978,
+            "rate": 0.945564516129,
+            "total_count": 496,
+            "upper": 0.962322081734
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 142,
+            "lower": 0.610229115887,
+            "rate": 0.67619047619,
+            "total_count": 210,
+            "upper": 0.735821647179
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 210,
+            "lower": 0.380656431463,
+            "rate": 0.423387096774,
+            "total_count": 496,
+            "upper": 0.467295356731
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.04028979806,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.534231527889,
+          "fixed_profile_target_bias": 0.001623068179,
+          "fixed_profile_target_coverage": {
+            "event_count": 490,
+            "lower": 0.985301041823,
+            "rate": 0.99593495935,
+            "total_count": 492,
+            "upper": 0.998884510472
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 17,
+            "lower": 0.051154890726,
+            "rate": 0.080952380952,
+            "total_count": 210,
+            "upper": 0.125805456577
+          },
+          "mean_maximum_absolute_influence": 0.030215284392,
+          "mean_maximum_absolute_influence_share": 0.191370044062,
+          "method": "cluster_balanced_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.039822772605,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.52,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": true,
+          "standard_error_ratio_change": -0.512339534751,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.021891993138,
+          "superpopulation_target_bias": 0.003595817156,
+          "superpopulation_target_coverage": {
+            "event_count": 474,
+            "lower": 0.933757898763,
+            "rate": 0.95564516129,
+            "total_count": 496,
+            "upper": 0.970528834607
+          },
+          "target_estimand": "cluster_balanced",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 87,
+            "lower": 0.349784572308,
+            "rate": 0.414285714286,
+            "total_count": 210,
+            "upper": 0.481866407822
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 210,
+            "lower": 0.380656431463,
+            "rate": 0.423387096774,
+            "total_count": 496,
+            "upper": 0.467295356731
+          }
+        }
+      ],
+      "minimum_template_cluster_size": 64,
+      "p95_maximum_cluster_fraction": 0.142857142857,
+      "production_eligible_rate": {
+        "event_count": 491,
+        "lower": 0.966148329091,
+        "rate": 0.982,
+        "total_count": 500,
+        "upper": 0.990501806704
+      },
+      "scenario_id": "unequal-informative-harm-12",
+      "size_outcome_correlation": -1.0,
+      "size_outcome_covariance": -5.653333333333,
+      "superpopulation_cluster_balanced_favorable_prevalence": 0.52,
+      "superpopulation_unit_weighted_favorable_prevalence": 0.473913043478,
+      "template_cluster_count": 12,
+      "truth_direction_disagrees": true,
+      "unit_weighted_reference_direction": "below"
+    },
+    {
+      "cluster_balanced_reference_direction": "at",
+      "dominant_cluster_rate": {
+        "event_count": 8,
+        "lower": 0.008129253033,
+        "rate": 0.016,
+        "total_count": 500,
+        "upper": 0.031251108533
+      },
+      "favorable_prevalence_contrast_unit_minus_cluster": 0.0,
+      "maximum_template_cluster_size": 192,
+      "mean_maximum_cluster_fraction": 0.122556613011,
+      "mean_realized_total_units": 1471.68,
+      "mean_unique_template_types": 7.774,
+      "methods": [
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.006,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.049040811537,
+          "fixed_profile_target_bias": 0.000973774405,
+          "fixed_profile_target_coverage": {
+            "event_count": 479,
+            "lower": 0.936648414246,
+            "rate": 0.958,
+            "total_count": 500,
+            "upper": 0.972367689892
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 31,
+            "lower": 0.101077697572,
+            "rate": 0.140909090909,
+            "total_count": 220,
+            "upper": 0.19306557315
+          },
+          "mean_maximum_absolute_influence": 0.022607580495,
+          "mean_maximum_absolute_influence_share": 0.219825676496,
+          "method": "unit_weighted_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.034838139873,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.5,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": false,
+          "standard_error_ratio_change": -0.001030179586,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.048010631951,
+          "superpopulation_target_bias": 0.000374844476,
+          "superpopulation_target_coverage": {
+            "event_count": 476,
+            "lower": 0.929572803164,
+            "rate": 0.952,
+            "total_count": 500,
+            "upper": 0.967534793059
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 54,
+            "lower": 0.193276410197,
+            "rate": 0.245454545455,
+            "total_count": 220,
+            "upper": 0.306369452593
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 220,
+            "lower": 0.397111794442,
+            "rate": 0.44,
+            "total_count": 500,
+            "upper": 0.483803126414
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": -0.008,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 1.003096788882,
+          "fixed_profile_target_bias": 0.000973774405,
+          "fixed_profile_target_coverage": {
+            "event_count": 475,
+            "lower": 0.927231838828,
+            "rate": 0.95,
+            "total_count": 500,
+            "upper": 0.965906254756
+          },
+          "influence_basis": "pseudovalue_contribution",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 0,
+            "lower": null,
+            "rate": null,
+            "total_count": 0,
+            "upper": null
+          },
+          "mean_maximum_absolute_influence": 0.020217322609,
+          "mean_maximum_absolute_influence_share": 0.216408270406,
+          "method": "unit_weighted_delete_mj_student_t",
+          "p95_maximum_absolute_influence": 0.030976125797,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.5,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": false,
+          "standard_error_ratio_change": 0.003315560356,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.006412349238,
+          "superpopulation_target_bias": 0.000374844476,
+          "superpopulation_target_coverage": {
+            "event_count": 471,
+            "lower": 0.917943812144,
+            "rate": 0.942,
+            "total_count": 500,
+            "upper": 0.959316270888
+          },
+          "target_estimand": "unit_weighted",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 49,
+            "lower": 0.17277151387,
+            "rate": 0.222727272727,
+            "total_count": 220,
+            "upper": 0.282199872384
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 220,
+            "lower": 0.397111794442,
+            "rate": 0.44,
+            "total_count": 500,
+            "upper": 0.483803126414
+          }
+        },
+        {
+          "all_superpopulation_metric_calibration_targets_met": true,
+          "coverage_rate_change": 0.006,
+          "fixed_profile_standard_error_to_empirical_sd_ratio": 0.996490959642,
+          "fixed_profile_target_bias": 0.001775576029,
+          "fixed_profile_target_coverage": {
+            "event_count": 474,
+            "lower": 0.924898856062,
+            "rate": 0.948,
+            "total_count": 500,
+            "upper": 0.964269734884
+          },
+          "influence_basis": "leave_one_out_shift",
+          "largest_cluster_deletion_direction_flip": {
+            "event_count": 30,
+            "lower": 0.097216610859,
+            "rate": 0.136363636364,
+            "total_count": 220,
+            "upper": 0.187991764556
+          },
+          "mean_maximum_absolute_influence": 0.020682009664,
+          "mean_maximum_absolute_influence_share": 0.200589651175,
+          "method": "cluster_balanced_delete_one_student_t",
+          "p95_maximum_absolute_influence": 0.029283029115,
+          "reference_superpopulation_calibration_target_met": true,
+          "reference_target_truth": 0.5,
+          "reference_truth_difference_from_fixed_profile": 0.0,
+          "standard_error_calibration_recovered": false,
+          "standard_error_ratio_change": 0.048852963975,
+          "superpopulation_standard_error_to_empirical_sd_ratio": 1.045343923617,
+          "superpopulation_target_bias": 0.000589482692,
+          "superpopulation_target_coverage": {
+            "event_count": 477,
+            "lower": 0.931922207232,
+            "rate": 0.954,
+            "total_count": 500,
+            "upper": 0.969154891629
+          },
+          "target_estimand": "cluster_balanced",
+          "unique_largest_cluster_most_influential": {
+            "event_count": 18,
+            "lower": 0.052378627483,
+            "rate": 0.081818181818,
+            "total_count": 220,
+            "upper": 0.125611004244
+          },
+          "unique_largest_cluster_rate": {
+            "event_count": 220,
+            "lower": 0.397111794442,
+            "rate": 0.44,
+            "total_count": 500,
+            "upper": 0.483803126414
+          }
+        }
+      ],
+      "minimum_template_cluster_size": 64,
+      "p95_maximum_cluster_fraction": 0.142857142857,
+      "production_eligible_rate": {
+        "event_count": 492,
+        "lower": 0.968748891467,
+        "rate": 0.984,
+        "total_count": 500,
+        "upper": 0.991870746967
+      },
+      "scenario_id": "unequal-null-12",
+      "size_outcome_correlation": null,
+      "size_outcome_covariance": 0.0,
+      "superpopulation_cluster_balanced_favorable_prevalence": 0.5,
+      "superpopulation_unit_weighted_favorable_prevalence": 0.5,
+      "template_cluster_count": 12,
+      "truth_direction_disagrees": false,
+      "unit_weighted_reference_direction": "at"
+    }
+  ],
+  "schema_version": "adds.clinical-outcome-cluster-superpopulation-summary.v1",
+  "standard_error_calibration_recovered_cell_count": 320,
+  "superpopulation_full_calibration_pass_count": 520,
+  "superpopulation_standard_error_calibration_pass_count": 600
+}

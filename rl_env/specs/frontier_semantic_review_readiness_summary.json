@@ -1,0 +1,50 @@
+{
+  "adjudication_count": 0,
+  "admission_gate_results": {
+    "conflict_of_interest_clear": "pending",
+    "contamination_canary_clear": "pending",
+    "counterfactual_mutation_review": "pending",
+    "evidence_lineage_review": "pending",
+    "expert_solvability": "pending",
+    "independent_scientific_review": "pending",
+    "oracle_commitment_sealed": "pass",
+    "structured_oracle_replay": "pending",
+    "task_packet_integrity": "pass",
+    "temporal_leakage_review": "pending"
+  },
+  "baseline_model_runs_started": false,
+  "benchmark_evidence_claimed": false,
+  "board_admitted_count": 0,
+  "board_id": "adds-frontier-private-pilot-v1",
+  "compiled_on": "2026-08-22",
+  "consensus_label_count": 0,
+  "exact_structural_delta_count": 20,
+  "human_review_required": true,
+  "independent_review_complete": false,
+  "integrity_sha256": "77820aee164f603655ef23a3454feb05e3976e43f9a7ba6beba974daeea5f486",
+  "machine_compiled_packet_count": 20,
+  "minimum_independent_curators_per_packet": 3,
+  "nonclaims": [
+    "Arm-order blinding does not guarantee canonical role is non-inferable from private payload semantics.",
+    "No board admission, model run, or benchmark performance is claimed.",
+    "No canonical-arm mapping, task, oracle, identity, nonce, or reviewer bytes are public.",
+    "No reviewer was assigned and no consensus or adjudication exists.",
+    "Structural delta certification does not establish a correct action change.",
+    "Twenty packets are machine-compiled drafts, not independently reviewed labels."
+  ],
+  "private_key_set_commitment": "359b875085f33513f67b48aed535322b8fb5d8f1d5c3092fc370724e82cd7380",
+  "private_packet_set_commitment": "c8837b30549b69a50c8ec1ed5c117bc261f84e6b8f275b5b2c03fb9834c99834",
+  "private_payload_published": false,
+  "probe_kind_counts": {
+    "bounded_evidence_reveal": 10,
+    "identity_rebind": 10
+  },
+  "protocol_id": "adds-frontier-v1",
+  "public_preflight_integrity_sha256": "9e195e7a5e7ccfeefca8b195202354262901fe93778fbf4085cecf55ba5a2027",
+  "reviewer_assignment_count": 0,
+  "reviewer_response_count": 0,
+  "schema_version": "adds.frontier-semantic-review-readiness-summary.v1",
+  "semantic_probe_count": 20,
+  "set_id": "adds-frontier-semantic-review-v1",
+  "status": "semantic_review_packets_compiled_review_not_started"
+}

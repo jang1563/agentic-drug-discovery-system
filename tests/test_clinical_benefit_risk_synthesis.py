@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import unittest
@@ -7,7 +8,7 @@ from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
 from adapters.clinical_synthesis_adapter import ClinicalSynthesisAdapter
@@ -28,6 +29,11 @@ from agentic_drug_discovery import (
     ClinicalEndpointMappingSpec,
     ClinicalEndpointOntology,
     ClinicalEndpointSelection,
+    ClinicalPopulationSourceCitation,
+    ClinicalPopulationStratumBinding,
+    ClinicalPopulationTransportError,
+    ClinicalPopulationTransportReview,
+    ClinicalPopulationTransportSpec,
     ClinicalEvidenceActionOption,
     ClinicalEvidenceTransitionPackage,
     ClinicalEvidenceDimension,
@@ -61,9 +67,17 @@ from agentic_drug_discovery import (
     ToolRegistry,
     ToolResponse,
     ToolStatus,
+    TrialDesignRecord,
     build_default_semantic_mapper_registry,
     capture_source_bytes,
     clinical_endpoint_mapping_spec_to_dict,
+    clinical_population_transport_report_envelope,
+    clinical_population_transport_report_from_dict,
+    clinical_population_transport_report_from_json,
+    clinical_population_transport_spec_from_dict,
+    clinical_population_transport_spec_from_json,
+    clinical_population_transport_spec_integrity_sha256,
+    clinical_population_transport_spec_to_dict,
     clinical_decision_package_envelope,
     clinical_decision_package_from_dict,
     clinical_decision_package_from_json,
@@ -78,6 +92,7 @@ from agentic_drug_discovery import (
     compile_clinical_execution_batch,
     compile_benefit_risk_synthesis,
     compile_clinical_endpoint_mapping,
+    compile_clinical_population_transport_report,
     compile_pinned_evidence_manifest,
     default_stage_gates,
     execute_clinical_evidence_batch,
@@ -97,20 +112,28 @@ JOB = ROOT / "rl_env/specs/clinicaltrials_gov_ingestion_job.example.json"
 SOURCE = ROOT / "tests/fixtures/clinicaltrials_gov_study.synthetic.json"
 SYNTHESIS_SCHEMA = ROOT / "rl_env/specs/clinical_benefit_risk_synthesis.schema.json"
 SYNTHESIS_EXAMPLE = ROOT / "rl_env/specs/clinical_benefit_risk_synthesis.example.json"
-DECISION_SCHEMA = (
-    ROOT / "rl_env/specs/clinical_evidence_decision_package.schema.json"
-)
-DECISION_EXAMPLE = (
-    ROOT / "rl_env/specs/clinical_evidence_decision_package.example.json"
-)
+DECISION_SCHEMA = ROOT / "rl_env/specs/clinical_evidence_decision_package.schema.json"
+DECISION_EXAMPLE = ROOT / "rl_env/specs/clinical_evidence_decision_package.example.json"
 CLOSED_LOOP_SCHEMA = (
-    ROOT
-    / "rl_env/specs/clinical_evidence_closed_loop_transition.schema.json"
+    ROOT / "rl_env/specs/clinical_evidence_closed_loop_transition.schema.json"
 )
 CLOSED_LOOP_EXAMPLE = (
-    ROOT
-    / "rl_env/specs/clinical_evidence_closed_loop_transition.example.json"
+    ROOT / "rl_env/specs/clinical_evidence_closed_loop_transition.example.json"
 )
+POPULATION_TRANSPORT_SPEC_SCHEMA = (
+    ROOT / "rl_env/specs/clinical_population_transport_spec.schema.json"
+)
+POPULATION_TRANSPORT_SPEC_EXAMPLE = (
+    ROOT / "rl_env/specs/clinical_population_transport_spec.example.json"
+)
+POPULATION_TRANSPORT_REPORT_SCHEMA = (
+    ROOT / "rl_env/specs/clinical_population_transport_report.schema.json"
+)
+POPULATION_TRANSPORT_REPORT = (
+    ROOT / "docs/ra_olokizumab_population_transport_report.json"
+)
+MTX_IR_REPLICATION_SPEC = ROOT / "docs/ra_olokizumab_mtx_ir_replication_spec.json"
+MTX_IR_REPLICATION_REPORT = ROOT / "docs/ra_olokizumab_mtx_ir_replication_report.json"
 REQUEST_AT = datetime(2025, 1, 2, 1, tzinfo=timezone.utc)
 COMPLETED_AT = REQUEST_AT + timedelta(minutes=1)
 MAPPING_REQUEST_AT = REQUEST_AT - timedelta(minutes=2)
@@ -119,11 +142,11 @@ CLOSED_LOOP_REQUEST_AT = REQUEST_AT + timedelta(hours=1)
 CLOSED_LOOP_COMPLETED_AT = CLOSED_LOOP_REQUEST_AT + timedelta(minutes=1)
 CLOSED_LOOP_MAPPING_REQUEST_AT = CLOSED_LOOP_COMPLETED_AT + timedelta(minutes=1)
 CLOSED_LOOP_MAPPING_COMPLETED_AT = CLOSED_LOOP_MAPPING_REQUEST_AT + timedelta(minutes=1)
-CLOSED_LOOP_SYNTHESIS_REQUEST_AT = (
-    CLOSED_LOOP_MAPPING_COMPLETED_AT + timedelta(minutes=1)
+CLOSED_LOOP_SYNTHESIS_REQUEST_AT = CLOSED_LOOP_MAPPING_COMPLETED_AT + timedelta(
+    minutes=1
 )
-CLOSED_LOOP_SYNTHESIS_COMPLETED_AT = (
-    CLOSED_LOOP_SYNTHESIS_REQUEST_AT + timedelta(minutes=1)
+CLOSED_LOOP_SYNTHESIS_COMPLETED_AT = CLOSED_LOOP_SYNTHESIS_REQUEST_AT + timedelta(
+    minutes=1
 )
 
 
@@ -203,9 +226,7 @@ def _manifest(
     candidate_measurement: str = "12.0",
 ) -> dict:
     original_trial_id = "NCT00000001"
-    job_text = JOB.read_text(encoding="utf-8").replace(
-        original_trial_id, trial_id
-    )
+    job_text = JOB.read_text(encoding="utf-8").replace(original_trial_id, trial_id)
     source_text = SOURCE.read_text(encoding="utf-8").replace(
         original_trial_id, trial_id
     )
@@ -213,11 +234,9 @@ def _manifest(
     if candidate_measurement != "12.0":
         job["trial"]["arms"][0]["measurement"]["value"] = candidate_measurement
         source = json.loads(source_text)
-        source["resultsSection"]["outcomeMeasuresModule"]["outcomeMeasures"][
-            0
-        ]["classes"][0]["categories"][0]["measurements"][0][
-            "value"
-        ] = candidate_measurement
+        source["resultsSection"]["outcomeMeasuresModule"]["outcomeMeasures"][0][
+            "classes"
+        ][0]["categories"][0]["measurements"][0]["value"] = candidate_measurement
         source_text = json.dumps(
             source,
             sort_keys=True,
@@ -270,9 +289,7 @@ def _run_clinical_trial(
         pinned_evidence=PinnedEvidenceAdapter(
             _manifest(
                 trial_id,
-                candidate_serious_num_affected=(
-                    candidate_serious_num_affected
-                ),
+                candidate_serious_num_affected=(candidate_serious_num_affected),
                 candidate_measurement=candidate_measurement,
             )
         ),
@@ -348,9 +365,7 @@ def _combined_state(
     second = _run_clinical_trial(
         "NCT00000002",
         "trial-two",
-        candidate_serious_num_affected=(
-            second_candidate_serious_num_affected
-        ),
+        candidate_serious_num_affected=(second_candidate_serious_num_affected),
     )
     first_intervention = first.interventions[0]
     second_intervention = second.interventions[0]
@@ -429,18 +444,14 @@ def _combined_three_trial_state() -> ProgramState:
         as_of_date=first.as_of_date,
         current_stage=Stage.REGULATORY_POSTMARKET,
         budget=BudgetState(limit=3.0),
-        evidence=tuple(
-            item for state in states for item in state.evidence
-        ),
+        evidence=tuple(item for state in states for item in state.evidence),
         claims=tuple(item for state in states for item in state.claims),
         diseases=first.diseases,
         targets=first.targets,
         candidates=first.candidates,
         interventions=(merged_intervention,),
         trials=tuple(item for state in states for item in state.trials),
-        trial_designs=tuple(
-            item for state in states for item in state.trial_designs
-        ),
+        trial_designs=tuple(item for state in states for item in state.trial_designs),
     )
 
 
@@ -666,7 +677,8 @@ def _run_synthesis(
 def _decision_policy(
     *,
     minimum_independent_trials: int = 2,
-    maximum_log_effect_ci_width: float = 0.6,
+    maximum_log_effect_ci_width: float | None = 0.6,
+    maximum_risk_difference_ci_width_percentage_points: float | None = None,
     minimum_safety_participants_per_arm: int = 60,
     max_planned_actions: int = 2,
     max_planned_cost: float = 0.3,
@@ -678,9 +690,7 @@ def _decision_policy(
         registered_on=date(2025, 1, 1),
         minimum_independent_trials=minimum_independent_trials,
         maximum_log_effect_ci_width=maximum_log_effect_ci_width,
-        minimum_safety_participants_per_arm=(
-            minimum_safety_participants_per_arm
-        ),
+        minimum_safety_participants_per_arm=(minimum_safety_participants_per_arm),
         max_planned_actions=max_planned_actions,
         max_planned_cost=max_planned_cost,
         minimum_bounded_voi=minimum_bounded_voi,
@@ -688,6 +698,9 @@ def _decision_policy(
             "payload_class": "synthetic",
             "clinical_use": "prohibited",
         },
+        maximum_risk_difference_ci_width_percentage_points=(
+            maximum_risk_difference_ci_width_percentage_points
+        ),
     )
 
 
@@ -791,9 +804,7 @@ def _closed_loop_action() -> ClinicalEvidenceActionOption:
             "Verify one captured trial as source-disjoint and eligible for "
             "reviewer harmonization."
         ),
-        targeted_gap_codes=(
-            ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,
-        ),
+        targeted_gap_codes=(ClinicalEvidenceGapCode.INSUFFICIENT_INDEPENDENT_TRIALS,),
         expected_gap_resolution_probability=0.9,
         decision_relevance=0.9,
         max_cost=0.05,
@@ -934,9 +945,398 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         if cls.synthesis_result.status is not StageRunStatus.COMMITTED:
             raise AssertionError(cls.synthesis_result.code)
         cls.committed_state = cls.synthesis_result.final_state
-        cls.committed_synthesis = (
-            cls.committed_state.benefit_risk_syntheses[0]
+        cls.committed_synthesis = cls.committed_state.benefit_risk_syntheses[0]
+
+    def _population_transport_fixture(self):
+        pointer = "/protocolSection/identificationModule/nctId"
+        documents = {}
+        bindings = []
+        for index, study in enumerate(self.committed_synthesis.studies):
+            payload = (
+                SOURCE.read_text(encoding="utf-8")
+                .replace("NCT00000001", study.trial_id)
+                .encode("utf-8")
+            )
+            digest = hashlib.sha256(payload).hexdigest()
+            documents[digest] = payload
+            design = self.committed_state.trial_designs_by_id[study.design_id]
+            endpoint = next(
+                item
+                for item in design.endpoints
+                if item.endpoint_id == study.endpoint_id
+            )
+            bindings.append(
+                ClinicalPopulationStratumBinding(
+                    trial_id=study.trial_id,
+                    design_id=study.design_id,
+                    endpoint_id=study.endpoint_id,
+                    population_id=endpoint.population_id,
+                    stratum_id=f"prior_therapy_context_{index + 1}",
+                    stratum_label=f"Prior therapy context {index + 1}",
+                    population_context=f"Synthetic prior therapy context {index + 1}",
+                    citation=ClinicalPopulationSourceCitation(
+                        source_document_format="clinicaltrials.gov-study-v2",
+                        source_content_sha256=digest,
+                        source_field_pointer=pointer,
+                        source_field_sha256=hashlib.sha256(
+                            study.trial_id.encode("utf-8")
+                        ).hexdigest(),
+                    ),
+                )
+            )
+        spec = ClinicalPopulationTransportSpec(
+            analysis_id="CHEMBL_TEST:MONDO_TEST:population-strata:v1",
+            synthesis_id=self.committed_synthesis.synthesis_id,
+            stratification_axis_id="prior_therapy_response_context",
+            stratification_axis_label="Prior inadequate-response therapy",
+            bindings=tuple(bindings),
+            review=ClinicalPopulationTransportReview(
+                status="approved_for_descriptive_stratification",
+                reviewer_id="reviewer:synthetic-test",
+                reviewer_role="synthetic_test_owner",
+                reviewed_at=datetime(2025, 1, 2, tzinfo=timezone.utc),
+                independent_external_review=False,
+            ),
         )
+        designs = tuple(
+            self.committed_state.trial_designs_by_id[item.design_id]
+            for item in bindings
+        )
+        return spec, designs, documents
+
+    def test_population_stratified_transport_diagnostic_is_fail_closed(self) -> None:
+        spec, designs, documents = self._population_transport_fixture()
+        report = compile_clinical_population_transport_report(
+            self.committed_synthesis,
+            designs,
+            documents,
+            spec,
+        )
+
+        self.assertEqual(
+            report.status,
+            "descriptive_stratification_complete_transport_not_estimable",
+        )
+        self.assertEqual(len(report.strata), 2)
+        self.assertEqual(
+            {item.trial_count for item in report.stratum_support},
+            {1},
+        )
+        self.assertIn("no_within_stratum_replication", report.transportability_blockers)
+        self.assertIn(
+            "target_population_not_declared", report.transportability_blockers
+        )
+        self.assertFalse(report.population_homogeneity_inferred)
+        self.assertFalse(report.population_exchangeability_inferred)
+        self.assertFalse(report.pooling_performed)
+        self.assertFalse(report.cross_stratum_effect_contrast_computed)
+        self.assertFalse(report.transport_effect_estimated)
+        self.assertFalse(report.independent_external_review_completed)
+
+        spec_payload = clinical_population_transport_spec_to_dict(spec)
+        self.assertEqual(
+            clinical_population_transport_spec_from_dict(spec_payload), spec
+        )
+        envelope = clinical_population_transport_report_envelope(report)
+        self.assertEqual(
+            report.spec_sha256,
+            clinical_population_transport_spec_integrity_sha256(spec),
+        )
+        self.assertEqual(
+            clinical_population_transport_report_from_dict(envelope), report
+        )
+        self.assertEqual(
+            clinical_population_transport_report_from_json(json.dumps(envelope)),
+            report,
+        )
+
+    def test_population_transport_rejects_population_and_source_rebinding(self) -> None:
+        spec, designs, documents = self._population_transport_fixture()
+        rebound_binding = replace(
+            spec.bindings[0],
+            population_id="NCT00000001:population:rebound",
+        )
+        rebound_spec = replace(
+            spec,
+            bindings=(rebound_binding, *spec.bindings[1:]),
+        )
+        with self.assertRaisesRegex(
+            ClinicalPopulationTransportError,
+            "analysis population is missing",
+        ):
+            compile_clinical_population_transport_report(
+                self.committed_synthesis,
+                designs,
+                documents,
+                rebound_spec,
+            )
+
+        changed_documents = dict(documents)
+        first_hash = spec.bindings[0].citation.source_content_sha256
+        changed_documents[first_hash] += b"\n"
+        with self.assertRaisesRegex(
+            ClinicalPopulationTransportError,
+            "source document hash changed",
+        ):
+            compile_clinical_population_transport_report(
+                self.committed_synthesis,
+                designs,
+                changed_documents,
+                spec,
+            )
+
+    def test_population_transport_rejects_field_hash_and_target_overclaim(self) -> None:
+        spec, designs, documents = self._population_transport_fixture()
+        changed_citation = replace(
+            spec.bindings[0].citation,
+            source_field_sha256="0" * 64,
+        )
+        changed_binding = replace(spec.bindings[0], citation=changed_citation)
+        changed_spec = replace(
+            spec,
+            bindings=(changed_binding, *spec.bindings[1:]),
+        )
+        with self.assertRaisesRegex(
+            ClinicalPopulationTransportError,
+            "source field hash changed",
+        ):
+            compile_clinical_population_transport_report(
+                self.committed_synthesis,
+                designs,
+                documents,
+                changed_spec,
+            )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "target_population_id to remain null",
+        ):
+            replace(spec, target_population_id="target:unsupported")
+
+    def test_real_population_transport_contract_is_strict_and_integrity_bound(
+        self,
+    ) -> None:
+        spec_schema = json.loads(
+            POPULATION_TRANSPORT_SPEC_SCHEMA.read_text(encoding="utf-8")
+        )
+        report_schema = json.loads(
+            POPULATION_TRANSPORT_REPORT_SCHEMA.read_text(encoding="utf-8")
+        )
+        spec_payload = json.loads(
+            POPULATION_TRANSPORT_SPEC_EXAMPLE.read_text(encoding="utf-8")
+        )
+        report_payload = json.loads(
+            POPULATION_TRANSPORT_REPORT.read_text(encoding="utf-8")
+        )
+        for schema, payload in (
+            (spec_schema, spec_payload),
+            (report_schema, report_payload),
+        ):
+            Draft202012Validator.check_schema(schema)
+            Draft202012Validator(
+                schema,
+                format_checker=FormatChecker(),
+            ).validate(payload)
+
+        parsed_spec = clinical_population_transport_spec_from_dict(spec_payload)
+        self.assertEqual(
+            clinical_population_transport_spec_from_json(json.dumps(spec_payload)),
+            parsed_spec,
+        )
+        self.assertEqual(len(parsed_spec.bindings), 2)
+        self.assertFalse(parsed_spec.review.independent_external_review)
+        report = clinical_population_transport_report_from_dict(report_payload)
+        self.assertEqual(
+            {item.stratum_id for item in report.strata},
+            {
+                "methotrexate_inadequate_response",
+                "tnf_inhibitor_inadequate_response",
+            },
+        )
+        self.assertEqual(
+            len({item.population_description_sha256 for item in report.strata}),
+            1,
+        )
+        self.assertEqual(
+            len({item.source_field_sha256 for item in report.strata}),
+            2,
+        )
+
+        tampered = json.loads(json.dumps(report_payload))
+        tampered["strata"][0]["effect_estimate"] = 0.28
+        with self.assertRaisesRegex(
+            ClinicalPopulationTransportError,
+            "integrity_sha256 mismatch",
+        ):
+            clinical_population_transport_report_from_dict(tampered)
+
+    def test_real_mtx_ir_same_stratum_replication_removes_only_supported_blockers(
+        self,
+    ) -> None:
+        spec_schema = json.loads(
+            POPULATION_TRANSPORT_SPEC_SCHEMA.read_text(encoding="utf-8")
+        )
+        report_schema = json.loads(
+            POPULATION_TRANSPORT_REPORT_SCHEMA.read_text(encoding="utf-8")
+        )
+        spec_payload = json.loads(MTX_IR_REPLICATION_SPEC.read_text(encoding="utf-8"))
+        report_payload = json.loads(
+            MTX_IR_REPLICATION_REPORT.read_text(encoding="utf-8")
+        )
+        for schema, payload in (
+            (spec_schema, spec_payload),
+            (report_schema, report_payload),
+        ):
+            Draft202012Validator(
+                schema,
+                format_checker=FormatChecker(),
+            ).validate(payload)
+
+        spec = clinical_population_transport_spec_from_dict(spec_payload)
+        report = clinical_population_transport_report_from_dict(report_payload)
+        self.assertEqual(
+            report.spec_sha256,
+            clinical_population_transport_spec_integrity_sha256(spec),
+        )
+        self.assertEqual(
+            report.synthesis_id,
+            "CHEMBL1743050:MONDO:0008383:acr20-rd-mtx-ir-replication-benefit-risk:v1",
+        )
+        self.assertEqual(
+            [(item.stratum_id, item.trial_count) for item in report.stratum_support],
+            [("methotrexate_inadequate_response", 2)],
+        )
+        self.assertNotIn(
+            "distinct_reviewed_population_strata",
+            report.transportability_blockers,
+        )
+        self.assertNotIn(
+            "no_within_stratum_replication",
+            report.transportability_blockers,
+        )
+        self.assertEqual(
+            report.transportability_blockers,
+            (
+                "target_population_not_declared",
+                "aggregate_registry_results_only",
+                "individual_level_covariates_unavailable",
+                "transport_model_not_preregistered",
+                "risk_of_bias_not_assessed",
+            ),
+        )
+        studies = {item.trial_id: item for item in report.strata}
+        self.assertEqual(set(studies), {"NCT02760407", "NCT02760368"})
+        self.assertEqual(studies["NCT02760368"].effect_estimate, 0.445)
+        self.assertEqual(
+            studies["NCT02760368"].source_content_sha256,
+            "7d0f38ee584e2af66cc7b4ebec8d2cc8b86327183a887eba6c5ce1ff96a2d1e7",
+        )
+        self.assertFalse(report.pooling_performed)
+        self.assertFalse(report.cross_stratum_effect_contrast_computed)
+        self.assertFalse(report.transport_effect_estimated)
+
+        encoded = MTX_IR_REPLICATION_REPORT.read_text(encoding="utf-8")
+        self.assertNotRegex(encoded, r"/(Users|home|tmp|private)/")
+        self.assertNotIn("eligibilityCriteria", encoded)
+        self.assertNotIn("raw_payload", encoded)
+
+    def test_real_ra_additive_tensor_snapshot_is_bounded_and_scale_exact(
+        self,
+    ) -> None:
+        snapshot_path = (
+            ROOT / "docs/ra_olokizumab_additive_tensor_validation_snapshot.json"
+        )
+        snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+        self.assertEqual(
+            snapshot["schema_version"],
+            "adds.ra-olokizumab-additive-tensor-validation-snapshot.v1",
+        )
+        policy = snapshot["public_payload_policy"]
+        for field_name in (
+            "contains_source_bytes",
+            "contains_reviewer_text",
+            "contains_review_jobs",
+            "contains_local_paths",
+            "contains_decision_package",
+        ):
+            self.assertFalse(policy[field_name])
+        self.assertTrue(policy["external_artifacts_required_for_exact_replay"])
+
+        contract = snapshot["harmonization_contract"]
+        self.assertEqual(contract["source_effect_scale"], "proportion")
+        self.assertEqual(contract["decision_precision_scale"], "percentage_points")
+        self.assertTrue(contract["source_candidate_aliases_required"])
+        self.assertTrue(contract["candidate_ledger_preapproval_required"])
+        self.assertFalse(contract["pooling_performed"])
+        self.assertFalse(contract["population_homogeneity_inferred"])
+        self.assertFalse(contract["population_exchangeability_inferred"])
+
+        trials = snapshot["trials"]
+        self.assertEqual(
+            {item["trial_id"] for item in trials},
+            {"NCT02760407", "NCT02760433"},
+        )
+        self.assertEqual(
+            len({item["source_content_sha256"] for item in trials}),
+            2,
+        )
+        self.assertEqual(len({item["population_context"] for item in trials}), 2)
+        for trial in trials:
+            for field_name in (
+                "source_content_sha256",
+                "sanitized_provider_output_sha256",
+                "compiled_manifest_sha256",
+                "compile_review_sha256",
+            ):
+                self.assertRegex(trial[field_name], r"^[0-9a-f]{64}$")
+            self.assertIn("OKZ", trial["candidate_aliases"])
+            endpoint = trial["endpoint"]
+            expected_width = round(
+                (
+                    endpoint["confidence_interval_upper_proportion"]
+                    - endpoint["confidence_interval_lower_proportion"]
+                )
+                * 100,
+                1,
+            )
+            self.assertEqual(
+                endpoint["confidence_interval_width_percentage_points"],
+                expected_width,
+            )
+            for role in ("candidate", "comparator"):
+                self.assertLessEqual(
+                    endpoint[f"{role}_responders"],
+                    endpoint[f"{role}_denominator"],
+                )
+            self.assertEqual(
+                trial["provider_execution"]["promotion_status"],
+                "promoted",
+            )
+
+        decision = snapshot["decision_layer"]
+        self.assertEqual(decision["cell_count"], 2)
+        self.assertEqual(decision["source_content_hash_count"], 2)
+        self.assertEqual(decision["decision"], "hold")
+        self.assertEqual(
+            decision["blocking_gap_codes"],
+            ["higher_observed_serious_event_risk"],
+        )
+        self.assertTrue(decision["safety_direction_conflict_observed"])
+        self.assertFalse(decision["clinical_acceptability_inferred"])
+        self.assertFalse(decision["terminal_decision_issued"])
+        self.assertEqual(decision["exact_replay_validation_errors"], 0)
+        for digest in snapshot["external_artifact_hashes"].values():
+            self.assertRegex(digest, r"^[0-9a-f]{64}$")
+
+        claims = snapshot["claims"]
+        self.assertTrue(claims["first_real_source_disjoint_additive_tensor_in_project"])
+        self.assertFalse(claims["cross_trial_pooling_performed"])
+        self.assertFalse(claims["comparative_safety_claim_made"])
+        self.assertFalse(claims["therapeutic_recommendation_made"])
+        encoded = snapshot_path.read_text(encoding="utf-8")
+        self.assertNotRegex(encoded, r"/(Users|home|tmp|private)/")
+        self.assertNotIn("eligibilityCriteria", encoded)
+        self.assertNotIn("raw_payload", encoded)
 
     def test_mapping_tool_commit_serialization_and_replay(self) -> None:
         result = self.mapping_result
@@ -1125,11 +1525,487 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(
             ValueError,
-            "does not report the declared hazard ratio",
+            "does not report declared hazard_ratio",
         ):
             compile_clinical_endpoint_mapping(incompatible_state, _mapping_spec())
 
-    def test_synthesis_without_committed_mapping_defers_without_partial_state(self) -> None:
+    def test_mapping_and_synthesis_reject_phase_population_rebinding(self) -> None:
+        def phase_bound(design: TrialDesignRecord) -> TrialDesignRecord:
+            population = design.populations[0]
+            endpoint = design.endpoints[0]
+            safety = design.safety_records[0]
+            endpoint_count = sum(
+                int(arm.attributes["measurement"]["denominator"])
+                for arm in design.arms
+                if arm.arm_id in endpoint.arm_ids
+            )
+            safety_count = sum(arm.serious_num_at_risk for arm in safety.arm_summaries)
+            alignment = {
+                "treatment_phase": "induction",
+                "study_enrollment_count": population.enrollment_count,
+                "endpoint_analysis_participant_count": endpoint_count,
+                "safety_at_risk_participant_count": safety_count,
+                "rolewise_counts_match": endpoint_count == safety_count,
+                "same_participants_inferred": False,
+            }
+            phase_attributes = {
+                "treatment_phase": "induction",
+                "population_alignment": alignment,
+            }
+            return replace(
+                design,
+                populations=(
+                    replace(
+                        population,
+                        attributes={
+                            **dict(population.attributes),
+                            **phase_attributes,
+                        },
+                    ),
+                ),
+                endpoints=(
+                    replace(
+                        endpoint,
+                        attributes={**dict(endpoint.attributes), **phase_attributes},
+                    ),
+                ),
+                safety_records=(
+                    replace(
+                        safety,
+                        attributes={**dict(safety.attributes), **phase_attributes},
+                    ),
+                ),
+                attributes={**dict(design.attributes), **phase_attributes},
+            )
+
+        phase_bound_designs = tuple(
+            phase_bound(design) for design in self.unmapped_state.trial_designs
+        )
+        phase_bound_design = phase_bound_designs[0]
+        phase_bound_state = replace(
+            self.unmapped_state,
+            trial_designs=phase_bound_designs,
+        )
+        compile_clinical_endpoint_mapping(phase_bound_state, _mapping_spec())
+
+        phase_mapping_result, _ = _run_mapping(
+            phase_bound_state,
+            _mapping_spec(),
+        )
+        self.assertIs(phase_mapping_result.status, StageRunStatus.COMMITTED)
+        phase_bound_mapped = phase_mapping_result.final_state
+        synthesis = compile_benefit_risk_synthesis(phase_bound_mapped, _spec())
+        self.assertEqual(
+            {study.attributes["treatment_phase"] for study in synthesis.studies},
+            {"induction"},
+        )
+        self.assertTrue(
+            all(
+                study.attributes["population_alignment"]
+                == design.attributes["population_alignment"]
+                for study, design in zip(
+                    synthesis.studies,
+                    phase_bound_designs,
+                    strict=True,
+                )
+            )
+        )
+
+        rebound_safety = replace(
+            phase_bound_design.safety_records[0],
+            attributes={
+                **dict(phase_bound_design.safety_records[0].attributes),
+                "treatment_phase": "maintenance",
+            },
+        )
+        rebound_design = replace(
+            phase_bound_design,
+            safety_records=(rebound_safety,),
+        )
+        rebound_unmapped = replace(
+            phase_bound_state,
+            trial_designs=(
+                rebound_design,
+                *phase_bound_designs[1:],
+            ),
+        )
+        with self.assertRaisesRegex(ValueError, "population alignment is invalid"):
+            compile_clinical_endpoint_mapping(rebound_unmapped, _mapping_spec())
+
+        rebound_mapped = replace(
+            phase_bound_mapped,
+            trial_designs=(rebound_design, *phase_bound_designs[1:]),
+        )
+        with self.assertRaisesRegex(ValueError, "mapping failed ledger replay"):
+            compile_benefit_risk_synthesis(rebound_mapped, _spec())
+
+    def test_odds_ratio_mapping_synthesis_and_tensor_preserve_direction(self) -> None:
+        ratio_designs = []
+        for design in self.unmapped_state.trial_designs:
+            endpoint = design.endpoints[0]
+            ratio_endpoint = replace(
+                endpoint,
+                name="Synthetic clinical remission",
+                time_frame="12 weeks",
+                unit="percentage of participants",
+                attributes={
+                    **dict(endpoint.attributes),
+                    "analysis": {
+                        **dict(endpoint.attributes["analysis"]),
+                        "parameter_type": "Odds Ratio (OR)",
+                        "parameter_value": 1.8,
+                        "confidence_interval_lower": 1.4,
+                        "confidence_interval_upper": 2.2,
+                    },
+                },
+            )
+            ratio_designs.append(
+                replace(
+                    design,
+                    endpoints=(ratio_endpoint, *design.endpoints[1:]),
+                )
+            )
+        ratio_state = replace(
+            self.unmapped_state,
+            trial_designs=tuple(ratio_designs),
+        )
+        mapping_spec = replace(
+            _mapping_spec(),
+            mapping_id="CHEMBL_TEST:MONDO_TEST:remission-map:v1",
+            portfolio_id="CHEMBL_TEST-MONDO_TEST-remission-portfolio-v1",
+            endpoint_family_id="clinical_remission",
+            endpoint_family_label="Clinical remission",
+            ontology=ClinicalEndpointOntology(
+                system="urn:adds:synthetic-uc-endpoint-ontology",
+                version="1.0",
+                code="UC_CLINICAL_REMISSION",
+                label="Clinical remission",
+            ),
+            effect_measure="odds_ratio",
+            favorable_direction="higher_is_better",
+        )
+        mapping_result, _ = _run_mapping(ratio_state, mapping_spec)
+        self.assertIs(mapping_result.status, StageRunStatus.COMMITTED)
+
+        synthesis_spec = replace(
+            _spec(),
+            synthesis_id="CHEMBL_TEST:MONDO_TEST:remission-benefit-risk:v1",
+            endpoint_mapping_id=mapping_spec.mapping_id,
+            endpoint_family="clinical_remission",
+            effect_measure="odds_ratio",
+            effect_measure_favorable_direction="higher_is_better",
+        )
+        synthesis_result, _ = _run_synthesis(
+            mapping_result.final_state,
+            synthesis_spec,
+        )
+        self.assertIs(synthesis_result.status, StageRunStatus.COMMITTED)
+        synthesis = synthesis_result.final_state.benefit_risk_syntheses[0]
+        self.assertEqual(
+            {item.effect_measure for item in synthesis.studies}, {"odds_ratio"}
+        )
+        self.assertEqual(
+            {item.benefit_direction for item in synthesis.studies}, {"benefit"}
+        )
+
+        tensor = compile_clinical_evidence_tensor(
+            synthesis_result.final_state,
+            synthesis,
+            _decision_policy(),
+            tensor_id="synthetic-odds-ratio-tensor",
+        )
+        self.assertEqual({item.benefit_direction for item in tensor.cells}, {"benefit"})
+        self.assertNotIn(
+            ClinicalEvidenceGapCode.BENEFIT_HARM_SIGNAL,
+            {item.code for item in tensor.gaps},
+        )
+
+    def test_risk_difference_mapping_and_non_pooled_synthesis_are_supported(
+        self,
+    ) -> None:
+        difference_designs = []
+        for design in self.unmapped_state.trial_designs:
+            endpoint = design.endpoints[0]
+            difference_endpoint = replace(
+                endpoint,
+                name="Synthetic clinical remission",
+                time_frame="52 weeks",
+                unit="percentage of participants",
+                attributes={
+                    **dict(endpoint.attributes),
+                    "analysis": {
+                        **dict(endpoint.attributes["analysis"]),
+                        "parameter_type": "Difference in percentage",
+                        "parameter_value": 23.2,
+                        "confidence_interval_lower": 15.3,
+                        "confidence_interval_upper": 31.2,
+                    },
+                },
+            )
+            difference_designs.append(
+                replace(
+                    design,
+                    endpoints=(difference_endpoint, *design.endpoints[1:]),
+                )
+            )
+        difference_state = replace(
+            self.unmapped_state,
+            trial_designs=tuple(difference_designs),
+        )
+        mapping_spec = replace(
+            _mapping_spec(),
+            mapping_id="CHEMBL_TEST:MONDO_TEST:remission-rd-map:v1",
+            portfolio_id="CHEMBL_TEST-MONDO_TEST-remission-rd-portfolio-v1",
+            endpoint_family_id="clinical_remission",
+            endpoint_family_label="Clinical remission",
+            ontology=ClinicalEndpointOntology(
+                system="urn:adds:synthetic-uc-endpoint-ontology",
+                version="1.0",
+                code="UC_CLINICAL_REMISSION",
+                label="Clinical remission",
+            ),
+            effect_measure="risk_difference",
+            favorable_direction="higher_is_better",
+        )
+        mapping_result, _ = _run_mapping(difference_state, mapping_spec)
+        self.assertIs(mapping_result.status, StageRunStatus.COMMITTED)
+
+        synthesis_spec = replace(
+            _spec(),
+            synthesis_id="CHEMBL_TEST:MONDO_TEST:remission-rd-benefit-risk:v1",
+            endpoint_mapping_id=mapping_spec.mapping_id,
+            endpoint_family="clinical_remission",
+            effect_measure="risk_difference",
+            effect_measure_favorable_direction="higher_is_better",
+        )
+        synthesis_result, _ = _run_synthesis(
+            mapping_result.final_state,
+            synthesis_spec,
+        )
+        self.assertIs(synthesis_result.status, StageRunStatus.COMMITTED)
+        synthesis = synthesis_result.final_state.benefit_risk_syntheses[0]
+        self.assertEqual(
+            {item.effect_measure for item in synthesis.studies},
+            {"risk_difference"},
+        )
+        self.assertEqual(
+            {item.effect_estimate for item in synthesis.studies},
+            {23.2},
+        )
+        self.assertEqual(
+            {item.benefit_direction for item in synthesis.studies},
+            {"benefit"},
+        )
+        policy = _decision_policy(
+            maximum_log_effect_ci_width=None,
+            maximum_risk_difference_ci_width_percentage_points=16.0,
+        )
+        tensor = compile_clinical_evidence_tensor(
+            synthesis_result.final_state,
+            synthesis,
+            policy,
+            tensor_id="synthetic-risk-difference-tensor",
+        )
+        self.assertEqual(
+            {item.effect_measure_favorable_direction for item in tensor.cells},
+            {"higher_is_better"},
+        )
+        self.assertEqual(
+            {item.risk_difference_ci_width_percentage_points for item in tensor.cells},
+            {15.9},
+        )
+        self.assertEqual({item.log_effect_ci_width for item in tensor.cells}, {None})
+        self.assertNotIn("log_effect_ci_width", tensor.cells[0].to_dict())
+        decision_schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
+        cell_schema_errors = list(
+            Draft202012Validator(decision_schema).descend(
+                tensor.cells[0].to_dict(),
+                decision_schema["$defs"]["cell"],
+            )
+        )
+        self.assertEqual(cell_schema_errors, [])
+        precision = next(
+            item
+            for item in tensor.dimensions
+            if item.dimension is ClinicalEvidenceDimension.BENEFIT_PRECISION
+        )
+        self.assertEqual(
+            precision.observed,
+            {
+                "risk_difference_ci_width_percentage_points_by_study": {
+                    item.study_record_id: 15.9 for item in tensor.cells
+                },
+                "maximum_observed_risk_difference_ci_width_percentage_points": 15.9,
+            },
+        )
+        self.assertEqual(
+            precision.criterion,
+            {"maximum_risk_difference_ci_width_percentage_points": 16.0},
+        )
+        self.assertNotIn(
+            ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE,
+            {item.code for item in tensor.gaps},
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "risk_difference_ci_width_percentage_points does not match",
+        ):
+            replace(
+                tensor.cells[0],
+                risk_difference_ci_width_percentage_points=15.8,
+            )
+
+        imprecise = compile_clinical_evidence_tensor(
+            synthesis_result.final_state,
+            synthesis,
+            replace(
+                policy,
+                maximum_risk_difference_ci_width_percentage_points=10.0,
+            ),
+            tensor_id="synthetic-imprecise-risk-difference-tensor",
+        )
+        self.assertIn(
+            ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE,
+            {item.code for item in imprecise.gaps},
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            "maximum_risk_difference_ci_width_percentage_points policy threshold",
+        ):
+            compile_clinical_evidence_tensor(
+                synthesis_result.final_state,
+                synthesis,
+                _decision_policy(),
+                tensor_id="synthetic-missing-risk-difference-threshold-tensor",
+            )
+
+    def test_proportion_risk_difference_normalizes_tensor_precision_to_points(
+        self,
+    ) -> None:
+        proportion_designs = []
+        for design in self.unmapped_state.trial_designs:
+            arms = tuple(
+                replace(
+                    arm,
+                    attributes={
+                        **dict(arm.attributes),
+                        "measurement": {
+                            **dict(arm.attributes["measurement"]),
+                            "value": ("36" if arm.role.value == "candidate" else "18"),
+                        },
+                    },
+                )
+                for arm in design.arms
+            )
+            endpoint = design.endpoints[0]
+            proportion_endpoint = replace(
+                endpoint,
+                name="Synthetic ACR20 response",
+                time_frame="12 weeks",
+                unit="Participants",
+                attributes={
+                    **dict(endpoint.attributes),
+                    "analysis": {
+                        **dict(endpoint.attributes["analysis"]),
+                        "parameter_type": "Risk Difference (RD)",
+                        "parameter_value": 0.3,
+                        "confidence_interval_lower": 0.1,
+                        "confidence_interval_upper": 0.5,
+                    },
+                },
+            )
+            proportion_designs.append(
+                replace(
+                    design,
+                    arms=arms,
+                    endpoints=(proportion_endpoint, *design.endpoints[1:]),
+                )
+            )
+        proportion_state = replace(
+            self.unmapped_state,
+            trial_designs=tuple(proportion_designs),
+        )
+        mapping_spec = replace(
+            _mapping_spec(),
+            mapping_id="CHEMBL_TEST:MONDO_TEST:acr20-proportion-map:v1",
+            portfolio_id="CHEMBL_TEST-MONDO_TEST-acr20-proportion-portfolio-v1",
+            endpoint_family_id="acr20_response",
+            endpoint_family_label="ACR20 response",
+            ontology=ClinicalEndpointOntology(
+                system="urn:adds:synthetic-ra-endpoint-ontology",
+                version="1.0",
+                code="RA_ACR20",
+                label="ACR20 response",
+            ),
+            effect_measure="risk_difference",
+            favorable_direction="higher_is_better",
+        )
+        mapping_result, _ = _run_mapping(proportion_state, mapping_spec)
+        self.assertIs(mapping_result.status, StageRunStatus.COMMITTED)
+
+        synthesis_spec = replace(
+            _spec(),
+            synthesis_id="CHEMBL_TEST:MONDO_TEST:acr20-proportion-benefit-risk:v1",
+            endpoint_mapping_id=mapping_spec.mapping_id,
+            endpoint_family="acr20_response",
+            effect_measure="risk_difference",
+            effect_measure_favorable_direction="higher_is_better",
+        )
+        synthesis_result, _ = _run_synthesis(
+            mapping_result.final_state,
+            synthesis_spec,
+        )
+        self.assertIs(synthesis_result.status, StageRunStatus.COMMITTED)
+        synthesis = synthesis_result.final_state.benefit_risk_syntheses[0]
+        self.assertEqual(
+            {item.measurement_unit for item in synthesis.studies},
+            {"Participants"},
+        )
+        self.assertEqual(
+            {item.effect_estimate for item in synthesis.studies},
+            {0.3},
+        )
+
+        tensor = compile_clinical_evidence_tensor(
+            synthesis_result.final_state,
+            synthesis,
+            _decision_policy(
+                maximum_log_effect_ci_width=None,
+                maximum_risk_difference_ci_width_percentage_points=41.0,
+            ),
+            tensor_id="synthetic-proportion-risk-difference-tensor",
+        )
+        self.assertEqual(
+            {item.risk_difference_ci_width_percentage_points for item in tensor.cells},
+            {40.0},
+        )
+        precision = next(
+            item
+            for item in tensor.dimensions
+            if item.dimension is ClinicalEvidenceDimension.BENEFIT_PRECISION
+        )
+        self.assertEqual(
+            precision.observed[
+                "maximum_observed_risk_difference_ci_width_percentage_points"
+            ],
+            40.0,
+        )
+        decision_schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
+        validator = Draft202012Validator(decision_schema)
+        for cell in tensor.cells:
+            self.assertEqual(
+                list(
+                    validator.descend(
+                        cell.to_dict(),
+                        decision_schema["$defs"]["cell"],
+                    )
+                ),
+                [],
+            )
+
+    def test_synthesis_without_committed_mapping_defers_without_partial_state(
+        self,
+    ) -> None:
         result, _ = _run_synthesis(self.unmapped_state, _spec())
         self.assertIs(result.status, StageRunStatus.COMMITTED)
         self.assertIs(result.accepted_packets[0].decision, Decision.DEFER)
@@ -1401,9 +2277,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         self.assertIs(package.plan.decision, Decision.DEFER)
         self.assertEqual(
             tuple(item.code for item in package.tensor.gaps),
-            (
-                ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT,
-            ),
+            (ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT,),
         )
         dimension = next(
             item
@@ -1415,10 +2289,9 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         self.assertEqual(
             dimension.observed["missing_arms_by_study"],
             {
-                (
-                    "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:"
-                    "study:NCT00000001"
-                ): ("candidate",)
+                ("CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1:study:NCT00000001"): (
+                    "candidate",
+                )
             },
         )
         schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
@@ -1454,17 +2327,11 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         self.assertTrue(math.isclose(package.plan.planned_cost, 0.1))
         self.assertEqual(
             package.plan.targeted_gap_ids,
-            (
-                "synthetic-gap-tensor:gap:"
-                "insufficient_safety_exposure",
-            ),
+            ("synthetic-gap-tensor:gap:insufficient_safety_exposure",),
         )
         self.assertEqual(
             package.plan.untargeted_gap_ids,
-            (
-                "synthetic-gap-tensor:gap:"
-                "insufficient_independent_trials",
-            ),
+            ("synthetic-gap-tensor:gap:insufficient_independent_trials",),
         )
 
     def test_equal_voi_actions_use_action_id_tie_break(self) -> None:
@@ -1552,9 +2419,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         )
 
     def test_higher_observed_safety_signal_holds_and_never_terminates(self) -> None:
-        safety_unmapped = _combined_state(
-            second_candidate_serious_num_affected=30
-        )
+        safety_unmapped = _combined_state(second_candidate_serious_num_affected=30)
         mapping_result, _ = _run_mapping(
             safety_unmapped,
             _mapping_spec(),
@@ -1662,9 +2527,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
         gap = package.tensor.gaps[0]
         forged_gap = replace(
             gap,
-            study_record_ids=(
-                package.tensor.cells[0].study_record_id,
-            ),
+            study_record_ids=(package.tensor.cells[0].study_record_id,),
             source_evidence_ids=package.tensor.source_evidence_ids,
         )
         with self.assertRaisesRegex(
@@ -1735,9 +2598,7 @@ class ClinicalBenefitRiskSynthesisTests(unittest.TestCase):
             package,
         )
         self.assertEqual(
-            clinical_decision_package_from_json(
-                json.dumps(envelope, sort_keys=True)
-            ),
+            clinical_decision_package_from_json(json.dumps(envelope, sort_keys=True)),
             package,
         )
 
@@ -1848,9 +2709,7 @@ class ClinicalClosedLoopTests(unittest.TestCase):
             cls.closed_loop_policy,
             batch_id="synthetic-closed-loop-batch",
         )
-        tool_registry, mapper_registry, source = _eligibility_provider(
-            cls.before_state
-        )
+        tool_registry, mapper_registry, source = _eligibility_provider(cls.before_state)
         cls.third_source = source
         call_id = cls.execution_batch.calls[0].call_id
         cls.acquisition_run = execute_clinical_evidence_batch(
@@ -1960,8 +2819,7 @@ class ClinicalClosedLoopTests(unittest.TestCase):
         self.assertTrue(math.isclose(transition.total_cost, 0.07))
         self.assertTrue(
             math.isclose(
-                transition.budget_spent_after
-                - transition.budget_spent_before,
+                transition.budget_spent_after - transition.budget_spent_before,
                 transition.total_cost,
             )
         )
@@ -2155,9 +3013,7 @@ class ClinicalClosedLoopTests(unittest.TestCase):
 
     def test_public_closed_loop_schema_matches_compiler_and_reader(self) -> None:
         schema = json.loads(CLOSED_LOOP_SCHEMA.read_text(encoding="utf-8"))
-        decision_schema = json.loads(
-            DECISION_SCHEMA.read_text(encoding="utf-8")
-        )
+        decision_schema = json.loads(DECISION_SCHEMA.read_text(encoding="utf-8"))
         example = json.loads(CLOSED_LOOP_EXAMPLE.read_text(encoding="utf-8"))
         Draft202012Validator.check_schema(schema)
         registry = Registry().with_resource(
@@ -2206,9 +3062,7 @@ class ClinicalClosedLoopTests(unittest.TestCase):
         ):
             replace(
                 self.transition,
-                selected_action_receipts=(
-                    replace(receipt, outcome=forged_outcome),
-                ),
+                selected_action_receipts=(replace(receipt, outcome=forged_outcome),),
             )
 
     def test_refresh_cost_above_preregistered_bound_is_rejected(self) -> None:

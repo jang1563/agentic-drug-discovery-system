@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_coupled_placebo_key_set.schema.json",
+  "title": "ADDS-Frontier private coupled placebo key set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "set_id", "protocol_id", "board_id", "compiled_on", "packet_set_integrity_sha256", "keys", "arm_role_counts", "arm_role_balance_max_imbalance", "reviewer_assignment_count", "reviewer_response_count", "candidate_coupling_label_count", "placebo_invariance_label_count", "contrast_label_count", "consensus_label_count", "independent_review_complete", "integrity_sha256"],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-coupled-placebo-key-set.v1"},
+    "set_id": {"const": "adds-frontier-coupled-placebo-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "packet_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "keys": {"type": "array", "minItems": 10, "maxItems": 10, "items": {"$ref": "#/$defs/key"}},
+    "arm_role_counts": {"const": {"canonical": {"arm_a": 4, "arm_b": 3, "arm_c": 3}, "candidate": {"arm_a": 3, "arm_b": 4, "arm_c": 3}, "placebo": {"arm_a": 3, "arm_b": 3, "arm_c": 4}}},
+    "arm_role_balance_max_imbalance": {"const": 1},
+    "reviewer_assignment_count": {"const": 0},
+    "reviewer_response_count": {"const": 0},
+    "candidate_coupling_label_count": {"const": 0},
+    "placebo_invariance_label_count": {"const": 0},
+    "contrast_label_count": {"const": 0},
+    "consensus_label_count": {"const": 0},
+    "independent_review_complete": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonempty": {"type": "string", "minLength": 1},
+    "arm_id": {"enum": ["arm_a", "arm_b", "arm_c"]},
+    "certificate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["probe_kind", "changed_top_level_fields", "added_evidence_node_count", "removed_evidence_node_count", "modified_existing_evidence_node_count", "changed_stage_access_count", "non_access_stage_field_change_count", "lineage_edge_change_count", "exact_delta_passed"],
+      "properties": {
+        "probe_kind": {"const": "bounded_evidence_reveal"},
+        "changed_top_level_fields": {"const": ["evidence_nodes", "stages"]},
+        "added_evidence_node_count": {"const": 1},
+        "removed_evidence_node_count": {"const": 0},
+        "modified_existing_evidence_node_count": {"const": 0},
+        "changed_stage_access_count": {"const": 3},
+        "non_access_stage_field_change_count": {"const": 0},
+        "lineage_edge_change_count": {"const": 0},
+        "exact_delta_passed": {"const": true}
+      }
+    },
+    "fingerprint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["added_node_field_names", "added_node_available_on", "added_node_evidence_role", "added_node_lineage_independent_from_canonical", "changed_stage_ids", "access_delta_counts", "added_node_appended_at_end"],
+      "properties": {
+        "added_node_field_names": {"const": ["available_on", "evidence_id", "evidence_role", "evidence_summary", "lineage_id"]},
+        "added_node_available_on": {"type": "string", "format": "date"},
+        "added_node_evidence_role": {"const": "source"},
+        "added_node_lineage_independent_from_canonical": {"const": true},
+        "changed_stage_ids": {"const": ["s04", "s05", "s06"]},
+        "access_delta_counts": {"const": [1, 1, 1]},
+        "added_node_appended_at_end": {"const": [true, true, true]}
+      }
+    },
+    "components": {
+      "type": "array", "minItems": 2, "uniqueItems": true,
+      "items": {"enum": ["disposition", "next_action", "risk_flags", "witness", "blockers"]},
+      "allOf": [{"contains": {"const": "next_action"}}, {"contains": {"const": "witness"}}]
+    },
+    "key": {
+      "type": "object", "additionalProperties": false,
+      "required": ["packet_id", "slot_id", "source_semantic_packet_id", "canonical_arm", "candidate_arm", "placebo_arm", "canonical_task_commitment", "candidate_task_commitment", "placebo_task_commitment", "candidate_expected_changed_components", "placebo_intended_changed_components", "candidate_structural_delta_certificate", "placebo_structural_delta_certificate", "candidate_structural_fingerprint", "placebo_structural_fingerprint", "candidate_placebo_structural_match_passed", "whitespace_token_count_matched", "placebo_vocabulary_policy_passed", "tokenizer_level_match_established", "placebo_scientific_invariance_established", "candidate_scientific_coupling_established", "contrast_identifiability_established"],
+      "properties": {
+        "packet_id": {"type": "string", "pattern": "^placebo-[0-9a-f]{20}$"},
+        "slot_id": {"type": "string", "pattern": "^slot-[a-z]+-[0-9]{2}$"},
+        "source_semantic_packet_id": {"type": "string", "pattern": "^semantic-[0-9a-f]{20}$"},
+        "canonical_arm": {"$ref": "#/$defs/arm_id"},
+        "candidate_arm": {"$ref": "#/$defs/arm_id"},
+        "placebo_arm": {"$ref": "#/$defs/arm_id"},
+        "canonical_task_commitment": {"$ref": "#/$defs/sha256"},
+        "candidate_task_commitment": {"$ref": "#/$defs/sha256"},
+        "placebo_task_commitment": {"$ref": "#/$defs/sha256"},
+        "candidate_expected_changed_components": {"$ref": "#/$defs/components"},
+        "placebo_intended_changed_components": {"const": []},
+        "candidate_structural_delta_certificate": {"$ref": "#/$defs/certificate"},
+        "placebo_structural_delta_certificate": {"$ref": "#/$defs/certificate"},
+        "candidate_structural_fingerprint": {"$ref": "#/$defs/fingerprint"},
+        "placebo_structural_fingerprint": {"$ref": "#/$defs/fingerprint"},
+        "candidate_placebo_structural_match_passed": {"const": true},
+        "whitespace_token_count_matched": {"const": true},
+        "placebo_vocabulary_policy_passed": {"const": true},
+        "tokenizer_level_match_established": {"const": false},
+        "placebo_scientific_invariance_established": {"const": false},
+        "candidate_scientific_coupling_established": {"const": false},
+        "contrast_identifiability_established": {"const": false}
+      }
+    }
+  }
+}

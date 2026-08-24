@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_semantic_review_triage.schema.json",
+  "title": "ADDS-Frontier private semantic response triage",
+  "type": "object", "additionalProperties": false,
+  "required": ["packet_id", "response_count", "response_commitments", "route", "consensus_candidate_commitment", "human_adjudication_required", "board_gate_changed", "integrity_sha256"],
+  "properties": {
+    "packet_id": {"type": "string", "pattern": "^semantic-[0-9a-f]{20}$"},
+    "response_count": {"type": "integer", "minimum": 0, "maximum": 3},
+    "response_commitments": {"type": "array", "maxItems": 3, "uniqueItems": true, "items": {"$ref": "#/$defs/sha256"}},
+    "route": {"enum": ["awaiting_responses", "adjudication_required_abstention", "adjudication_required_action_disagreement", "adjudication_required_support_disagreement", "adjudication_required_change_disagreement", "consensus_candidate"]},
+    "consensus_candidate_commitment": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "human_adjudication_required": {"type": "boolean"},
+    "board_gate_changed": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

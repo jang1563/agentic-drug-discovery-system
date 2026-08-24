@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_semantic_review_response.schema.json",
+  "title": "ADDS-Frontier private semantic reviewer response",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "packet_id", "packet_set_integrity_sha256", "arm_a_commitment",
+    "arm_b_commitment", "reviewer_identity_commitment", "reviewer_affiliation_commitment",
+    "conflict_of_interest_declared", "independence_attested", "completed_on",
+    "arm_answers", "pair_assessment", "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-semantic-review-response.v1"},
+    "packet_id": {"type": "string", "pattern": "^semantic-[0-9a-f]{20}$"},
+    "packet_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "arm_a_commitment": {"$ref": "#/$defs/sha256"},
+    "arm_b_commitment": {"$ref": "#/$defs/sha256"},
+    "reviewer_identity_commitment": {"$ref": "#/$defs/sha256"},
+    "reviewer_affiliation_commitment": {"$ref": "#/$defs/sha256"},
+    "conflict_of_interest_declared": {"const": false},
+    "independence_attested": {"const": true},
+    "completed_on": {"type": "string", "format": "date"},
+    "arm_answers": {
+      "type": "object", "additionalProperties": false,
+      "required": ["arm_a", "arm_b"],
+      "properties": {
+        "arm_a": {"$ref": "#/$defs/stageAnswers"},
+        "arm_b": {"$ref": "#/$defs/stageAnswers"}
+      }
+    },
+    "pair_assessment": {"$ref": "#/$defs/pairAssessment"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonempty": {"type": "string", "minLength": 1},
+    "stageAnswers": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/stageAnswer"}},
+    "stageAnswer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["stage_id", "disposition", "next_action", "risk_flags", "witness_evidence_ids", "blocker_codes", "abstained"],
+      "properties": {
+        "stage_id": {"type": "string", "pattern": "^s[0-9]{2}$"},
+        "disposition": {"enum": ["advance", "hold", "terminate"]},
+        "next_action": {"enum": ["retrieve", "verify", "experiment", "human_review", "none"]},
+        "risk_flags": {"type": "array", "uniqueItems": true, "items": {"enum": ["safety", "contradiction", "provenance", "out_of_distribution", "temporal_leakage"]}},
+        "witness_evidence_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonempty"}},
+        "blocker_codes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/nonempty"}},
+        "abstained": {"type": "boolean"}
+      }
+    },
+    "pairAssessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["semantic_change_detected", "changed_components", "reason_codes", "abstained"],
+      "properties": {
+        "semantic_change_detected": {"type": "boolean"},
+        "changed_components": {"type": "array", "uniqueItems": true, "items": {"enum": ["disposition", "next_action", "risk_flags", "witness", "blockers"]}},
+        "reason_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["evidence_sufficiency_change", "identity_discontinuity", "temporal_eligibility_change", "lineage_independence_change", "endpoint_population_change", "uncertainty_change", "insufficient_information", "other_bounded_reason"]}},
+        "abstained": {"type": "boolean"}
+      }
+    }
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "schema_version": "adds.translational-handoff.v1",
+  "handoff_id": "synthetic-immune-perturbation-handoff-v1",
+  "payload_class": "synthetic_fixture",
+  "handoff_status": "reviewed_contextual_input",
+  "created_on": "2026-07-10",
+  "program": {
+    "program_id": "synthetic-immune-program-001",
+    "hypothesis_id": "synthetic-target-response-hypothesis-001",
+    "disease_id": "SYNTHETIC:DISEASE-IMMUNE-001",
+    "disease_name": "Synthetic immune-inflammatory condition",
+    "target_id": "SYNTHETIC:TARGET-001",
+    "target_name": "Synthetic signaling target"
+  },
+  "perturbation": {
+    "perturbation_id": "synthetic-knockdown-001",
+    "perturbation_type": "genetic",
+    "entity_id": "SYNTHETIC:TARGET-001",
+    "entity_namespace": "synthetic-target",
+    "entity_name": "Synthetic signaling target",
+    "direction": "knockdown",
+    "modality": "CRISPR interference",
+    "dose": {
+      "value": null,
+      "unit": null
+    },
+    "duration": {
+      "value": 72,
+      "unit": "hour"
+    }
+  },
+  "biological_context": {
+    "species_taxon_id": "9606",
+    "species_name": "Homo sapiens",
+    "disease_context_id": "SYNTHETIC:DISEASE-IMMUNE-001",
+    "tissue_id": "SYNTHETIC:TISSUE-001",
+    "tissue_name": "Synthetic inflamed tissue",
+    "cell_type_id": "SYNTHETIC:CELL-001",
+    "cell_type_name": "Synthetic primary immune cell",
+    "model_system_id": "SYNTHETIC:MODEL-001",
+    "model_system_name": "Synthetic donor-derived ex vivo culture",
+    "model_system_type": "primary-cell culture"
+  },
+  "sources": [
+    {
+      "source_id": "synthetic-perturbation-source-alpha",
+      "source_version": "fixture-v1",
+      "locator": "https://example.org/synthetic/perturbation-source-alpha",
+      "content_sha256": "6068e708746fcdd095dfcc81ff4b77eeb925d231cb7afd14199764e46f7d4f9e",
+      "observed_on": "2026-07-01",
+      "available_on": "2026-07-02",
+      "lineage_ids": [
+        "synthetic-study-alpha",
+        "synthetic-donor-cohort-alpha"
+      ]
+    },
+    {
+      "source_id": "synthetic-perturbation-source-beta",
+      "source_version": "fixture-v1",
+      "locator": "https://example.org/synthetic/perturbation-source-beta",
+      "content_sha256": "a1b8d361155c785f4909a1fb251752a64589d92a296a9e55431a0fad4b17af58",
+      "observed_on": "2026-07-06",
+      "available_on": "2026-07-07",
+      "lineage_ids": [
+        "synthetic-study-beta",
+        "synthetic-donor-cohort-beta"
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "synthetic-observation-alpha",
+      "source_id": "synthetic-perturbation-source-alpha",
+      "assay": {
+        "assay_id": "synthetic-assay-alpha",
+        "assay_name": "Synthetic single-cell expression assay alpha",
+        "assay_type": "single-cell transcriptomic readout",
+        "platform": "synthetic-platform-v1",
+        "endpoint_id": "SYNTHETIC:ENDPOINT-INFLAMMATORY-SCORE",
+        "endpoint_name": "Synthetic inflammatory-state score",
+        "endpoint_unit": "log2 fold change"
+      },
+      "comparator": {
+        "comparator_id": "synthetic-nontargeting-control-alpha",
+        "description": "Matched non-targeting perturbation control"
+      },
+      "result": {
+        "effect_scale": "log2_fold_change",
+        "estimate": -1.2,
+        "lower_bound": -1.5,
+        "upper_bound": -0.9,
+        "confidence_level": 0.95,
+        "p_value": 0.004,
+        "effect_direction": "decrease"
+      },
+      "sampling": {
+        "observation_count": 4200,
+        "biological_replicates": 4,
+        "technical_replicates": 2,
+        "donor_count": 4
+      },
+      "quality_control": {
+        "status": "pass",
+        "checks": [
+          "Perturbation identity matched the reviewed guide assignment.",
+          "Endpoint estimate and interval were finite and comparator-bound."
+        ],
+        "limitations": [
+          "The fixture does not encode raw cells or establish causal transportability."
+        ]
+      },
+      "interpretation_confidence": 0.78
+    },
+    {
+      "observation_id": "synthetic-observation-beta",
+      "source_id": "synthetic-perturbation-source-beta",
+      "assay": {
+        "assay_id": "synthetic-assay-beta",
+        "assay_name": "Synthetic single-cell expression assay beta",
+        "assay_type": "single-cell transcriptomic readout",
+        "platform": "synthetic-platform-v2",
+        "endpoint_id": "SYNTHETIC:ENDPOINT-INFLAMMATORY-SCORE",
+        "endpoint_name": "Synthetic inflammatory-state score",
+        "endpoint_unit": "log2 fold change"
+      },
+      "comparator": {
+        "comparator_id": "synthetic-nontargeting-control-beta",
+        "description": "Independent matched non-targeting perturbation control"
+      },
+      "result": {
+        "effect_scale": "log2_fold_change",
+        "estimate": -1.0,
+        "lower_bound": -1.3,
+        "upper_bound": -0.7,
+        "confidence_level": 0.95,
+        "p_value": 0.011,
+        "effect_direction": "decrease"
+      },
+      "sampling": {
+        "observation_count": 3600,
+        "biological_replicates": 3,
+        "technical_replicates": 2,
+        "donor_count": 3
+      },
+      "quality_control": {
+        "status": "partial",
+        "checks": [
+          "Perturbation identity matched the reviewed guide assignment.",
+          "Endpoint estimate and interval were finite and comparator-bound."
+        ],
+        "limitations": [
+          "The second fixture source has fewer biological replicates.",
+          "Independent lineage is declared for contract testing, not externally verified."
+        ]
+      },
+      "interpretation_confidence": 0.7
+    }
+  ],
+  "review": {
+    "review_status": "approved_contextual_use",
+    "reviewed_on": "2026-07-11",
+    "reviewer_role": "synthetic scientific owner",
+    "interpretation": "Both synthetic observations may enter the control plane as contextual evidence for a target-response hypothesis.",
+    "uncertainty_statement": "The observations do not establish mechanism, therapeutic efficacy, safety, clinical readiness, or external transportability.",
+    "limitations": [
+      "All identities, measurements, sources, and review statements are synthetic.",
+      "No Biohub dataset, model output, platform workflow, authorization, affiliation, or endorsement is represented."
+    ],
+    "conflicts": [],
+    "independent_replication_source_ids": [
+      "synthetic-perturbation-source-alpha",
+      "synthetic-perturbation-source-beta"
+    ]
+  },
+  "decision_boundary": {
+    "allowed_use": "contextual_evidence_only",
+    "requires_human_review_before_scientific_gate": true,
+    "no_autonomous_wet_lab_execution": true,
+    "no_treatment_recommendation": true,
+    "no_affiliation_or_integration_claim": true,
+    "prohibited_inferences": [
+      "clinical_readiness",
+      "mechanism_established",
+      "safety_established",
+      "therapeutic_efficacy",
+      "treatment_recommendation"
+    ]
+  },
+  "integrity_sha256": "0488a6e4b16d483a7bb69a20e52383b563356e7ed2dec1f42ef01a7fb683e67d"
+}

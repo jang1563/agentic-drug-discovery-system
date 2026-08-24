@@ -187,7 +187,7 @@ def _clinical_trial_design_metadata(
     if _normalized(str(metadata["effect_direction"])) not in {
         "benefit",
         "harm",
-        "unresolved",
+        "null_or_uncertain",
     }:
         raise ValueError(f"{label}.effect_direction is unsupported")
     metadata["candidate_aliases"] = _text_sequence(
@@ -211,6 +211,7 @@ def _clinical_trial_design_metadata(
     arm_ids: list[str] = []
     source_group_ids: list[str] = []
     roles: list[str] = []
+    endpoint_denominators: list[int] = []
     for arm_index, raw_arm in enumerate(arms_raw):
         arm = _mapping(raw_arm, f"{label}.arms[{arm_index}]")
         _require_text_values(
@@ -231,9 +232,7 @@ def _clinical_trial_design_metadata(
         if role == "candidate":
             _text(intervention_id, f"{label}.arms[{arm_index}].intervention_id")
         elif intervention_id is not None:
-            raise ValueError(
-                f"{label}.arms[{arm_index}].intervention_id must be null"
-            )
+            raise ValueError(f"{label}.arms[{arm_index}].intervention_id must be null")
         arm["intervention_names"] = _text_sequence(
             arm.get("intervention_names"),
             f"{label}.arms[{arm_index}].intervention_names",
@@ -247,13 +246,18 @@ def _clinical_trial_design_metadata(
             f"{label}.arms[{arm_index}].measurement",
         )
         denominator = measurements.get("denominator")
-        if not isinstance(denominator, int) or isinstance(denominator, bool) or denominator <= 0:
+        if (
+            not isinstance(denominator, int)
+            or isinstance(denominator, bool)
+            or denominator <= 0
+        ):
             raise ValueError(
                 f"{label}.arms[{arm_index}].measurement.denominator must be positive"
             )
         arm_ids.append(str(arm["arm_id"]))
         source_group_ids.append(str(arm["source_group_id"]))
         roles.append(role)
+        endpoint_denominators.append(denominator)
     if len(set(arm_ids)) != 2 or len(set(source_group_ids)) != 2:
         raise ValueError(f"{label}.arms must have unique arm and source group ids")
     if set(roles) != {"candidate", "comparator"}:
@@ -290,6 +294,7 @@ def _clinical_trial_design_metadata(
         (
             "endpoint_id",
             "population_id",
+            "treatment_phase",
             "name",
             "outcome_type",
             "time_frame",
@@ -307,6 +312,12 @@ def _clinical_trial_design_metadata(
         raise ValueError(f"{label}.endpoint.arm_ids must preserve selected arm order")
     if endpoint["population_id"] != population["population_id"]:
         raise ValueError(f"{label}.endpoint population identity mismatch")
+    if endpoint["treatment_phase"] not in {
+        "induction",
+        "maintenance",
+        "not_applicable",
+    }:
+        raise ValueError(f"{label}.endpoint treatment phase is unsupported")
     analysis = _mapping(endpoint.get("analysis"), f"{label}.endpoint.analysis")
     _require_text_values(
         analysis,
@@ -337,6 +348,35 @@ def _clinical_trial_design_metadata(
         raise ValueError(
             f"{label}.endpoint analysis group ids must preserve selected arm order"
         )
+
+    alignment = _mapping(
+        metadata.get("population_alignment"), f"{label}.population_alignment"
+    )
+    alignment_fields = {
+        "treatment_phase",
+        "study_enrollment_count",
+        "endpoint_analysis_participant_count",
+        "safety_at_risk_participant_count",
+        "rolewise_counts_match",
+        "same_participants_inferred",
+    }
+    if set(alignment) != alignment_fields:
+        raise ValueError(
+            f"{label}.population_alignment must contain exactly "
+            f"{sorted(alignment_fields)}"
+        )
+    if (
+        alignment["treatment_phase"] != endpoint["treatment_phase"]
+        or alignment["study_enrollment_count"] != enrollment_count
+        or alignment["endpoint_analysis_participant_count"]
+        != sum(endpoint_denominators)
+        or not isinstance(alignment["safety_at_risk_participant_count"], int)
+        or isinstance(alignment["safety_at_risk_participant_count"], bool)
+        or alignment["safety_at_risk_participant_count"] <= 0
+        or not isinstance(alignment["rolewise_counts_match"], bool)
+        or alignment["same_participants_inferred"] is not False
+    ):
+        raise ValueError(f"{label}.population_alignment is invalid")
 
 
 def _clinical_disposition_metadata(
@@ -424,9 +464,7 @@ def _clinical_disposition_metadata(
     if _normalized(str(metadata["effect_direction"])) != "no_clinical_benefit":
         raise ValueError(f"{label}.effect_direction must be no_clinical_benefit")
     if _normalized(str(metadata["early_termination_reason"])) != "lack_of_efficacy":
-        raise ValueError(
-            f"{label}.early_termination_reason must be lack_of_efficacy"
-        )
+        raise ValueError(f"{label}.early_termination_reason must be lack_of_efficacy")
     _iso_date(metadata["publication_date"], f"{label}.publication_date")
     for field_name in ("candidate_rate", "comparator_rate"):
         _require_finite_number(metadata.get(field_name), f"{label}.{field_name}")

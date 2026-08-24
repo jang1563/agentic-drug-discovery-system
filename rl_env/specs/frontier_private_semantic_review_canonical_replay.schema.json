@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_semantic_review_canonical_replay.schema.json",
+  "title": "ADDS-Frontier private canonical semantic-review replay",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "resolution_id", "packet_id", "packet_set_integrity_sha256",
+    "key_set_integrity_sha256", "triage_commitment", "response_commitments",
+    "consensus_candidate_commitment", "canonical_arm", "mutated_arm",
+    "canonical_task_commitment", "oracle_set_integrity_sha256",
+    "unblinding_identity_commitment", "stage_results", "component_check_count",
+    "passed_component_count", "canonical_replay_passed", "route",
+    "resolution_receipt_required", "board_gate_changed", "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-semantic-review-canonical-replay.v1"},
+    "resolution_id": {"const": "adds-frontier-semantic-resolution-v1"},
+    "packet_id": {"type": "string", "pattern": "^semantic-[0-9a-f]{20}$"},
+    "packet_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "key_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "triage_commitment": {"$ref": "#/$defs/sha256"},
+    "response_commitments": {
+      "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/sha256"}
+    },
+    "consensus_candidate_commitment": {"$ref": "#/$defs/sha256"},
+    "canonical_arm": {"enum": ["arm_a", "arm_b"]},
+    "mutated_arm": {"enum": ["arm_a", "arm_b"]},
+    "canonical_task_commitment": {"$ref": "#/$defs/sha256"},
+    "oracle_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "unblinding_identity_commitment": {"$ref": "#/$defs/sha256"},
+    "stage_results": {
+      "type": "array", "minItems": 6, "maxItems": 6,
+      "items": {"$ref": "#/$defs/stageResult"}
+    },
+    "component_check_count": {"const": 30},
+    "passed_component_count": {"type": "integer", "minimum": 0, "maximum": 30},
+    "canonical_replay_passed": {"type": "boolean"},
+    "route": {
+      "enum": [
+        "canonical_replay_pass_resolution_receipt_pending",
+        "adjudication_required_canonical_replay_failure"
+      ]
+    },
+    "resolution_receipt_required": {"const": true},
+    "board_gate_changed": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "componentResults": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "disposition_correct", "next_action_correct", "risk_flags_correct",
+        "witness_valid", "blocker_certificate_valid"
+      ],
+      "properties": {
+        "disposition_correct": {"type": "boolean"},
+        "next_action_correct": {"type": "boolean"},
+        "risk_flags_correct": {"type": "boolean"},
+        "witness_valid": {"type": "boolean"},
+        "blocker_certificate_valid": {"type": "boolean"}
+      }
+    },
+    "stageResult": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "stage_id", "component_results", "passed_component_count",
+        "stage_replay_passed"
+      ],
+      "properties": {
+        "stage_id": {"type": "string", "pattern": "^s0[1-6]$"},
+        "component_results": {"$ref": "#/$defs/componentResults"},
+        "passed_component_count": {"type": "integer", "minimum": 0, "maximum": 5},
+        "stage_replay_passed": {"type": "boolean"}
+      }
+    }
+  }
+}

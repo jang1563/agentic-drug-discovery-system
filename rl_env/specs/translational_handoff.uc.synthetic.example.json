@@ -1,0 +1,183 @@
+{
+  "schema_version": "adds.translational-handoff.v1",
+  "handoff_id": "synthetic-uc-handoff-001",
+  "payload_class": "synthetic_fixture",
+  "handoff_status": "reviewed_contextual_input",
+  "created_on": "2026-08-20",
+  "program": {
+    "program_id": "synthetic-uc-program-001",
+    "hypothesis_id": "synthetic-uc-target-response-001",
+    "disease_id": "MONDO:0005101",
+    "disease_name": "ulcerative colitis",
+    "target_id": "SYNTHETIC:UC-TARGET-001",
+    "target_name": "Synthetic UC signaling target"
+  },
+  "perturbation": {
+    "perturbation_id": "synthetic-uc-knockdown-001",
+    "perturbation_type": "genetic",
+    "entity_id": "SYNTHETIC:UC-TARGET-001",
+    "entity_namespace": "synthetic-target",
+    "entity_name": "Synthetic UC signaling target",
+    "direction": "knockdown",
+    "modality": "CRISPR interference",
+    "dose": {
+      "value": null,
+      "unit": null
+    },
+    "duration": {
+      "value": 72,
+      "unit": "hour"
+    }
+  },
+  "biological_context": {
+    "species_taxon_id": "9606",
+    "species_name": "Homo sapiens",
+    "disease_context_id": "MONDO:0005101",
+    "tissue_id": "SYNTHETIC:UC-COLON-TISSUE",
+    "tissue_name": "Synthetic ulcerative-colitis colon tissue",
+    "cell_type_id": "SYNTHETIC:UC-EPITHELIAL-CELL",
+    "cell_type_name": "Synthetic intestinal epithelial cell",
+    "model_system_id": "SYNTHETIC:UC-EXVIVO-MODEL",
+    "model_system_name": "Synthetic donor-derived UC ex vivo culture",
+    "model_system_type": "primary-cell culture"
+  },
+  "sources": [
+    {
+      "source_id": "synthetic-uc-source-alpha",
+      "source_version": "synthetic-uc-source-alpha-v1",
+      "locator": "https://example.org/synthetic/uc/source-alpha",
+      "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "observed_on": "2026-08-17",
+      "available_on": "2026-08-18",
+      "lineage_ids": [
+        "synthetic-uc-lineage-alpha"
+      ]
+    },
+    {
+      "source_id": "synthetic-uc-source-beta",
+      "source_version": "synthetic-uc-source-beta-v1",
+      "locator": "https://example.org/synthetic/uc/source-beta",
+      "content_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "observed_on": "2026-08-17",
+      "available_on": "2026-08-18",
+      "lineage_ids": [
+        "synthetic-uc-lineage-beta"
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "synthetic-uc-observation-alpha",
+      "source_id": "synthetic-uc-source-alpha",
+      "assay": {
+        "assay_id": "synthetic-uc-assay-alpha",
+        "assay_name": "Synthetic UC epithelial-state assay alpha",
+        "assay_type": "single-cell transcriptomic readout",
+        "platform": "synthetic-platform-v1",
+        "endpoint_id": "SYNTHETIC:UC-EPITHELIAL-INFLAMMATORY-SCORE",
+        "endpoint_name": "Synthetic UC epithelial inflammatory-state score",
+        "endpoint_unit": "log2 fold change"
+      },
+      "comparator": {
+        "comparator_id": "synthetic-uc-control-alpha",
+        "description": "Matched non-targeting perturbation control"
+      },
+      "result": {
+        "effect_scale": "log2_fold_change",
+        "estimate": -1.1,
+        "lower_bound": -1.4,
+        "upper_bound": -0.8,
+        "confidence_level": 0.95,
+        "p_value": 0.006,
+        "effect_direction": "decrease"
+      },
+      "sampling": {
+        "observation_count": 1800,
+        "biological_replicates": 3,
+        "technical_replicates": 2,
+        "donor_count": 3
+      },
+      "quality_control": {
+        "status": "pass",
+        "checks": [
+          "Synthetic identity and count checks passed"
+        ],
+        "limitations": []
+      },
+      "interpretation_confidence": 0.72
+    },
+    {
+      "observation_id": "synthetic-uc-observation-beta",
+      "source_id": "synthetic-uc-source-beta",
+      "assay": {
+        "assay_id": "synthetic-uc-assay-beta",
+        "assay_name": "Synthetic UC epithelial-state assay beta",
+        "assay_type": "single-cell transcriptomic readout",
+        "platform": "synthetic-platform-v2",
+        "endpoint_id": "SYNTHETIC:UC-EPITHELIAL-INFLAMMATORY-SCORE",
+        "endpoint_name": "Synthetic UC epithelial inflammatory-state score",
+        "endpoint_unit": "log2 fold change"
+      },
+      "comparator": {
+        "comparator_id": "synthetic-uc-control-beta",
+        "description": "Independent matched non-targeting perturbation control"
+      },
+      "result": {
+        "effect_scale": "log2_fold_change",
+        "estimate": -0.9,
+        "lower_bound": -1.2,
+        "upper_bound": -0.6,
+        "confidence_level": 0.95,
+        "p_value": 0.014,
+        "effect_direction": "decrease"
+      },
+      "sampling": {
+        "observation_count": 1600,
+        "biological_replicates": 3,
+        "technical_replicates": 2,
+        "donor_count": 3
+      },
+      "quality_control": {
+        "status": "partial",
+        "checks": [
+          "Synthetic identity and count checks passed"
+        ],
+        "limitations": [
+          "Synthetic platform shift remains unmodeled"
+        ]
+      },
+      "interpretation_confidence": 0.68
+    }
+  ],
+  "review": {
+    "review_status": "approved_contextual_use",
+    "reviewed_on": "2026-08-20",
+    "reviewer_role": "synthetic UC scientific owner",
+    "interpretation": "The synthetic observations may enter the control plane only as contextual evidence for a UC target-response hypothesis.",
+    "uncertainty_statement": "The fixture does not establish mechanism, clinical remission, therapeutic efficacy, safety, clinical readiness, or transportability.",
+    "limitations": [
+      "The disease identity is real, but all targets, measurements, sources, and review statements are synthetic.",
+      "No patient, trial, Biohub, or external experimental payload is represented."
+    ],
+    "conflicts": [],
+    "independent_replication_source_ids": [
+      "synthetic-uc-source-alpha",
+      "synthetic-uc-source-beta"
+    ]
+  },
+  "decision_boundary": {
+    "allowed_use": "contextual_evidence_only",
+    "requires_human_review_before_scientific_gate": true,
+    "no_autonomous_wet_lab_execution": true,
+    "no_treatment_recommendation": true,
+    "no_affiliation_or_integration_claim": true,
+    "prohibited_inferences": [
+      "clinical_readiness",
+      "mechanism_established",
+      "safety_established",
+      "therapeutic_efficacy",
+      "treatment_recommendation"
+    ]
+  },
+  "integrity_sha256": "1e583aa94232c487a1cda0c3ac2f55bfc292a75e358e1075ba89c08d3db04502"
+}

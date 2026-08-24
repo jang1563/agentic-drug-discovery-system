@@ -12,6 +12,17 @@ Build an evidence-governed execution and evaluation environment for end-to-end d
 
 Drug discovery can be modeled as a sequence of structured decision points rather than a single prompt-response task. If each step records the state, evidence, tools used, model outputs, verifier results, and decision rationale, then both successful and failed discovery paths can become reusable training and evaluation trajectories.
 
+## Biohub-Context Research Position
+
+The strongest collaborator-facing position is not as a virtual-cell or therapeutic-design model.
+It is a provenance-preserving translational decision layer downstream of cell measurement,
+perturbation, and biomodel science. A strict Biohub-context profile binds official public sources,
+implemented versus synthetic versus proposed maturity, local evidence hashes, a ten-slide claim
+ledger, and a 90-day immune-perturbation handoff pilot with frozen acceptance gates. No Biohub
+affiliation, data integration, endorsement, completed pilot, or real clinical calibration is
+claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
+`docs/biohub_research_readiness.json`.
+
 ## Current Executable Baseline
 
 - Immutable, JSON-serializable evidence, claim, disease, target, candidate, assay, model-system,
@@ -96,7 +107,8 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   hashes in an append-only ledger. It does not infer endpoint similarity or claim live
   ontology-authority validation.
 - A deterministic cross-trial synthesis layer takes explicit reviewed trial/design/endpoint/safety
-  selections that exactly match a committed approved mapping and recompiles hazard ratios,
+  selections that exactly match a committed approved mapping and recompiles supported hazard,
+  odds, or risk ratios under fixed favorable-direction contracts,
   confidence intervals, source arm measurements, and
   serious-event participant risks from committed ledgers. It requires at least two source-disjoint
   trials, retains trial-level values and hashes, and prohibits automatic endpoint mapping, pooling,
@@ -110,6 +122,94 @@ Drug discovery can be modeled as a sequence of structured decision points rather
   recompilation bind the synthesis, policy, tensor, catalog, scores, gap partition, and plan.
   `ADVANCE` means evidence-workflow readiness only. Pooling, clinical acceptability, treatment
   recommendations, terminal decisions, and calibrated economic VOI claims are prohibited.
+- A synthetic ulcerative-colitis conformance slice (`MONDO:0005101`) exercises a second disease
+  geometry from contextual M6 handoff through clinical-remission odds-ratio mapping, non-pooled
+  synthesis, and decision-tensor direction checks. Separately, two public ClinicalTrials.gov UC
+  induction snapshots execute the provider contract: one uncertain interval is retained on
+  `HOLD`, while one bounded favorable interval advances. Neither surface is a pooled efficacy,
+  safety-acceptability, or therapeutic validation set. A separate real-source run binds induction
+  and maintenance endpoint/safety populations within `NCT02435992` without treating them as
+  independent trials or inferring participant identity.
+- An independent real-source UC maintenance replication binds the primary Week 52 remission
+  result in `NCT01458574` to an explicit percentage-point risk difference and role-aligned posted
+  serious-safety counts. It records five screened exclusion/defer controls, preserves raw payloads
+  externally, and makes no same-candidate cross-trial, pooling, safety-acceptability, or treatment
+  claim. The current decision tensor remains ratio-only.
+- A clinical cohort diagnostics layer binds exact package rosters and can require accepted-state
+  hashes plus committed-ledger replay. It separates packages, programs, and synthesis-bound
+  evidence units; reports complete decision/dimension/gap/action denominators; performs matched
+  policy sensitivity only on shared evidence units; and exposes cross-unit source-hash or trial-id
+  reuse. It includes no outcome labels or performance metrics and therefore cannot estimate
+  correctness, utility, safety, policy superiority, or calibration.
+- A preregistered clinical outcome layer binds favorable composite benefit-risk probabilities to
+  exact package and evidence-unit hashes before a fixed deadline. A public protocol commits the
+  outcome definition, endpoint/safety harmonization rules, curator roster, outcome window,
+  threshold, bins, confidence level, and minimum evaluable units. Evaluator-only manifests require
+  independently curated endpoint and safety assessments backed by post-deadline source hashes;
+  aggregate reports retain attrition, Wilson intervals, Brier/calibration/threshold metrics,
+  matched policy comparisons, and provenance-overlap counts without unit-level labels. Package
+  workflow decisions are not scored as outcomes. The public example is synthetic and does not
+  establish calibration, utility, efficacy, safety, or policy superiority.
+- A dependence-aware uncertainty layer adds a second preregistered protocol and an evaluator-only
+  exact unit-to-cluster manifest. It requires full outcome-report replay, exact roster coverage,
+  and closure of known shared program, baseline trial/source, and outcome trial/source links before
+  computing aggregate CR1 intervals for additive policy metrics overall and within fixed
+  stage-by-endpoint strata, plus overall paired Brier differences. Insufficient or dominant
+  clusters, and cluster uncertainty that rounds to zero at the reporting precision, produce
+  explicit no-interval states. Public reports never expose unit assignments or cluster-level
+  results, and a computed interval is not a validated coverage or superiority claim.
+- A prospective clustered-board design layer freezes synthetic stage-by-endpoint cluster-size,
+  prevalence, ICC, MCAR evaluability, prediction-pattern, candidate-gate, seed, and Monte Carlo
+  commitments. Its beta-binomial Polya urn has analytic truths for all additive outcome metrics
+  and invokes the production CR1 diagnostic/estimator plus an explicit IID reference on every
+  replicate. Aggregate reports preserve bias, RMSE, empirical and reported uncertainty, interval
+  width, Wilson-bounded coverage/yield, and all no-interval statuses without replicate/unit
+  records. Candidate gates are screened against declared lower-bound targets but never selected
+  automatically, and the synthetic example does not justify a real-board threshold.
+- An informative-evaluability and residual-dependence stress layer partitions nominal clusters
+  into exact synthetic dependence blocks and assigns separate favorable/unfavorable evaluability
+  probabilities. Analytic population and evaluable truths are compared against the same estimates
+  under nominal and oracle dependence-closed CR1 analysis. Aggregate reports expose estimand drift,
+  standard-error calibration, coverage, yield, and fail-closed states without unit/replicate
+  records. Oracle closure neither discovers hidden links nor identifies or corrects a population
+  estimand.
+- A preregistered pattern-mixture layer binds a prediction-stratified binary log-IMOR grid to the
+  exact stress protocol. Observable total/evaluable/favorable counts generate model-implied
+  population metrics across the fixed grid. Aggregate matched diagnostics separately test
+  evaluable calibration, evaluator-only truth-aligned recovery, and mean-curve population
+  identification; unsupported reference strata fail closed. Point-envelope inclusion is not
+  treated as sampling coverage, and no real missingness range is learned automatically.
+- A dependence-closed sampling layer binds that exact point report before applying a complete
+  delete-one-cluster jackknife at every fixed log-IMOR. It reports model-functional and
+  truth-aligned population coverage separately, retains Monte Carlo uncertainty for bias and
+  interval width, and compares nominal clusters with declared dependence blocks. Hidden-linkage
+  scenarios require a preregistered outcome-blind closure response while independent clusters must
+  remain exactly equivalent. The public study uses synthetic oracle blocks and does not infer a
+  real dependence structure or combine sampling and identification uncertainty into one interval.
+- An unequal-cluster influence layer binds dedicated balanced, unequal, and dominant-cluster
+  scenarios before comparing delete-one normal, delete-one `t_(G-1)`, unequal delete-`m_j`
+  `t_(G-1)`, and an experimental variance-matched multiplier. The public study verifies exact
+  equal-size variance reduction, Student-t coverage noninferiority, multiplier RNG isolation,
+  production hard stops, and full aggregate replay. It does not select a universal method or let
+  synthetic calibration passage rescue a production-ineligible cluster structure.
+- An informative-cluster-size layer binds fixed block-specific prevalence profiles before
+  separating unit-weighted and cluster-balanced pattern-mixture truths. Positive and negative
+  size-outcome association reverse the precommitted benefit-risk direction while all three
+  estimators remain close to their declared target. Aggregate max-block diagnostics expose
+  influence concentration, and fixed-profile calibration reveals overconservative jackknife
+  uncertainty without selecting an estimand.
+- A cluster-superpopulation layer binds the exact fixed-profile protocol and report, then samples
+  the finite empirical cluster templates uniformly with replacement. Cluster size, stratum layout,
+  and mean risk remain jointly attached, preserving both known truths while adding cluster-sampling
+  variance. Aggregate conditional comparisons, realized-design rates, and tie-aware influence
+  diagnostics show SE calibration recovery in all 320 prior failure cells, but dominant-profile
+  unit-weighted undercoverage limits full calibration to 520/600 cells. The layer neither filters
+  by realized eligibility nor claims that the finite template support transports externally.
+- A generic upstream translational-handoff layer binds program, perturbation, species, tissue,
+  cell, model-system, source-lineage, assay, comparator, endpoint, effect-interval, sampling,
+  quality-control, and scientific-review context. Its compiler emits contextual evidence drafts
+  only and preserves explicit prohibitions on mechanism, efficacy, safety, clinical-readiness, and
+  treatment claims. The public fixture is synthetic and no Biohub source or workflow is integrated.
 - A clinical evidence closed-loop layer recompiles selected bounded-VOI actions into exact
   state/version/package/tensor/plan-bound calls for the existing runner. It retains compact
   request, contract, payload, source, cost, packet, action, and promoted-evidence receipts;
@@ -196,7 +296,7 @@ evaluation contract. The current candidate also completes disease, target-to-can
 model-system identity continuity for the implemented pinned preclinical path, plus intervention,
 trial, arm, population, endpoint, safety-record, and safety-arm continuity for source-pinned
 ClinicalTrials.gov evidence and EMA extension. It additionally completes an explicit two-or-more
-   trial hazard-ratio/serious-event synthesis path through local tool execution, semantic promotion,
+   trial ratio- or bounded-risk-difference/serious-event synthesis path through local tool execution, semantic promotion,
    typed state, serialization, fail-closed recompilation, and exact replay without automatic pooling
    or clinical judgment. The path now includes atomic multi-job/multi-bundle portfolio extraction and
    an independently committed reviewer-approved endpoint mapping ledger. It also completes the generic
@@ -215,6 +315,55 @@ snapshot also passes strict endpoint/safety extraction, atomic promotion, commit
 validation, and a matched missing-safety control. Its payload-free identifiers, hashes, outcomes,
 and limits are recorded
 in `docs/clinical_provider_validation_snapshot.json`.
+Two additional UC induction records (`NCT01647516` and `NCT02435992`) execute the same source-pinned
+path with typed treatment-phase boundaries and direction-aware decisions. Their payload-free
+values, hashes, and non-pooling limits are in
+`docs/uc_clinical_provider_validation_snapshot.json`.
+The `NCT02435992` induction and maintenance analyses additionally execute phase-bound population
+alignment with separate `645` and `457` participant aggregates. The payload-free result is in
+`docs/uc_phase_population_validation_snapshot.json`; it remains one trial and makes no
+participant-identity or longitudinal-exchangeability claim.
+The independent `NCT01458574` maintenance run adds bounded `risk_difference` extraction,
+promotion, mapping, and non-pooled synthesis semantics with a 23.2 percentage-point primary effect
+and exact 198/198 endpoint/safety denominators per selected role. Its payload-free result and
+screened exclusion ledger are in
+`docs/uc_maintenance_risk_difference_validation_snapshot.json`.
+Two source-disjoint phase 3 olokizumab trials (`NCT02760407` and `NCT02760433`) now execute the
+first real additive tensor. Their Week-12 ACR20 source effects remain proportions, downstream
+precision is normalized to percentage points, distinct methotrexate- and TNF-inhibitor-inadequate-
+response populations are not treated as exchangeable, and the safety-triggered decision remains
+`HOLD`. Bounded aggregates and hashes are in
+`docs/ra_olokizumab_additive_tensor_validation_snapshot.json`; full source and decision artifacts
+remain external.
+The follow-on population diagnostic now binds each exact study, ITT population, source document,
+and official-title field to a reviewed prior-therapy stratum. Stratification completes, while the
+compiler refuses to estimate transport because no target population, same-stratum replication,
+individual-level covariates, preregistered transport model, or risk-of-bias assessment is present.
+See `docs/47_ra_olokizumab_population_stratified_transport.md` and
+`docs/ra_olokizumab_population_transport_report.json`.
+
+An independent MTX-inadequate-response phase 3 trial (`NCT02760368`) now replicates
+`NCT02760407` under the same candidate, dose, comparator, Week-12 ACR20, and source risk-difference
+contract. The provider preserves the source's month-precision primary completion date and applies
+a declared conservative period-end normalization. The exact non-pooled population report records
+two trials in one reviewed MTX-IR stratum, removing the prior distinct-strata and no-within-stratum-
+replication blockers. A target population, individual-level covariates, preregistered transport
+model, and risk-of-bias assessment remain absent, so transport is still not estimable. See
+`docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`,
+`docs/ra_olokizumab_mtx_ir_replication_spec.json`, and
+`docs/ra_olokizumab_mtx_ir_replication_report.json`.
+
+The outcome-specific follow-on binds both Week-12 ACR20 assessments to exact registry fields and
+registry-labeled protocol/SAP PDF hashes, pages, sections, excerpts, and chronology. Source-specific
+flow/result arm titles and endpoint pointers are verified, as are 173/181-page PDF boundaries and
+title-page dates. Selected-arm STARTED counts match ITT analysis denominators, but observed outcome
+completeness and a standalone final pre-unblinding SAP are not established. Four of five domains
+therefore remain `some_concerns`; only outcome measurement is `low`. The integrity-bound report
+resolves only the absence-of-assessment blocker; target population, aggregate-only evidence,
+individual covariates, and a preregistered transport model remain open.
+See `docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md`,
+`docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json`, and
+`docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json`.
 
 The current external validation also runs one continuous source-pinned senicapoc program through
 five governed stages and checkpoint resume, ending in the historical clinical `KILL`; executes the
@@ -223,10 +372,23 @@ benefit-risk synthesis; and seals four real matched contract pairs for three-pol
 Only aggregate metrics, payload-free hashes, gate outcomes, and limitations are public in
 `docs/retrospective_policy_evaluation_snapshot.json`.
 
-1. Add a genuinely context-matched, independently reviewed disease-burden/treatment-gap pair; do
+1. Review one non-sensitive external cell-state or perturbation handoff against the generic M6
+   contract; keep the source fixture external until scientific ownership and release approval are
+   explicit.
+2. Add a genuinely context-matched, independently reviewed disease-burden/treatment-gap pair; do
    not coerce the current CDC and PubMed populations into one context.
-2. Use the shipped preregistration and curation contract to build a real independently curated,
+3. Use the shipped preregistration and curation contract to build a real independently curated,
    stage-stratified held-out board; no such real-board result is claimed yet.
-3. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
-4. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
+4. Elicit outcome-blind cluster size, prevalence, ICC, evaluability, residual-dependence, and
+   log-IMOR ranges for a real multi-program clinical board. Point sensitivity and dependence-closed
+   cluster-jackknife sampling layers and an unequal/influential-cluster method comparison are
+   shipped. Fixed informative size-outcome profiles, dual estimands, and finite empirical-template
+   cluster-superpopulation resampling are now calibrated. Externally justified sampling frames,
+   structured cluster loss, non-nested dependence, misspecified block boundaries, and real locked-
+   board validation remain before stage-by-endpoint gate selection.
+5. Join preregistered clinical package predictions to independently curated outcomes so the shipped
+   cohort diagnostics can explain policy behavior while the sealed evaluator estimates actual
+   selective risk and calibration.
+6. Calibrate soft verifiers against deterministic gates without allowing soft scores to bypass hard failures.
+7. Add candidate ranking/edit loops, budget-aware action selection, learned-policy comparison, and
    operator reauthorization above the shipped deterministic resume/replan control layer.

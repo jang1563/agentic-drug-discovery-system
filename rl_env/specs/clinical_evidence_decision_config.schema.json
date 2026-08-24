@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_evidence_decision_config.schema.json",
+  "title": "Clinical evidence decision compiler configuration",
+  "description": "Policy, action catalog, and stable identifiers for compiling a decision package from an accepted-ledger clinical synthesis.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "synthesis_id",
+    "package_id",
+    "tensor_id",
+    "plan_id",
+    "policy",
+    "action_catalog"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-evidence-decision-config.v1"
+    },
+    "synthesis_id": {
+      "$ref": "#/$defs/text"
+    },
+    "package_id": {
+      "$ref": "#/$defs/text"
+    },
+    "tensor_id": {
+      "$ref": "#/$defs/text"
+    },
+    "plan_id": {
+      "$ref": "#/$defs/text"
+    },
+    "policy": {
+      "$ref": "#/$defs/policy"
+    },
+    "action_catalog": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/actionOption"
+      }
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "positiveProbability": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1
+    },
+    "nonNegativeNumber": {
+      "type": "number",
+      "minimum": 0
+    },
+    "positiveNumber": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "positiveInteger": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "actionType": {
+      "enum": [
+        "retrieve_evidence",
+        "query_database",
+        "run_verifier"
+      ]
+    },
+    "gapCode": {
+      "enum": [
+        "insufficient_independent_trials",
+        "benefit_not_demonstrated",
+        "benefit_direction_conflict",
+        "benefit_harm_signal",
+        "imprecise_benefit_estimate",
+        "missing_descriptive_arm_measurement",
+        "higher_observed_serious_event_risk",
+        "safety_direction_conflict",
+        "insufficient_safety_exposure",
+        "endpoint_timeframe_mismatch",
+        "safety_timeframe_mismatch",
+        "measurement_unit_mismatch"
+      ]
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "version",
+        "registered_on",
+        "minimum_independent_trials",
+        "minimum_safety_participants_per_arm",
+        "max_planned_actions",
+        "max_planned_cost",
+        "minimum_bounded_voi",
+        "workflow_scope",
+        "require_all_trials_benefit",
+        "require_consistent_safety_direction",
+        "prohibit_higher_observed_serious_event_risk",
+        "require_aligned_endpoint_timeframes",
+        "require_aligned_safety_timeframes",
+        "require_aligned_measurement_units",
+        "automatic_pooling_prohibited",
+        "clinical_acceptability_inference_prohibited",
+        "terminal_decisions_prohibited",
+        "metadata"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "maximum_log_effect_ci_width"
+          ]
+        },
+        {
+          "required": [
+            "maximum_risk_difference_ci_width_percentage_points"
+          ]
+        }
+      ],
+      "properties": {
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "version": {
+          "$ref": "#/$defs/text"
+        },
+        "registered_on": {
+          "$ref": "#/$defs/date"
+        },
+        "minimum_independent_trials": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "maximum_log_effect_ci_width": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "maximum_risk_difference_ci_width_percentage_points": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "minimum_safety_participants_per_arm": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_planned_actions": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "minimum_bounded_voi": {
+          "$ref": "#/$defs/probability"
+        },
+        "workflow_scope": {
+          "const": "evidence_workflow_only"
+        },
+        "require_all_trials_benefit": {
+          "const": true
+        },
+        "require_consistent_safety_direction": {
+          "const": true
+        },
+        "prohibit_higher_observed_serious_event_risk": {
+          "const": true
+        },
+        "require_aligned_endpoint_timeframes": {
+          "const": true
+        },
+        "require_aligned_safety_timeframes": {
+          "const": true
+        },
+        "require_aligned_measurement_units": {
+          "const": true
+        },
+        "automatic_pooling_prohibited": {
+          "const": true
+        },
+        "clinical_acceptability_inference_prohibited": {
+          "const": true
+        },
+        "terminal_decisions_prohibited": {
+          "const": true
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    },
+    "actionOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id",
+        "action_type",
+        "tool_id",
+        "operation",
+        "purpose",
+        "targeted_gap_codes",
+        "expected_gap_resolution_probability",
+        "decision_relevance",
+        "max_cost",
+        "arguments",
+        "metadata"
+      ],
+      "properties": {
+        "action_id": {
+          "$ref": "#/$defs/text"
+        },
+        "action_type": {
+          "$ref": "#/$defs/actionType"
+        },
+        "tool_id": {
+          "$ref": "#/$defs/text"
+        },
+        "operation": {
+          "$ref": "#/$defs/text"
+        },
+        "purpose": {
+          "$ref": "#/$defs/text"
+        },
+        "targeted_gap_codes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/gapCode"
+          }
+        },
+        "expected_gap_resolution_probability": {
+          "$ref": "#/$defs/positiveProbability"
+        },
+        "decision_relevance": {
+          "$ref": "#/$defs/positiveProbability"
+        },
+        "max_cost": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "arguments": {
+          "type": "object"
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

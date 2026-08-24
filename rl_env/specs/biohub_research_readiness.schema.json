@@ -1,0 +1,439 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/blob/main/rl_env/specs/biohub_research_readiness.schema.json",
+  "title": "Biohub research-readiness profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "profile_status",
+    "assessment_date",
+    "organization_context",
+    "positioning",
+    "evidence_anchors",
+    "maturity_ledger",
+    "fit_matrix",
+    "pilot",
+    "presentation",
+    "known_gaps",
+    "decision",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.biohub-research-readiness.v1"},
+    "profile_id": {"const": "biohub-translational-evidence-bridge-v1"},
+    "profile_status": {"const": "presentation_candidate_not_endorsed"},
+    "assessment_date": {"type": "string", "format": "date"},
+    "organization_context": {"$ref": "#/$defs/organization_context"},
+    "positioning": {"$ref": "#/$defs/positioning"},
+    "evidence_anchors": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/evidence_anchor"}
+    },
+    "maturity_ledger": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/maturity_item"}
+    },
+    "fit_matrix": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/fit_item"}
+    },
+    "pilot": {"$ref": "#/$defs/pilot"},
+    "presentation": {"$ref": "#/$defs/presentation"},
+    "known_gaps": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/known_gap"}
+    },
+    "decision": {"$ref": "#/$defs/decision"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"},
+    "text": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*$"
+    },
+    "text_array": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/text"}
+    },
+    "id_array": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/id"}
+    },
+    "organization_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "affiliation_claimed",
+        "context_scope",
+        "official_sources",
+        "alignment_observations"
+      ],
+      "properties": {
+        "name": {"const": "Chan Zuckerberg Biohub Network"},
+        "affiliation_claimed": {"const": false},
+        "context_scope": {"$ref": "#/$defs/text"},
+        "official_sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/official_source"}
+        },
+        "alignment_observations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/alignment_observation"}
+        }
+      }
+    },
+    "official_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "url", "accessed_on", "supports"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/id"},
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://(?:www\\.)?czbiohub\\.org/"
+        },
+        "accessed_on": {"type": "string", "format": "date"},
+        "supports": {"$ref": "#/$defs/id_array"}
+      }
+    },
+    "alignment_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observation_id", "statement", "source_ids"],
+      "properties": {
+        "observation_id": {"$ref": "#/$defs/id"},
+        "statement": {"$ref": "#/$defs/text"},
+        "source_ids": {"$ref": "#/$defs/id_array"}
+      }
+    },
+    "positioning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["one_line", "system_role", "upstream_inputs", "outputs", "explicit_non_roles"],
+      "properties": {
+        "one_line": {"$ref": "#/$defs/text"},
+        "system_role": {"const": "translational_evidence_governance_layer"},
+        "upstream_inputs": {"$ref": "#/$defs/text_array"},
+        "outputs": {"$ref": "#/$defs/text_array"},
+        "explicit_non_roles": {
+          "allOf": [
+            {"$ref": "#/$defs/id_array"},
+            {
+              "contains": {"const": "virtual_cell_model"}
+            },
+            {
+              "contains": {"const": "therapeutic_design_engine"}
+            },
+            {
+              "contains": {"const": "clinical_decision_maker"}
+            },
+            {
+              "contains": {"const": "biohub_endorsed_project"}
+            }
+          ]
+        }
+      }
+    },
+    "evidence_anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchor_id", "path", "sha256", "kind"],
+      "properties": {
+        "anchor_id": {"$ref": "#/$defs/id"},
+        "path": {"$ref": "#/$defs/path"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "kind": {
+          "enum": ["implementation", "test", "document", "synthetic_summary"]
+        }
+      }
+    },
+    "maturity_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability_id", "label", "maturity", "claim", "evidence_anchor_ids", "limitations"],
+      "properties": {
+        "capability_id": {"$ref": "#/$defs/id"},
+        "label": {"$ref": "#/$defs/text"},
+        "maturity": {
+          "enum": ["implemented_public", "synthetic_validated", "proposed_pilot"]
+        },
+        "claim": {"$ref": "#/$defs/text"},
+        "evidence_anchor_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "limitations": {"$ref": "#/$defs/text_array"}
+      }
+    },
+    "fit_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "priority_id",
+        "biohub_priority",
+        "fit",
+        "contribution",
+        "current_gap",
+        "capability_ids",
+        "pilot_work_package_ids",
+        "source_observation_ids"
+      ],
+      "properties": {
+        "priority_id": {"$ref": "#/$defs/id"},
+        "biohub_priority": {"$ref": "#/$defs/text"},
+        "fit": {"enum": ["direct", "complementary", "proposed"]},
+        "contribution": {"$ref": "#/$defs/text"},
+        "current_gap": {"$ref": "#/$defs/text"},
+        "capability_ids": {"$ref": "#/$defs/id_array"},
+        "pilot_work_package_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "source_observation_ids": {"$ref": "#/$defs/id_array"}
+      }
+    },
+    "pilot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pilot_id",
+        "status",
+        "duration_days",
+        "research_question",
+        "unit_of_analysis",
+        "target_programs",
+        "input_contract",
+        "output_contract",
+        "work_packages",
+        "phases",
+        "evaluation_design",
+        "acceptance_gates",
+        "governance"
+      ],
+      "properties": {
+        "pilot_id": {"$ref": "#/$defs/id"},
+        "status": {"const": "proposed_not_executed"},
+        "duration_days": {"const": 90},
+        "research_question": {"$ref": "#/$defs/text"},
+        "unit_of_analysis": {"$ref": "#/$defs/text"},
+        "target_programs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["minimum", "target"],
+          "properties": {
+            "minimum": {"const": 12},
+            "target": {"const": 20}
+          }
+        },
+        "input_contract": {"$ref": "#/$defs/text_array"},
+        "output_contract": {"$ref": "#/$defs/text_array"},
+        "work_packages": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/work_package"}
+        },
+        "phases": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/phase"}
+        },
+        "evaluation_design": {"$ref": "#/$defs/evaluation_design"},
+        "acceptance_gates": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/acceptance_gate"}
+        },
+        "governance": {"$ref": "#/$defs/governance"}
+      }
+    },
+    "work_package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["work_package_id", "title", "objective", "deliverables"],
+      "properties": {
+        "work_package_id": {"$ref": "#/$defs/id"},
+        "title": {"$ref": "#/$defs/text"},
+        "objective": {"$ref": "#/$defs/text"},
+        "deliverables": {"$ref": "#/$defs/text_array"}
+      }
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase_id", "name", "day_start", "day_end", "work_package_ids", "exit_criteria"],
+      "properties": {
+        "phase_id": {"$ref": "#/$defs/id"},
+        "name": {"$ref": "#/$defs/text"},
+        "day_start": {"type": "integer", "minimum": 1, "maximum": 90},
+        "day_end": {"type": "integer", "minimum": 1, "maximum": 90},
+        "work_package_ids": {"$ref": "#/$defs/id_array"},
+        "exit_criteria": {"$ref": "#/$defs/text_array"}
+      }
+    },
+    "evaluation_design": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["design", "comparator", "primary_endpoint", "secondary_endpoints", "analysis_boundary"],
+      "properties": {
+        "design": {"const": "prospective_preregistered_workflow_evaluation"},
+        "comparator": {"$ref": "#/$defs/text"},
+        "primary_endpoint": {"$ref": "#/$defs/text"},
+        "secondary_endpoints": {"$ref": "#/$defs/text_array"},
+        "analysis_boundary": {"$ref": "#/$defs/text"}
+      }
+    },
+    "acceptance_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_id", "metric", "operator", "threshold", "denominator", "failure_action"],
+      "properties": {
+        "gate_id": {
+          "enum": [
+            "provenance_coverage",
+            "replay_success",
+            "silent_advance_count",
+            "independent_review_agreement",
+            "median_packet_time_reduction"
+          ]
+        },
+        "metric": {"$ref": "#/$defs/text"},
+        "operator": {"enum": ["==", ">="]},
+        "threshold": {"type": "number"},
+        "denominator": {"$ref": "#/$defs/text"},
+        "failure_action": {"enum": ["stop", "hold_and_review"]}
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "human_approval_required",
+        "no_autonomous_wet_lab_execution",
+        "no_treatment_recommendation",
+        "real_data_release_review_required",
+        "stopping_rule"
+      ],
+      "properties": {
+        "human_approval_required": {"const": true},
+        "no_autonomous_wet_lab_execution": {"const": true},
+        "no_treatment_recommendation": {"const": true},
+        "real_data_release_review_required": {"const": true},
+        "stopping_rule": {"$ref": "#/$defs/text"}
+      }
+    },
+    "presentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["audience", "headline_claim", "claims", "slide_sequence", "prohibited_claims", "demo_commands"],
+      "properties": {
+        "audience": {"$ref": "#/$defs/text"},
+        "headline_claim": {"$ref": "#/$defs/text"},
+        "claims": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/presentation_claim"}
+        },
+        "slide_sequence": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/slide"}
+        },
+        "prohibited_claims": {"$ref": "#/$defs/text_array"},
+        "demo_commands": {"$ref": "#/$defs/text_array"}
+      }
+    },
+    "presentation_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "text", "maturity", "evidence_anchor_ids", "capability_ids"],
+      "properties": {
+        "claim_id": {"$ref": "#/$defs/id"},
+        "text": {"$ref": "#/$defs/text"},
+        "maturity": {"enum": ["implemented_public", "synthetic_validated", "proposed_pilot"]},
+        "evidence_anchor_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "capability_ids": {"$ref": "#/$defs/id_array"}
+      }
+    },
+    "slide": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slide", "title", "purpose", "claim_ids", "artifact_paths", "speaker_boundary"],
+      "properties": {
+        "slide": {"type": "integer", "minimum": 1, "maximum": 10},
+        "title": {"$ref": "#/$defs/text"},
+        "purpose": {"$ref": "#/$defs/text"},
+        "claim_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "artifact_paths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/path"}
+        },
+        "speaker_boundary": {"$ref": "#/$defs/text"}
+      }
+    },
+    "known_gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gap_id", "gap", "status", "closure_evidence_required"],
+      "properties": {
+        "gap_id": {"$ref": "#/$defs/id"},
+        "gap": {"$ref": "#/$defs/text"},
+        "status": {"const": "open"},
+        "closure_evidence_required": {"$ref": "#/$defs/text_array"}
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["presentation_readiness", "pilot_readiness", "public_release_status", "next_decision"],
+      "properties": {
+        "presentation_readiness": {"const": "ready_with_boundaries"},
+        "pilot_readiness": {"const": "ready_for_joint_scoping_not_execution"},
+        "public_release_status": {"const": "candidate_not_merged_or_uploaded"},
+        "next_decision": {"$ref": "#/$defs/text"}
+      }
+    }
+  }
+}

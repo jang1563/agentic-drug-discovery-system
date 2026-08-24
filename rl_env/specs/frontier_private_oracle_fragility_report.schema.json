@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_oracle_fragility_report.schema.json",
+  "title": "ADDS-Frontier private oracle fragility report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "audit_id", "protocol_id", "board_id", "compiled_on", "private_preflight_integrity_sha256", "task_set_integrity_sha256", "oracle_set_integrity_sha256", "component_localization_rule", "support_selectivity_review_trigger", "lineage_redundancy_review_trigger", "records", "canonical_stage_count", "planned_component_probe_count", "applicable_component_probe_count", "nonapplicable_component_probe_count", "component_localization_pass_count", "witness_saturated_stage_count", "task_wide_witness_saturation_count", "accessible_nonwitness_evidence_count", "repeated_lineage_witness_stage_count", "repeated_lineage_witness_id_count", "context_witness_stage_count", "derivative_witness_stage_count", "decision_record_witness_stage_count", "contradiction_witness_stage_count", "singleton_blocker_stage_count", "action_change_without_witness_delta_count", "witness_change_without_action_delta_count", "component_localization_ready", "support_selectivity_review_required", "lineage_redundancy_review_required", "oracle_support_ready_for_independent_challenge", "scientific_minimality_established", "expert_solve_gate_changed", "admission_gate_changed", "integrity_sha256"],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-oracle-fragility-report.v1"},
+    "audit_id": {"const": "adds-frontier-oracle-fragility-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "private_preflight_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "task_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "oracle_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "component_localization_rule": {"const": "applicable_valid_mutation_fails_exactly_one_target_component"},
+    "support_selectivity_review_trigger": {"const": "any_task_uses_all_accessible_evidence_as_witnesses_at_every_stage"},
+    "lineage_redundancy_review_trigger": {"const": "any_stage_uses_multiple_witness_ids_from_the_same_lineage"},
+    "records": {"type": "array", "minItems": 60, "maxItems": 60, "items": {"$ref": "#/$defs/record"}},
+    "canonical_stage_count": {"const": 60},
+    "planned_component_probe_count": {"const": 300},
+    "applicable_component_probe_count": {"type": "integer", "minimum": 0, "maximum": 300},
+    "nonapplicable_component_probe_count": {"type": "integer", "minimum": 0, "maximum": 300},
+    "component_localization_pass_count": {"type": "integer", "minimum": 0, "maximum": 300},
+    "witness_saturated_stage_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "task_wide_witness_saturation_count": {"type": "integer", "minimum": 0, "maximum": 10},
+    "accessible_nonwitness_evidence_count": {"type": "integer", "minimum": 0},
+    "repeated_lineage_witness_stage_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "repeated_lineage_witness_id_count": {"type": "integer", "minimum": 0},
+    "context_witness_stage_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "derivative_witness_stage_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "decision_record_witness_stage_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "contradiction_witness_stage_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "singleton_blocker_stage_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "action_change_without_witness_delta_count": {"type": "integer", "minimum": 0, "maximum": 50},
+    "witness_change_without_action_delta_count": {"type": "integer", "minimum": 0, "maximum": 50},
+    "component_localization_ready": {"type": "boolean"},
+    "support_selectivity_review_required": {"type": "boolean"},
+    "lineage_redundancy_review_required": {"type": "boolean"},
+    "oracle_support_ready_for_independent_challenge": {"type": "boolean"},
+    "scientific_minimality_established": {"const": false},
+    "expert_solve_gate_changed": {"const": false},
+    "admission_gate_changed": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonempty": {"type": "string", "minLength": 1},
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["disposition_correct", "next_action_correct", "risk_flags_correct", "witness_valid", "blocker_certificate_valid"],
+      "properties": {
+        "disposition_correct": {"type": "boolean"},
+        "next_action_correct": {"type": "boolean"},
+        "risk_flags_correct": {"type": "boolean"},
+        "witness_valid": {"type": "boolean"},
+        "blocker_certificate_valid": {"type": "boolean"}
+      }
+    },
+    "probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component", "applicable", "nonapplicability_reason", "score_results", "isolated_target_failure"],
+      "properties": {
+        "component": {"enum": ["disposition", "next_action", "risk_flags", "witness", "blockers"]},
+        "applicable": {"type": "boolean"},
+        "nonapplicability_reason": {"type": ["string", "null"], "minLength": 1},
+        "score_results": {"anyOf": [{"$ref": "#/$defs/scores"}, {"type": "null"}]},
+        "isolated_target_failure": {"type": "boolean"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"applicable": {"const": true}}},
+          "then": {
+            "properties": {
+              "nonapplicability_reason": {"type": "null"},
+              "score_results": {"$ref": "#/$defs/scores"}
+            }
+          },
+          "else": {
+            "properties": {
+              "component": {"const": "next_action"},
+              "nonapplicability_reason": {"const": "terminate_requires_none_so_next_action_cannot_change_alone"},
+              "score_results": {"type": "null"},
+              "isolated_target_failure": {"const": false}
+            }
+          }
+        }
+      ]
+    },
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "context", "contradiction", "derivative", "decision_record"],
+      "properties": {
+        "source": {"type": "integer", "minimum": 0},
+        "context": {"type": "integer", "minimum": 0},
+        "contradiction": {"type": "integer", "minimum": 0},
+        "derivative": {"type": "integer", "minimum": 0},
+        "decision_record": {"type": "integer", "minimum": 0}
+      }
+    },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["is_first_stage", "action_changed_from_previous", "witness_changed_from_previous", "blocker_changed_from_previous"],
+      "properties": {
+        "is_first_stage": {"type": "boolean"},
+        "action_changed_from_previous": {"type": ["boolean", "null"]},
+        "witness_changed_from_previous": {"type": ["boolean", "null"]},
+        "blocker_changed_from_previous": {"type": ["boolean", "null"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"is_first_stage": {"const": true}}},
+          "then": {
+            "properties": {
+              "action_changed_from_previous": {"type": "null"},
+              "witness_changed_from_previous": {"type": "null"},
+              "blocker_changed_from_previous": {"type": "null"}
+            }
+          },
+          "else": {
+            "properties": {
+              "action_changed_from_previous": {"type": "boolean"},
+              "witness_changed_from_previous": {"type": "boolean"},
+              "blocker_changed_from_previous": {"type": "boolean"}
+            }
+          }
+        }
+      ]
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slot_id", "task_id", "canonical_task_commitment", "author_oracle_commitment", "stage_id", "accessible_evidence_count", "witness_count", "accessible_nonwitness_count", "witness_saturated", "witness_lineage_count", "repeated_lineage_witness_id_count", "witness_role_counts", "blocker_count", "singleton_blocker", "transition", "component_probes"],
+      "properties": {
+        "slot_id": {"type": "string", "pattern": "^slot-[a-z]+-[0-9]{2}$"},
+        "task_id": {"$ref": "#/$defs/nonempty"},
+        "canonical_task_commitment": {"$ref": "#/$defs/sha256"},
+        "author_oracle_commitment": {"$ref": "#/$defs/sha256"},
+        "stage_id": {"type": "string", "pattern": "^s[0-9]{2}$"},
+        "accessible_evidence_count": {"type": "integer", "minimum": 1},
+        "witness_count": {"type": "integer", "minimum": 1},
+        "accessible_nonwitness_count": {"type": "integer", "minimum": 0},
+        "witness_saturated": {"type": "boolean"},
+        "witness_lineage_count": {"type": "integer", "minimum": 1},
+        "repeated_lineage_witness_id_count": {"type": "integer", "minimum": 0},
+        "witness_role_counts": {"$ref": "#/$defs/roles"},
+        "blocker_count": {"type": "integer", "minimum": 1},
+        "singleton_blocker": {"type": "boolean"},
+        "transition": {"$ref": "#/$defs/transition"},
+        "component_probes": {
+          "type": "array",
+          "prefixItems": [
+            {"allOf": [{"$ref": "#/$defs/probe"}, {"properties": {"component": {"const": "disposition"}}}]},
+            {"allOf": [{"$ref": "#/$defs/probe"}, {"properties": {"component": {"const": "next_action"}}}]},
+            {"allOf": [{"$ref": "#/$defs/probe"}, {"properties": {"component": {"const": "risk_flags"}}}]},
+            {"allOf": [{"$ref": "#/$defs/probe"}, {"properties": {"component": {"const": "witness"}}}]},
+            {"allOf": [{"$ref": "#/$defs/probe"}, {"properties": {"component": {"const": "blockers"}}}]}
+          ],
+          "items": false,
+          "minItems": 5,
+          "maxItems": 5
+        }
+      }
+    }
+  }
+}

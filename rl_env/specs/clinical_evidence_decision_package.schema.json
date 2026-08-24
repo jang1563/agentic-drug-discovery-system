@@ -142,7 +142,6 @@
         "version",
         "registered_on",
         "minimum_independent_trials",
-        "maximum_log_effect_ci_width",
         "minimum_safety_participants_per_arm",
         "max_planned_actions",
         "max_planned_cost",
@@ -159,6 +158,18 @@
         "terminal_decisions_prohibited",
         "metadata"
       ],
+      "anyOf": [
+        {
+          "required": [
+            "maximum_log_effect_ci_width"
+          ]
+        },
+        {
+          "required": [
+            "maximum_risk_difference_ci_width_percentage_points"
+          ]
+        }
+      ],
       "properties": {
         "policy_id": {
           "$ref": "#/$defs/text"
@@ -174,6 +185,9 @@
           "minimum": 2
         },
         "maximum_log_effect_ci_width": {
+          "$ref": "#/$defs/positiveNumber"
+        },
+        "maximum_risk_difference_ci_width_percentage_points": {
           "$ref": "#/$defs/positiveNumber"
         },
         "minimum_safety_participants_per_arm": {
@@ -238,7 +252,6 @@
         "confidence_interval_percent",
         "confidence_interval_lower",
         "confidence_interval_upper",
-        "log_effect_ci_width",
         "benefit_direction",
         "candidate_measurement",
         "comparator_measurement",
@@ -278,10 +291,15 @@
           "$ref": "#/$defs/text"
         },
         "effect_measure": {
-          "$ref": "#/$defs/text"
+          "enum": [
+            "hazard_ratio",
+            "odds_ratio",
+            "risk_ratio",
+            "risk_difference"
+          ]
         },
         "effect_estimate": {
-          "$ref": "#/$defs/positiveNumber"
+          "type": "number"
         },
         "confidence_interval_percent": {
           "type": "number",
@@ -289,12 +307,21 @@
           "maximum": 100
         },
         "confidence_interval_lower": {
-          "$ref": "#/$defs/positiveNumber"
+          "type": "number"
         },
         "confidence_interval_upper": {
-          "$ref": "#/$defs/positiveNumber"
+          "type": "number"
         },
         "log_effect_ci_width": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "effect_measure_favorable_direction": {
+          "enum": [
+            "higher_is_better",
+            "lower_is_better"
+          ]
+        },
+        "risk_difference_ci_width_percentage_points": {
           "$ref": "#/$defs/nonNegativeNumber"
         },
         "benefit_direction": {
@@ -376,7 +403,63 @@
         "safety_fingerprint_sha256": {
           "$ref": "#/$defs/sha256"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "effect_measure": {
+                "enum": [
+                  "hazard_ratio",
+                  "odds_ratio",
+                  "risk_ratio"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "log_effect_ci_width"
+            ],
+            "properties": {
+              "effect_estimate": {
+                "$ref": "#/$defs/positiveNumber"
+              },
+              "confidence_interval_lower": {
+                "$ref": "#/$defs/positiveNumber"
+              },
+              "confidence_interval_upper": {
+                "$ref": "#/$defs/positiveNumber"
+              }
+            },
+            "not": {
+              "required": [
+                "risk_difference_ci_width_percentage_points"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "effect_measure": {
+                "const": "risk_difference"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "effect_measure_favorable_direction",
+              "risk_difference_ci_width_percentage_points"
+            ],
+            "not": {
+              "required": [
+                "log_effect_ci_width"
+              ]
+            }
+          }
+        }
+      ]
     },
     "gap": {
       "type": "object",

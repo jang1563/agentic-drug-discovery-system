@@ -63,8 +63,8 @@ The extractor verifies:
 6. Enrollment and bounded eligibility fields: analysis population description, count/type, sex,
    age bounds, and healthy-volunteer status.
 7. One posted primary endpoint against both protocol and results modules.
-8. Candidate-first analysis group order, p-value comparator, statistical method, analysis
-   parameter, estimate, confidence interval percentage, and confidence bounds.
+8. Exact registry analysis group order, typed candidate/comparator roles, p-value comparator,
+   statistical method, analysis parameter, estimate, confidence interval percentage, and bounds.
 9. The posted adverse-event time frame, optional description, and exact serious-event term count.
 10. Two selected adverse-event groups against exact `EG...` ids, bounded title equivalence, arm
     roles, affected participant counts, and positive at-risk participant counts.
@@ -76,31 +76,54 @@ During promotion, every source candidate alias must also resolve through the acc
 unapproved aliases are rejected. A source condition must intersect the accepted disease name or
 its pre-approved identity aliases.
 
-Bounded title equivalence removes punctuation, dose-unit tokens (`mg`, `milligram`, or
-`milligrams`), and the exact `on-treatment` qualifier before requiring token-set equality. It does
+Bounded title equivalence removes punctuation, numeric dose expressions (`mg`, `milligram`, or
+`milligrams`), phase qualifiers, the `intervention` label, and the exact `on-treatment` qualifier
+before requiring token-set equality. It does
 not accept arbitrary extra cohort or treatment descriptors. Serious-event term statistics may omit
 `numAffected` only for nonselected groups whose posted `numAtRisk` is zero; selected safety groups
 must retain complete nonnegative affected counts and positive at-risk counts.
 
-## Bounded Support Rule
+## Bounded Effect-Evidence Rule
 
-Version 2 does not attempt arbitrary endpoint or safety interpretation. Endpoint support is
-limited to a posted primary time-to-event endpoint when all of the following hold:
+Version 3 preserves structurally valid posted primary effect evidence before making a decision. It
+supports frozen hazard-ratio, odds-ratio, and risk-ratio aliases plus bounded `risk_difference`
+aliases. Ratio intervals must be positive and are classified against null 1. Risk differences are
+classified against null 0 and additionally require either a bounded participant-, patient-, or
+subject-proportion percent unit, a bare percent unit, or a binary count unit such as `Participants`.
+Percent units retain percentage-point effects. Binary count units retain source effects as
+proportions in `[-1, 1]`; arm measurements must be integer counts within their denominators.
+Continuous percent-change units are not accepted. Every additive record also requires an
+endpoint-declared favorable direction and candidate-then-comparator analysis-group order. Every
+measure requires an ordered finite confidence interval containing the estimate, a typed p-value
+between 0 and 1, and exact source agreement. The interval is classified as
+`benefit`, `harm`, or
+`null_or_uncertain` under the shared effect contract.
 
-- the endpoint declares `higher_is_better`;
-- when both descriptive arm measurements are numeric, the candidate measurement is greater than
-  the comparator measurement; an approved source marker such as `NA`, `NR`, or `not reached`
-  remains missing and is never imputed;
-- the candidate-versus-comparator analysis uses one frozen hazard-ratio parameter alias:
-  `Hazard Ratio`, `Hazard Ratio (HR)`, `Hazard Ratio, log`, or
-  `Cox Proportional Hazard`;
-- the hazard ratio and its upper confidence bound are below `1`;
-- the p-value relation is `<`, `<=`, or exact numeric equality and the typed value is at most
-  `0.05`.
+The extractor no longer discards valid harm or uncertain results. A promoted `benefit` recommends
+`ADVANCE`; `harm` or `null_or_uncertain` recommends `HOLD`, retaining the evidence and design in the
+ledger. Descriptive arm measurements remain source-pinned and typed, but they are not used to
+override the reported analysis interval. Registry analysis-group order is preserved. For additive
+risk differences, it must also bind candidate before comparator so the sign cannot be silently
+reversed; ratio records retain their measure-specific fixed direction.
 
-Anything outside this narrow shape returns
-`pinned_clinical_design_endpoint_not_supportive` and `DEFER`. The agent does not infer benefit from
-endpoint names, free text, registration status, or non-significance.
+Endpoint and safety selections carry the same required `treatment_phase`: `induction`,
+`maintenance`, or `not_applicable`. Mismatch or source phase conflict fails closed. Anything
+outside the bounded structural contract returns
+`pinned_clinical_design_endpoint_not_supportive` and `DEFER`.
+
+For phase-bound induction or maintenance records, extraction also derives one exact
+`population_alignment` object: study enrollment, selected endpoint denominator total, selected
+safety at-risk total, role-wise count equality, and an invariant
+`same_participants_inferred=false`. Promotion recomputes it from typed arms, and every committed
+design, population, endpoint, and safety layer carries the same phase and alignment. Matching
+aggregate counts never establish participant identity.
+
+Registry chronology retains source precision. Day-precision dates pass through unchanged;
+month- and year-precision dates are normalized to a conservative period end for the typed event
+date. Sanitized metadata retains the source value, declared precision, normalized date, and rule.
+A reviewer job that supplies a different boundary, or a source with an invalid calendar period,
+fails closed. The real `NCT02760368` month-precision execution is documented in
+`docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`.
 
 An approved missing descriptive arm summary does not disappear downstream. The promoted endpoint
 evidence retains the raw marker, synthesis serializes the numeric field as `null`, and the evidence
@@ -110,6 +133,21 @@ The safety contract separately proves only that posted aggregate serious-adverse
 counts were resolved for the same candidate and comparator arms. It does not infer attribution,
 comparative safety, acceptability, or benefit-risk. `event_term_count` counts reported terms, not
 participants or event occurrences.
+
+The cross-disease UC execution and its payload-free hashes are documented in
+`docs/42_uc_provider_validation.md` and
+`docs/uc_clinical_provider_validation_snapshot.json`.
+The independent primary-maintenance percentage-point replication is documented in
+`docs/44_uc_maintenance_risk_difference_replication.md` and
+`docs/uc_maintenance_risk_difference_validation_snapshot.json`.
+The second-disease RA ACR20 HOLD replication is documented in
+`docs/45_ra_acr20_risk_difference_hold_replication.md` and
+`docs/ra_acr20_risk_difference_validation_snapshot.json`.
+The first real source-disjoint additive multi-trial tensor is documented in
+`docs/46_ra_olokizumab_source_disjoint_additive_tensor.md` and
+`docs/ra_olokizumab_additive_tensor_validation_snapshot.json`.
+The independent MTX-IR same-stratum replication and its exact population artifacts are documented
+in `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`.
 
 ## Stage Gate
 

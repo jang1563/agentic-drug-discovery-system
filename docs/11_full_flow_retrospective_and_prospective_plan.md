@@ -1,7 +1,7 @@
 # Full-Flow Plan — Retrospective Benchmark + Prospective Decision-Support
 
-Date: 2026-07-12
-Status: roadmap with one audited SCD slice; prospective mode remains unscored decision support
+Date: 2026-08-20
+Status: one audited SCD slice, generic M6 handoff, and synthetic UC conformance; prospective mode remains unscored decision support
 
 ## Purpose
 
@@ -30,7 +30,7 @@ disease/target seed
   -> modality / compound-target association                (ChEMBL, BindingDB, PubChem)          [M2]
   -> hit / structure / binder assessment                   (PDB, AlphaFold, Boltz-2, ESM)        [M5]
   -> lead optimization + ADMET / tox constraints           (TDC ADMET, tox assays)               [M3]
-  -> cell / perturbation / phenotype reasoning             (DepMap, LINCS, State)                [M6]
+  -> cell / perturbation / phenotype reasoning             (generic handoff built; atlas open)  [M6]
   -> preclinical / IND -> clinical POC -> pivotal decision  (ClinicalTrials.gov, openFDA)         [M1]
 ```
 
@@ -93,22 +93,30 @@ For the clinical/regulatory decision layer (M1), the agent-loop half is now
 **built and audited end-to-end on one disease** — sickle cell disease — with 7
 tracked adapters and 2 flow orchestrators. See `docs/12_scd_vertical_slice.md`
 for the concrete audited instance of this plan. A small-N target-identification
-node prototype (M4) is documented in `docs/13_target_id_governance_node.md`, but
-standalone and integrated atlases across M2–M6 remain unbuilt. To reach full flow:
+node prototype (M4) is documented in `docs/13_target_id_governance_node.md`. A generic, strict M6
+cell-state and perturbation handoff is implemented in
+`docs/40_upstream_translational_handoff.md`, but it contains only a synthetic fixture and cannot
+promote mechanism or efficacy. Integrated M2, M3, and M5 atlases, an externally reviewed M6
+fixture, real cross-disease orchestration, and external transport remain unbuilt. A synthetic UC
+conformance slice now verifies higher-is-better remission-ratio semantics across M6 and clinical
+contracts, but it is not a second validated vertical slice. To reach full flow:
 
 1. **Honest source-derived labels per stage** — Track A is audited for M1 and a
    small-N M4 node exists; replicate the labeling-function + authority-table
-   pattern for broader M2–M6 atlases.
+   pattern for broader M2–M6 atlases and one independent immune or inflammatory disease slice.
 2. **Live agent loop** — LLM planner (hosted model backend or API) + tool/DB
    adapters (CT.gov, openFDA, Open Targets, ChEMBL, PDB, …) + SFM scorers
    (GPU-gated Boltz-2/ESM plus a local no-GPU RDKit druglikeness signal). This
-   half is implemented for the SCD slice; extending it across M2–M6 is the
-   remaining work.
+   half is implemented for the SCD slice. M6 now has a payload-minimized contextual handoff, but
+   live source adapters and integrated M2, M3, M5, and M6 atlases remain open.
 3. **Flow orchestrator (`chains/`)** — given a disease/target seed, assemble the
    ordered episode chain across stages and let the agent traverse it, carrying
    state/evidence/uncertainty across handoffs.
-4. **Calibration layer** — conformal / RCPS / calibration cards so per-stage
-   confidence and false-accept are bounded (prerequisite for prospective mode).
+4. **Calibration layer** — outcome-free cohort diagnostics, preregistered outcome contracts,
+   dependence-aware uncertainty, and synthetic known-truth stress/calibration studies are
+   implemented. A real independently curated held-out board, external transport study, conformal
+   or RCPS guarantees, and stage-specific calibration cards remain required before prospective
+   mode can be treated as scored or operational.
 
 ## Implemented first proof: thin vertical slice
 
@@ -128,8 +136,10 @@ slice rather than the full M2–M6 system:
 ```
 Track A (A1–A6): source-derived labels + scoped controls + retrospective risk analysis       [audited locally]
   -> Track B: live agent loop + thin SCD vertical slice                                       [audited locally]
-  -> refresh cutoff-safe replay + calibration before any scored prospective use               [next]
-  -> widen stages (M2–M6) and diseases/targets; refresh loop for live sources
+  -> synthetic UC M6-to-clinical ratio-direction conformance                                  [implemented]
+  -> validate one independently reviewed external M6 handoff without unsupported promotion     [next]
+  -> join an independent held-out outcome board and external transport study before scored use
+  -> widen M2/M3/M5 atlases and disease/target breadth; refresh loop for approved live sources
 ```
 
 Retrospective evidence must be cutoff-safe and audited (labels honest, trivial

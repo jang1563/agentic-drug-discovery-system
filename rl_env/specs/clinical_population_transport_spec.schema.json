@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_population_transport_spec.schema.json",
+  "title": "Reviewed clinical population transport diagnostic specification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "analysis_id",
+    "synthesis_id",
+    "stratification_axis_id",
+    "stratification_axis_label",
+    "bindings",
+    "review",
+    "analysis_mode",
+    "target_population_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-population-transport-spec.v1"
+    },
+    "analysis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "synthesis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stratification_axis_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,127}$"
+    },
+    "stratification_axis_label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/binding"
+      }
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    },
+    "analysis_mode": {
+      "const": "descriptive_population_stratification"
+    },
+    "target_population_id": {
+      "type": "null"
+    }
+  },
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_document_format",
+        "source_content_sha256",
+        "source_field_pointer",
+        "source_field_sha256"
+      ],
+      "properties": {
+        "source_document_format": {
+          "const": "clinicaltrials.gov-study-v2"
+        },
+        "source_content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_field_pointer": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "source_field_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trial_id",
+        "design_id",
+        "endpoint_id",
+        "population_id",
+        "stratum_id",
+        "stratum_label",
+        "population_context",
+        "citation"
+      ],
+      "properties": {
+        "trial_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "design_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "endpoint_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stratum_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,127}$"
+        },
+        "stratum_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "population_context": {
+          "type": "string",
+          "minLength": 1
+        },
+        "citation": {
+          "$ref": "#/$defs/citation"
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewer_id",
+        "reviewer_role",
+        "reviewed_at",
+        "independent_external_review"
+      ],
+      "properties": {
+        "status": {
+          "const": "approved_for_descriptive_stratification"
+        },
+        "reviewer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewer_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "independent_external_review": {
+          "const": false
+        }
+      }
+    }
+  }
+}

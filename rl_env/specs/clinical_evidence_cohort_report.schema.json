@@ -1,0 +1,871 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_evidence_cohort_report.schema.json",
+  "title": "Clinical evidence cohort diagnostics report envelope",
+  "description": "Integrity-bound outcome-free workflow behavior, matched policy sensitivity, action coverage, and cross-evidence-unit provenance overlap diagnostics.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "report"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-evidence-cohort-report.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "report": {
+      "$ref": "#/$defs/report"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "optionalSha256": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "positiveInteger": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "nonNegativeNumber": {
+      "type": "number",
+      "minimum": 0
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "decision": {
+      "enum": [
+        "advance",
+        "hold",
+        "defer"
+      ]
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "dimension": {
+      "enum": [
+        "source_independence",
+        "trial_count",
+        "benefit_direction",
+        "benefit_precision",
+        "descriptive_arm_measurement_completeness",
+        "safety_direction",
+        "safety_exposure",
+        "endpoint_timeframe_alignment",
+        "safety_timeframe_alignment",
+        "measurement_unit_alignment"
+      ]
+    },
+    "dimensionStatus": {
+      "enum": [
+        "satisfied",
+        "gap",
+        "blocking_signal"
+      ]
+    },
+    "gapCode": {
+      "enum": [
+        "insufficient_independent_trials",
+        "benefit_not_demonstrated",
+        "benefit_direction_conflict",
+        "benefit_harm_signal",
+        "imprecise_benefit_estimate",
+        "missing_descriptive_arm_measurement",
+        "higher_observed_serious_event_risk",
+        "safety_direction_conflict",
+        "insufficient_safety_exposure",
+        "endpoint_timeframe_mismatch",
+        "safety_timeframe_mismatch",
+        "measurement_unit_mismatch"
+      ]
+    },
+    "textArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "sha256Array": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "gapCodeArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/gapCode"
+      }
+    },
+    "rate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count",
+        "total",
+        "rate"
+      ],
+      "properties": {
+        "count": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "total": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "rate": {
+          "$ref": "#/$defs/probability"
+        }
+      }
+    },
+    "policyIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "policy_version",
+        "policy_fingerprint"
+      ],
+      "properties": {
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_version": {
+          "$ref": "#/$defs/text"
+        },
+        "policy_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "dimensionStatusRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "status"
+      ],
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/dimension"
+        },
+        "status": {
+          "$ref": "#/$defs/dimensionStatus"
+        }
+      }
+    },
+    "selectedAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rank",
+        "action_id",
+        "action_fingerprint",
+        "tool_id",
+        "operation",
+        "purpose",
+        "max_cost"
+      ],
+      "properties": {
+        "rank": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "action_id": {
+          "$ref": "#/$defs/text"
+        },
+        "action_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "tool_id": {
+          "$ref": "#/$defs/text"
+        },
+        "operation": {
+          "$ref": "#/$defs/text"
+        },
+        "purpose": {
+          "$ref": "#/$defs/text"
+        },
+        "max_cost": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "packageDiagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_id",
+        "program_id",
+        "integrity_sha256",
+        "state_sha256",
+        "as_of_date",
+        "policy",
+        "synthesis_id",
+        "synthesis_fingerprint",
+        "evidence_unit_id",
+        "disease_id",
+        "candidate_id",
+        "intervention_id",
+        "endpoint_mapping_id",
+        "endpoint_family",
+        "stage",
+        "trial_ids",
+        "source_content_hashes",
+        "decision",
+        "plan_code",
+        "dimension_statuses",
+        "gap_codes",
+        "targeted_gap_codes",
+        "untargeted_gap_codes",
+        "selected_actions",
+        "planned_cost"
+      ],
+      "properties": {
+        "package_id": {
+          "$ref": "#/$defs/text"
+        },
+        "program_id": {
+          "$ref": "#/$defs/text"
+        },
+        "integrity_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "state_sha256": {
+          "$ref": "#/$defs/optionalSha256"
+        },
+        "as_of_date": {
+          "$ref": "#/$defs/date"
+        },
+        "policy": {
+          "$ref": "#/$defs/policyIdentity"
+        },
+        "synthesis_id": {
+          "$ref": "#/$defs/text"
+        },
+        "synthesis_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "evidence_unit_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "disease_id": {
+          "$ref": "#/$defs/text"
+        },
+        "candidate_id": {
+          "$ref": "#/$defs/text"
+        },
+        "intervention_id": {
+          "$ref": "#/$defs/text"
+        },
+        "endpoint_mapping_id": {
+          "$ref": "#/$defs/text"
+        },
+        "endpoint_family": {
+          "$ref": "#/$defs/text"
+        },
+        "stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "trial_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 2
+            }
+          ]
+        },
+        "source_content_hashes": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/sha256Array"
+            },
+            {
+              "minItems": 2
+            }
+          ]
+        },
+        "decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "plan_code": {
+          "$ref": "#/$defs/text"
+        },
+        "dimension_statuses": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/dimensionStatusRecord"
+          }
+        },
+        "gap_codes": {
+          "$ref": "#/$defs/gapCodeArray"
+        },
+        "targeted_gap_codes": {
+          "$ref": "#/$defs/gapCodeArray"
+        },
+        "untargeted_gap_codes": {
+          "$ref": "#/$defs/gapCodeArray"
+        },
+        "selected_actions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/selectedAction"
+          }
+        },
+        "planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        }
+      }
+    },
+    "decisionMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "packages"
+      ],
+      "properties": {
+        "decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "packages": {
+          "$ref": "#/$defs/rate"
+        }
+      }
+    },
+    "dimensionMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "satisfied",
+        "gap",
+        "blocking_signal"
+      ],
+      "properties": {
+        "dimension": {
+          "$ref": "#/$defs/dimension"
+        },
+        "satisfied": {
+          "$ref": "#/$defs/rate"
+        },
+        "gap": {
+          "$ref": "#/$defs/rate"
+        },
+        "blocking_signal": {
+          "$ref": "#/$defs/rate"
+        }
+      }
+    },
+    "gapMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "dimension",
+        "blocking",
+        "present_packages",
+        "targeted_packages"
+      ],
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/gapCode"
+        },
+        "dimension": {
+          "$ref": "#/$defs/dimension"
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "present_packages": {
+          "$ref": "#/$defs/rate"
+        },
+        "targeted_packages": {
+          "$ref": "#/$defs/rate"
+        }
+      }
+    },
+    "actionMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id",
+        "action_fingerprint",
+        "tool_id",
+        "operation",
+        "purpose",
+        "max_cost",
+        "selected_packages",
+        "total_planned_cost"
+      ],
+      "properties": {
+        "action_id": {
+          "$ref": "#/$defs/text"
+        },
+        "action_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "tool_id": {
+          "$ref": "#/$defs/text"
+        },
+        "operation": {
+          "$ref": "#/$defs/text"
+        },
+        "purpose": {
+          "$ref": "#/$defs/text"
+        },
+        "max_cost": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "selected_packages": {
+          "$ref": "#/$defs/rate"
+        },
+        "total_planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        }
+      }
+    },
+    "decisionMetrics": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/decisionMetric"
+      }
+    },
+    "dimensionMetrics": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/dimensionMetric"
+      }
+    },
+    "gapMetrics": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/gapMetric"
+      }
+    },
+    "actionMetrics": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/actionMetric"
+      }
+    },
+    "policyStratum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "package_ids",
+        "evidence_unit_ids",
+        "decisions",
+        "dimensions",
+        "gaps",
+        "actions",
+        "total_planned_cost"
+      ],
+      "properties": {
+        "policy": {
+          "$ref": "#/$defs/policyIdentity"
+        },
+        "package_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "evidence_unit_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/sha256Array"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "decisions": {
+          "$ref": "#/$defs/decisionMetrics"
+        },
+        "dimensions": {
+          "$ref": "#/$defs/dimensionMetrics"
+        },
+        "gaps": {
+          "$ref": "#/$defs/gapMetrics"
+        },
+        "actions": {
+          "$ref": "#/$defs/actionMetrics"
+        },
+        "total_planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        }
+      }
+    },
+    "decisionTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_a",
+        "decision_b",
+        "count"
+      ],
+      "properties": {
+        "decision_a": {
+          "$ref": "#/$defs/decision"
+        },
+        "decision_b": {
+          "$ref": "#/$defs/decision"
+        },
+        "count": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        }
+      }
+    },
+    "gapComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "both",
+        "policy_a_only",
+        "policy_b_only",
+        "neither"
+      ],
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/gapCode"
+        },
+        "both": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "policy_a_only": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "policy_b_only": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "neither": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        }
+      }
+    },
+    "matchedPolicyComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_a",
+        "policy_b",
+        "evidence_unit_ids",
+        "decision_transitions",
+        "changed_decisions",
+        "changed_gap_profiles",
+        "changed_action_plans",
+        "gap_comparisons",
+        "policy_a_total_planned_cost",
+        "policy_b_total_planned_cost"
+      ],
+      "properties": {
+        "policy_a": {
+          "$ref": "#/$defs/policyIdentity"
+        },
+        "policy_b": {
+          "$ref": "#/$defs/policyIdentity"
+        },
+        "evidence_unit_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/sha256Array"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "decision_transitions": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/decisionTransition"
+          }
+        },
+        "changed_decisions": {
+          "$ref": "#/$defs/rate"
+        },
+        "changed_gap_profiles": {
+          "$ref": "#/$defs/rate"
+        },
+        "changed_action_plans": {
+          "$ref": "#/$defs/rate"
+        },
+        "gap_comparisons": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/gapComparison"
+          }
+        },
+        "policy_a_total_planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "policy_b_total_planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        }
+      }
+    },
+    "provenanceOverlap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "value",
+        "evidence_unit_ids",
+        "program_ids",
+        "package_ids"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "source_content_hash",
+            "trial_id"
+          ]
+        },
+        "value": {
+          "$ref": "#/$defs/text"
+        },
+        "evidence_unit_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/sha256Array"
+            },
+            {
+              "minItems": 2
+            }
+          ]
+        },
+        "program_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "package_ids": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/textArray"
+            },
+            {
+              "minItems": 2
+            }
+          ]
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cohort_id",
+        "cohort_specification_sha256",
+        "manifest_fingerprint",
+        "method_id",
+        "analysis_scope",
+        "package_validation_scope",
+        "earliest_as_of_date",
+        "latest_as_of_date",
+        "package_count",
+        "program_count",
+        "evidence_unit_count",
+        "policy_count",
+        "packages",
+        "decisions",
+        "dimensions",
+        "gaps",
+        "actions",
+        "policy_strata",
+        "matched_policy_comparisons",
+        "provenance_overlaps",
+        "evidence_units_source_disjoint",
+        "evidence_units_trial_disjoint",
+        "outcome_labels_included",
+        "performance_metrics_included",
+        "outcome_calibration_status",
+        "limitations"
+      ],
+      "properties": {
+        "cohort_id": {
+          "$ref": "#/$defs/text"
+        },
+        "cohort_specification_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "manifest_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "method_id": {
+          "const": "adds.clinical-evidence-cohort-diagnostics.v1"
+        },
+        "analysis_scope": {
+          "const": "workflow_behavior_diagnostics"
+        },
+        "package_validation_scope": {
+          "enum": [
+            "integrity_and_structure",
+            "integrity_structure_and_state_replay"
+          ]
+        },
+        "earliest_as_of_date": {
+          "$ref": "#/$defs/date"
+        },
+        "latest_as_of_date": {
+          "$ref": "#/$defs/date"
+        },
+        "package_count": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "program_count": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "evidence_unit_count": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "policy_count": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "packages": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/packageDiagnostic"
+          }
+        },
+        "decisions": {
+          "$ref": "#/$defs/decisionMetrics"
+        },
+        "dimensions": {
+          "$ref": "#/$defs/dimensionMetrics"
+        },
+        "gaps": {
+          "$ref": "#/$defs/gapMetrics"
+        },
+        "actions": {
+          "$ref": "#/$defs/actionMetrics"
+        },
+        "policy_strata": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/policyStratum"
+          }
+        },
+        "matched_policy_comparisons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/matchedPolicyComparison"
+          }
+        },
+        "provenance_overlaps": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/provenanceOverlap"
+          }
+        },
+        "evidence_units_source_disjoint": {
+          "type": "boolean"
+        },
+        "evidence_units_trial_disjoint": {
+          "type": "boolean"
+        },
+        "outcome_labels_included": {
+          "const": false
+        },
+        "performance_metrics_included": {
+          "const": false
+        },
+        "outcome_calibration_status": {
+          "const": "not_estimable_without_independent_outcomes"
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    }
+  }
+}

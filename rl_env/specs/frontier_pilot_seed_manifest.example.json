@@ -1,0 +1,105 @@
+{
+  "schema_version": "adds.frontier-pilot-seed-manifest.v1",
+  "protocol_id": "adds-frontier-v1",
+  "manifest_status": "design_seeds_only",
+  "benchmark_evidence_claimed": false,
+  "seeds": [
+    {
+      "seed_id": "frontier-seed-lineage-001",
+      "family_id": "evidence_lineage_trap",
+      "maturity": "design_seed",
+      "evidence_geometry": "Two apparently source-disjoint evidence packets share an underlying publication or trial lineage; the valid trajectory must refuse to count them as independent support.",
+      "source_artifacts": [
+        "docs/20_preclinical_provider_ingestion.md",
+        "docs/46_ra_olokizumab_source_disjoint_additive_tensor.md"
+      ],
+      "planned_stage_count": 6,
+      "planned_mutations": [
+        "same_bytes_new_source_id",
+        "same_trial_secondary_publication",
+        "shared_upstream_publication_lineage",
+        "independent_source_removed",
+        "lineage_edge_hidden"
+      ],
+      "nonclaim": "This design seed is not benchmark performance evidence."
+    },
+    {
+      "seed_id": "frontier-seed-temporal-001",
+      "family_id": "temporal_reversal",
+      "maturity": "design_seed",
+      "evidence_geometry": "A disposition is valid at one historical cutoff and must change only after a later regulatory or outcome source becomes admissible.",
+      "source_artifacts": [
+        "docs/12_scd_vertical_slice.md",
+        "docs/25_cutoff_safe_policy_evaluation.md"
+      ],
+      "planned_stage_count": 8,
+      "planned_mutations": [
+        "post_cutoff_result_inserted",
+        "availability_date_shifted",
+        "retrieval_date_substituted_for_availability",
+        "present_day_adapter_enabled",
+        "regulatory_reversal_removed"
+      ],
+      "nonclaim": "This design seed is not benchmark performance evidence."
+    },
+    {
+      "seed_id": "frontier-seed-handoff-001",
+      "family_id": "translational_handoff",
+      "maturity": "design_seed",
+      "evidence_geometry": "A contextual perturbation observation enters a multi-stage program without becoming an unsupported mechanism, efficacy, safety, or clinical-readiness claim.",
+      "source_artifacts": [
+        "docs/39_biohub_translational_evidence_bridge.md",
+        "docs/40_upstream_translational_handoff.md"
+      ],
+      "planned_stage_count": 8,
+      "planned_mutations": [
+        "target_alias_rebound",
+        "cell_type_context_removed",
+        "model_system_changed",
+        "contextual_claim_promoted_to_supportive",
+        "quality_control_failure_suppressed"
+      ],
+      "nonclaim": "This design seed is not benchmark performance evidence."
+    },
+    {
+      "seed_id": "frontier-seed-exchangeability-001",
+      "family_id": "non_exchangeable_replication",
+      "maturity": "design_seed",
+      "evidence_geometry": "Same-candidate trials share a nominal endpoint family but differ in prior-therapy population, phase, timeframe, estimand, or transport support.",
+      "source_artifacts": [
+        "docs/47_ra_olokizumab_population_stratified_transport.md",
+        "docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md",
+        "docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md"
+      ],
+      "planned_stage_count": 7,
+      "planned_mutations": [
+        "population_stratum_swapped",
+        "endpoint_timeframe_changed",
+        "effect_scale_rebound",
+        "target_population_omitted",
+        "risk_of_bias_assessment_removed"
+      ],
+      "nonclaim": "This design seed is not benchmark performance evidence."
+    },
+    {
+      "seed_id": "frontier-seed-budget-001",
+      "family_id": "budgeted_evidence_resolution",
+      "maturity": "design_seed",
+      "evidence_geometry": "Multiple unresolved evidence gaps compete for a bounded action budget, and only a subset can change the next authorization decision.",
+      "source_artifacts": [
+        "docs/27_clinical_evidence_tensor_and_voi.md",
+        "docs/28_clinical_evidence_closed_loop.md"
+      ],
+      "planned_stage_count": 6,
+      "planned_mutations": [
+        "action_cost_increased",
+        "resolution_probability_reordered",
+        "decision_relevance_removed",
+        "already_consumed_action_reused",
+        "new_source_hash_not_rejoined"
+      ],
+      "nonclaim": "This design seed is not benchmark performance evidence."
+    }
+  ],
+  "integrity_sha256": "dd03a249533db94ec59424711558b645db6c5d856bd1884609d3042868e3ab8f"
+}

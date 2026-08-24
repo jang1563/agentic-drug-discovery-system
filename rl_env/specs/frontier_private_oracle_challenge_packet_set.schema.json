@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_oracle_challenge_packet_set.schema.json",
+  "title": "ADDS-Frontier private independent-oracle challenge packet set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "set_id", "protocol_id", "board_id", "compiled_on", "private_preflight_integrity_sha256", "author_oracle_labels_included", "semantic_review_material_included", "authoring_source_artifacts_included", "task_identity_mapping_included", "minimum_independent_challengers_per_packet", "challenge_instructions", "packets", "nonclaims", "integrity_sha256"],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-oracle-challenge-packet-set.v1"},
+    "set_id": {"const": "adds-frontier-independent-oracle-challenge-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "private_preflight_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "author_oracle_labels_included": {"const": false},
+    "semantic_review_material_included": {"const": false},
+    "authoring_source_artifacts_included": {"const": false},
+    "task_identity_mapping_included": {"const": false},
+    "minimum_independent_challengers_per_packet": {"const": 2},
+    "challenge_instructions": {"type": "array", "minItems": 4, "uniqueItems": true, "items": {"$ref": "#/$defs/nonempty"}},
+    "packets": {"type": "array", "minItems": 10, "maxItems": 10, "items": {"$ref": "#/$defs/packet"}},
+    "nonclaims": {"type": "array", "minItems": 4, "uniqueItems": true, "items": {"$ref": "#/$defs/nonempty"}},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonempty": {"type": "string", "minLength": 1},
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "available_on", "lineage_id", "evidence_role", "evidence_summary"],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/nonempty"},
+        "available_on": {"type": "string", "format": "date"},
+        "lineage_id": {"$ref": "#/$defs/nonempty"},
+        "evidence_role": {"enum": ["source", "context", "contradiction", "derivative", "decision_record"]},
+        "evidence_summary": {"$ref": "#/$defs/nonempty"}
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parent_evidence_id", "child_evidence_id", "relationship"],
+      "properties": {
+        "parent_evidence_id": {"$ref": "#/$defs/nonempty"},
+        "child_evidence_id": {"$ref": "#/$defs/nonempty"},
+        "relationship": {"enum": ["derives_from", "corroborates", "supersedes", "conflicts_with"]}
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage_id", "stage_kind", "as_of_date", "accessible_evidence_ids", "required_gates", "max_tool_calls"],
+      "properties": {
+        "stage_id": {"type": "string", "pattern": "^s[0-9]{2}$"},
+        "stage_kind": {"enum": ["retrieve", "identity", "chronology", "lineage", "alignment", "synthesis", "action", "replay"]},
+        "as_of_date": {"type": "string", "format": "date"},
+        "accessible_evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonempty"}},
+        "required_gates": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonempty"}},
+        "max_tool_calls": {"type": "integer", "minimum": 1}
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family_id", "disease_domain", "temporal_regime", "disease_identity", "program_identity", "prompt", "anchor_cutoff_date", "stage_budget", "tool_call_budget", "evidence_nodes", "lineage_edges", "stages"],
+      "properties": {
+        "family_id": {"enum": ["evidence_lineage_trap", "temporal_reversal", "translational_handoff", "non_exchangeable_replication", "budgeted_evidence_resolution"]},
+        "disease_domain": {"enum": ["hematology", "immune_inflammatory"]},
+        "temporal_regime": {"enum": ["historical_pre_2024", "historical_2024_2025"]},
+        "disease_identity": {"$ref": "#/$defs/nonempty"},
+        "program_identity": {"$ref": "#/$defs/nonempty"},
+        "prompt": {"$ref": "#/$defs/nonempty"},
+        "anchor_cutoff_date": {"type": "string", "format": "date"},
+        "stage_budget": {"const": 6},
+        "tool_call_budget": {"type": "integer", "minimum": 1},
+        "evidence_nodes": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/evidence"}},
+        "lineage_edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
+        "stages": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/stage"}}
+      }
+    },
+    "packet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packet_id", "challenge_task", "challenge_task_commitment"],
+      "properties": {
+        "packet_id": {"type": "string", "pattern": "^oracle-challenge-[0-9a-f]{20}$"},
+        "challenge_task": {"$ref": "#/$defs/task"},
+        "challenge_task_commitment": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

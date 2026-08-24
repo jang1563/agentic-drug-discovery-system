@@ -1,0 +1,386 @@
+{
+  "schema_version": "adds.frontier-oracle-set.v1",
+  "protocol_id": "adds-frontier-v1",
+  "set_id": "adds-frontier-development-tranche-v1",
+  "set_role": "public_development_oracle",
+  "benchmark_evidence_claimed": false,
+  "task_set_integrity_sha256": "6ce258b44c8d4c0b4b8c43dd1b48d0add9677df518e26d2ec841064012ac8242",
+  "oracles": [
+    {
+      "task_id": "frontier-dev-lineage-001",
+      "task_sha256": "81f2e983c50d74630fe8d589b13a1cec6255008695dde917d38c87b31eccba5e",
+      "stage_expectations": [
+        {
+          "stage_id": "s01",
+          "action": {"disposition": "hold", "next_action": "retrieve", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-lineage-preclinical"],
+          "blocker_codes": ["second_lineage_not_yet_visible"]
+        },
+        {
+          "stage_id": "s02",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-lineage-preclinical"],
+          "blocker_codes": ["cross_stage_identity_not_yet_bound"]
+        },
+        {
+          "stage_id": "s03",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-lineage-preclinical", "ev-lineage-ra-tensor"],
+          "blocker_codes": ["scientific_independence_requires_review"]
+        },
+        {
+          "stage_id": "s04",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance", "out_of_distribution"]},
+          "witness_evidence_ids": ["ev-lineage-preclinical", "ev-lineage-ra-tensor"],
+          "blocker_codes": ["cross_domain_corroboration_not_authorized"]
+        },
+        {
+          "stage_id": "s05",
+          "action": {"disposition": "hold", "next_action": "human_review", "risk_flags": ["provenance", "out_of_distribution"]},
+          "witness_evidence_ids": ["ev-lineage-preclinical", "ev-lineage-ra-tensor"],
+          "blocker_codes": ["lineage_authority_not_independently_reviewed"]
+        },
+        {
+          "stage_id": "s06",
+          "action": {"disposition": "hold", "next_action": "human_review", "risk_flags": ["provenance", "out_of_distribution"]},
+          "witness_evidence_ids": ["ev-lineage-preclinical", "ev-lineage-ra-tensor"],
+          "blocker_codes": ["lineage_authority_not_independently_reviewed"]
+        }
+      ],
+      "mutation_expectations": [
+        {
+          "mutation_id": "same_bytes_new_source_id",
+          "mutation_class": "nuisance_invariance",
+          "operation": "Rename a source id while preserving bytes, lineage root, and all task semantics.",
+          "expected_changed_components": []
+        },
+        {
+          "mutation_id": "same_trial_secondary_publication",
+          "mutation_class": "critical_flip",
+          "operation": "Rebind the second artifact to a secondary publication of the same underlying trial.",
+          "expected_changed_components": ["risk_flags", "witness", "blockers"]
+        },
+        {
+          "mutation_id": "shared_upstream_publication_lineage",
+          "mutation_class": "critical_flip",
+          "operation": "Make both evidence nodes descend from one upstream publication lineage.",
+          "expected_changed_components": ["disposition", "risk_flags", "witness", "blockers"]
+        },
+        {
+          "mutation_id": "independent_source_removed",
+          "mutation_class": "critical_flip",
+          "operation": "Remove the only evidence node with an independent lineage root.",
+          "expected_changed_components": ["next_action", "witness", "blockers"]
+        },
+        {
+          "mutation_id": "lineage_edge_hidden",
+          "mutation_class": "evidence_ladder",
+          "operation": "Reveal the previously hidden lineage edge as one bounded verification result.",
+          "expected_changed_components": ["risk_flags", "witness", "blockers"]
+        }
+      ],
+      "nonclaim": "This public development oracle is a contract fixture, not a hidden benchmark label."
+    },
+    {
+      "task_id": "frontier-dev-temporal-001",
+      "task_sha256": "ffb2e7bad0c304f352fd32501f566b2f0a2b90a960b9e3dc309788c1eb8e46d6",
+      "stage_expectations": [
+        {
+          "stage_id": "s01",
+          "action": {"disposition": "hold", "next_action": "retrieve", "risk_flags": ["temporal_leakage"]},
+          "witness_evidence_ids": ["ev-temporal-scd-slice"],
+          "blocker_codes": ["later_cutoff_packet_not_admissible"]
+        },
+        {
+          "stage_id": "s02",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["temporal_leakage"]},
+          "witness_evidence_ids": ["ev-temporal-scd-slice"],
+          "blocker_codes": ["availability_chronology_unresolved"]
+        },
+        {
+          "stage_id": "s03",
+          "action": {"disposition": "hold", "next_action": "retrieve", "risk_flags": ["temporal_leakage"]},
+          "witness_evidence_ids": ["ev-temporal-scd-slice"],
+          "blocker_codes": ["cutoff_safe_evaluation_not_yet_available"]
+        },
+        {
+          "stage_id": "s04",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["temporal_leakage"]},
+          "witness_evidence_ids": ["ev-temporal-scd-slice", "ev-temporal-cutoff-eval"],
+          "blocker_codes": ["historical_adapter_authority_requires_review"]
+        },
+        {
+          "stage_id": "s05",
+          "action": {"disposition": "hold", "next_action": "human_review", "risk_flags": ["temporal_leakage"]},
+          "witness_evidence_ids": ["ev-temporal-scd-slice", "ev-temporal-cutoff-eval"],
+          "blocker_codes": ["retrospective_state_not_independently_curated"]
+        },
+        {
+          "stage_id": "s06",
+          "action": {"disposition": "hold", "next_action": "human_review", "risk_flags": ["temporal_leakage"]},
+          "witness_evidence_ids": ["ev-temporal-scd-slice", "ev-temporal-cutoff-eval"],
+          "blocker_codes": ["retrospective_state_not_independently_curated"]
+        }
+      ],
+      "mutation_expectations": [
+        {
+          "mutation_id": "post_cutoff_result_inserted",
+          "mutation_class": "critical_flip",
+          "operation": "Expose the later result during a stage whose as-of date precedes availability.",
+          "expected_changed_components": ["risk_flags", "witness", "blockers"]
+        },
+        {
+          "mutation_id": "availability_date_shifted",
+          "mutation_class": "nuisance_invariance",
+          "operation": "Shift the later packet date within the same admissible interval without crossing a stage cutoff.",
+          "expected_changed_components": []
+        },
+        {
+          "mutation_id": "retrieval_date_substituted_for_availability",
+          "mutation_class": "critical_flip",
+          "operation": "Replace evidence availability with a later retrieval timestamp.",
+          "expected_changed_components": ["risk_flags", "blockers"]
+        },
+        {
+          "mutation_id": "present_day_adapter_enabled",
+          "mutation_class": "critical_flip",
+          "operation": "Enable an unbounded present-day adapter inside the historical stage.",
+          "expected_changed_components": ["disposition", "risk_flags", "blockers"]
+        },
+        {
+          "mutation_id": "regulatory_reversal_removed",
+          "mutation_class": "evidence_ladder",
+          "operation": "Restore the omitted cutoff-safe reversal record as an admissible evidence node.",
+          "expected_changed_components": ["next_action", "witness", "blockers"]
+        }
+      ],
+      "nonclaim": "This public development oracle is a contract fixture, not a hidden benchmark label."
+    },
+    {
+      "task_id": "frontier-dev-handoff-001",
+      "task_sha256": "f8d1b6e5a6f4cdf0b7370d889dc757a9068e0341daa27cfdd77f914591c07a49",
+      "stage_expectations": [
+        {
+          "stage_id": "s01",
+          "action": {"disposition": "hold", "next_action": "retrieve", "risk_flags": ["out_of_distribution"]},
+          "witness_evidence_ids": ["ev-handoff-bridge"],
+          "blocker_codes": ["typed_handoff_packet_not_yet_visible"]
+        },
+        {
+          "stage_id": "s02",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["out_of_distribution"]},
+          "witness_evidence_ids": ["ev-handoff-bridge"],
+          "blocker_codes": ["target_and_model_identity_incomplete"]
+        },
+        {
+          "stage_id": "s03",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["out_of_distribution", "provenance"]},
+          "witness_evidence_ids": ["ev-handoff-bridge", "ev-handoff-m6"],
+          "blocker_codes": ["contextual_claim_not_clinically_promotable"]
+        },
+        {
+          "stage_id": "s04",
+          "action": {"disposition": "hold", "next_action": "experiment", "risk_flags": ["out_of_distribution", "provenance"]},
+          "witness_evidence_ids": ["ev-handoff-bridge", "ev-handoff-m6"],
+          "blocker_codes": ["orthogonal_validation_missing"]
+        },
+        {
+          "stage_id": "s05",
+          "action": {"disposition": "hold", "next_action": "experiment", "risk_flags": ["out_of_distribution", "provenance"]},
+          "witness_evidence_ids": ["ev-handoff-bridge", "ev-handoff-m6"],
+          "blocker_codes": ["clinical_readiness_not_established"]
+        },
+        {
+          "stage_id": "s06",
+          "action": {"disposition": "hold", "next_action": "experiment", "risk_flags": ["out_of_distribution", "provenance"]},
+          "witness_evidence_ids": ["ev-handoff-bridge", "ev-handoff-m6"],
+          "blocker_codes": ["clinical_readiness_not_established"]
+        }
+      ],
+      "mutation_expectations": [
+        {
+          "mutation_id": "target_alias_rebound",
+          "mutation_class": "critical_flip",
+          "operation": "Rebind one target alias to a different canonical target across the handoff.",
+          "expected_changed_components": ["disposition", "risk_flags", "witness", "blockers"]
+        },
+        {
+          "mutation_id": "cell_type_context_removed",
+          "mutation_class": "critical_flip",
+          "operation": "Remove the cell-type context that bounds the perturbation observation.",
+          "expected_changed_components": ["next_action", "risk_flags", "blockers"]
+        },
+        {
+          "mutation_id": "model_system_changed",
+          "mutation_class": "nuisance_invariance",
+          "operation": "Rename the model-system display label while preserving its canonical identity.",
+          "expected_changed_components": []
+        },
+        {
+          "mutation_id": "contextual_claim_promoted_to_supportive",
+          "mutation_class": "critical_flip",
+          "operation": "Promote a contextualizes-only claim to supportive evidence without new data.",
+          "expected_changed_components": ["disposition", "risk_flags", "blockers"]
+        },
+        {
+          "mutation_id": "quality_control_failure_suppressed",
+          "mutation_class": "evidence_ladder",
+          "operation": "Restore the suppressed QC failure and its source commitment.",
+          "expected_changed_components": ["next_action", "risk_flags", "witness", "blockers"]
+        }
+      ],
+      "nonclaim": "This public development oracle is a contract fixture, not a hidden benchmark label."
+    },
+    {
+      "task_id": "frontier-dev-exchangeability-001",
+      "task_sha256": "544c37a3e4346feb3cf75c57404e04f38b6a409f97082c19acee5e61300cdf00",
+      "stage_expectations": [
+        {
+          "stage_id": "s01",
+          "action": {"disposition": "hold", "next_action": "retrieve", "risk_flags": ["out_of_distribution"]},
+          "witness_evidence_ids": ["ev-exchange-transport"],
+          "blocker_codes": ["same_stratum_replication_not_visible"]
+        },
+        {
+          "stage_id": "s02",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance", "out_of_distribution"]},
+          "witness_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication"],
+          "blocker_codes": ["trial_lineage_and_population_binding_pending"]
+        },
+        {
+          "stage_id": "s03",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["out_of_distribution"]},
+          "witness_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication"],
+          "blocker_codes": ["target_population_not_declared"]
+        },
+        {
+          "stage_id": "s04",
+          "action": {"disposition": "hold", "next_action": "human_review", "risk_flags": ["contradiction", "out_of_distribution"]},
+          "witness_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication", "ev-exchange-rob"],
+          "blocker_codes": ["outcome_specific_risk_of_bias_has_some_concerns"]
+        },
+        {
+          "stage_id": "s05",
+          "action": {"disposition": "hold", "next_action": "human_review", "risk_flags": ["contradiction", "out_of_distribution"]},
+          "witness_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication", "ev-exchange-rob"],
+          "blocker_codes": ["transport_model_and_target_population_missing"]
+        },
+        {
+          "stage_id": "s06",
+          "action": {"disposition": "hold", "next_action": "human_review", "risk_flags": ["contradiction", "out_of_distribution"]},
+          "witness_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication", "ev-exchange-rob"],
+          "blocker_codes": ["transport_model_and_target_population_missing"]
+        }
+      ],
+      "mutation_expectations": [
+        {
+          "mutation_id": "population_stratum_swapped",
+          "mutation_class": "critical_flip",
+          "operation": "Swap one MTX-IR trial for a TNFi-IR trial while retaining the same endpoint label.",
+          "expected_changed_components": ["disposition", "risk_flags", "witness", "blockers"]
+        },
+        {
+          "mutation_id": "endpoint_timeframe_changed",
+          "mutation_class": "critical_flip",
+          "operation": "Change one ACR20 endpoint from Week 12 to a different assessment time.",
+          "expected_changed_components": ["risk_flags", "witness", "blockers"]
+        },
+        {
+          "mutation_id": "effect_scale_rebound",
+          "mutation_class": "nuisance_invariance",
+          "operation": "Express the same risk difference in proportions rather than percentage points.",
+          "expected_changed_components": []
+        },
+        {
+          "mutation_id": "target_population_omitted",
+          "mutation_class": "critical_flip",
+          "operation": "Remove the declared target population required for transport.",
+          "expected_changed_components": ["next_action", "risk_flags", "blockers"]
+        },
+        {
+          "mutation_id": "risk_of_bias_assessment_removed",
+          "mutation_class": "evidence_ladder",
+          "operation": "Restore the missing outcome-specific risk-of-bias assessment.",
+          "expected_changed_components": ["next_action", "witness", "blockers"]
+        }
+      ],
+      "nonclaim": "This public development oracle is a contract fixture, not a hidden benchmark label."
+    },
+    {
+      "task_id": "frontier-dev-budget-001",
+      "task_sha256": "96628453ae89043f7d5f95eeb85e9a1600f65ede708d2484fc280360716593e2",
+      "stage_expectations": [
+        {
+          "stage_id": "s01",
+          "action": {"disposition": "hold", "next_action": "retrieve", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-budget-tensor"],
+          "blocker_codes": ["closed_loop_receipt_not_visible"]
+        },
+        {
+          "stage_id": "s02",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-budget-tensor"],
+          "blocker_codes": ["accepted_state_binding_unverified"]
+        },
+        {
+          "stage_id": "s03",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-budget-tensor", "ev-budget-closed-loop"],
+          "blocker_codes": ["decision_relevance_requires_refresh"]
+        },
+        {
+          "stage_id": "s04",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-budget-tensor", "ev-budget-closed-loop"],
+          "blocker_codes": ["highest_value_action_not_executed"]
+        },
+        {
+          "stage_id": "s05",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-budget-tensor", "ev-budget-closed-loop"],
+          "blocker_codes": ["reviewer_refresh_receipt_missing"]
+        },
+        {
+          "stage_id": "s06",
+          "action": {"disposition": "hold", "next_action": "verify", "risk_flags": ["provenance"]},
+          "witness_evidence_ids": ["ev-budget-tensor", "ev-budget-closed-loop"],
+          "blocker_codes": ["reviewer_refresh_receipt_missing"]
+        }
+      ],
+      "mutation_expectations": [
+        {
+          "mutation_id": "action_cost_increased",
+          "mutation_class": "critical_flip",
+          "operation": "Increase the preferred action cost beyond the remaining tool budget.",
+          "expected_changed_components": ["next_action", "blockers"]
+        },
+        {
+          "mutation_id": "resolution_probability_reordered",
+          "mutation_class": "critical_flip",
+          "operation": "Reorder the preregistered resolution probabilities of two available actions.",
+          "expected_changed_components": ["next_action", "blockers"]
+        },
+        {
+          "mutation_id": "decision_relevance_removed",
+          "mutation_class": "critical_flip",
+          "operation": "Remove the selected gap from the next authorization decision.",
+          "expected_changed_components": ["next_action", "witness", "blockers"]
+        },
+        {
+          "mutation_id": "already_consumed_action_reused",
+          "mutation_class": "nuisance_invariance",
+          "operation": "Rename an already consumed action without changing its commitment or budget state.",
+          "expected_changed_components": []
+        },
+        {
+          "mutation_id": "new_source_hash_not_rejoined",
+          "mutation_class": "evidence_ladder",
+          "operation": "Rejoin the refreshed source hash to the accepted-state decision package.",
+          "expected_changed_components": ["next_action", "risk_flags", "witness", "blockers"]
+        }
+      ],
+      "nonclaim": "This public development oracle is a contract fixture, not a hidden benchmark label."
+    }
+  ],
+  "integrity_sha256": "be0c48a18f095c058190b9612c2cb9dc791c0435087a8a4c67232588502baa02"
+}

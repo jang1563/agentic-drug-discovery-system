@@ -55,5 +55,14 @@ Current repository scope:
   `specs/policy_evaluation_submission.schema.json` and
   `specs/policy_evaluation_report.schema.json`. Synthetic development cases are public; the real
   board, label vault, per-episode scores, and cached packets remain external.
+- The clinical-outcome contract family progresses from package-bound prediction/outcome evaluation
+  through dependence-audited CR1 intervals, prospective clustered-board design, informative-
+  evaluability and residual-dependence stress, prediction-stratified binary log-IMOR sensitivity,
+  dependence-closed cluster-jackknife calibration, unequal-cluster influence calibration, and
+  informative-cluster-size dual-estimand analysis. Each layer has strict protocol, aggregate
+  report, and compact summary schemas under `specs/`; public examples are deterministic synthetic
+  fixtures. Unit-to-cluster assignments, real outcomes, elicited missingness ranges, real
+  size-outcome profiles, cluster influence records, and replicate-level simulation results remain
+  outside Git.
 - Keep concrete task instances, trajectories, evaluator labels, generated reward outputs, and
   case-bank-specific scripts outside Git until a release package is explicitly prepared.

@@ -74,10 +74,18 @@
       }
     },
     "effect_measure": {
-      "const": "hazard_ratio"
+      "enum": [
+        "hazard_ratio",
+        "odds_ratio",
+        "risk_ratio",
+        "risk_difference"
+      ]
     },
     "favorable_direction": {
-      "const": "lower_is_better"
+      "enum": [
+        "lower_is_better",
+        "higher_is_better"
+      ]
     },
     "safety_measure": {
       "const": "serious_adverse_event_risk_difference"
@@ -128,6 +136,43 @@
       }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "effect_measure": {
+            "const": "hazard_ratio"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "favorable_direction": {
+            "const": "lower_is_better"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "effect_measure": {
+            "enum": [
+              "odds_ratio",
+              "risk_ratio"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "favorable_direction": {
+            "const": "higher_is_better"
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "safeId": {
       "type": "string",

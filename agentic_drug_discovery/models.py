@@ -9,6 +9,12 @@ from enum import Enum
 from types import MappingProxyType
 from typing import Any, Mapping
 
+from .clinical_effects import (
+    effect_benefit_direction,
+    validate_effect_contract,
+    validate_effect_scale_interval,
+)
+
 
 class Stage(str, Enum):
     DISEASE_CONTEXT = "disease_context"
@@ -192,9 +198,13 @@ def to_primitive(value: Any) -> Any:
     if isinstance(value, (tuple, list)):
         return [to_primitive(item) for item in value]
     if is_dataclass(value) and not isinstance(value, type):
-        return {
-            item.name: to_primitive(getattr(value, item.name)) for item in fields(value)
-        }
+        result = {}
+        for item in fields(value):
+            item_value = getattr(value, item.name)
+            if item.metadata.get("omit_if_none") and item_value is None:
+                continue
+            result[item.name] = to_primitive(item_value)
+        return result
     if value is None or isinstance(value, (str, bool, int, float)):
         return value
     raise TypeError(f"cannot serialize {type(value).__name__}")
@@ -967,6 +977,7 @@ class ClinicalEndpointMappingRecord(SerializableRecord):
             "reviewer_id",
         ):
             _require_text(getattr(self, field_name), field_name)
+        validate_effect_contract(self.effect_measure, self.favorable_direction)
         if self.stage is not Stage.REGULATORY_POSTMARKET:
             raise ValueError("endpoint mapping is limited to regulatory_postmarket")
         if self.review_status != "approved":
@@ -1114,16 +1125,30 @@ class StudyBenefitRiskRecord(SerializableRecord):
                 raise TypeError(f"{field_name} must be numeric or null")
             if not math.isfinite(float(value)):
                 raise ValueError(f"{field_name} must be finite when present")
-        if self.effect_estimate <= 0:
-            raise ValueError("effect_estimate must be positive")
         if not 0 < self.confidence_interval_percent <= 100:
             raise ValueError("confidence_interval_percent must be in (0, 100]")
-        if not (
-            0 < self.confidence_interval_lower
-            <= self.effect_estimate
-            <= self.confidence_interval_upper
-        ):
-            raise ValueError("confidence interval must contain the effect estimate")
+        validate_effect_scale_interval(
+            self.effect_estimate,
+            self.confidence_interval_lower,
+            self.confidence_interval_upper,
+            self.effect_measure,
+            self.measurement_unit,
+        )
+        favorable_direction = self.attributes.get(
+            "effect_measure_favorable_direction"
+        )
+        if not isinstance(favorable_direction, str):
+            raise ValueError(
+                "attributes.effect_measure_favorable_direction must be declared"
+            )
+        expected_benefit_direction = effect_benefit_direction(
+            self.confidence_interval_lower,
+            self.confidence_interval_upper,
+            self.effect_measure,
+            favorable_direction,
+        )
+        if self.benefit_direction != expected_benefit_direction:
+            raise ValueError("benefit_direction does not match effect interval")
         for field_name in (
             "candidate_serious_num_affected",
             "candidate_serious_num_at_risk",
@@ -1252,6 +1277,16 @@ class BenefitRiskSynthesisRecord(SerializableRecord):
         object.__setattr__(self, "studies", studies)
         if len(studies) < 2:
             raise ValueError("studies must contain at least two trials")
+        favorable_directions = {
+            item.attributes.get("effect_measure_favorable_direction")
+            for item in studies
+        }
+        if len(favorable_directions) != 1:
+            raise ValueError("study favorable directions must match synthesis")
+        favorable_direction = next(iter(favorable_directions))
+        if not isinstance(favorable_direction, str):
+            raise ValueError("study favorable direction must be declared")
+        validate_effect_contract(self.effect_measure, favorable_direction)
         for study in studies:
             _require_instance(study, StudyBenefitRiskRecord, "studies item")
             if (

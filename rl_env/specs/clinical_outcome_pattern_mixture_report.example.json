@@ -1,0 +1,3184 @@
+{
+  "integrity_sha256": "6a9376fb5c64fb449ee0972ea95430db780dfa6d830bf065b5996cb71092094f",
+  "report": {
+    "aggregate_simulation_only": true,
+    "automatic_missingness_correction_included": false,
+    "latent_truth_recovery_diagnostic_included": true,
+    "limitations": [
+      "The report is a synthetic prospective sensitivity analysis; it contains no real clinical outcomes and does not validate a deployed policy or evidence board.",
+      "The log-IMOR sensitivity parameter is the log odds of a favorable outcome among unevaluable units minus the corresponding log odds among evaluable units.",
+      "The log-IMOR grid is an identifying-assumption grid, not an estimate learned from the observed outcomes; real ranges require outcome-blind clinical elicitation.",
+      "One common log-IMOR is applied within every preregistered policy-prediction stratum; effect modification of missingness beyond those strata is not modeled.",
+      "Sensitivity envelopes contain point estimates across the declared grid and are not sampling-uncertainty intervals or confidence sets for a real population estimand.",
+      "Monte Carlo inclusion rates evaluate repeated synthetic recovery; they are not frequentist coverage guarantees for a single clinical evidence board.",
+      "Truth-aligned recovery uses the latent synthetic log-IMOR only as an evaluator-side diagnostic and never as an operationally available correction parameter.",
+      "A replicate fails closed when a partially observed prediction stratum has no evaluable outcomes or only one observed outcome class.",
+      "The inherited generator retains declared block dependence, but this v1 report adds no cluster-robust sampling interval around a sensitivity-adjusted estimate.",
+      "Passing the preregistered synthetic targets does not establish treatment efficacy, safety, clinical utility, transportability, or regulatory acceptability."
+    ],
+    "log_imor_grid": [
+      -4.0,
+      -3.0,
+      -2.397895272798,
+      -1.5,
+      -0.75,
+      0.0,
+      0.75,
+      1.5,
+      3.0,
+      4.0
+    ],
+    "maximum_absolute_bias": 0.02,
+    "maximum_mean_identification_width": 0.5,
+    "method_id": "adds.pattern-mixture.binary-log-imor-prediction-stratified.v1",
+    "minimum_analyzable_rate": 0.95,
+    "monte_carlo_confidence_level": 0.95,
+    "operational_estimate_uses_latent_truth": false,
+    "protocol_fingerprint": "0ff618274428cdd9db271b0f361bfa18c9334852bbcbc3f4bc0af1405f2ea3e2",
+    "protocol_id": "synthetic-pattern-mixture-sensitivity",
+    "real_clinical_outcomes_included": false,
+    "replicate_level_records_included": false,
+    "replicates": 1000,
+    "rng_method_id": "adds.mt19937-block-polya-urn-informative-evaluability.v1",
+    "sampling_uncertainty_intervals_included": false,
+    "scenario_results": [
+      {
+        "all_evaluable_calibration_targets_met": true,
+        "all_identification_targets_met": true,
+        "all_truth_aligned_recovery_targets_met": true,
+        "analyzable_rate": {
+          "confidence_level": 0.95,
+          "event_count": 1000,
+          "lower": 0.996173241514,
+          "rate": 1.0,
+          "total_count": 1000,
+          "upper": 1.0
+        },
+        "analyzable_target_met": true,
+        "endpoint_family": "composite_benefit_risk",
+        "evaluability_rng_stream_sha256": "f6afd46f413178ef226de4f0e3e51c37679afbaf7f95c4513c2e6d9d01c60302",
+        "evaluable_favorable_prevalence": 0.518518518519,
+        "expected_evaluable_probability": 0.6075,
+        "grid_brackets_true_log_imor": true,
+        "metric_performance": [
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.518518518519,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.322156952528,
+                "population_bias": -0.027843047472,
+                "population_root_mean_squared_error": 0.06632680625,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.335382515611,
+                "population_bias": -0.014617484389,
+                "population_root_mean_squared_error": 0.064481173653,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.351117388503,
+                "population_bias": 0.001117388503,
+                "population_root_mean_squared_error": 0.065599775148,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.392746677633,
+                "population_bias": 0.042746677633,
+                "population_root_mean_squared_error": 0.083134481662,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.447774539805,
+                "population_bias": 0.097774539805,
+                "population_root_mean_squared_error": 0.123337053637,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.515942825991,
+                "population_bias": 0.165942825991,
+                "population_root_mean_squared_error": 0.181834770976,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.582936723112,
+                "population_bias": 0.232936723112,
+                "population_root_mean_squared_error": 0.242524213097,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.635322929662,
+                "population_bias": 0.285322929662,
+                "population_root_mean_squared_error": 0.291162499173,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.688297673843,
+                "population_bias": 0.338297673843,
+                "population_root_mean_squared_error": 0.341270608961,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.700262872922,
+                "population_bias": 0.350262872922,
+                "population_root_mean_squared_error": 0.352731936296,
+                "population_true_value": 0.35
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.322156952528,
+            "mean_sensitivity_envelope_upper": 0.700262872922,
+            "mean_sensitivity_envelope_width": 0.378105920394,
+            "metric": "observed_favorable_rate",
+            "naive_evaluable_bias": -0.003170848173,
+            "naive_evaluable_root_mean_squared_error": 0.074203436358,
+            "naive_mean_estimate": 0.515347670346,
+            "naive_population_bias": 0.165347670346,
+            "naive_population_root_mean_squared_error": 0.181206919785,
+            "population_true_value": 0.35,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 680,
+              "lower": 0.650446375927,
+              "rate": 0.68,
+              "total_count": 1000,
+              "upper": 0.708175991019
+            },
+            "truth_aligned_mean_estimate": 0.351117388503,
+            "truth_aligned_population_bias": 0.001117388503,
+            "truth_aligned_population_root_mean_squared_error": 0.065599775148,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.3,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.300322073222,
+                "population_bias": 0.000322073222,
+                "population_root_mean_squared_error": 0.014497273608,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.300284862776,
+                "population_bias": 0.000284862776,
+                "population_root_mean_squared_error": 0.015178917994,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.300245534526,
+                "population_bias": 0.000245534526,
+                "population_root_mean_squared_error": 0.015977631195,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.300166957863,
+                "population_bias": 0.000166957863,
+                "population_root_mean_squared_error": 0.017850816828,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.300107753852,
+                "population_bias": 0.000107753852,
+                "population_root_mean_squared_error": 0.019563975342,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.300074740544,
+                "population_bias": 7.4740544e-05,
+                "population_root_mean_squared_error": 0.020365295505,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.30005061597,
+                "population_bias": 5.061597e-05,
+                "population_root_mean_squared_error": 0.019720513631,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.300010771682,
+                "population_bias": 1.0771682e-05,
+                "population_root_mean_squared_error": 0.018227733239,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.299919386255,
+                "population_bias": -8.0613745e-05,
+                "population_root_mean_squared_error": 0.015909279061,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.299886761323,
+                "population_bias": -0.000113238677,
+                "population_root_mean_squared_error": 0.015312392036,
+                "population_true_value": 0.3
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.299886761323,
+            "mean_sensitivity_envelope_upper": 0.300322073222,
+            "mean_sensitivity_envelope_width": 0.000435311899,
+            "metric": "policy_a_brier_score",
+            "naive_evaluable_bias": 0.000162011399,
+            "naive_evaluable_root_mean_squared_error": 0.02036051616,
+            "naive_mean_estimate": 0.300162011399,
+            "naive_population_bias": 0.000162011399,
+            "naive_population_root_mean_squared_error": 0.02036051616,
+            "population_true_value": 0.3,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 333,
+              "lower": 0.304477903348,
+              "rate": 0.333,
+              "total_count": 1000,
+              "upper": 0.362800233986
+            },
+            "truth_aligned_mean_estimate": 0.300245534526,
+            "truth_aligned_population_bias": 0.000245534526,
+            "truth_aligned_population_root_mean_squared_error": 0.015977631195,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.306296296296,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.345890682716,
+                "population_bias": 0.005890682716,
+                "population_root_mean_squared_error": 0.019801577746,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.343208359654,
+                "population_bias": 0.003208359654,
+                "population_root_mean_squared_error": 0.020055374974,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.340022056826,
+                "population_bias": 2.2056826e-05,
+                "population_root_mean_squared_error": 0.020814798494,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.331617622337,
+                "population_bias": -0.008382377663,
+                "population_root_mean_squared_error": 0.024591436658,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.320552845891,
+                "population_bias": -0.019447154109,
+                "population_root_mean_squared_error": 0.03174982659,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.306886175346,
+                "population_bias": -0.033113824654,
+                "population_root_mean_squared_error": 0.041962495887,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.293463271348,
+                "population_bias": -0.046536728652,
+                "population_root_mean_squared_error": 0.052605151008,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.28294618575,
+                "population_bias": -0.05705381425,
+                "population_root_mean_squared_error": 0.061230903273,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.272259851487,
+                "population_bias": -0.067740148513,
+                "population_root_mean_squared_error": 0.070301361282,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.269834186739,
+                "population_bias": -0.070165813261,
+                "population_root_mean_squared_error": 0.072420184947,
+                "population_true_value": 0.34
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.269834186739,
+            "mean_sensitivity_envelope_upper": 0.345890682716,
+            "mean_sensitivity_envelope_width": 0.076056495977,
+            "metric": "policy_b_brier_score",
+            "naive_evaluable_bias": 0.000711303081,
+            "naive_evaluable_root_mean_squared_error": 0.025965776009,
+            "naive_mean_estimate": 0.307007599377,
+            "naive_population_bias": -0.032992400623,
+            "naive_population_root_mean_squared_error": 0.041978733551,
+            "population_true_value": 0.34,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 634,
+              "lower": 0.603683870672,
+              "rate": 0.634,
+              "total_count": 1000,
+              "upper": 0.663290558053
+            },
+            "truth_aligned_mean_estimate": 0.340022056826,
+            "truth_aligned_population_bias": 2.2056826e-05,
+            "truth_aligned_population_root_mean_squared_error": 0.020814798494,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": -0.018518518519,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.177843047472,
+                "population_bias": 0.027843047472,
+                "population_root_mean_squared_error": 0.06632680625,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.164617484389,
+                "population_bias": 0.014617484389,
+                "population_root_mean_squared_error": 0.064481173653,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.148882611497,
+                "population_bias": -0.001117388503,
+                "population_root_mean_squared_error": 0.065599775148,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.107253322367,
+                "population_bias": -0.042746677633,
+                "population_root_mean_squared_error": 0.083134481662,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.052225460195,
+                "population_bias": -0.097774539805,
+                "population_root_mean_squared_error": 0.123337053637,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": -0.015942825991,
+                "population_bias": -0.165942825991,
+                "population_root_mean_squared_error": 0.181834770976,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": -0.082936723112,
+                "population_bias": -0.232936723112,
+                "population_root_mean_squared_error": 0.242524213097,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": -0.135322929662,
+                "population_bias": -0.285322929662,
+                "population_root_mean_squared_error": 0.291162499173,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": -0.188297673843,
+                "population_bias": -0.338297673843,
+                "population_root_mean_squared_error": 0.341270608961,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": -0.200262872922,
+                "population_bias": -0.350262872922,
+                "population_root_mean_squared_error": 0.352731936296,
+                "population_true_value": 0.15
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": -0.200262872922,
+            "mean_sensitivity_envelope_upper": 0.177843047472,
+            "mean_sensitivity_envelope_width": 0.378105920394,
+            "metric": "policy_a_calibration_in_the_large",
+            "naive_evaluable_bias": 0.002746458412,
+            "naive_evaluable_root_mean_squared_error": 0.075857813443,
+            "naive_mean_estimate": -0.015772060107,
+            "naive_population_bias": -0.165772060107,
+            "naive_population_root_mean_squared_error": 0.182283407743,
+            "population_true_value": 0.15,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 680,
+              "lower": 0.650446375927,
+              "rate": 0.68,
+              "total_count": 1000,
+              "upper": 0.708175991019
+            },
+            "truth_aligned_mean_estimate": 0.148882611497,
+            "truth_aligned_population_bias": -0.001117388503,
+            "truth_aligned_population_root_mean_squared_error": 0.065599775148,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.081481481481,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.277843047472,
+                "population_bias": 0.027843047472,
+                "population_root_mean_squared_error": 0.06632680625,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.264617484389,
+                "population_bias": 0.014617484389,
+                "population_root_mean_squared_error": 0.064481173653,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.248882611497,
+                "population_bias": -0.001117388503,
+                "population_root_mean_squared_error": 0.065599775148,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.207253322367,
+                "population_bias": -0.042746677633,
+                "population_root_mean_squared_error": 0.083134481662,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.152225460195,
+                "population_bias": -0.097774539805,
+                "population_root_mean_squared_error": 0.123337053637,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.084057174009,
+                "population_bias": -0.165942825991,
+                "population_root_mean_squared_error": 0.181834770976,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.017063276888,
+                "population_bias": -0.232936723112,
+                "population_root_mean_squared_error": 0.242524213097,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": -0.035322929662,
+                "population_bias": -0.285322929662,
+                "population_root_mean_squared_error": 0.291162499173,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": -0.088297673843,
+                "population_bias": -0.338297673843,
+                "population_root_mean_squared_error": 0.341270608961,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": -0.100262872922,
+                "population_bias": -0.350262872922,
+                "population_root_mean_squared_error": 0.352731936296,
+                "population_true_value": 0.25
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": -0.100262872922,
+            "mean_sensitivity_envelope_upper": 0.277843047472,
+            "mean_sensitivity_envelope_width": 0.378105920394,
+            "metric": "policy_b_calibration_in_the_large",
+            "naive_evaluable_bias": 0.002746458412,
+            "naive_evaluable_root_mean_squared_error": 0.075857813443,
+            "naive_mean_estimate": 0.084227939893,
+            "naive_population_bias": -0.165772060107,
+            "naive_population_root_mean_squared_error": 0.182283407743,
+            "population_true_value": 0.25,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 680,
+              "lower": 0.650446375927,
+              "rate": 0.68,
+              "total_count": 1000,
+              "upper": 0.708175991019
+            },
+            "truth_aligned_mean_estimate": 0.248882611497,
+            "truth_aligned_population_bias": -0.001117388503,
+            "truth_aligned_population_root_mean_squared_error": 0.065599775148,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.5,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.500179973709,
+                "population_bias": 0.000179973709,
+                "population_root_mean_squared_error": 0.031741333976,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.500225618569,
+                "population_bias": 0.000225618569,
+                "population_root_mean_squared_error": 0.033158940192,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.500273157141,
+                "population_bias": 0.000273157141,
+                "population_root_mean_squared_error": 0.034828404803,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.500350063648,
+                "population_bias": 0.000350063648,
+                "population_root_mean_squared_error": 0.038786089478,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.500352999972,
+                "population_bias": 0.000352999972,
+                "population_root_mean_squared_error": 0.042487025286,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.500256455668,
+                "population_bias": 0.000256455668,
+                "population_root_mean_squared_error": 0.044307937228,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.500128690067,
+                "population_bias": 0.000128690067,
+                "population_root_mean_squared_error": 0.043004814393,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.500064054785,
+                "population_bias": 6.4054785e-05,
+                "population_root_mean_squared_error": 0.039831009151,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.500092788524,
+                "population_bias": 9.2788524e-05,
+                "population_root_mean_squared_error": 0.034915218748,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.500119604965,
+                "population_bias": 0.000119604965,
+                "population_root_mean_squared_error": 0.033664969077,
+                "population_true_value": 0.5
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.500064054785,
+            "mean_sensitivity_envelope_upper": 0.500352999972,
+            "mean_sensitivity_envelope_width": 0.000288945187,
+            "metric": "policy_a_classification_accuracy",
+            "naive_evaluable_bias": 0.000232182879,
+            "naive_evaluable_root_mean_squared_error": 0.044185526814,
+            "naive_mean_estimate": 0.500232182879,
+            "naive_population_bias": 0.000232182879,
+            "naive_population_root_mean_squared_error": 0.044185526814,
+            "population_true_value": 0.5,
+            "population_truth_distance_to_mean_envelope": 6.4054785e-05,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 318,
+              "lower": 0.289879510735,
+              "rate": 0.318,
+              "total_count": 1000,
+              "upper": 0.347513429354
+            },
+            "truth_aligned_mean_estimate": 0.500273157141,
+            "truth_aligned_population_bias": 0.000273157141,
+            "truth_aligned_population_root_mean_squared_error": 0.034828404803,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.509259259259,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.410096745606,
+                "population_bias": -0.014903254394,
+                "population_root_mean_squared_error": 0.043427570529,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.416754212301,
+                "population_bias": -0.008245787699,
+                "population_root_mean_squared_error": 0.04346227444,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.424669482104,
+                "population_bias": -0.000330517896,
+                "population_root_mean_squared_error": 0.04478919449,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.445596167655,
+                "population_bias": 0.020596167655,
+                "population_root_mean_squared_error": 0.053595721194,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.473242805816,
+                "population_bias": 0.048242805816,
+                "population_root_mean_squared_error": 0.071942389268,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.507487150395,
+                "population_bias": 0.082487150395,
+                "population_root_mean_squared_error": 0.098803210913,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.541163090729,
+                "population_bias": 0.116163090729,
+                "population_root_mean_squared_error": 0.126970053003,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.567537408495,
+                "population_bias": 0.142537408495,
+                "population_root_mean_squared_error": 0.149762422307,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.594279805887,
+                "population_bias": 0.169279805887,
+                "population_root_mean_squared_error": 0.17355093882,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.600335214942,
+                "population_bias": 0.175335214942,
+                "population_root_mean_squared_error": 0.179059150304,
+                "population_true_value": 0.425
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.410096745606,
+            "mean_sensitivity_envelope_upper": 0.600335214942,
+            "mean_sensitivity_envelope_width": 0.190238469336,
+            "metric": "policy_b_classification_accuracy",
+            "naive_evaluable_bias": -0.002299003023,
+            "naive_evaluable_root_mean_squared_error": 0.053855747074,
+            "naive_mean_estimate": 0.506960256236,
+            "naive_population_bias": 0.081960256236,
+            "naive_population_root_mean_squared_error": 0.098044070092,
+            "population_true_value": 0.425,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 635,
+              "lower": 0.604697252636,
+              "rate": 0.635,
+              "total_count": 1000,
+              "upper": 0.664269522573
+            },
+            "truth_aligned_mean_estimate": 0.424669482104,
+            "truth_aligned_population_bias": -0.000330517896,
+            "truth_aligned_population_root_mean_squared_error": 0.04478919449,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.006296296296,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.045568609494,
+                "population_bias": 0.005568609494,
+                "population_root_mean_squared_error": 0.01326536125,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.042923496878,
+                "population_bias": 0.002923496878,
+                "population_root_mean_squared_error": 0.012896234731,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.039776522299,
+                "population_bias": -0.000223477701,
+                "population_root_mean_squared_error": 0.01311995503,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.031450664473,
+                "population_bias": -0.008549335527,
+                "population_root_mean_squared_error": 0.016626896332,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.020445092039,
+                "population_bias": -0.019554907961,
+                "population_root_mean_squared_error": 0.024667410727,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.006811434802,
+                "population_bias": -0.033188565198,
+                "population_root_mean_squared_error": 0.036366954195,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": -0.006587344622,
+                "population_bias": -0.046587344622,
+                "population_root_mean_squared_error": 0.048504842619,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": -0.017064585933,
+                "population_bias": -0.057064585933,
+                "population_root_mean_squared_error": 0.058232499835,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": -0.027659534769,
+                "population_bias": -0.067659534769,
+                "population_root_mean_squared_error": 0.068254121792,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": -0.030052574584,
+                "population_bias": -0.070052574584,
+                "population_root_mean_squared_error": 0.070546387259,
+                "population_true_value": 0.04
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": -0.030052574584,
+            "mean_sensitivity_envelope_upper": 0.045568609494,
+            "mean_sensitivity_envelope_width": 0.075621184078,
+            "metric": "brier_difference_b_minus_a",
+            "naive_evaluable_bias": 0.000549291683,
+            "naive_evaluable_root_mean_squared_error": 0.015171562689,
+            "naive_mean_estimate": 0.006845587979,
+            "naive_population_bias": -0.033154412021,
+            "naive_population_root_mean_squared_error": 0.036456681549,
+            "population_true_value": 0.04,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 680,
+              "lower": 0.650446375927,
+              "rate": 0.68,
+              "total_count": 1000,
+              "upper": 0.708175991019
+            },
+            "truth_aligned_mean_estimate": 0.039776522299,
+            "truth_aligned_population_bias": -0.000223477701,
+            "truth_aligned_population_root_mean_squared_error": 0.01311995503,
+            "truth_aligned_recovery_met": true
+          }
+        ],
+        "outcome_rng_stream_sha256": "ef5c17933777db8811a386956c70117a6105521866ab997a50e04bef5f0f3157",
+        "population_favorable_prevalence": 0.35,
+        "replicate_count": 1000,
+        "research_target_met": true,
+        "rng_stream_sha256": "eb4826860d4592da3ae55c58ae4ff7d67251d0e8a9857b291272b0834a9a3091",
+        "scenario_id": "combined-informative-hidden-linkage",
+        "stage": "clinical_strategy",
+        "status_counts": [
+          {
+            "count": 1000,
+            "status": "computed"
+          },
+          {
+            "count": 0,
+            "status": "empty_reference_stratum"
+          },
+          {
+            "count": 0,
+            "status": "degenerate_reference_stratum"
+          }
+        ],
+        "true_informative_missingness_odds_ratio": 0.090909090909,
+        "true_log_imor": -2.397895272798
+      },
+      {
+        "all_evaluable_calibration_targets_met": true,
+        "all_identification_targets_met": true,
+        "all_truth_aligned_recovery_targets_met": true,
+        "analyzable_rate": {
+          "confidence_level": 0.95,
+          "event_count": 1000,
+          "lower": 0.996173241514,
+          "rate": 1.0,
+          "total_count": 1000,
+          "upper": 1.0
+        },
+        "analyzable_target_met": true,
+        "endpoint_family": "composite_benefit_risk",
+        "evaluability_rng_stream_sha256": "e2cdc1d831bc254967fd03209d8de9c14cd266be1c37797b2c919f1ad06519e5",
+        "evaluable_favorable_prevalence": 0.35,
+        "expected_evaluable_probability": 0.75,
+        "grid_brackets_true_log_imor": true,
+        "metric_performance": [
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.35,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.262442982121,
+                "population_bias": -0.087557017879,
+                "population_root_mean_squared_error": 0.101252773431,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.266696897645,
+                "population_bias": -0.083303102355,
+                "population_root_mean_squared_error": 0.098156111517,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.27200471632,
+                "population_bias": -0.07799528368,
+                "population_root_mean_squared_error": 0.094410619903,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.287401223368,
+                "population_bias": -0.062598776632,
+                "population_root_mean_squared_error": 0.084412363685,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.311077292197,
+                "population_bias": -0.038922707803,
+                "population_root_mean_squared_error": 0.07237344458,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.346677088797,
+                "population_bias": -0.003322911203,
+                "population_root_mean_squared_error": 0.06561915337,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.390382842559,
+                "population_bias": 0.040382842559,
+                "population_root_mean_squared_error": 0.078786423223,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.432807413448,
+                "population_bias": 0.082807413448,
+                "population_root_mean_squared_error": 0.105908581395,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.48661494498,
+                "population_bias": 0.13661494498,
+                "population_root_mean_squared_error": 0.148608308562,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.500955897678,
+                "population_bias": 0.150955897678,
+                "population_root_mean_squared_error": 0.160800082105,
+                "population_true_value": 0.35
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.262442982121,
+            "mean_sensitivity_envelope_upper": 0.500955897678,
+            "mean_sensitivity_envelope_width": 0.238512915557,
+            "metric": "observed_favorable_rate",
+            "naive_evaluable_bias": -0.003253144045,
+            "naive_evaluable_root_mean_squared_error": 0.065535276797,
+            "naive_mean_estimate": 0.346746855955,
+            "naive_population_bias": -0.003253144045,
+            "naive_population_root_mean_squared_error": 0.065535276797,
+            "population_true_value": 0.35,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 952,
+              "lower": 0.93693391135,
+              "rate": 0.952,
+              "total_count": 1000,
+              "upper": 0.963606698979
+            },
+            "truth_aligned_mean_estimate": 0.346677088797,
+            "truth_aligned_population_bias": -0.003322911203,
+            "truth_aligned_population_root_mean_squared_error": 0.06561915337,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.3,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.299632469601,
+                "population_bias": -0.000367530399,
+                "population_root_mean_squared_error": 0.013851638308,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.299634509967,
+                "population_bias": -0.000365490033,
+                "population_root_mean_squared_error": 0.014055159476,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.299637097966,
+                "population_bias": -0.000362902034,
+                "population_root_mean_squared_error": 0.014307118344,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.299645069347,
+                "population_bias": -0.000354930653,
+                "population_root_mean_squared_error": 0.015013473018,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.299659274246,
+                "population_bias": -0.000340725754,
+                "population_root_mean_squared_error": 0.01598606112,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.299686050573,
+                "population_bias": -0.000313949427,
+                "population_root_mean_squared_error": 0.017100809335,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.299728577362,
+                "population_bias": -0.000271422638,
+                "population_root_mean_squared_error": 0.017817456742,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.29978159991,
+                "population_bias": -0.00021840009,
+                "population_root_mean_squared_error": 0.017793877519,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.299876845466,
+                "population_bias": -0.000123154534,
+                "population_root_mean_squared_error": 0.016763819399,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.29991328019,
+                "population_bias": -8.671981e-05,
+                "population_root_mean_squared_error": 0.016335047333,
+                "population_true_value": 0.3
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.299632469601,
+            "mean_sensitivity_envelope_upper": 0.29991328019,
+            "mean_sensitivity_envelope_width": 0.000280810589,
+            "metric": "policy_a_brier_score",
+            "naive_evaluable_bias": -0.000224004118,
+            "naive_evaluable_root_mean_squared_error": 0.017391654121,
+            "naive_mean_estimate": 0.299775995882,
+            "naive_population_bias": -0.000224004118,
+            "naive_population_root_mean_squared_error": 0.017391654121,
+            "population_true_value": 0.3,
+            "population_truth_distance_to_mean_envelope": 8.671981e-05,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 278,
+              "lower": 0.251122056274,
+              "rate": 0.278,
+              "total_count": 1000,
+              "upper": 0.306577024493
+            },
+            "truth_aligned_mean_estimate": 0.299686050573,
+            "truth_aligned_population_bias": -0.000313949427,
+            "truth_aligned_population_root_mean_squared_error": 0.017100809335,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.34,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.357143873176,
+                "population_bias": 0.017143873176,
+                "population_root_mean_squared_error": 0.024273995363,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.356295130438,
+                "population_bias": 0.016295130438,
+                "population_root_mean_squared_error": 0.023888508028,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.355236154702,
+                "population_bias": 0.015236154702,
+                "population_root_mean_squared_error": 0.023442046687,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.352164824673,
+                "population_bias": 0.012164824673,
+                "population_root_mean_squared_error": 0.022369564943,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.347443815807,
+                "population_bias": 0.007443815807,
+                "population_root_mean_squared_error": 0.021390080343,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.340350632813,
+                "population_bias": 0.000350632813,
+                "population_root_mean_squared_error": 0.021455108014,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.33165200885,
+                "population_bias": -0.00834799115,
+                "population_root_mean_squared_error": 0.023745455442,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.32322011722,
+                "population_bias": -0.01677988278,
+                "population_root_mean_squared_error": 0.027637024948,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.31255385647,
+                "population_bias": -0.02744614353,
+                "population_root_mean_squared_error": 0.034058169981,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.309722100654,
+                "population_bias": -0.030277899346,
+                "population_root_mean_squared_error": 0.035983778762,
+                "population_true_value": 0.34
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.309722100654,
+            "mean_sensitivity_envelope_upper": 0.357143873176,
+            "mean_sensitivity_envelope_width": 0.047421772522,
+            "metric": "policy_b_brier_score",
+            "naive_evaluable_bias": 0.000471315662,
+            "naive_evaluable_root_mean_squared_error": 0.021974628623,
+            "naive_mean_estimate": 0.340471315662,
+            "naive_population_bias": 0.000471315662,
+            "naive_population_root_mean_squared_error": 0.021974628623,
+            "population_true_value": 0.34,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 795,
+              "lower": 0.768872298969,
+              "rate": 0.795,
+              "total_count": 1000,
+              "upper": 0.818869913524
+            },
+            "truth_aligned_mean_estimate": 0.340350632813,
+            "truth_aligned_population_bias": 0.000350632813,
+            "truth_aligned_population_root_mean_squared_error": 0.021455108014,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.15,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.237557017879,
+                "population_bias": 0.087557017879,
+                "population_root_mean_squared_error": 0.101252773431,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.233303102355,
+                "population_bias": 0.083303102355,
+                "population_root_mean_squared_error": 0.098156111517,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.22799528368,
+                "population_bias": 0.07799528368,
+                "population_root_mean_squared_error": 0.094410619903,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.212598776632,
+                "population_bias": 0.062598776632,
+                "population_root_mean_squared_error": 0.084412363685,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.188922707803,
+                "population_bias": 0.038922707803,
+                "population_root_mean_squared_error": 0.07237344458,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.153322911203,
+                "population_bias": 0.003322911203,
+                "population_root_mean_squared_error": 0.06561915337,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.109617157441,
+                "population_bias": -0.040382842559,
+                "population_root_mean_squared_error": 0.078786423223,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.067192586552,
+                "population_bias": -0.082807413448,
+                "population_root_mean_squared_error": 0.105908581395,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.01338505502,
+                "population_bias": -0.13661494498,
+                "population_root_mean_squared_error": 0.148608308562,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": -0.000955897678,
+                "population_bias": -0.150955897678,
+                "population_root_mean_squared_error": 0.160800082105,
+                "population_true_value": 0.15
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": -0.000955897678,
+            "mean_sensitivity_envelope_upper": 0.237557017879,
+            "mean_sensitivity_envelope_width": 0.238512915557,
+            "metric": "policy_a_calibration_in_the_large",
+            "naive_evaluable_bias": 0.003476598899,
+            "naive_evaluable_root_mean_squared_error": 0.066092431419,
+            "naive_mean_estimate": 0.153476598899,
+            "naive_population_bias": 0.003476598899,
+            "naive_population_root_mean_squared_error": 0.066092431419,
+            "population_true_value": 0.15,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 952,
+              "lower": 0.93693391135,
+              "rate": 0.952,
+              "total_count": 1000,
+              "upper": 0.963606698979
+            },
+            "truth_aligned_mean_estimate": 0.153322911203,
+            "truth_aligned_population_bias": 0.003322911203,
+            "truth_aligned_population_root_mean_squared_error": 0.06561915337,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.25,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.337557017879,
+                "population_bias": 0.087557017879,
+                "population_root_mean_squared_error": 0.101252773431,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.333303102355,
+                "population_bias": 0.083303102355,
+                "population_root_mean_squared_error": 0.098156111517,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.32799528368,
+                "population_bias": 0.07799528368,
+                "population_root_mean_squared_error": 0.094410619903,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.312598776632,
+                "population_bias": 0.062598776632,
+                "population_root_mean_squared_error": 0.084412363685,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.288922707803,
+                "population_bias": 0.038922707803,
+                "population_root_mean_squared_error": 0.07237344458,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.253322911203,
+                "population_bias": 0.003322911203,
+                "population_root_mean_squared_error": 0.06561915337,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.209617157441,
+                "population_bias": -0.040382842559,
+                "population_root_mean_squared_error": 0.078786423223,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.167192586552,
+                "population_bias": -0.082807413448,
+                "population_root_mean_squared_error": 0.105908581395,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.11338505502,
+                "population_bias": -0.13661494498,
+                "population_root_mean_squared_error": 0.148608308562,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.099044102322,
+                "population_bias": -0.150955897678,
+                "population_root_mean_squared_error": 0.160800082105,
+                "population_true_value": 0.25
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.099044102322,
+            "mean_sensitivity_envelope_upper": 0.337557017879,
+            "mean_sensitivity_envelope_width": 0.238512915557,
+            "metric": "policy_b_calibration_in_the_large",
+            "naive_evaluable_bias": 0.003476598899,
+            "naive_evaluable_root_mean_squared_error": 0.066092431419,
+            "naive_mean_estimate": 0.253476598899,
+            "naive_population_bias": 0.003476598899,
+            "naive_population_root_mean_squared_error": 0.066092431419,
+            "population_true_value": 0.25,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 952,
+              "lower": 0.93693391135,
+              "rate": 0.952,
+              "total_count": 1000,
+              "upper": 0.963606698979
+            },
+            "truth_aligned_mean_estimate": 0.253322911203,
+            "truth_aligned_population_bias": 0.003322911203,
+            "truth_aligned_population_root_mean_squared_error": 0.06561915337,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.5,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.500616935704,
+                "population_bias": 0.000616935704,
+                "population_root_mean_squared_error": 0.03082658168,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.500586409958,
+                "population_bias": 0.000586409958,
+                "population_root_mean_squared_error": 0.031281568412,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.500548655759,
+                "population_bias": 0.000548655759,
+                "population_root_mean_squared_error": 0.031841811504,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.500440967799,
+                "population_bias": 0.000440967799,
+                "population_root_mean_squared_error": 0.033397958343,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.500280335052,
+                "population_bias": 0.000280335052,
+                "population_root_mean_squared_error": 0.035514916585,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.500051011506,
+                "population_bias": 5.1011506e-05,
+                "population_root_mean_squared_error": 0.037913102017,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.499791060051,
+                "population_bias": -0.000208939949,
+                "population_root_mean_squared_error": 0.039422981838,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.499557343638,
+                "population_bias": -0.000442656362,
+                "population_root_mean_squared_error": 0.039309854421,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.499250453796,
+                "population_bias": -0.000749546204,
+                "population_root_mean_squared_error": 0.036968138019,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.499148350893,
+                "population_bias": -0.000851649107,
+                "population_root_mean_squared_error": 0.036014477851,
+                "population_true_value": 0.5
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.499148350893,
+            "mean_sensitivity_envelope_upper": 0.500616935704,
+            "mean_sensitivity_envelope_width": 0.001468584811,
+            "metric": "policy_a_classification_accuracy",
+            "naive_evaluable_bias": -0.000219317584,
+            "naive_evaluable_root_mean_squared_error": 0.038448020118,
+            "naive_mean_estimate": 0.499780682416,
+            "naive_population_bias": -0.000219317584,
+            "naive_population_root_mean_squared_error": 0.038448020118,
+            "population_true_value": 0.5,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 272,
+              "lower": 0.245331247039,
+              "rate": 0.272,
+              "total_count": 1000,
+              "upper": 0.300413754831
+            },
+            "truth_aligned_mean_estimate": 0.500051011506,
+            "truth_aligned_population_bias": 5.1011506e-05,
+            "truth_aligned_population_root_mean_squared_error": 0.037913102017,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.425,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.380976124287,
+                "population_bias": -0.044023875713,
+                "population_root_mean_squared_error": 0.057579934236,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.383102093319,
+                "population_bias": -0.041897906681,
+                "population_root_mean_squared_error": 0.056393329551,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.385754786092,
+                "population_bias": -0.039245213908,
+                "population_root_mean_squared_error": 0.054991902137,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.393450329296,
+                "population_bias": -0.031549670704,
+                "population_root_mean_squared_error": 0.051456449471,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.405288946958,
+                "population_bias": -0.019711053042,
+                "population_root_mean_squared_error": 0.047736143291,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.423105954095,
+                "population_bias": -0.001894045905,
+                "population_root_mean_squared_error": 0.04657576339,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.445014390187,
+                "population_bias": 0.020014390187,
+                "population_root_mean_squared_error": 0.052179116661,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.46632418129,
+                "population_bias": 0.04132418129,
+                "population_root_mean_squared_error": 0.06295461889,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.493415832648,
+                "population_bias": 0.068415832648,
+                "population_root_mean_squared_error": 0.080971759145,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.500645349962,
+                "population_bias": 0.075645349962,
+                "population_root_mean_squared_error": 0.086338271681,
+                "population_true_value": 0.425
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.380976124287,
+            "mean_sensitivity_envelope_upper": 0.500645349962,
+            "mean_sensitivity_envelope_width": 0.119669225675,
+            "metric": "policy_b_classification_accuracy",
+            "naive_evaluable_bias": -0.001731033171,
+            "naive_evaluable_root_mean_squared_error": 0.046753660434,
+            "naive_mean_estimate": 0.423268966829,
+            "naive_population_bias": -0.001731033171,
+            "naive_population_root_mean_squared_error": 0.046753660434,
+            "population_true_value": 0.425,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 839,
+              "lower": 0.814929990306,
+              "rate": 0.839,
+              "total_count": 1000,
+              "upper": 0.860475467441
+            },
+            "truth_aligned_mean_estimate": 0.423105954095,
+            "truth_aligned_population_bias": -0.001894045905,
+            "truth_aligned_population_root_mean_squared_error": 0.04657576339,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.04,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.057511403576,
+                "population_bias": 0.017511403576,
+                "population_root_mean_squared_error": 0.020250554686,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.056660620471,
+                "population_bias": 0.016660620471,
+                "population_root_mean_squared_error": 0.019631222303,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.055599056736,
+                "population_bias": 0.015599056736,
+                "population_root_mean_squared_error": 0.018882123981,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.052519755326,
+                "population_bias": 0.012519755326,
+                "population_root_mean_squared_error": 0.016882472737,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.047784541561,
+                "population_bias": 0.007784541561,
+                "population_root_mean_squared_error": 0.014474688916,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.040664582241,
+                "population_bias": 0.000664582241,
+                "population_root_mean_squared_error": 0.013123830674,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.031923431488,
+                "population_bias": -0.008076568512,
+                "population_root_mean_squared_error": 0.015757284645,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.02343851731,
+                "population_bias": -0.01656148269,
+                "population_root_mean_squared_error": 0.021181716279,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.012677011004,
+                "population_bias": -0.027322988996,
+                "population_root_mean_squared_error": 0.029721661712,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.009808820464,
+                "population_bias": -0.030191179536,
+                "population_root_mean_squared_error": 0.032160016421,
+                "population_true_value": 0.04
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.009808820464,
+            "mean_sensitivity_envelope_upper": 0.057511403576,
+            "mean_sensitivity_envelope_width": 0.047702583112,
+            "metric": "brier_difference_b_minus_a",
+            "naive_evaluable_bias": 0.00069531978,
+            "naive_evaluable_root_mean_squared_error": 0.013218486284,
+            "naive_mean_estimate": 0.04069531978,
+            "naive_population_bias": 0.00069531978,
+            "naive_population_root_mean_squared_error": 0.013218486284,
+            "population_true_value": 0.04,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 952,
+              "lower": 0.93693391135,
+              "rate": 0.952,
+              "total_count": 1000,
+              "upper": 0.963606698979
+            },
+            "truth_aligned_mean_estimate": 0.040664582241,
+            "truth_aligned_population_bias": 0.000664582241,
+            "truth_aligned_population_root_mean_squared_error": 0.013123830674,
+            "truth_aligned_recovery_met": true
+          }
+        ],
+        "outcome_rng_stream_sha256": "004670be74b0218401cf7a0afb53523ba6d7e9c2470e927dddca067d39184c34",
+        "population_favorable_prevalence": 0.35,
+        "replicate_count": 1000,
+        "research_target_met": true,
+        "rng_stream_sha256": "7e33b9047a9f8a4455ccaab2f20fbf9035923a9e922099a3d9e1a0c1e529cdfd",
+        "scenario_id": "hidden-linkage-mcar",
+        "stage": "clinical_strategy",
+        "status_counts": [
+          {
+            "count": 1000,
+            "status": "computed"
+          },
+          {
+            "count": 0,
+            "status": "empty_reference_stratum"
+          },
+          {
+            "count": 0,
+            "status": "degenerate_reference_stratum"
+          }
+        ],
+        "true_informative_missingness_odds_ratio": 1.0,
+        "true_log_imor": 0.0
+      },
+      {
+        "all_evaluable_calibration_targets_met": true,
+        "all_identification_targets_met": true,
+        "all_truth_aligned_recovery_targets_met": true,
+        "analyzable_rate": {
+          "confidence_level": 0.95,
+          "event_count": 1000,
+          "lower": 0.996173241514,
+          "rate": 1.0,
+          "total_count": 1000,
+          "upper": 1.0
+        },
+        "analyzable_target_met": true,
+        "endpoint_family": "composite_benefit_risk",
+        "evaluability_rng_stream_sha256": "74df7b63c33a9e9d7ea98ad29348aedcde7fd0b6467e57c2c04db74940ba8fdd",
+        "evaluable_favorable_prevalence": 0.518518518519,
+        "expected_evaluable_probability": 0.6075,
+        "grid_brackets_true_log_imor": true,
+        "metric_performance": [
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.518518518519,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.321729652756,
+                "population_bias": -0.028270347244,
+                "population_root_mean_squared_error": 0.055670818576,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.334773622604,
+                "population_bias": -0.015226377396,
+                "population_root_mean_squared_error": 0.052140718879,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.350349192862,
+                "population_bias": 0.000349192862,
+                "population_root_mean_squared_error": 0.051984527292,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.391770176563,
+                "population_bias": 0.041770176563,
+                "population_root_mean_squared_error": 0.070316831813,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.446814350914,
+                "population_bias": 0.096814350914,
+                "population_root_mean_squared_error": 0.113937730838,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.515170145438,
+                "population_bias": 0.165170145438,
+                "population_root_mean_squared_error": 0.17579649849,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.582227955016,
+                "population_bias": 0.232227955016,
+                "population_root_mean_squared_error": 0.238820580442,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.634369839263,
+                "population_bias": 0.284369839263,
+                "population_root_mean_squared_error": 0.288584231475,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.686610345538,
+                "population_bias": 0.336610345538,
+                "population_root_mean_squared_error": 0.338991867635,
+                "population_true_value": 0.35
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.698310349194,
+                "population_bias": 0.348310349194,
+                "population_root_mean_squared_error": 0.350364291789,
+                "population_true_value": 0.35
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.321729652756,
+            "mean_sensitivity_envelope_upper": 0.698310349194,
+            "mean_sensitivity_envelope_width": 0.376580696438,
+            "metric": "observed_favorable_rate",
+            "naive_evaluable_bias": -0.003855315813,
+            "naive_evaluable_root_mean_squared_error": 0.060106751869,
+            "naive_mean_estimate": 0.514663202706,
+            "naive_population_bias": 0.164663202706,
+            "naive_population_root_mean_squared_error": 0.175248191105,
+            "population_true_value": 0.35,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 713,
+              "lower": 0.684189582924,
+              "rate": 0.713,
+              "total_count": 1000,
+              "upper": 0.740180217961
+            },
+            "truth_aligned_mean_estimate": 0.350349192862,
+            "truth_aligned_population_bias": 0.000349192862,
+            "truth_aligned_population_root_mean_squared_error": 0.051984527292,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.3,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.300210050605,
+                "population_bias": 0.000210050605,
+                "population_root_mean_squared_error": 0.014781365998,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.300286287257,
+                "population_bias": 0.000286287257,
+                "population_root_mean_squared_error": 0.015446171816,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.300371046537,
+                "population_bias": 0.000371046537,
+                "population_root_mean_squared_error": 0.016223617713,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.300562611653,
+                "population_bias": 0.000562611653,
+                "population_root_mean_squared_error": 0.018045796503,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.300745692559,
+                "population_bias": 0.000745692559,
+                "population_root_mean_squared_error": 0.019688395165,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.300875281174,
+                "population_bias": 0.000875281174,
+                "population_root_mean_squared_error": 0.020357496176,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.300916554389,
+                "population_bias": 0.000916554389,
+                "population_root_mean_squared_error": 0.01953910451,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.300901766728,
+                "population_bias": 0.000901766728,
+                "population_root_mean_squared_error": 0.017933166211,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.3008522545,
+                "population_bias": 0.0008522545,
+                "population_root_mean_squared_error": 0.015612544965,
+                "population_true_value": 0.3
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.300836118791,
+                "population_bias": 0.000836118791,
+                "population_root_mean_squared_error": 0.015040616097,
+                "population_true_value": 0.3
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.300210050605,
+            "mean_sensitivity_envelope_upper": 0.300916554389,
+            "mean_sensitivity_envelope_width": 0.000706503784,
+            "metric": "policy_a_brier_score",
+            "naive_evaluable_bias": 0.000877539895,
+            "naive_evaluable_root_mean_squared_error": 0.020294904196,
+            "naive_mean_estimate": 0.300877539895,
+            "naive_population_bias": 0.000877539895,
+            "naive_population_root_mean_squared_error": 0.020294904196,
+            "population_true_value": 0.3,
+            "population_truth_distance_to_mean_envelope": 0.000210050605,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 326,
+              "lower": 0.297661131436,
+              "rate": 0.326,
+              "total_count": 1000,
+              "upper": 0.355670580517
+            },
+            "truth_aligned_mean_estimate": 0.300371046537,
+            "truth_aligned_population_bias": 0.000371046537,
+            "truth_aligned_population_root_mean_squared_error": 0.016223617713,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.306296296296,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.345864120054,
+                "population_bias": 0.005864120054,
+                "population_root_mean_squared_error": 0.018553413637,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.343331562737,
+                "population_bias": 0.003331562737,
+                "population_root_mean_squared_error": 0.018683251638,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.340301207964,
+                "population_bias": 0.000301207964,
+                "population_root_mean_squared_error": 0.019278883519,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.33220857634,
+                "population_bias": -0.00779142366,
+                "population_root_mean_squared_error": 0.022687800552,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.321382822376,
+                "population_bias": -0.018617177624,
+                "population_root_mean_squared_error": 0.02963738276,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.307841252087,
+                "population_bias": -0.032158747913,
+                "population_root_mean_squared_error": 0.03990678346,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.294470963386,
+                "population_bias": -0.045529036614,
+                "population_root_mean_squared_error": 0.050765939485,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.284027798876,
+                "population_bias": -0.055972201124,
+                "population_root_mean_squared_error": 0.059570750989,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.273530185392,
+                "population_bias": -0.066469814608,
+                "population_root_mean_squared_error": 0.068723845884,
+                "population_true_value": 0.34
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.271174048952,
+                "population_bias": -0.068825951048,
+                "population_root_mean_squared_error": 0.070830569338,
+                "population_true_value": 0.34
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.271174048952,
+            "mean_sensitivity_envelope_upper": 0.345864120054,
+            "mean_sensitivity_envelope_width": 0.074690071102,
+            "metric": "policy_b_brier_score",
+            "naive_evaluable_bias": 0.001765918431,
+            "naive_evaluable_root_mean_squared_error": 0.023892458903,
+            "naive_mean_estimate": 0.308062214727,
+            "naive_population_bias": -0.031937785273,
+            "naive_population_root_mean_squared_error": 0.039846621596,
+            "population_true_value": 0.34,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 649,
+              "lower": 0.618899203959,
+              "rate": 0.649,
+              "total_count": 1000,
+              "upper": 0.677960422012
+            },
+            "truth_aligned_mean_estimate": 0.340301207964,
+            "truth_aligned_population_bias": 0.000301207964,
+            "truth_aligned_population_root_mean_squared_error": 0.019278883519,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": -0.018518518519,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.178270347244,
+                "population_bias": 0.028270347244,
+                "population_root_mean_squared_error": 0.055670818576,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.165226377396,
+                "population_bias": 0.015226377396,
+                "population_root_mean_squared_error": 0.052140718879,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.149650807138,
+                "population_bias": -0.000349192862,
+                "population_root_mean_squared_error": 0.051984527292,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.108229823437,
+                "population_bias": -0.041770176563,
+                "population_root_mean_squared_error": 0.070316831813,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.053185649086,
+                "population_bias": -0.096814350914,
+                "population_root_mean_squared_error": 0.113937730838,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": -0.015170145438,
+                "population_bias": -0.165170145438,
+                "population_root_mean_squared_error": 0.17579649849,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": -0.082227955016,
+                "population_bias": -0.232227955016,
+                "population_root_mean_squared_error": 0.238820580442,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": -0.134369839263,
+                "population_bias": -0.284369839263,
+                "population_root_mean_squared_error": 0.288584231475,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": -0.186610345538,
+                "population_bias": -0.336610345538,
+                "population_root_mean_squared_error": 0.338991867635,
+                "population_true_value": 0.15
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": -0.198310349194,
+                "population_bias": -0.348310349194,
+                "population_root_mean_squared_error": 0.350364291789,
+                "population_true_value": 0.15
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": -0.198310349194,
+            "mean_sensitivity_envelope_upper": 0.178270347244,
+            "mean_sensitivity_envelope_width": 0.376580696438,
+            "metric": "policy_a_calibration_in_the_large",
+            "naive_evaluable_bias": 0.00444189268,
+            "naive_evaluable_root_mean_squared_error": 0.061469886516,
+            "naive_mean_estimate": -0.014076625839,
+            "naive_population_bias": -0.164076625839,
+            "naive_population_root_mean_squared_error": 0.175156945864,
+            "population_true_value": 0.15,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 713,
+              "lower": 0.684189582924,
+              "rate": 0.713,
+              "total_count": 1000,
+              "upper": 0.740180217961
+            },
+            "truth_aligned_mean_estimate": 0.149650807138,
+            "truth_aligned_population_bias": -0.000349192862,
+            "truth_aligned_population_root_mean_squared_error": 0.051984527292,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.081481481481,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.278270347244,
+                "population_bias": 0.028270347244,
+                "population_root_mean_squared_error": 0.055670818576,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.265226377396,
+                "population_bias": 0.015226377396,
+                "population_root_mean_squared_error": 0.052140718879,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.249650807138,
+                "population_bias": -0.000349192862,
+                "population_root_mean_squared_error": 0.051984527292,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.208229823437,
+                "population_bias": -0.041770176563,
+                "population_root_mean_squared_error": 0.070316831813,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.153185649086,
+                "population_bias": -0.096814350914,
+                "population_root_mean_squared_error": 0.113937730838,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.084829854562,
+                "population_bias": -0.165170145438,
+                "population_root_mean_squared_error": 0.17579649849,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.017772044984,
+                "population_bias": -0.232227955016,
+                "population_root_mean_squared_error": 0.238820580442,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": -0.034369839263,
+                "population_bias": -0.284369839263,
+                "population_root_mean_squared_error": 0.288584231475,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": -0.086610345538,
+                "population_bias": -0.336610345538,
+                "population_root_mean_squared_error": 0.338991867635,
+                "population_true_value": 0.25
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": -0.098310349194,
+                "population_bias": -0.348310349194,
+                "population_root_mean_squared_error": 0.350364291789,
+                "population_true_value": 0.25
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": -0.098310349194,
+            "mean_sensitivity_envelope_upper": 0.278270347244,
+            "mean_sensitivity_envelope_width": 0.376580696438,
+            "metric": "policy_b_calibration_in_the_large",
+            "naive_evaluable_bias": 0.00444189268,
+            "naive_evaluable_root_mean_squared_error": 0.061469886516,
+            "naive_mean_estimate": 0.085923374161,
+            "naive_population_bias": -0.164076625839,
+            "naive_population_root_mean_squared_error": 0.175156945864,
+            "population_true_value": 0.25,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 713,
+              "lower": 0.684189582924,
+              "rate": 0.713,
+              "total_count": 1000,
+              "upper": 0.740180217961
+            },
+            "truth_aligned_mean_estimate": 0.249650807138,
+            "truth_aligned_population_bias": -0.000349192862,
+            "truth_aligned_population_root_mean_squared_error": 0.051984527292,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.5,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.499859605232,
+                "population_bias": -0.000140394768,
+                "population_root_mean_squared_error": 0.033348868301,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.49972469071,
+                "population_bias": -0.00027530929,
+                "population_root_mean_squared_error": 0.034807081559,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.499576371623,
+                "population_bias": -0.000423628377,
+                "population_root_mean_squared_error": 0.036508981619,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.499252421713,
+                "population_bias": -0.000747578287,
+                "population_root_mean_squared_error": 0.04048798145,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.498970296739,
+                "population_bias": -0.001029703261,
+                "population_root_mean_squared_error": 0.044046892587,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.498810885462,
+                "population_bias": -0.001189114538,
+                "population_root_mean_squared_error": 0.045407633284,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.498796670263,
+                "population_bias": -0.001203329737,
+                "population_root_mean_squared_error": 0.043427609976,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.498839974882,
+                "population_bias": -0.001160025118,
+                "population_root_mean_squared_error": 0.039699662404,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.498901807424,
+                "population_bias": -0.001098192576,
+                "population_root_mean_squared_error": 0.034381578129,
+                "population_true_value": 0.5
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.498917115155,
+                "population_bias": -0.001082884845,
+                "population_root_mean_squared_error": 0.033081553116,
+                "population_true_value": 0.5
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.498796670263,
+            "mean_sensitivity_envelope_upper": 0.499859605232,
+            "mean_sensitivity_envelope_width": 0.001062934969,
+            "metric": "policy_a_classification_accuracy",
+            "naive_evaluable_bias": -0.0009968284,
+            "naive_evaluable_root_mean_squared_error": 0.045004265309,
+            "naive_mean_estimate": 0.4990031716,
+            "naive_population_bias": -0.0009968284,
+            "naive_population_root_mean_squared_error": 0.045004265309,
+            "population_true_value": 0.5,
+            "population_truth_distance_to_mean_envelope": 0.000140394768,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 307,
+              "lower": 0.279195751423,
+              "rate": 0.307,
+              "total_count": 1000,
+              "upper": 0.336281377352
+            },
+            "truth_aligned_mean_estimate": 0.499576371623,
+            "truth_aligned_population_bias": -0.000423628377,
+            "truth_aligned_population_root_mean_squared_error": 0.036508981619,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.509259259259,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.409934466321,
+                "population_bias": -0.015065533679,
+                "population_root_mean_squared_error": 0.040248922843,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.416310346599,
+                "population_bias": -0.008689653401,
+                "population_root_mean_squared_error": 0.039920555307,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.423939330796,
+                "population_bias": -0.001060669204,
+                "population_root_mean_squared_error": 0.040851831521,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.444303654832,
+                "population_bias": 0.019303654832,
+                "population_root_mean_squared_error": 0.049080175405,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.471515310956,
+                "population_bias": 0.046515310956,
+                "population_root_mean_squared_error": 0.067462269054,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.505510034376,
+                "population_bias": 0.080510034376,
+                "population_root_mean_squared_error": 0.094832602167,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": 0.539052445453,
+                "population_bias": 0.114052445453,
+                "population_root_mean_squared_error": 0.12359452137,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": 0.565257900907,
+                "population_bias": 0.140257900907,
+                "population_root_mean_squared_error": 0.146750857465,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": 0.591617127032,
+                "population_bias": 0.166617127032,
+                "population_root_mean_squared_error": 0.170634967667,
+                "population_true_value": 0.425
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": 0.597533845154,
+                "population_bias": 0.172533845154,
+                "population_root_mean_squared_error": 0.176095173564,
+                "population_true_value": 0.425
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": 0.409934466321,
+            "mean_sensitivity_envelope_upper": 0.597533845154,
+            "mean_sensitivity_envelope_width": 0.187599378833,
+            "metric": "policy_b_classification_accuracy",
+            "naive_evaluable_bias": -0.003877339371,
+            "naive_evaluable_root_mean_squared_error": 0.049979998861,
+            "naive_mean_estimate": 0.505381919888,
+            "naive_population_bias": 0.080381919888,
+            "naive_population_root_mean_squared_error": 0.094573884188,
+            "population_true_value": 0.425,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 662,
+              "lower": 0.632111575398,
+              "rate": 0.662,
+              "total_count": 1000,
+              "upper": 0.690648554853
+            },
+            "truth_aligned_mean_estimate": 0.423939330796,
+            "truth_aligned_population_bias": -0.001060669204,
+            "truth_aligned_population_root_mean_squared_error": 0.040851831521,
+            "truth_aligned_recovery_met": true
+          },
+          {
+            "analyzable_replicates": 1000,
+            "evaluable_calibration_met": true,
+            "evaluable_true_value": 0.006296296296,
+            "grid_performance": [
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.018315638889,
+                "log_imor": -4.0,
+                "mean_estimate": 0.045654069449,
+                "population_bias": 0.005654069449,
+                "population_root_mean_squared_error": 0.011134163715,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.049787068368,
+                "log_imor": -3.0,
+                "mean_estimate": 0.043045275479,
+                "population_bias": 0.003045275479,
+                "population_root_mean_squared_error": 0.010428143776,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.090909090909,
+                "log_imor": -2.397895272798,
+                "mean_estimate": 0.039930161428,
+                "population_bias": -6.9838572e-05,
+                "population_root_mean_squared_error": 0.010396905458,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.223130160148,
+                "log_imor": -1.5,
+                "mean_estimate": 0.031645964687,
+                "population_bias": -0.008354035313,
+                "population_root_mean_squared_error": 0.014063366363,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 0.472366552741,
+                "log_imor": -0.75,
+                "mean_estimate": 0.020637129817,
+                "population_bias": -0.019362870183,
+                "population_root_mean_squared_error": 0.022787546168,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 1.0,
+                "log_imor": 0.0,
+                "mean_estimate": 0.006965970912,
+                "population_bias": -0.033034029088,
+                "population_root_mean_squared_error": 0.035159299698,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 2.117000016613,
+                "log_imor": 0.75,
+                "mean_estimate": -0.006445591003,
+                "population_bias": -0.046445591003,
+                "population_root_mean_squared_error": 0.047764116089,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 4.481689070338,
+                "log_imor": 1.5,
+                "mean_estimate": -0.016873967853,
+                "population_bias": -0.056873967853,
+                "population_root_mean_squared_error": 0.057716846295,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 20.085536923188,
+                "log_imor": 3.0,
+                "mean_estimate": -0.027322069108,
+                "population_bias": -0.067322069108,
+                "population_root_mean_squared_error": 0.067798373527,
+                "population_true_value": 0.04
+              },
+              {
+                "estimate_count": 1000,
+                "informative_missingness_odds_ratio": 54.598150033144,
+                "log_imor": 4.0,
+                "mean_estimate": -0.029662069839,
+                "population_bias": -0.069662069839,
+                "population_root_mean_squared_error": 0.070072858358,
+                "population_true_value": 0.04
+              }
+            ],
+            "identification_target_met": true,
+            "maximum_absolute_bias": 0.02,
+            "maximum_mean_identification_width": 0.5,
+            "mean_sensitivity_envelope_lower": -0.029662069839,
+            "mean_sensitivity_envelope_upper": 0.045654069449,
+            "mean_sensitivity_envelope_width": 0.075316139288,
+            "metric": "brier_difference_b_minus_a",
+            "naive_evaluable_bias": 0.000888378536,
+            "naive_evaluable_root_mean_squared_error": 0.012293977303,
+            "naive_mean_estimate": 0.007184674832,
+            "naive_population_bias": -0.032815325168,
+            "naive_population_root_mean_squared_error": 0.035031389173,
+            "population_true_value": 0.04,
+            "population_truth_distance_to_mean_envelope": 0.0,
+            "population_truth_recovered_by_mean_envelope": true,
+            "replicate_count": 1000,
+            "sensitivity_envelope_inclusion": {
+              "confidence_level": 0.95,
+              "event_count": 713,
+              "lower": 0.684189582924,
+              "rate": 0.713,
+              "total_count": 1000,
+              "upper": 0.740180217961
+            },
+            "truth_aligned_mean_estimate": 0.039930161428,
+            "truth_aligned_population_bias": -6.9838572e-05,
+            "truth_aligned_population_root_mean_squared_error": 0.010396905458,
+            "truth_aligned_recovery_met": true
+          }
+        ],
+        "outcome_rng_stream_sha256": "1536dda1d2747490fa2471415b630cd1e8f529705970c0f1f09b53b3b44e611a",
+        "population_favorable_prevalence": 0.35,
+        "replicate_count": 1000,
+        "research_target_met": true,
+        "rng_stream_sha256": "4591a906cb16754c52b28716107cf88224f2a651f159e9fca74d0f1f14e6d994",
+        "scenario_id": "informative-evaluability-independent-nominal",
+        "stage": "clinical_strategy",
+        "status_counts": [
+          {
+            "count": 1000,
+            "status": "computed"
+          },
+          {
+            "count": 0,
+            "status": "empty_reference_stratum"
+          },
+          {
+            "count": 0,
+            "status": "degenerate_reference_stratum"
+          }
+        ],
+        "true_informative_missingness_odds_ratio": 0.090909090909,
+        "true_log_imor": -2.397895272798
+      }
+    ],
+    "stress_protocol_fingerprint": "1d195038b03855af77d96c1ee9f98cc28c8671ae89e678c9e199423162fb53f1",
+    "stress_protocol_id": "synthetic-evaluability-dependence-stress",
+    "stress_report_fingerprint": "e9fc814c2432434bb3b7b739fa35abd55177116fe6086bfb30a386dc920ef19d",
+    "unit_level_records_included": false
+  },
+  "schema_version": "adds.clinical-outcome-pattern-mixture-report.v1"
+}

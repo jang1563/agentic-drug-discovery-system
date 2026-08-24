@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_semantic_review_key_set.schema.json",
+  "title": "ADDS-Frontier private semantic review answer-key set",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "set_id", "protocol_id", "board_id", "compiled_on",
+    "packet_set_integrity_sha256", "keys", "reviewer_assignment_count",
+    "reviewer_response_count", "consensus_label_count", "adjudication_count",
+    "independent_review_complete", "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-semantic-review-key-set.v1"},
+    "set_id": {"const": "adds-frontier-semantic-review-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "packet_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "keys": {"type": "array", "minItems": 20, "maxItems": 20, "items": {"$ref": "#/$defs/key"}},
+    "reviewer_assignment_count": {"const": 0},
+    "reviewer_response_count": {"const": 0},
+    "consensus_label_count": {"const": 0},
+    "adjudication_count": {"const": 0},
+    "independent_review_complete": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonempty": {"type": "string", "minLength": 1},
+    "certificate": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "probe_kind", "changed_top_level_fields", "added_evidence_node_count",
+        "removed_evidence_node_count", "modified_existing_evidence_node_count",
+        "changed_stage_access_count", "non_access_stage_field_change_count",
+        "lineage_edge_change_count", "exact_delta_passed"
+      ],
+      "properties": {
+        "probe_kind": {"enum": ["bounded_evidence_reveal", "identity_rebind"]},
+        "changed_top_level_fields": {"type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["evidence_nodes", "stages", "program_identity"]}},
+        "added_evidence_node_count": {"type": "integer", "minimum": 0, "maximum": 1},
+        "removed_evidence_node_count": {"const": 0},
+        "modified_existing_evidence_node_count": {"const": 0},
+        "changed_stage_access_count": {"type": "integer", "minimum": 0, "maximum": 3},
+        "non_access_stage_field_change_count": {"const": 0},
+        "lineage_edge_change_count": {"const": 0},
+        "exact_delta_passed": {"const": true}
+      }
+    },
+    "key": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "packet_id", "slot_id", "mutation_id", "canonical_arm", "mutated_arm",
+        "canonical_task_commitment", "mutated_task_commitment",
+        "expected_changed_components", "structural_delta_certificate"
+      ],
+      "properties": {
+        "packet_id": {"type": "string", "pattern": "^semantic-[0-9a-f]{20}$"},
+        "slot_id": {"type": "string", "pattern": "^slot-[a-z]+-[0-9]{2}$"},
+        "mutation_id": {"$ref": "#/$defs/nonempty"},
+        "canonical_arm": {"enum": ["arm_a", "arm_b"]},
+        "mutated_arm": {"enum": ["arm_a", "arm_b"]},
+        "canonical_task_commitment": {"$ref": "#/$defs/sha256"},
+        "mutated_task_commitment": {"$ref": "#/$defs/sha256"},
+        "expected_changed_components": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["disposition", "next_action", "risk_flags", "witness", "blockers"]}},
+        "structural_delta_certificate": {"$ref": "#/$defs/certificate"}
+      }
+    }
+  }
+}

@@ -46,8 +46,9 @@ Callable adapters used by the sickle cell disease vertical slice
   p-value, and publication lineage fields, then removes reviewer excerpts and anchors.
 - `agentic_drug_discovery/clinicaltrials_gov.py` — provider-specific verifier for one exact API
   study receipt. It reconciles NCT/version, candidate aliases, condition, protocol and result arms,
-  denominators, population, posted endpoint, and statistical analysis, then removes source payload
-  structure from the generic job.
+  denominators, population, posted endpoint, statistical analysis, and day/month/year source-date
+  precision, then removes source payload structure from the generic job. Partial dates use a
+  declared conservative period-end boundary retained in sanitized chronology metadata.
 - `agentic_drug_discovery/clinical_portfolio.py` — strict multi-trial bundle verifier that reuses the
   single-trial extractor, requires an exact pairwise source-disjoint trial set bound to one approved
   endpoint mapping, and emits one payload-free portfolio ingestion job.

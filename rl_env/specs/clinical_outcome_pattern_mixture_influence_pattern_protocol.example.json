@@ -1,0 +1,26 @@
+{
+  "integrity_sha256": "c638c88456d065ae26562516a25317591573a0aba892cc36d2b8283890b591d0",
+  "protocol": {
+    "log_imor_grid": [
+      -2.0,
+      -1.0,
+      0.0,
+      1.0,
+      2.0
+    ],
+    "maximum_absolute_bias": 0.02,
+    "maximum_mean_identification_width": 0.5,
+    "metadata": {
+      "design_scope": "binary log-IMOR influence-calibration anchor",
+      "public_example": true
+    },
+    "method_id": "adds.pattern-mixture.binary-log-imor-prediction-stratified.v1",
+    "minimum_analyzable_rate": 0.95,
+    "monte_carlo_confidence_level": 0.95,
+    "protocol_id": "synthetic-unequal-cluster-pattern-mixture",
+    "registered_on": "2026-08-03",
+    "stress_protocol_fingerprint": "7952aa48e2eb5cecd26196b7c3ba599bc44933e8c1d92e8b56da8be946f72f7d",
+    "version": "1.0.0"
+  },
+  "schema_version": "adds.clinical-outcome-pattern-mixture-protocol.v1"
+}

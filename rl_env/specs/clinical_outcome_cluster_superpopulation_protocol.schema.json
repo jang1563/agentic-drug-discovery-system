@@ -1,0 +1,185 @@
+{
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_cluster_superpopulation_protocol.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Strict preregistration contract for empirical-template cluster superpopulation calibration.",
+  "properties": {
+    "integrity_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "protocol": {
+      "additionalProperties": false,
+      "properties": {
+        "cluster_count_rule": {
+          "enum": [
+            "match_template_count"
+          ],
+          "type": "string"
+        },
+        "confidence_level": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "coverage_tolerance": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "direction_threshold": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "fixed_profile_protocol_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "fixed_profile_report_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "log_imor_grid": {
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "maximum_absolute_bias": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "maximum_production_cluster_unit_fraction": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "maximum_standard_error_calibration_deviation": {
+          "type": "number"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "method_id": {
+          "const": "adds.pattern-mixture.cluster-superpopulation-calibration.v1"
+        },
+        "methods": {
+          "items": {
+            "enum": [
+              "unit_weighted_delete_one_student_t",
+              "unit_weighted_delete_mj_student_t",
+              "cluster_balanced_delete_one_student_t"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "minimum_interval_yield": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "minimum_production_clusters": {
+          "type": "integer"
+        },
+        "monte_carlo_confidence_level": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "primary_metric": {
+          "enum": [
+            "observed_favorable_rate",
+            "policy_a_brier_score",
+            "policy_b_brier_score",
+            "policy_a_calibration_in_the_large",
+            "policy_b_calibration_in_the_large",
+            "policy_a_classification_accuracy",
+            "policy_b_classification_accuracy",
+            "brier_difference_b_minus_a"
+          ],
+          "type": "string"
+        },
+        "protocol_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "random_seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "reference_log_imor": {
+          "type": "number"
+        },
+        "registered_on": {
+          "format": "date",
+          "type": "string"
+        },
+        "replicates": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "sampling_model": {
+          "enum": [
+            "uniform_empirical_template_with_replacement"
+          ],
+          "type": "string"
+        },
+        "stress_protocol_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "cluster_count_rule",
+        "confidence_level",
+        "coverage_tolerance",
+        "direction_threshold",
+        "fixed_profile_protocol_fingerprint",
+        "fixed_profile_report_fingerprint",
+        "log_imor_grid",
+        "maximum_absolute_bias",
+        "maximum_production_cluster_unit_fraction",
+        "maximum_standard_error_calibration_deviation",
+        "metadata",
+        "method_id",
+        "methods",
+        "minimum_interval_yield",
+        "minimum_production_clusters",
+        "monte_carlo_confidence_level",
+        "primary_metric",
+        "protocol_id",
+        "random_seed",
+        "reference_log_imor",
+        "registered_on",
+        "replicates",
+        "sampling_model",
+        "stress_protocol_fingerprint",
+        "version"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "adds.clinical-outcome-cluster-superpopulation-protocol.v1"
+    }
+  },
+  "required": [
+    "integrity_sha256",
+    "protocol",
+    "schema_version"
+  ],
+  "title": "Clinical outcome cluster-superpopulation protocol",
+  "type": "object"
+}

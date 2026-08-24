@@ -1,0 +1,88 @@
+{
+  "schema_version": "adds.frontier-board-protocol.v1",
+  "protocol_id": "adds-frontier-v1",
+  "board_id": "adds-frontier-private-pilot-v1",
+  "version": "1.0.0-preregistered",
+  "status": "preregistered_unpopulated",
+  "registered_on": "2026-08-21",
+  "task_target": 40,
+  "tasks_per_family": 8,
+  "allocation_policy": {
+    "disease_domains": [
+      "hematology",
+      "immune_inflammatory",
+      "oncology",
+      "neurology",
+      "metabolic",
+      "infectious_disease",
+      "cardiovascular",
+      "rare_genetic"
+    ],
+    "calibration_domains": [
+      "hematology",
+      "immune_inflammatory"
+    ],
+    "sealed_domains": [
+      "oncology",
+      "neurology",
+      "metabolic",
+      "infectious_disease",
+      "cardiovascular",
+      "rare_genetic"
+    ],
+    "calibration_task_count": 10,
+    "sealed_task_count": 30,
+    "temporal_regimes": [
+      "historical_pre_2024",
+      "historical_2024_2025",
+      "contemporary_2026"
+    ],
+    "temporal_task_counts": {
+      "historical_pre_2024": 15,
+      "historical_2024_2025": 15,
+      "contemporary_2026": 10
+    },
+    "exact_disease_identity_private_until_release": true,
+    "unique_program_commitment_per_task": true
+  },
+  "curation_policy": {
+    "minimum_independent_curators": 3,
+    "author_cannot_vote": true,
+    "adjudicator_cannot_vote": true,
+    "conflict_declaration_required": true,
+    "reviewers_blinded_to_model_outputs": true,
+    "all_review_timestamps_precede_baseline_runs": true
+  },
+  "oracle_policy": {
+    "structured_oracle_minimum_success": 0.95,
+    "expert_solve_required": true,
+    "canonical_and_mutation_replay_required": true,
+    "oracle_bytes_sealed_until_evaluation_close": true
+  },
+  "contamination_policy": {
+    "model_runs_before_full_freeze_prohibited": true,
+    "model_failure_filtering_prohibited": true,
+    "private_canary_required_per_sealed_task": true,
+    "rotating_sealed_partition": true,
+    "public_development_oracles_excluded": true
+  },
+  "admission_gates": [
+    "task_packet_integrity",
+    "oracle_commitment_sealed",
+    "independent_scientific_review",
+    "evidence_lineage_review",
+    "temporal_leakage_review",
+    "counterfactual_mutation_review",
+    "expert_solvability",
+    "structured_oracle_replay",
+    "conflict_of_interest_clear",
+    "contamination_canary_clear"
+  ],
+  "nonclaims": [
+    "An unassigned slot is not a curated task or benchmark evidence.",
+    "A task cannot be selected, edited, or rejected based on model performance.",
+    "Public allocation strata do not reveal private task, disease, program, oracle, or canary content.",
+    "Board admission does not establish therapeutic efficacy, safety, or clinical utility."
+  ],
+  "integrity_sha256": "3cca2a6ba515aa0843e4e40b8adfe50d5a09eba0c65aec3a221c03bbb09d5959"
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_semantic_review_resolution_ledger.schema.json",
+  "title": "ADDS-Frontier private semantic-review resolution ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "resolution_id", "workflow_id", "protocol_id", "board_id",
+    "compiled_on", "packet_set_integrity_sha256", "key_set_integrity_sha256",
+    "workflow_ledger_integrity_sha256", "workflow_summary_integrity_sha256",
+    "unblinding_rule", "canonical_replay_rule", "resolution_receipt_rule",
+    "gate_transition_rule", "records", "awaiting_reviewer_responses_count",
+    "unblinded_packet_count", "canonical_replay_count", "canonical_replay_pass_count",
+    "canonical_replay_failure_count", "resolution_receipt_count", "board_admitted_count",
+    "independent_review_complete", "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-semantic-review-resolution-ledger.v1"},
+    "resolution_id": {"const": "adds-frontier-semantic-resolution-v1"},
+    "workflow_id": {"const": "adds-frontier-semantic-review-workflow-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "packet_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "key_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "workflow_ledger_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "workflow_summary_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "unblinding_rule": {"const": "three_response_consensus_candidate_before_sealed_key_opening"},
+    "canonical_replay_rule": {"const": "all_30_canonical_stage_components_exact"},
+    "resolution_receipt_rule": {"const": "human_resolution_receipt_before_admission_review"},
+    "gate_transition_rule": {"const": "resolution_evidence_never_changes_board_gates_automatically"},
+    "records": {
+      "type": "array", "minItems": 20, "maxItems": 20,
+      "items": {"$ref": "#/$defs/record"}
+    },
+    "awaiting_reviewer_responses_count": {"const": 20},
+    "unblinded_packet_count": {"const": 0},
+    "canonical_replay_count": {"const": 0},
+    "canonical_replay_pass_count": {"const": 0},
+    "canonical_replay_failure_count": {"const": 0},
+    "resolution_receipt_count": {"const": 0},
+    "board_admitted_count": {"const": 0},
+    "independent_review_complete": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "record": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "packet_id", "packet_commitment", "key_commitment",
+        "workflow_record_commitment", "status", "triage_commitment",
+        "unblinding_identity_commitment", "canonical_replay_commitment",
+        "resolution_receipt_commitment", "board_gate_changed"
+      ],
+      "properties": {
+        "packet_id": {"type": "string", "pattern": "^semantic-[0-9a-f]{20}$"},
+        "packet_commitment": {"$ref": "#/$defs/sha256"},
+        "key_commitment": {"$ref": "#/$defs/sha256"},
+        "workflow_record_commitment": {"$ref": "#/$defs/sha256"},
+        "status": {"const": "awaiting_reviewer_responses"},
+        "triage_commitment": {"type": "null"},
+        "unblinding_identity_commitment": {"type": "null"},
+        "canonical_replay_commitment": {"type": "null"},
+        "resolution_receipt_commitment": {"type": "null"},
+        "board_gate_changed": {"const": false}
+      }
+    }
+  }
+}

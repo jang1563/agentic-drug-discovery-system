@@ -1,0 +1,51 @@
+{
+  "admission_gate_results": {
+    "conflict_of_interest_clear": "pending",
+    "contamination_canary_clear": "pending",
+    "counterfactual_mutation_review": "pending",
+    "evidence_lineage_review": "pending",
+    "expert_solvability": "pending",
+    "independent_scientific_review": "pending",
+    "oracle_commitment_sealed": "pass",
+    "structured_oracle_replay": "pending",
+    "task_packet_integrity": "pass",
+    "temporal_leakage_review": "pending"
+  },
+  "baseline_model_runs_started": false,
+  "benchmark_evidence_claimed": false,
+  "board_admitted_count": 0,
+  "board_id": "adds-frontier-private-pilot-v1",
+  "canonical_stage_count": 60,
+  "canonical_stage_pass_count": 60,
+  "human_review_required": true,
+  "independent_review_complete": false,
+  "integrity_sha256": "9e195e7a5e7ccfeefca8b195202354262901fe93778fbf4085cecf55ba5a2027",
+  "machine_decidable_probe_count": 30,
+  "machine_expected_outcome_match_count": 30,
+  "mutation_probe_count": 50,
+  "nonclaims": [
+    "Automated preflight does not change independent-review or board-admission status.",
+    "No model run or benchmark performance evidence is claimed.",
+    "No private task, oracle, identity, nonce, curator, or canary bytes are published.",
+    "Sixty canonical stage checks are deterministic scorer round-trips, not expert solves.",
+    "Twenty structurally accepted semantic probes still require independent oracle review."
+  ],
+  "preflight_id": "adds-frontier-calibration-preflight-v1",
+  "private_payload_published": false,
+  "private_preflight_report_commitment": "0daf746e98bc10a4cf55747d33f6c2a3c3ae1b3880d79d997640a30bff81f2b0",
+  "probe_kind_counts": {
+    "bounded_evidence_reveal": 10,
+    "critical_evidence_removal": 10,
+    "identity_rebind": 10,
+    "source_id_rename": 10,
+    "temporal_access_rebind": 10
+  },
+  "progress_integrity_sha256": "8a172411db32f25238e58b3cbada8a516d17f9090d4e200bb9294e99fd457231",
+  "protocol_id": "adds-frontier-v1",
+  "run_on": "2026-08-21",
+  "schema_version": "adds.frontier-calibration-preflight-summary.v1",
+  "semantic_review_required_probe_count": 20,
+  "status": "automated_preflight_complete_semantic_review_pending",
+  "structurally_accepted_semantic_probe_count": 20,
+  "task_count": 10
+}

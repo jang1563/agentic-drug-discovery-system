@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_semantic_review_workflow_summary.schema.json",
+  "title": "ADDS-Frontier payload-free semantic review workflow summary",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema_version", "workflow_id", "protocol_id", "board_id", "status", "compiled_on",
+    "semantic_readiness_integrity_sha256", "private_ledger_commitment", "packet_count",
+    "unassigned_packet_count", "response_contract_ready", "triage_state_machine_ready",
+    "pairwise_causal_consistency_ready", "pre_access_invariance_ready",
+    "required_response_count_per_packet", "consensus_rule", "pair_consistency_rule",
+    "pre_access_invariance_rule", "routing_precedence",
+    "reviewer_assignment_count", "reviewer_response_count", "consensus_candidate_count",
+    "adjudication_count", "independent_review_complete", "human_review_required",
+    "board_admitted_count", "baseline_model_runs_started", "benchmark_evidence_claimed",
+    "private_payload_published", "nonclaims", "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-semantic-review-workflow-summary.v1"},
+    "workflow_id": {"const": "adds-frontier-semantic-review-workflow-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "status": {"const": "workflow_contract_ready_no_reviews"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "semantic_readiness_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_ledger_commitment": {"$ref": "#/$defs/sha256"},
+    "packet_count": {"const": 20},
+    "unassigned_packet_count": {"const": 20},
+    "response_contract_ready": {"const": true},
+    "triage_state_machine_ready": {"const": true},
+    "pairwise_causal_consistency_ready": {"const": true},
+    "pre_access_invariance_ready": {"const": true},
+    "required_response_count_per_packet": {"const": 3},
+    "consensus_rule": {"const": "three_independent_exact_responses"},
+    "pair_consistency_rule": {"const": "pair_assessment_equals_observed_stage_deltas"},
+    "pre_access_invariance_rule": {"const": "bounded_evidence_arms_invariant_before_access_delta"},
+    "routing_precedence": {"$ref": "#/$defs/routes"},
+    "reviewer_assignment_count": {"const": 0},
+    "reviewer_response_count": {"const": 0},
+    "consensus_candidate_count": {"const": 0},
+    "adjudication_count": {"const": 0},
+    "independent_review_complete": {"const": false},
+    "human_review_required": {"const": true},
+    "board_admitted_count": {"const": 0},
+    "baseline_model_runs_started": {"const": false},
+    "benchmark_evidence_claimed": {"const": false},
+    "private_payload_published": {"const": false},
+    "nonclaims": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "routes": {"type": "array", "prefixItems": [
+      {"const": "adjudication_required_abstention"},
+      {"const": "adjudication_required_action_disagreement"},
+      {"const": "adjudication_required_support_disagreement"},
+      {"const": "adjudication_required_change_disagreement"},
+      {"const": "consensus_candidate"}
+    ], "items": false}
+  }
+}

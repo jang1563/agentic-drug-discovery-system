@@ -1,0 +1,393 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_evidence_decision_summary.schema.json",
+  "title": "Clinical evidence decision summary and validation report",
+  "description": "Compact human- and machine-readable projection of an integrity-bound clinical evidence decision package. ADVANCE remains evidence-workflow-only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "package_id",
+    "program_id",
+    "as_of_date",
+    "policy",
+    "evidence",
+    "plan",
+    "guardrails"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-evidence-decision-summary.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "package_id": {
+      "$ref": "#/$defs/text"
+    },
+    "program_id": {
+      "$ref": "#/$defs/text"
+    },
+    "as_of_date": {
+      "$ref": "#/$defs/date"
+    },
+    "policy": {
+      "$ref": "#/$defs/policy"
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    },
+    "plan": {
+      "$ref": "#/$defs/plan"
+    },
+    "guardrails": {
+      "$ref": "#/$defs/guardrails"
+    },
+    "validation": {
+      "$ref": "#/$defs/validation"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nonNegativeNumber": {
+      "type": "number",
+      "minimum": 0
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "textArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "version",
+        "registered_on"
+      ],
+      "properties": {
+        "policy_id": {
+          "$ref": "#/$defs/text"
+        },
+        "version": {
+          "$ref": "#/$defs/text"
+        },
+        "registered_on": {
+          "$ref": "#/$defs/date"
+        }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gap_id",
+        "code",
+        "dimension",
+        "summary",
+        "gap_mass",
+        "blocking"
+      ],
+      "properties": {
+        "gap_id": {
+          "$ref": "#/$defs/text"
+        },
+        "code": {
+          "$ref": "#/$defs/text"
+        },
+        "dimension": {
+          "$ref": "#/$defs/text"
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "gap_mass": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "blocking": {
+          "type": "boolean"
+        }
+      }
+    },
+    "dimensionStatusCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "satisfied",
+        "gap",
+        "blocking_signal"
+      ],
+      "properties": {
+        "satisfied": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "gap": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "blocking_signal": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "synthesis_id",
+        "endpoint_mapping_id",
+        "candidate_id",
+        "intervention_id",
+        "disease_id",
+        "trial_count",
+        "trial_ids",
+        "source_content_hash_count",
+        "dimension_status_counts",
+        "gaps"
+      ],
+      "properties": {
+        "synthesis_id": {
+          "$ref": "#/$defs/text"
+        },
+        "endpoint_mapping_id": {
+          "$ref": "#/$defs/text"
+        },
+        "candidate_id": {
+          "$ref": "#/$defs/text"
+        },
+        "intervention_id": {
+          "$ref": "#/$defs/text"
+        },
+        "disease_id": {
+          "$ref": "#/$defs/text"
+        },
+        "trial_count": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "trial_ids": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "source_content_hash_count": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "dimension_status_counts": {
+          "$ref": "#/$defs/dimensionStatusCounts"
+        },
+        "gaps": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/gap"
+          }
+        }
+      }
+    },
+    "selectedAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rank",
+        "action_id",
+        "purpose",
+        "tool_id",
+        "operation",
+        "targeted_gap_ids",
+        "bounded_voi",
+        "voi_per_cost",
+        "max_cost"
+      ],
+      "properties": {
+        "rank": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "action_id": {
+          "$ref": "#/$defs/text"
+        },
+        "purpose": {
+          "$ref": "#/$defs/text"
+        },
+        "tool_id": {
+          "$ref": "#/$defs/text"
+        },
+        "operation": {
+          "$ref": "#/$defs/text"
+        },
+        "targeted_gap_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "bounded_voi": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "voi_per_cost": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_cost": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "limit",
+        "spent",
+        "available",
+        "planned_cost",
+        "remaining_after_plan"
+      ],
+      "properties": {
+        "limit": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "spent": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "available": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "planned_cost": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "remaining_after_plan": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        }
+      }
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "code",
+        "rationale_codes",
+        "selected_actions",
+        "untargeted_gap_ids",
+        "budget"
+      ],
+      "properties": {
+        "decision": {
+          "enum": [
+            "advance",
+            "hold",
+            "defer"
+          ]
+        },
+        "code": {
+          "$ref": "#/$defs/text"
+        },
+        "rationale_codes": {
+          "$ref": "#/$defs/textArray"
+        },
+        "selected_actions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/selectedAction"
+          }
+        },
+        "untargeted_gap_ids": {
+          "$ref": "#/$defs/textArray"
+        },
+        "budget": {
+          "$ref": "#/$defs/budget"
+        }
+      }
+    },
+    "guardrails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workflow_scope",
+        "pooling_performed",
+        "cross_trial_comparability_inferred",
+        "population_homogeneity_inferred",
+        "clinical_acceptability_inferred",
+        "terminal_decision_issued"
+      ],
+      "properties": {
+        "workflow_scope": {
+          "const": "evidence_workflow_only"
+        },
+        "pooling_performed": {
+          "const": false
+        },
+        "cross_trial_comparability_inferred": {
+          "const": false
+        },
+        "population_homogeneity_inferred": {
+          "const": false
+        },
+        "clinical_acceptability_inferred": {
+          "const": false
+        },
+        "terminal_decision_issued": {
+          "const": false
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "scope",
+        "failure_codes"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "valid",
+            "invalid"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "integrity_and_structure",
+            "integrity_structure_and_state_replay"
+          ]
+        },
+        "failure_codes": {
+          "$ref": "#/$defs/textArray"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2049 @@
+{
+  "all_dominant_cluster_hard_stops_preserved": true,
+  "all_production_eligible_scenarios_research_targets_met": true,
+  "claim_boundary": {
+    "aggregate_simulation_only": true,
+    "automatic_method_selection_included": false,
+    "cluster_level_records_included": false,
+    "dominant_cluster_override_allowed": false,
+    "identification_and_sampling_uncertainty_separated": true,
+    "multiplier_method_experimental_only": true,
+    "real_clinical_outcomes_included": false,
+    "regression_wild_cluster_bootstrap_claimed": false,
+    "replicate_level_records_included": false,
+    "stress_only_ineligible_intervals_operational": false,
+    "unit_level_records_included": false
+  },
+  "log_imor_grid": [
+    -2.0,
+    -1.0,
+    0.0,
+    1.0,
+    2.0
+  ],
+  "method_id": "adds.pattern-mixture.unequal-cluster-influence-calibration.v1",
+  "methods": [
+    "delete_one_normal",
+    "delete_one_student_t",
+    "delete_mj_student_t",
+    "delete_mj_webb_multiplier"
+  ],
+  "pattern_mixture_protocol_fingerprint": "c638c88456d065ae26562516a25317591573a0aba892cc36d2b8283890b591d0",
+  "pattern_mixture_protocol_id": "synthetic-unequal-cluster-pattern-mixture",
+  "pattern_mixture_report_fingerprint": "5321f2dc596c1d9b29200adb4610ac6a69870c440da8bf883ca18dfbe7fe39ed",
+  "primary_metric": "observed_favorable_rate",
+  "protocol_fingerprint": "a57300753f0467f7589aa54c86f94bd7c25448ed37e92abba6c757af61376694",
+  "protocol_id": "synthetic-unequal-cluster-influence-calibration",
+  "replicates": 500,
+  "report_fingerprint": "80ab9f4ae9dc2c0953bc302151a3846e9dce414a529b7911ad34fe3cd971abc9",
+  "scenarios": [
+    {
+      "analysis_cluster_count": 8,
+      "delete_mj_sensitivity_target_met": true,
+      "dominant_cluster_hard_stop_preserved": true,
+      "endpoint_family": "composite_benefit_risk",
+      "equal_cluster_sizes": true,
+      "equal_size_delete_mj_standard_error_equivalence_expected": true,
+      "equal_size_delete_mj_standard_error_equivalence_met": true,
+      "maximum_cluster_size": 16,
+      "maximum_cluster_unit_fraction": 0.125,
+      "methods": [
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_one_normal",
+          "minimum_coverage_lower": 0.872793949134,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": false,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.423948246904,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 454,
+                "lower": 0.879461261864,
+                "rate": 0.908,
+                "total_count": 500,
+                "upper": 0.93031727632
+              },
+              "standard_error_to_empirical_sd_ratio": 0.97559982654
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.473383077041,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 451,
+                "lower": 0.872793949134,
+                "rate": 0.902,
+                "total_count": 500,
+                "upper": 0.925076081135
+              },
+              "standard_error_to_empirical_sd_ratio": 0.981543866588
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.541697480548,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 451,
+                "lower": 0.872793949134,
+                "rate": 0.902,
+                "total_count": 500,
+                "upper": 0.925076081135
+              },
+              "standard_error_to_empirical_sd_ratio": 0.988891980375
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.605850106678,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 452,
+                "lower": 0.875013037572,
+                "rate": 0.904,
+                "total_count": 500,
+                "upper": 0.926826495335
+              },
+              "standard_error_to_empirical_sd_ratio": 0.997149455389
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.647396907018,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 454,
+                "lower": 0.879461261864,
+                "rate": 0.908,
+                "total_count": 500,
+                "upper": 0.93031727632
+              },
+              "standard_error_to_empirical_sd_ratio": 0.999741037932
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.081646865287,
+            "minimum": 0.97559982654
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_one_student_t",
+          "minimum_coverage_lower": 0.901931595983,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": true,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.423948246904,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 473,
+                "lower": 0.922573438489,
+                "rate": 0.946,
+                "total_count": 500,
+                "upper": 0.962625649819
+              },
+              "standard_error_to_empirical_sd_ratio": 0.97559982654
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.473383077041,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 470,
+                "lower": 0.915638936875,
+                "rate": 0.94,
+                "total_count": 500,
+                "upper": 0.957651643519
+              },
+              "standard_error_to_empirical_sd_ratio": 0.981543866588
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.541697480548,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 471,
+                "lower": 0.917943812144,
+                "rate": 0.942,
+                "total_count": 500,
+                "upper": 0.959316270888
+              },
+              "standard_error_to_empirical_sd_ratio": 0.988891980375
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.605850106678,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 470,
+                "lower": 0.915638936875,
+                "rate": 0.94,
+                "total_count": 500,
+                "upper": 0.957651643519
+              },
+              "standard_error_to_empirical_sd_ratio": 0.997149455389
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.647396907018,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 469,
+                "lower": 0.913340286898,
+                "rate": 0.938,
+                "total_count": 500,
+                "upper": 0.955980790857
+              },
+              "standard_error_to_empirical_sd_ratio": 0.999741037932
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.081646865287,
+            "minimum": 0.97559982654
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_mj_student_t",
+          "minimum_coverage_lower": 0.906479077266,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": true,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.420328374523,
+              "mean_minus_prior_pattern_mixture": -0.003619872381,
+              "model_functional_coverage": {
+                "event_count": 473,
+                "lower": 0.922573438489,
+                "rate": 0.946,
+                "total_count": 500,
+                "upper": 0.962625649819
+              },
+              "standard_error_to_empirical_sd_ratio": 0.984739822428
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.470761776149,
+              "mean_minus_prior_pattern_mixture": -0.002621300892,
+              "model_functional_coverage": {
+                "event_count": 468,
+                "lower": 0.911047591162,
+                "rate": 0.936,
+                "total_count": 500,
+                "upper": 0.954303983955
+              },
+              "standard_error_to_empirical_sd_ratio": 0.981520611938
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.543377449575,
+              "mean_minus_prior_pattern_mixture": 0.001679969027,
+              "model_functional_coverage": {
+                "event_count": 470,
+                "lower": 0.915638936875,
+                "rate": 0.94,
+                "total_count": 500,
+                "upper": 0.957651643519
+              },
+              "standard_error_to_empirical_sd_ratio": 0.987457117539
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.610631088638,
+              "mean_minus_prior_pattern_mixture": 0.00478098196,
+              "model_functional_coverage": {
+                "event_count": 470,
+                "lower": 0.915638936875,
+                "rate": 0.94,
+                "total_count": 500,
+                "upper": 0.957651643519
+              },
+              "standard_error_to_empirical_sd_ratio": 1.012653752323
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.651520019579,
+              "mean_minus_prior_pattern_mixture": 0.004123112561,
+              "model_functional_coverage": {
+                "event_count": 468,
+                "lower": 0.911047591162,
+                "rate": 0.936,
+                "total_count": 500,
+                "upper": 0.954303983955
+              },
+              "standard_error_to_empirical_sd_ratio": 1.025137806
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.083837358798,
+            "minimum": 0.981520611915
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": false,
+          "experimental_only": true,
+          "method": "delete_mj_webb_multiplier",
+          "minimum_coverage_lower": 0.837678638423,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": false,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.420328374523,
+              "mean_minus_prior_pattern_mixture": -0.003619872381,
+              "model_functional_coverage": {
+                "event_count": 441,
+                "lower": 0.850768012139,
+                "rate": 0.882,
+                "total_count": 500,
+                "upper": 0.907406991748
+              },
+              "standard_error_to_empirical_sd_ratio": 0.984739822428
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.470761776149,
+              "mean_minus_prior_pattern_mixture": -0.002621300892,
+              "model_functional_coverage": {
+                "event_count": 435,
+                "lower": 0.837678638423,
+                "rate": 0.87,
+                "total_count": 500,
+                "upper": 0.896679349635
+              },
+              "standard_error_to_empirical_sd_ratio": 0.981520611938
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.543377449575,
+              "mean_minus_prior_pattern_mixture": 0.001679969027,
+              "model_functional_coverage": {
+                "event_count": 437,
+                "lower": 0.84203228228,
+                "rate": 0.874,
+                "total_count": 500,
+                "upper": 0.900264711055
+              },
+              "standard_error_to_empirical_sd_ratio": 0.987457117539
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.610631088638,
+              "mean_minus_prior_pattern_mixture": 0.00478098196,
+              "model_functional_coverage": {
+                "event_count": 446,
+                "lower": 0.861745326715,
+                "rate": 0.892,
+                "total_count": 500,
+                "upper": 0.916277190363
+              },
+              "standard_error_to_empirical_sd_ratio": 1.012653752323
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.651520019579,
+              "mean_minus_prior_pattern_mixture": 0.004123112561,
+              "model_functional_coverage": {
+                "event_count": 448,
+                "lower": 0.866155729124,
+                "rate": 0.896,
+                "total_count": 500,
+                "upper": 0.91980579323
+              },
+              "standard_error_to_empirical_sd_ratio": 1.025137806
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.083837358798,
+            "minimum": 0.981520611915
+          }
+        }
+      ],
+      "minimum_cluster_size": 16,
+      "production_eligible": true,
+      "production_ineligibility_reasons": [],
+      "research_target_met": true,
+      "scenario_id": "balanced-few-8",
+      "stage": "clinical_strategy",
+      "student_t_candidate_target_met": true,
+      "student_t_coverage_noninferior_to_normal_all_cells": true,
+      "webb_experimental_target_met": false
+    },
+    {
+      "analysis_cluster_count": 12,
+      "delete_mj_sensitivity_target_met": true,
+      "dominant_cluster_hard_stop_preserved": true,
+      "endpoint_family": "composite_benefit_risk",
+      "equal_cluster_sizes": true,
+      "equal_size_delete_mj_standard_error_equivalence_expected": true,
+      "equal_size_delete_mj_standard_error_equivalence_met": true,
+      "maximum_cluster_size": 16,
+      "maximum_cluster_unit_fraction": 0.083333333333,
+      "methods": [
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_one_normal",
+          "minimum_coverage_lower": 0.879461261864,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": false,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.417671461302,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 459,
+                "lower": 0.890645140843,
+                "rate": 0.918,
+                "total_count": 500,
+                "upper": 0.938980910532
+              },
+              "standard_error_to_empirical_sd_ratio": 0.932363912221
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.46650042203,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 456,
+                "lower": 0.883923527935,
+                "rate": 0.912,
+                "total_count": 500,
+                "upper": 0.933794015525
+              },
+              "standard_error_to_empirical_sd_ratio": 0.937431328674
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.535494790882,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 461,
+                "lower": 0.895146450127,
+                "rate": 0.922,
+                "total_count": 500,
+                "upper": 0.942418606524
+              },
+              "standard_error_to_empirical_sd_ratio": 0.948386076228
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.600853684139,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 467,
+                "lower": 0.908760598839,
+                "rate": 0.934,
+                "total_count": 500,
+                "upper": 0.95262147364
+              },
+              "standard_error_to_empirical_sd_ratio": 0.965400523292
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.642947595869,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 468,
+                "lower": 0.911047591162,
+                "rate": 0.936,
+                "total_count": 500,
+                "upper": 0.954303983955
+              },
+              "standard_error_to_empirical_sd_ratio": 0.979836744087
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.048639562136,
+            "minimum": 0.932363912209
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_one_student_t",
+          "minimum_coverage_lower": 0.904202810148,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": true,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.417671461302,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 465,
+                "lower": 0.904202810148,
+                "rate": 0.93,
+                "total_count": 500,
+                "upper": 0.949240257055
+              },
+              "standard_error_to_empirical_sd_ratio": 0.932363912221
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.46650042203,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 467,
+                "lower": 0.908760598839,
+                "rate": 0.934,
+                "total_count": 500,
+                "upper": 0.95262147364
+              },
+              "standard_error_to_empirical_sd_ratio": 0.937431328674
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.535494790882,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 472,
+                "lower": 0.920255206353,
+                "rate": 0.944,
+                "total_count": 500,
+                "upper": 0.960974379317
+              },
+              "standard_error_to_empirical_sd_ratio": 0.948386076228
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.600853684139,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 475,
+                "lower": 0.927231838828,
+                "rate": 0.95,
+                "total_count": 500,
+                "upper": 0.965906254756
+              },
+              "standard_error_to_empirical_sd_ratio": 0.965400523292
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.642947595869,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 476,
+                "lower": 0.929572803164,
+                "rate": 0.952,
+                "total_count": 500,
+                "upper": 0.967534793059
+              },
+              "standard_error_to_empirical_sd_ratio": 0.979836744087
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.048639562136,
+            "minimum": 0.932363912209
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_mj_student_t",
+          "minimum_coverage_lower": 0.908760598839,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": true,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.415583822529,
+              "mean_minus_prior_pattern_mixture": -0.002087638773,
+              "model_functional_coverage": {
+                "event_count": 467,
+                "lower": 0.908760598839,
+                "rate": 0.934,
+                "total_count": 500,
+                "upper": 0.95262147364
+              },
+              "standard_error_to_empirical_sd_ratio": 0.937677713172
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.464980628196,
+              "mean_minus_prior_pattern_mixture": -0.001519793834,
+              "model_functional_coverage": {
+                "event_count": 467,
+                "lower": 0.908760598839,
+                "rate": 0.934,
+                "total_count": 500,
+                "upper": 0.95262147364
+              },
+              "standard_error_to_empirical_sd_ratio": 0.937002693599
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.536761062371,
+              "mean_minus_prior_pattern_mixture": 0.001266271489,
+              "model_functional_coverage": {
+                "event_count": 470,
+                "lower": 0.915638936875,
+                "rate": 0.94,
+                "total_count": 500,
+                "upper": 0.957651643519
+              },
+              "standard_error_to_empirical_sd_ratio": 0.947047256044
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.604066120404,
+              "mean_minus_prior_pattern_mixture": 0.003212436265,
+              "model_functional_coverage": {
+                "event_count": 476,
+                "lower": 0.929572803164,
+                "rate": 0.952,
+                "total_count": 500,
+                "upper": 0.967534793059
+              },
+              "standard_error_to_empirical_sd_ratio": 0.975834635889
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.645561315384,
+              "mean_minus_prior_pattern_mixture": 0.002613719515,
+              "model_functional_coverage": {
+                "event_count": 478,
+                "lower": 0.934280557128,
+                "rate": 0.956,
+                "total_count": 500,
+                "upper": 0.970766044371
+              },
+              "standard_error_to_empirical_sd_ratio": 0.996325561274
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.058022455154,
+            "minimum": 0.937002693599
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": false,
+          "experimental_only": true,
+          "method": "delete_mj_webb_multiplier",
+          "minimum_coverage_lower": 0.848580401376,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": false,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.415583822529,
+              "mean_minus_prior_pattern_mixture": -0.002087638773,
+              "model_functional_coverage": {
+                "event_count": 446,
+                "lower": 0.861745326715,
+                "rate": 0.892,
+                "total_count": 500,
+                "upper": 0.916277190363
+              },
+              "standard_error_to_empirical_sd_ratio": 0.937677713172
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.464980628196,
+              "mean_minus_prior_pattern_mixture": -0.001519793834,
+              "model_functional_coverage": {
+                "event_count": 446,
+                "lower": 0.861745326715,
+                "rate": 0.892,
+                "total_count": 500,
+                "upper": 0.916277190363
+              },
+              "standard_error_to_empirical_sd_ratio": 0.937002693599
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.536761062371,
+              "mean_minus_prior_pattern_mixture": 0.001266271489,
+              "model_functional_coverage": {
+                "event_count": 449,
+                "lower": 0.868365377096,
+                "rate": 0.898,
+                "total_count": 500,
+                "upper": 0.921565647897
+              },
+              "standard_error_to_empirical_sd_ratio": 0.947047256044
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.604066120404,
+              "mean_minus_prior_pattern_mixture": 0.003212436265,
+              "model_functional_coverage": {
+                "event_count": 453,
+                "lower": 0.877235444137,
+                "rate": 0.906,
+                "total_count": 500,
+                "upper": 0.928573591408
+              },
+              "standard_error_to_empirical_sd_ratio": 0.975834635889
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.645561315384,
+              "mean_minus_prior_pattern_mixture": 0.002613719515,
+              "model_functional_coverage": {
+                "event_count": 453,
+                "lower": 0.877235444137,
+                "rate": 0.906,
+                "total_count": 500,
+                "upper": 0.928573591408
+              },
+              "standard_error_to_empirical_sd_ratio": 0.996325561274
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.058022455154,
+            "minimum": 0.937002693599
+          }
+        }
+      ],
+      "minimum_cluster_size": 16,
+      "production_eligible": true,
+      "production_ineligibility_reasons": [],
+      "research_target_met": true,
+      "scenario_id": "balanced-reference-12",
+      "stage": "clinical_strategy",
+      "student_t_candidate_target_met": true,
+      "student_t_coverage_noninferior_to_normal_all_cells": true,
+      "webb_experimental_target_met": false
+    },
+    {
+      "analysis_cluster_count": 12,
+      "delete_mj_sensitivity_target_met": true,
+      "dominant_cluster_hard_stop_preserved": true,
+      "endpoint_family": "composite_benefit_risk",
+      "equal_cluster_sizes": false,
+      "equal_size_delete_mj_standard_error_equivalence_expected": false,
+      "equal_size_delete_mj_standard_error_equivalence_met": false,
+      "maximum_cluster_size": 64,
+      "maximum_cluster_unit_fraction": 0.266666666667,
+      "methods": [
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_one_normal",
+          "minimum_coverage_lower": 0.883923527935,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": false,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.426826532439,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 461,
+                "lower": 0.895146450127,
+                "rate": 0.922,
+                "total_count": 500,
+                "upper": 0.942418606524
+              },
+              "standard_error_to_empirical_sd_ratio": 1.037322634617
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.476307668906,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 461,
+                "lower": 0.895146450127,
+                "rate": 0.922,
+                "total_count": 500,
+                "upper": 0.942418606524
+              },
+              "standard_error_to_empirical_sd_ratio": 1.044445361025
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.54553828677,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 457,
+                "lower": 0.886160188501,
+                "rate": 0.914,
+                "total_count": 500,
+                "upper": 0.935526857596
+              },
+              "standard_error_to_empirical_sd_ratio": 1.054932428577
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.610062825002,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 459,
+                "lower": 0.890645140843,
+                "rate": 0.918,
+                "total_count": 500,
+                "upper": 0.938980910532
+              },
+              "standard_error_to_empirical_sd_ratio": 1.06576770457
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.650873445454,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 459,
+                "lower": 0.890645140843,
+                "rate": 0.918,
+                "total_count": 500,
+                "upper": 0.938980910532
+              },
+              "standard_error_to_empirical_sd_ratio": 1.071041672435
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.129431686343,
+            "minimum": 1.029567248202
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_one_student_t",
+          "minimum_coverage_lower": 0.913340286898,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": true,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.426826532439,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 473,
+                "lower": 0.922573438489,
+                "rate": 0.946,
+                "total_count": 500,
+                "upper": 0.962625649819
+              },
+              "standard_error_to_empirical_sd_ratio": 1.037322634617
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.476307668906,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 473,
+                "lower": 0.922573438489,
+                "rate": 0.946,
+                "total_count": 500,
+                "upper": 0.962625649819
+              },
+              "standard_error_to_empirical_sd_ratio": 1.044445361025
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.54553828677,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 471,
+                "lower": 0.917943812144,
+                "rate": 0.942,
+                "total_count": 500,
+                "upper": 0.959316270888
+              },
+              "standard_error_to_empirical_sd_ratio": 1.054932428577
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.610062825002,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 472,
+                "lower": 0.920255206353,
+                "rate": 0.944,
+                "total_count": 500,
+                "upper": 0.960974379317
+              },
+              "standard_error_to_empirical_sd_ratio": 1.06576770457
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.650873445454,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 474,
+                "lower": 0.924898856062,
+                "rate": 0.948,
+                "total_count": 500,
+                "upper": 0.964269734884
+              },
+              "standard_error_to_empirical_sd_ratio": 1.071041672435
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.129431686343,
+            "minimum": 1.029567248202
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_mj_student_t",
+          "minimum_coverage_lower": 0.901931595983,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": true,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.425063045892,
+              "mean_minus_prior_pattern_mixture": -0.001763486547,
+              "model_functional_coverage": {
+                "event_count": 468,
+                "lower": 0.911047591162,
+                "rate": 0.936,
+                "total_count": 500,
+                "upper": 0.954303983955
+              },
+              "standard_error_to_empirical_sd_ratio": 0.88450411722
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.475278514514,
+              "mean_minus_prior_pattern_mixture": -0.001029154392,
+              "model_functional_coverage": {
+                "event_count": 469,
+                "lower": 0.913340286898,
+                "rate": 0.938,
+                "total_count": 500,
+                "upper": 0.955980790857
+              },
+              "standard_error_to_empirical_sd_ratio": 0.886115602409
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.547253992788,
+              "mean_minus_prior_pattern_mixture": 0.001715706018,
+              "model_functional_coverage": {
+                "event_count": 465,
+                "lower": 0.904202810148,
+                "rate": 0.93,
+                "total_count": 500,
+                "upper": 0.949240257055
+              },
+              "standard_error_to_empirical_sd_ratio": 0.898433700931
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.613392366564,
+              "mean_minus_prior_pattern_mixture": 0.003329541562,
+              "model_functional_coverage": {
+                "event_count": 464,
+                "lower": 0.901931595983,
+                "rate": 0.928,
+                "total_count": 500,
+                "upper": 0.947541968582
+              },
+              "standard_error_to_empirical_sd_ratio": 0.924284849374
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.653386403022,
+              "mean_minus_prior_pattern_mixture": 0.002512957568,
+              "model_functional_coverage": {
+                "event_count": 466,
+                "lower": 0.906479077266,
+                "rate": 0.932,
+                "total_count": 500,
+                "upper": 0.950933492575
+              },
+              "standard_error_to_empirical_sd_ratio": 0.940269531242
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.068551458333,
+            "minimum": 0.88450411722
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": false,
+          "experimental_only": true,
+          "method": "delete_mj_webb_multiplier",
+          "minimum_coverage_lower": 0.833333984654,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": false,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.425063045892,
+              "mean_minus_prior_pattern_mixture": -0.001763486547,
+              "model_functional_coverage": {
+                "event_count": 433,
+                "lower": 0.833333984654,
+                "rate": 0.866,
+                "total_count": 500,
+                "upper": 0.893084998128
+              },
+              "standard_error_to_empirical_sd_ratio": 0.88450411722
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.475278514514,
+              "mean_minus_prior_pattern_mixture": -0.001029154392,
+              "model_functional_coverage": {
+                "event_count": 436,
+                "lower": 0.839854314692,
+                "rate": 0.872,
+                "total_count": 500,
+                "upper": 0.898473176005
+              },
+              "standard_error_to_empirical_sd_ratio": 0.886115602409
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.547253992788,
+              "mean_minus_prior_pattern_mixture": 0.001715706018,
+              "model_functional_coverage": {
+                "event_count": 437,
+                "lower": 0.84203228228,
+                "rate": 0.874,
+                "total_count": 500,
+                "upper": 0.900264711055
+              },
+              "standard_error_to_empirical_sd_ratio": 0.898433700931
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.613392366564,
+              "mean_minus_prior_pattern_mixture": 0.003329541562,
+              "model_functional_coverage": {
+                "event_count": 437,
+                "lower": 0.84203228228,
+                "rate": 0.874,
+                "total_count": 500,
+                "upper": 0.900264711055
+              },
+              "standard_error_to_empirical_sd_ratio": 0.924284849374
+            },
+            {
+              "calibration_target_met": false,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.653386403022,
+              "mean_minus_prior_pattern_mixture": 0.002512957568,
+              "model_functional_coverage": {
+                "event_count": 441,
+                "lower": 0.850768012139,
+                "rate": 0.882,
+                "total_count": 500,
+                "upper": 0.907406991748
+              },
+              "standard_error_to_empirical_sd_ratio": 0.940269531242
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.068551458333,
+            "minimum": 0.88450411722
+          }
+        }
+      ],
+      "minimum_cluster_size": 16,
+      "production_eligible": false,
+      "production_ineligibility_reasons": [
+        "dominant_cluster"
+      ],
+      "research_target_met": true,
+      "scenario_id": "dominant-cluster-12",
+      "stage": "clinical_strategy",
+      "student_t_candidate_target_met": true,
+      "student_t_coverage_noninferior_to_normal_all_cells": true,
+      "webb_experimental_target_met": false
+    },
+    {
+      "analysis_cluster_count": 12,
+      "delete_mj_sensitivity_target_met": true,
+      "dominant_cluster_hard_stop_preserved": true,
+      "endpoint_family": "composite_benefit_risk",
+      "equal_cluster_sizes": false,
+      "equal_size_delete_mj_standard_error_equivalence_expected": false,
+      "equal_size_delete_mj_standard_error_equivalence_met": false,
+      "maximum_cluster_size": 24,
+      "maximum_cluster_unit_fraction": 0.130434782609,
+      "methods": [
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_one_normal",
+          "minimum_coverage_lower": 0.895146450127,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": false,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.420551512755,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 468,
+                "lower": 0.911047591162,
+                "rate": 0.936,
+                "total_count": 500,
+                "upper": 0.954303983955
+              },
+              "standard_error_to_empirical_sd_ratio": 1.016565901197
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.46980833094,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 466,
+                "lower": 0.906479077266,
+                "rate": 0.932,
+                "total_count": 500,
+                "upper": 0.950933492575
+              },
+              "standard_error_to_empirical_sd_ratio": 1.02621093921
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.539102715791,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 467,
+                "lower": 0.908760598839,
+                "rate": 0.934,
+                "total_count": 500,
+                "upper": 0.95262147364
+              },
+              "standard_error_to_empirical_sd_ratio": 1.042215337143
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.604243716781,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 465,
+                "lower": 0.904202810148,
+                "rate": 0.93,
+                "total_count": 500,
+                "upper": 0.949240257055
+              },
+              "standard_error_to_empirical_sd_ratio": 1.058058444197
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.645829971126,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 466,
+                "lower": 0.906479077266,
+                "rate": 0.932,
+                "total_count": 500,
+                "upper": 0.950933492575
+              },
+              "standard_error_to_empirical_sd_ratio": 1.063391844592
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.110859053762,
+            "minimum": 0.996012184183
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_one_student_t",
+          "minimum_coverage_lower": 0.929572803164,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": true,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.420551512755,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 480,
+                "lower": 0.939026404165,
+                "rate": 0.96,
+                "total_count": 500,
+                "upper": 0.97395920261
+              },
+              "standard_error_to_empirical_sd_ratio": 1.016565901197
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.46980833094,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 479,
+                "lower": 0.936648414246,
+                "rate": 0.958,
+                "total_count": 500,
+                "upper": 0.972367689892
+              },
+              "standard_error_to_empirical_sd_ratio": 1.02621093921
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.539102715791,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 478,
+                "lower": 0.934280557128,
+                "rate": 0.956,
+                "total_count": 500,
+                "upper": 0.970766044371
+              },
+              "standard_error_to_empirical_sd_ratio": 1.042215337143
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.604243716781,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 479,
+                "lower": 0.936648414246,
+                "rate": 0.958,
+                "total_count": 500,
+                "upper": 0.972367689892
+              },
+              "standard_error_to_empirical_sd_ratio": 1.058058444197
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.645829971126,
+              "mean_minus_prior_pattern_mixture": 0.0,
+              "model_functional_coverage": {
+                "event_count": 478,
+                "lower": 0.934280557128,
+                "rate": 0.956,
+                "total_count": 500,
+                "upper": 0.970766044371
+              },
+              "standard_error_to_empirical_sd_ratio": 1.063391844592
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.110859053762,
+            "minimum": 0.996012184183
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": false,
+          "method": "delete_mj_student_t",
+          "minimum_coverage_lower": 0.927231838828,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": true,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.418362012895,
+              "mean_minus_prior_pattern_mixture": -0.00218949986,
+              "model_functional_coverage": {
+                "event_count": 480,
+                "lower": 0.939026404165,
+                "rate": 0.96,
+                "total_count": 500,
+                "upper": 0.97395920261
+              },
+              "standard_error_to_empirical_sd_ratio": 0.987138786566
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.468215102139,
+              "mean_minus_prior_pattern_mixture": -0.001593228801,
+              "model_functional_coverage": {
+                "event_count": 479,
+                "lower": 0.936648414246,
+                "rate": 0.958,
+                "total_count": 500,
+                "upper": 0.972367689892
+              },
+              "standard_error_to_empirical_sd_ratio": 0.991200030692
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.540422553259,
+              "mean_minus_prior_pattern_mixture": 0.001319837468,
+              "model_functional_coverage": {
+                "event_count": 478,
+                "lower": 0.934280557128,
+                "rate": 0.956,
+                "total_count": 500,
+                "upper": 0.970766044371
+              },
+              "standard_error_to_empirical_sd_ratio": 1.007674420556
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.607551158541,
+              "mean_minus_prior_pattern_mixture": 0.00330744176,
+              "model_functional_coverage": {
+                "event_count": 475,
+                "lower": 0.927231838828,
+                "rate": 0.95,
+                "total_count": 500,
+                "upper": 0.965906254756
+              },
+              "standard_error_to_empirical_sd_ratio": 1.03760433575
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.64849230839,
+              "mean_minus_prior_pattern_mixture": 0.002662337264,
+              "model_functional_coverage": {
+                "event_count": 479,
+                "lower": 0.936648414246,
+                "rate": 0.958,
+                "total_count": 500,
+                "upper": 0.972367689892
+              },
+              "standard_error_to_empirical_sd_ratio": 1.050925706039
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.098100052224,
+            "minimum": 0.987138786566
+          }
+        },
+        {
+          "all_metric_calibration_targets_met": true,
+          "experimental_only": true,
+          "method": "delete_mj_webb_multiplier",
+          "minimum_coverage_lower": 0.875013037572,
+          "minimum_interval_yield_lower": 0.992375659538,
+          "operational_candidate": false,
+          "primary_metric_grid": [
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -2.0,
+              "mean_estimate": 0.418362012895,
+              "mean_minus_prior_pattern_mixture": -0.00218949986,
+              "model_functional_coverage": {
+                "event_count": 461,
+                "lower": 0.895146450127,
+                "rate": 0.922,
+                "total_count": 500,
+                "upper": 0.942418606524
+              },
+              "standard_error_to_empirical_sd_ratio": 0.987138786566
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": -1.0,
+              "mean_estimate": 0.468215102139,
+              "mean_minus_prior_pattern_mixture": -0.001593228801,
+              "model_functional_coverage": {
+                "event_count": 458,
+                "lower": 0.88840068554,
+                "rate": 0.916,
+                "total_count": 500,
+                "upper": 0.937255863196
+              },
+              "standard_error_to_empirical_sd_ratio": 0.991200030692
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 0.0,
+              "mean_estimate": 0.540422553259,
+              "mean_minus_prior_pattern_mixture": 0.001319837468,
+              "model_functional_coverage": {
+                "event_count": 454,
+                "lower": 0.879461261864,
+                "rate": 0.908,
+                "total_count": 500,
+                "upper": 0.93031727632
+              },
+              "standard_error_to_empirical_sd_ratio": 1.007674420556
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 1.0,
+              "mean_estimate": 0.607551158541,
+              "mean_minus_prior_pattern_mixture": 0.00330744176,
+              "model_functional_coverage": {
+                "event_count": 456,
+                "lower": 0.883923527935,
+                "rate": 0.912,
+                "total_count": 500,
+                "upper": 0.933794015525
+              },
+              "standard_error_to_empirical_sd_ratio": 1.03760433575
+            },
+            {
+              "calibration_target_met": true,
+              "interval_yield": {
+                "event_count": 500,
+                "lower": 0.992375659538,
+                "rate": 1.0,
+                "total_count": 500,
+                "upper": 1.0
+              },
+              "log_imor": 2.0,
+              "mean_estimate": 0.64849230839,
+              "mean_minus_prior_pattern_mixture": 0.002662337264,
+              "model_functional_coverage": {
+                "event_count": 456,
+                "lower": 0.883923527935,
+                "rate": 0.912,
+                "total_count": 500,
+                "upper": 0.933794015525
+              },
+              "standard_error_to_empirical_sd_ratio": 1.050925706039
+            }
+          ],
+          "standard_error_calibration_ratio_range": {
+            "maximum": 1.098100052224,
+            "minimum": 0.987138786566
+          }
+        }
+      ],
+      "minimum_cluster_size": 8,
+      "production_eligible": true,
+      "production_ineligibility_reasons": [],
+      "research_target_met": true,
+      "scenario_id": "unequal-clusters-12",
+      "stage": "clinical_strategy",
+      "student_t_candidate_target_met": true,
+      "student_t_coverage_noninferior_to_normal_all_cells": true,
+      "webb_experimental_target_met": true
+    }
+  ],
+  "schema_version": "adds.clinical-outcome-pattern-mixture-influence-calibration-summary.v1",
+  "stress_protocol_fingerprint": "7952aa48e2eb5cecd26196b7c3ba599bc44933e8c1d92e8b56da8be946f72f7d",
+  "stress_protocol_id": "synthetic-unequal-cluster-influence-stress",
+  "stress_report_fingerprint": "1dfdde5523e5b0d89bbf73d315f496a30499e9838e011ffca1558a15e17be481",
+  "targets": {
+    "confidence_level": 0.95,
+    "coverage_target": 0.87,
+    "maximum_absolute_bias": 0.02,
+    "maximum_production_cluster_unit_fraction": 0.15,
+    "minimum_interval_yield": 0.95,
+    "minimum_production_clusters": 8,
+    "standard_error_calibration_lower": 0.8,
+    "standard_error_calibration_upper": 1.2
+  }
+}

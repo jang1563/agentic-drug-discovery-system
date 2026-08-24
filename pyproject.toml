@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agentic-drug-discovery-system"
-version = "0.3.0.dev2"
+version = "0.3.0.dev3"
 description = "Evidence-governed execution core for end-to-end drug-discovery agents"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -21,19 +21,32 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
-dependencies = []
+dependencies = [
+  "pypdf>=6.14,<7",
+  "tiktoken==0.14.0",
+]
 
 [project.optional-dependencies]
+frontier-tokenizer-eval = [
+  "sentencepiece==0.2.2",
+  "tokenizers==0.23.1",
+]
 test = [
   "jsonschema>=4.23,<5",
   "pytest>=8,<10",
+  "sentencepiece==0.2.2",
+  "tokenizers==0.23.1",
 ]
 
 [project.scripts]
 adds-control-plane-demo = "agentic_drug_discovery.demo:main"
 adds-bounded-agent-demo = "agentic_drug_discovery.bounded_demo:main"
+adds-clinical-evidence = "agentic_drug_discovery.clinical_decision_cli:main"
 adds-replay-bundle = "agentic_drug_discovery.replay_cli:main"
 adds-pinned-ingestion = "agentic_drug_discovery.ingestion_cli:main"
+adds-research-readiness = "agentic_drug_discovery.research_readiness_cli:main"
+adds-translational-handoff = "agentic_drug_discovery.translational_handoff_cli:main"
+adds-frontier = "agentic_drug_discovery.frontier_cli:main"
 
 [tool.setuptools.packages.find]
 include = ["agentic_drug_discovery*"]
@@ -44,3 +57,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F"]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "benchmark/src"]
+testpaths = ["tests", "benchmark/tests"]

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_evidence_cohort_manifest.schema.json",
+  "title": "Clinical evidence cohort manifest envelope",
+  "description": "Integrity-bound exact roster of clinical decision packages and optional accepted ProgramState hashes for outcome-free workflow diagnostics.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "manifest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-evidence-cohort-manifest.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cohort_id",
+        "cohort_specification_sha256",
+        "package_bindings",
+        "analysis_scope"
+      ],
+      "properties": {
+        "cohort_id": {
+          "$ref": "#/$defs/text"
+        },
+        "cohort_specification_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "package_bindings": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/packageBinding"
+          }
+        },
+        "analysis_scope": {
+          "const": "workflow_behavior_diagnostics"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "optionalSha256": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "packageBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_id",
+        "program_id",
+        "integrity_sha256",
+        "state_sha256"
+      ],
+      "properties": {
+        "package_id": {
+          "$ref": "#/$defs/text"
+        },
+        "program_id": {
+          "$ref": "#/$defs/text"
+        },
+        "integrity_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "state_sha256": {
+          "$ref": "#/$defs/optionalSha256"
+        }
+      }
+    }
+  }
+}

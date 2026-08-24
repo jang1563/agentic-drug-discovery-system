@@ -12,6 +12,14 @@ from datetime import date
 from enum import Enum
 from typing import Any
 
+from .clinical_effects import (
+    RATIO_EFFECT_FAVORABLE_DIRECTIONS,
+    effect_benefit_direction,
+    risk_difference_ci_width_percentage_points,
+    ratio_effect_favorable_direction,
+    validate_effect_contract,
+    validate_effect_scale_interval,
+)
 from .clinical_synthesis import validate_benefit_risk_synthesis
 from .models import (
     ActionType,
@@ -174,7 +182,7 @@ _GAP_SUMMARIES = {
         "the declared unfavorable direction."
     ),
     ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE: (
-        "At least one log-scale effect confidence interval is wider than the "
+        "At least one effect-scale confidence interval is wider than its "
         "preregistered workflow threshold."
     ),
     ClinicalEvidenceGapCode.MISSING_DESCRIPTIVE_ARM_MEASUREMENT: (
@@ -275,7 +283,9 @@ class ClinicalDecisionPolicy(SerializableRecord):
     version: str
     registered_on: date
     minimum_independent_trials: int
-    maximum_log_effect_ci_width: float
+    maximum_log_effect_ci_width: float | None = field(
+        metadata={"omit_if_none": True}
+    )
     minimum_safety_participants_per_arm: int
     max_planned_actions: int
     max_planned_cost: float
@@ -291,6 +301,10 @@ class ClinicalDecisionPolicy(SerializableRecord):
     clinical_acceptability_inference_prohibited: bool = True
     terminal_decisions_prohibited: bool = True
     metadata: Mapping[str, Any] = field(default_factory=dict)
+    maximum_risk_difference_ci_width_percentage_points: float | None = field(
+        default=None,
+        metadata={"omit_if_none": True},
+    )
 
     def __post_init__(self) -> None:
         for field_name in ("policy_id", "version"):
@@ -302,10 +316,21 @@ class ClinicalDecisionPolicy(SerializableRecord):
         )
         if self.minimum_independent_trials < 2:
             raise ValueError("minimum_independent_trials must be at least two")
-        _require_positive_number(
-            self.maximum_log_effect_ci_width,
-            "maximum_log_effect_ci_width",
-        )
+        if self.maximum_log_effect_ci_width is not None:
+            _require_positive_number(
+                self.maximum_log_effect_ci_width,
+                "maximum_log_effect_ci_width",
+            )
+        if self.maximum_risk_difference_ci_width_percentage_points is not None:
+            _require_positive_number(
+                self.maximum_risk_difference_ci_width_percentage_points,
+                "maximum_risk_difference_ci_width_percentage_points",
+            )
+        if (
+            self.maximum_log_effect_ci_width is None
+            and self.maximum_risk_difference_ci_width_percentage_points is None
+        ):
+            raise ValueError("at least one effect-scale precision threshold is required")
         _require_positive_int(
             self.minimum_safety_participants_per_arm,
             "minimum_safety_participants_per_arm",
@@ -359,7 +384,9 @@ class ClinicalEvidenceCell(SerializableRecord):
     confidence_interval_percent: float
     confidence_interval_lower: float
     confidence_interval_upper: float
-    log_effect_ci_width: float
+    log_effect_ci_width: float | None = field(
+        metadata={"omit_if_none": True}
+    )
     benefit_direction: str
     candidate_measurement: float | None
     comparator_measurement: float | None
@@ -378,6 +405,14 @@ class ClinicalEvidenceCell(SerializableRecord):
     source_content_hashes: tuple[str, ...]
     endpoint_fingerprint_sha256: str
     safety_fingerprint_sha256: str
+    effect_measure_favorable_direction: str | None = field(
+        default=None,
+        metadata={"omit_if_none": True},
+    )
+    risk_difference_ci_width_percentage_points: float | None = field(
+        default=None,
+        metadata={"omit_if_none": True},
+    )
 
     def __post_init__(self) -> None:
         for field_name in (
@@ -400,7 +435,6 @@ class ClinicalEvidenceCell(SerializableRecord):
             "confidence_interval_percent",
             "confidence_interval_lower",
             "confidence_interval_upper",
-            "log_effect_ci_width",
             "candidate_serious_event_risk",
             "comparator_serious_event_risk",
             "serious_event_risk_difference",
@@ -410,6 +444,17 @@ class ClinicalEvidenceCell(SerializableRecord):
                 raise TypeError(f"{field_name} must be numeric")
             if not math.isfinite(float(value)):
                 raise ValueError(f"{field_name} must be finite")
+        for field_name in (
+            "log_effect_ci_width",
+            "risk_difference_ci_width_percentage_points",
+        ):
+            value = getattr(self, field_name)
+            if value is None:
+                continue
+            if not isinstance(value, (int, float)) or isinstance(value, bool):
+                raise TypeError(f"{field_name} must be numeric or null")
+            if not math.isfinite(float(value)) or value < 0:
+                raise ValueError(f"{field_name} must be finite and non-negative")
         for field_name in ("candidate_measurement", "comparator_measurement"):
             value = getattr(self, field_name)
             if value is None:
@@ -418,30 +463,76 @@ class ClinicalEvidenceCell(SerializableRecord):
                 raise TypeError(f"{field_name} must be numeric or null")
             if not math.isfinite(float(value)):
                 raise ValueError(f"{field_name} must be finite when present")
-        if not (
-            0
-            < self.confidence_interval_lower
-            <= self.effect_estimate
-            <= self.confidence_interval_upper
-        ):
-            raise ValueError("confidence interval must contain effect_estimate")
+        validate_effect_scale_interval(
+            self.effect_estimate,
+            self.confidence_interval_lower,
+            self.confidence_interval_upper,
+            self.effect_measure,
+            self.measurement_unit,
+        )
         if not 0 < self.confidence_interval_percent <= 100:
             raise ValueError("confidence_interval_percent must be in (0, 100]")
-        expected_width = math.log(
-            self.confidence_interval_upper / self.confidence_interval_lower
+        if self.effect_measure in RATIO_EFFECT_FAVORABLE_DIRECTIONS:
+            favorable_direction = ratio_effect_favorable_direction(self.effect_measure)
+            if (
+                self.effect_measure_favorable_direction is not None
+                and self.effect_measure_favorable_direction != favorable_direction
+            ):
+                raise ValueError(
+                    "effect_measure_favorable_direction does not match ratio measure"
+                )
+            if self.log_effect_ci_width is None:
+                raise ValueError("ratio effect requires log_effect_ci_width")
+            if self.risk_difference_ci_width_percentage_points is not None:
+                raise ValueError(
+                    "ratio effect must not declare risk-difference precision"
+                )
+            expected_width = math.log(
+                self.confidence_interval_upper / self.confidence_interval_lower
+            )
+            if not math.isclose(
+                self.log_effect_ci_width,
+                expected_width,
+                rel_tol=0.0,
+                abs_tol=1e-12,
+            ):
+                raise ValueError(
+                    "log_effect_ci_width does not match confidence interval"
+                )
+        else:
+            favorable_direction = self.effect_measure_favorable_direction
+            if favorable_direction is None:
+                raise ValueError(
+                    "risk_difference requires effect_measure_favorable_direction"
+                )
+            validate_effect_contract(self.effect_measure, favorable_direction)
+            if self.log_effect_ci_width is not None:
+                raise ValueError("risk_difference must not declare log-effect precision")
+            if self.risk_difference_ci_width_percentage_points is None:
+                raise ValueError(
+                    "risk_difference requires percentage-point CI width"
+                )
+            expected_width = risk_difference_ci_width_percentage_points(
+                self.confidence_interval_lower,
+                self.confidence_interval_upper,
+                self.measurement_unit,
+            )
+            if not math.isclose(
+                self.risk_difference_ci_width_percentage_points,
+                expected_width,
+                rel_tol=0.0,
+                abs_tol=1e-12,
+            ):
+                raise ValueError(
+                    "risk_difference_ci_width_percentage_points does not match "
+                    "confidence interval"
+                )
+        expected_benefit_direction = effect_benefit_direction(
+            self.confidence_interval_lower,
+            self.confidence_interval_upper,
+            self.effect_measure,
+            favorable_direction,
         )
-        if not math.isclose(
-            self.log_effect_ci_width,
-            expected_width,
-            rel_tol=0.0,
-            abs_tol=1e-12,
-        ):
-            raise ValueError("log_effect_ci_width does not match confidence interval")
-        expected_benefit_direction = "null_or_uncertain"
-        if self.confidence_interval_upper < 1.0:
-            expected_benefit_direction = "benefit"
-        elif self.confidence_interval_lower > 1.0:
-            expected_benefit_direction = "harm"
         if self.benefit_direction != expected_benefit_direction:
             raise ValueError("benefit_direction does not match confidence interval")
         for field_name in (
@@ -1161,6 +1252,10 @@ def _cell_from_study(
         raise ClinicalDecisionError(
             "study endpoint and safety fingerprints are required"
         )
+    is_ratio_effect = study.effect_measure in RATIO_EFFECT_FAVORABLE_DIRECTIONS
+    favorable_direction = study.attributes.get(
+        "effect_measure_favorable_direction"
+    )
     return ClinicalEvidenceCell(
         cell_id=f"{tensor_id}:cell:{study.trial_id}",
         study_record_id=study.study_record_id,
@@ -1173,8 +1268,12 @@ def _cell_from_study(
         confidence_interval_percent=study.confidence_interval_percent,
         confidence_interval_lower=study.confidence_interval_lower,
         confidence_interval_upper=study.confidence_interval_upper,
-        log_effect_ci_width=math.log(
-            study.confidence_interval_upper / study.confidence_interval_lower
+        log_effect_ci_width=(
+            math.log(
+                study.confidence_interval_upper / study.confidence_interval_lower
+            )
+            if is_ratio_effect
+            else None
         ),
         benefit_direction=study.benefit_direction,
         candidate_measurement=study.candidate_measurement,
@@ -1194,6 +1293,20 @@ def _cell_from_study(
         source_content_hashes=study.source_content_hashes,
         endpoint_fingerprint_sha256=endpoint_fingerprint,
         safety_fingerprint_sha256=safety_fingerprint,
+        effect_measure_favorable_direction=(
+            None if is_ratio_effect else favorable_direction
+        ),
+        risk_difference_ci_width_percentage_points=(
+            None
+            if is_ratio_effect
+            else _round_metric(
+                risk_difference_ci_width_percentage_points(
+                    study.confidence_interval_lower,
+                    study.confidence_interval_upper,
+                    study.measurement_unit,
+                )
+            )
+        ),
     )
 
 
@@ -1234,6 +1347,54 @@ def _direction_counts(
     return dict(sorted(values.items()))
 
 
+def _precision_contract(
+    effect_measure: str,
+    policy: ClinicalDecisionPolicy,
+) -> tuple[float, str, str, str]:
+    if effect_measure in RATIO_EFFECT_FAVORABLE_DIRECTIONS:
+        threshold = policy.maximum_log_effect_ci_width
+        if threshold is None:
+            raise ClinicalDecisionError(
+                "ratio effect requires maximum_log_effect_ci_width policy threshold"
+            )
+        return (
+            threshold,
+            "log_effect_ci_width_by_study",
+            "maximum_observed_log_effect_ci_width",
+            "maximum_log_effect_ci_width",
+        )
+    if effect_measure == "risk_difference":
+        threshold = policy.maximum_risk_difference_ci_width_percentage_points
+        if threshold is None:
+            raise ClinicalDecisionError(
+                "risk_difference requires "
+                "maximum_risk_difference_ci_width_percentage_points policy threshold"
+            )
+        return (
+            threshold,
+            "risk_difference_ci_width_percentage_points_by_study",
+            "maximum_observed_risk_difference_ci_width_percentage_points",
+            "maximum_risk_difference_ci_width_percentage_points",
+        )
+    raise ClinicalDecisionError(f"unsupported clinical effect measure: {effect_measure}")
+
+
+def _cell_precision_width(cell: ClinicalEvidenceCell) -> float:
+    if cell.effect_measure in RATIO_EFFECT_FAVORABLE_DIRECTIONS:
+        if cell.log_effect_ci_width is None:
+            raise ClinicalDecisionError("ratio cell is missing log-effect precision")
+        return cell.log_effect_ci_width
+    if cell.effect_measure == "risk_difference":
+        if cell.risk_difference_ci_width_percentage_points is None:
+            raise ClinicalDecisionError(
+                "risk-difference cell is missing percentage-point precision"
+            )
+        return cell.risk_difference_ci_width_percentage_points
+    raise ClinicalDecisionError(
+        f"unsupported clinical effect measure: {cell.effect_measure}"
+    )
+
+
 def _dimension_record(
     dimension: ClinicalEvidenceDimension,
     observed: Mapping[str, Any],
@@ -1272,6 +1433,13 @@ def compile_clinical_evidence_tensor(
     )
     _require_instance(policy, ClinicalDecisionPolicy, "policy")
     _require_text(tensor_id, "tensor_id")
+    if (
+        synthesis.effect_measure not in RATIO_EFFECT_FAVORABLE_DIRECTIONS
+        and synthesis.effect_measure != "risk_difference"
+    ):
+        raise ClinicalDecisionError(
+            f"unsupported clinical effect measure: {synthesis.effect_measure}"
+        )
     if policy.registered_on > state.as_of_date:
         raise ClinicalDecisionError(
             "clinical decision policy is after the program cutoff"
@@ -1292,6 +1460,15 @@ def compile_clinical_evidence_tensor(
             + ", ".join(continuity_failures)
         )
     cells = tuple(_cell_from_study(tensor_id, item) for item in synthesis.studies)
+    (
+        precision_threshold,
+        precision_widths_key,
+        maximum_precision_key,
+        precision_threshold_key,
+    ) = _precision_contract(synthesis.effect_measure, policy)
+    precision_widths_raw = {
+        item.study_record_id: _cell_precision_width(item) for item in cells
+    }
     gaps: list[ClinicalEvidenceGap] = []
     trial_count = len(cells)
     if trial_count < policy.minimum_independent_trials:
@@ -1339,15 +1516,19 @@ def compile_clinical_evidence_tensor(
     imprecise_cells = tuple(
         item
         for item in cells
-        if item.log_effect_ci_width > policy.maximum_log_effect_ci_width + 1e-12
+        if precision_widths_raw[item.study_record_id]
+        > precision_threshold + 1e-12
     )
     if imprecise_cells:
-        maximum_width = max(item.log_effect_ci_width for item in imprecise_cells)
+        maximum_width = max(
+            precision_widths_raw[item.study_record_id]
+            for item in imprecise_cells
+        )
         gaps.append(
             _gap(
                 tensor_id,
                 ClinicalEvidenceGapCode.IMPRECISE_BENEFIT_ESTIMATE,
-                1.0 - policy.maximum_log_effect_ci_width / maximum_width,
+                1.0 - precision_threshold / maximum_width,
                 imprecise_cells,
             )
         )
@@ -1461,8 +1642,9 @@ def compile_clinical_evidence_tensor(
             ),
         )
     )
-    widths = {
-        item.study_record_id: _round_metric(item.log_effect_ci_width) for item in cells
+    precision_widths = {
+        study_record_id: _round_metric(width)
+        for study_record_id, width in precision_widths_raw.items()
     }
     minimum_safety_counts = {
         item.study_record_id: min(
@@ -1501,10 +1683,10 @@ def compile_clinical_evidence_tensor(
         _dimension_record(
             ClinicalEvidenceDimension.BENEFIT_PRECISION,
             {
-                "log_effect_ci_width_by_study": widths,
-                "maximum_observed_log_effect_ci_width": max(widths.values()),
+                precision_widths_key: precision_widths,
+                maximum_precision_key: max(precision_widths.values()),
             },
-            {"maximum_log_effect_ci_width": (policy.maximum_log_effect_ci_width)},
+            {precision_threshold_key: precision_threshold},
             ordered_gaps,
         ),
         _dimension_record(
@@ -1890,11 +2072,13 @@ def _parse_record(
     value: Any,
     path: str,
     fields: set[str],
+    optional_fields: set[str] | None = None,
 ) -> dict[str, Any]:
     if not isinstance(value, Mapping):
         raise RecordParseError(f"{path} must be an object")
     data = dict(value)
-    missing = fields - set(data)
+    optional = optional_fields or set()
+    missing = fields - optional - set(data)
     extra = set(data) - fields
     if missing:
         raise RecordParseError(f"{path} missing fields: {', '.join(sorted(missing))}")
@@ -1938,6 +2122,7 @@ def _parse_policy(value: Any, path: str) -> ClinicalDecisionPolicy:
         "registered_on",
         "minimum_independent_trials",
         "maximum_log_effect_ci_width",
+        "maximum_risk_difference_ci_width_percentage_points",
         "minimum_safety_participants_per_arm",
         "max_planned_actions",
         "max_planned_cost",
@@ -1954,7 +2139,15 @@ def _parse_policy(value: Any, path: str) -> ClinicalDecisionPolicy:
         "terminal_decisions_prohibited",
         "metadata",
     }
-    data = _parse_record(value, path, fields)
+    data = _parse_record(
+        value,
+        path,
+        fields,
+        {
+            "maximum_log_effect_ci_width",
+            "maximum_risk_difference_ci_width_percentage_points",
+        },
+    )
     return ClinicalDecisionPolicy(
         policy_id=data["policy_id"],
         version=data["version"],
@@ -1963,7 +2156,7 @@ def _parse_policy(value: Any, path: str) -> ClinicalDecisionPolicy:
             f"{path}.registered_on",
         ),
         minimum_independent_trials=data["minimum_independent_trials"],
-        maximum_log_effect_ci_width=data["maximum_log_effect_ci_width"],
+        maximum_log_effect_ci_width=data.get("maximum_log_effect_ci_width"),
         minimum_safety_participants_per_arm=(
             data["minimum_safety_participants_per_arm"]
         ),
@@ -1989,6 +2182,9 @@ def _parse_policy(value: Any, path: str) -> ClinicalDecisionPolicy:
         ),
         terminal_decisions_prohibited=data["terminal_decisions_prohibited"],
         metadata=_parse_mapping(data["metadata"], f"{path}.metadata"),
+        maximum_risk_difference_ci_width_percentage_points=data.get(
+            "maximum_risk_difference_ci_width_percentage_points"
+        ),
     )
 
 
@@ -2006,6 +2202,8 @@ def _parse_cell(value: Any, path: str) -> ClinicalEvidenceCell:
         "confidence_interval_lower",
         "confidence_interval_upper",
         "log_effect_ci_width",
+        "effect_measure_favorable_direction",
+        "risk_difference_ci_width_percentage_points",
         "benefit_direction",
         "candidate_measurement",
         "comparator_measurement",
@@ -2025,10 +2223,26 @@ def _parse_cell(value: Any, path: str) -> ClinicalEvidenceCell:
         "endpoint_fingerprint_sha256",
         "safety_fingerprint_sha256",
     }
-    data = _parse_record(value, path, fields)
+    data = _parse_record(
+        value,
+        path,
+        fields,
+        {
+            "log_effect_ci_width",
+            "effect_measure_favorable_direction",
+            "risk_difference_ci_width_percentage_points",
+        },
+    )
     return ClinicalEvidenceCell(
         **{
             **data,
+            "log_effect_ci_width": data.get("log_effect_ci_width"),
+            "effect_measure_favorable_direction": data.get(
+                "effect_measure_favorable_direction"
+            ),
+            "risk_difference_ci_width_percentage_points": data.get(
+                "risk_difference_ci_width_percentage_points"
+            ),
             "source_evidence_ids": _parse_sequence(
                 data["source_evidence_ids"],
                 f"{path}.source_evidence_ids",
@@ -2233,6 +2447,40 @@ def _parse_action_option(
         arguments=_parse_mapping(data["arguments"], f"{path}.arguments"),
         metadata=_parse_mapping(data["metadata"], f"{path}.metadata"),
     )
+
+
+def clinical_decision_policy_from_dict(
+    value: Any,
+    path: str = "clinical_decision_policy",
+) -> ClinicalDecisionPolicy:
+    """Parse one strict, fail-closed clinical evidence policy."""
+
+    return _parse_policy(value, path)
+
+
+def clinical_evidence_action_option_from_dict(
+    value: Any,
+    path: str = "clinical_evidence_action_option",
+) -> ClinicalEvidenceActionOption:
+    """Parse one strict action-catalog entry."""
+
+    return _parse_action_option(value, path)
+
+
+def clinical_evidence_action_catalog_from_dict(
+    value: Any,
+    path: str = "clinical_evidence_action_catalog",
+) -> tuple[ClinicalEvidenceActionOption, ...]:
+    """Parse an action catalog and reject ambiguous duplicate action ids."""
+
+    catalog = tuple(
+        _parse_action_option(item, f"{path}[{index}]")
+        for index, item in enumerate(_parse_sequence(value, path))
+    )
+    action_ids = tuple(item.action_id for item in catalog)
+    if len(action_ids) != len(set(action_ids)):
+        raise RecordParseError(f"{path} action ids must be unique")
+    return catalog
 
 
 def _parse_action_selection(

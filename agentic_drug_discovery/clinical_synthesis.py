@@ -9,7 +9,18 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from typing import Any
 
+from .clinical_effects import (
+    canonical_effect_measure,
+    effect_benefit_direction,
+    validate_effect_contract,
+    validate_effect_measure_unit,
+    validate_effect_scale_interval,
+)
 from .clinical_endpoint_mapping import validate_clinical_endpoint_mapping
+from .clinical_population import (
+    ClinicalPopulationAlignmentError,
+    validate_phase_bound_population_alignment,
+)
 from .models import (
     BenefitRiskSynthesisRecord,
     EvidenceRelation,
@@ -25,9 +36,7 @@ from .models import (
 )
 
 
-CLINICAL_SYNTHESIS_SPEC_SCHEMA_VERSION = (
-    "adds.clinical-benefit-risk-synthesis-spec.v1"
-)
+CLINICAL_SYNTHESIS_SPEC_SCHEMA_VERSION = "adds.clinical-benefit-risk-synthesis-spec.v1"
 CLINICAL_SYNTHESIS_POLICY_ID = "adds.descriptive-cross-trial-benefit-risk.v1"
 
 
@@ -100,10 +109,10 @@ class ClinicalSynthesisSpec(SerializableRecord):
             raise ValueError("clinical synthesis is limited to regulatory_postmarket")
         if self.harmonization_policy_id != CLINICAL_SYNTHESIS_POLICY_ID:
             raise ValueError("unsupported harmonization_policy_id")
-        if self.effect_measure != "hazard_ratio":
-            raise ValueError("v1 supports only hazard_ratio effect estimates")
-        if self.effect_measure_favorable_direction != "lower_is_better":
-            raise ValueError("hazard_ratio requires lower_is_better direction")
+        validate_effect_contract(
+            self.effect_measure,
+            self.effect_measure_favorable_direction,
+        )
         if self.safety_measure != "serious_adverse_event_risk_difference":
             raise ValueError("unsupported safety_measure")
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata, "metadata"))
@@ -223,16 +232,12 @@ def clinical_synthesis_spec_from_dict(
     return ClinicalSynthesisSpec(
         synthesis_id=_text(data["synthesis_id"], f"{path}.synthesis_id"),
         candidate_id=_text(data["candidate_id"], f"{path}.candidate_id"),
-        intervention_id=_text(
-            data["intervention_id"], f"{path}.intervention_id"
-        ),
+        intervention_id=_text(data["intervention_id"], f"{path}.intervention_id"),
         disease_id=_text(data["disease_id"], f"{path}.disease_id"),
         endpoint_mapping_id=_text(
             data["endpoint_mapping_id"], f"{path}.endpoint_mapping_id"
         ),
-        endpoint_family=_text(
-            data["endpoint_family"], f"{path}.endpoint_family"
-        ),
+        endpoint_family=_text(data["endpoint_family"], f"{path}.endpoint_family"),
         effect_measure=_text(data["effect_measure"], f"{path}.effect_measure"),
         effect_measure_favorable_direction=_text(
             data["effect_measure_favorable_direction"],
@@ -258,14 +263,6 @@ def clinical_synthesis_spec_to_dict(spec: ClinicalSynthesisSpec) -> dict[str, An
     return {"schema_version": CLINICAL_SYNTHESIS_SPEC_SCHEMA_VERSION, **value}
 
 
-def _benefit_direction(lower: float, upper: float) -> str:
-    if upper < 1.0:
-        return "benefit"
-    if lower > 1.0:
-        return "harm"
-    return "null_or_uncertain"
-
-
 def _safety_direction(risk_difference: float) -> str:
     if math.isclose(risk_difference, 0.0, rel_tol=0.0, abs_tol=1e-12):
         return "equal_observed_serious_event_risk"
@@ -282,7 +279,9 @@ def _study_record(
     trial = state.trials_by_id.get(selection.trial_id)
     design = state.trial_designs_by_id.get(selection.design_id)
     if trial is None or design is None:
-        raise ClinicalSynthesisError("selected trial or design is absent from the ledger")
+        raise ClinicalSynthesisError(
+            "selected trial or design is absent from the ledger"
+        )
     if (
         design.trial_id != selection.trial_id
         or trial.intervention_id != spec.intervention_id
@@ -307,13 +306,31 @@ def _study_record(
         or _normalized(safety.event_category) != "serious"
         or _normalized(safety.reporting_status) != "posted"
     ):
-        raise ClinicalSynthesisError("selected endpoint/safety record is not posted primary data")
+        raise ClinicalSynthesisError(
+            "selected endpoint/safety record is not posted primary data"
+        )
+    try:
+        population_alignment = validate_phase_bound_population_alignment(
+            design, endpoint, safety
+        )
+    except ClinicalPopulationAlignmentError as exc:
+        raise ClinicalSynthesisError(
+            "selected endpoint/safety population alignment is invalid"
+        ) from exc
     analysis = _mapping(endpoint.attributes.get("analysis"), "endpoint.analysis")
     parameter_type = _normalized(
         _text(analysis.get("parameter_type"), "endpoint.analysis.parameter_type")
     )
-    if parameter_type not in {"hazard ratio", "hazard ratio (hr)"}:
-        raise ClinicalSynthesisError("selected endpoint does not report a hazard ratio")
+    if canonical_effect_measure(parameter_type) != spec.effect_measure:
+        raise ClinicalSynthesisError(
+            f"selected endpoint does not report declared {spec.effect_measure}"
+        )
+    try:
+        validate_effect_measure_unit(spec.effect_measure, endpoint.unit)
+    except ValueError as exc:
+        raise ClinicalSynthesisError(
+            "selected endpoint effect scale is invalid"
+        ) from exc
     effect_estimate = _number(
         analysis.get("parameter_value"), "endpoint.analysis.parameter_value"
     )
@@ -329,8 +346,16 @@ def _study_record(
         analysis.get("confidence_interval_upper"),
         "endpoint.analysis.confidence_interval_upper",
     )
-    if not 0 < ci_lower <= effect_estimate <= ci_upper:
-        raise ClinicalSynthesisError("hazard-ratio confidence interval is invalid")
+    try:
+        validate_effect_scale_interval(
+            effect_estimate,
+            ci_lower,
+            ci_upper,
+            spec.effect_measure,
+            endpoint.unit,
+        )
+    except ValueError as exc:
+        raise ClinicalSynthesisError("effect confidence interval is invalid") from exc
     arms_by_role = {item.role: item for item in design.arms}
     safety_by_role = {item.role: item for item in safety.arm_summaries}
     candidate_arm = arms_by_role.get(TrialArmRole.CANDIDATE)
@@ -348,9 +373,20 @@ def _study_record(
     ):
         raise ClinicalSynthesisError("candidate/comparator arm roles are incomplete")
     if candidate_arm is None or comparator_arm is None:
-        raise ClinicalSynthesisError("candidate/comparator endpoint arms are incomplete")
+        raise ClinicalSynthesisError(
+            "candidate/comparator endpoint arms are incomplete"
+        )
     if candidate_safety is None or comparator_safety is None:
         raise ClinicalSynthesisError("candidate/comparator safety arms are incomplete")
+    if spec.effect_measure == "risk_difference" and list(
+        analysis.get("source_group_ids") or ()
+    ) != [
+        candidate_arm.identifiers.get("clinicaltrials_gov_group"),
+        comparator_arm.identifiers.get("clinicaltrials_gov_group"),
+    ]:
+        raise ClinicalSynthesisError(
+            "risk_difference group order must be candidate then comparator"
+        )
     candidate_measurement = _mapping(
         candidate_arm.attributes.get("measurement"), "candidate_arm.measurement"
     )
@@ -359,19 +395,15 @@ def _study_record(
     )
     candidate_raw_value = candidate_measurement.get("value")
     comparator_raw_value = comparator_measurement.get("value")
-    candidate_value = _optional_measurement(
-        candidate_raw_value, "candidate value"
-    )
+    candidate_value = _optional_measurement(candidate_raw_value, "candidate value")
     comparator_value = _optional_measurement(
         comparator_measurement.get("value"), "comparator value"
     )
     candidate_risk = (
-        candidate_safety.serious_num_affected
-        / candidate_safety.serious_num_at_risk
+        candidate_safety.serious_num_affected / candidate_safety.serious_num_at_risk
     )
     comparator_risk = (
-        comparator_safety.serious_num_affected
-        / comparator_safety.serious_num_at_risk
+        comparator_safety.serious_num_affected / comparator_safety.serious_num_at_risk
     )
     risk_difference = candidate_risk - comparator_risk
     source_evidence_ids = tuple(sorted(set(design.supporting_evidence)))
@@ -450,7 +482,12 @@ def _study_record(
         candidate_serious_event_risk=candidate_risk,
         comparator_serious_event_risk=comparator_risk,
         serious_event_risk_difference=risk_difference,
-        benefit_direction=_benefit_direction(ci_lower, ci_upper),
+        benefit_direction=effect_benefit_direction(
+            ci_lower,
+            ci_upper,
+            spec.effect_measure,
+            spec.effect_measure_favorable_direction,
+        ),
         safety_direction=_safety_direction(risk_difference),
         source_evidence_ids=source_evidence_ids,
         source_content_hashes=tuple(sorted(source_hashes)),
@@ -477,6 +514,14 @@ def _study_record(
             "comparator_measurement_raw": comparator_raw_value,
             "descriptive_arm_measurement_complete": (
                 candidate_value is not None and comparator_value is not None
+            ),
+            **(
+                {
+                    "treatment_phase": population_alignment["treatment_phase"],
+                    "population_alignment": population_alignment,
+                }
+                if population_alignment is not None
+                else {}
             ),
             "clinical_acceptability_inferred": False,
         },
@@ -514,7 +559,9 @@ def compile_benefit_risk_synthesis(
         spec.endpoint_mapping_id
     )
     if endpoint_mapping is None:
-        raise ClinicalSynthesisError("approved endpoint mapping is absent from the ledger")
+        raise ClinicalSynthesisError(
+            "approved endpoint mapping is absent from the ledger"
+        )
     mapping_failures = validate_clinical_endpoint_mapping(state, endpoint_mapping)
     if mapping_failures:
         raise ClinicalSynthesisError("approved endpoint mapping failed ledger replay")
@@ -529,7 +576,9 @@ def compile_benefit_risk_synthesis(
         or endpoint_mapping.safety_measure != spec.safety_measure
         or endpoint_mapping.stage is not spec.stage
     ):
-        raise ClinicalSynthesisError("endpoint mapping dimensions do not match synthesis")
+        raise ClinicalSynthesisError(
+            "endpoint mapping dimensions do not match synthesis"
+        )
     selected_keys = tuple(
         (item.trial_id, item.design_id, item.endpoint_id, item.safety_id)
         for item in spec.selections
@@ -561,13 +610,7 @@ def compile_benefit_risk_synthesis(
         )
     )
     source_content_hashes = tuple(
-        sorted(
-            {
-                digest
-                for study in studies
-                for digest in study.source_content_hashes
-            }
-        )
+        sorted({digest for study in studies for digest in study.source_content_hashes})
     )
     return BenefitRiskSynthesisRecord(
         synthesis_id=spec.synthesis_id,
@@ -582,13 +625,9 @@ def compile_benefit_risk_synthesis(
         studies=studies,
         pooling_method="none",
         pooling_performed=False,
-        benefit_direction_consistent=len(
-            {item.benefit_direction for item in studies}
-        )
+        benefit_direction_consistent=len({item.benefit_direction for item in studies})
         == 1,
-        safety_direction_consistent=len(
-            {item.safety_direction for item in studies}
-        )
+        safety_direction_consistent=len({item.safety_direction for item in studies})
         == 1,
         source_disjoint=True,
         clinical_acceptability_inferred=False,
@@ -716,8 +755,7 @@ def validate_benefit_risk_synthesis(
         or derived_evidence.relation is not EvidenceRelation.SUPPORTS
         or not derived_evidence.is_visible_at(state.as_of_date)
         or _normalized(derived_evidence.subject) != _normalized(candidate.name)
-        or derived_evidence.predicate
-        != "clinical_benefit_risk_synthesis_available"
+        or derived_evidence.predicate != "clinical_benefit_risk_synthesis_available"
         or derived_evidence.object_value != record.endpoint_family
         or not isinstance(context, dict)
         or context.get("candidate_id") != record.candidate_id
@@ -731,12 +769,10 @@ def validate_benefit_risk_synthesis(
         return ("derived_synthesis_evidence_binding_invalid",)
     if (
         not isinstance(metadata, dict)
-        or metadata.get("upstream_evidence_ids")
-        != list(record.source_evidence_ids)
+        or metadata.get("upstream_evidence_ids") != list(record.source_evidence_ids)
         or metadata.get("upstream_source_content_hashes")
         != list(record.source_content_hashes)
-        or metadata.get("harmonization_policy_id")
-        != record.harmonization_policy_id
+        or metadata.get("harmonization_policy_id") != record.harmonization_policy_id
         or metadata.get("endpoint_mapping_id") != record.endpoint_mapping_id
         or metadata.get("study_count") != len(record.studies)
         or metadata.get("pooling_method") != "none"

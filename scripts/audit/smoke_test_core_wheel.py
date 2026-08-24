@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import argparse
+import email
 import hashlib
 import json
 import os
 import subprocess
 import sys
 import tempfile
-import venv
+import zipfile
 from pathlib import Path
 
 
@@ -46,13 +47,36 @@ def main() -> int:
         return fail(
             f"expected exactly one core wheel in {wheel_dir}, found {len(wheels)}"
         )
+    with zipfile.ZipFile(wheels[0]) as archive:
+        metadata_names = [
+            name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
+        ]
+        if len(metadata_names) != 1:
+            return fail("wheel must contain exactly one METADATA file")
+        metadata = email.message_from_bytes(archive.read(metadata_names[0]))
+    requirements = metadata.get_all("Requires-Dist", [])
+    if not any(
+        requirement.lower().startswith("pypdf")
+        and ">=6.14" in requirement
+        and "<7" in requirement
+        for requirement in requirements
+    ):
+        return fail("wheel metadata is missing the bounded pypdf runtime dependency")
+    if not any(
+        requirement.lower().startswith("tiktoken")
+        and "==0.14.0" in requirement
+        for requirement in requirements
+    ):
+        return fail("wheel metadata is missing the frozen tiktoken dependency")
 
     clean_env = os.environ.copy()
     clean_env.pop("PYTHONPATH", None)
     with tempfile.TemporaryDirectory(prefix="agentic-core-wheel-smoke-") as temp_dir:
-        env_dir = Path(temp_dir) / "venv"
-        scripts_dir = env_dir / ("Scripts" if os.name == "nt" else "bin")
-        python = scripts_dir / ("python.exe" if os.name == "nt" else "python")
+        install_root = Path(temp_dir) / "wheel-site"
+        scripts_dir = install_root / ("Scripts" if os.name == "nt" else "bin")
+        python_command = (sys.executable, "-S")
+        clean_env["PYTHONPATH"] = str(install_root)
+        clean_env["PYTHONNOUSERSITE"] = "1"
         demo = scripts_dir / (
             "adds-control-plane-demo.exe"
             if os.name == "nt"
@@ -71,6 +95,59 @@ def main() -> int:
             if os.name == "nt"
             else "adds-pinned-ingestion"
         )
+        readiness = scripts_dir / (
+            "adds-research-readiness.exe"
+            if os.name == "nt"
+            else "adds-research-readiness"
+        )
+        handoff = scripts_dir / (
+            "adds-translational-handoff.exe"
+            if os.name == "nt"
+            else "adds-translational-handoff"
+        )
+        frontier = scripts_dir / (
+            "adds-frontier.exe" if os.name == "nt" else "adds-frontier"
+        )
+        if os.name == "nt":
+            demo_command = (*python_command, "-m", "agentic_drug_discovery.demo")
+            bounded_demo_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.bounded_demo",
+            )
+            replay_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.replay_cli",
+            )
+            ingestion_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.ingestion_cli",
+            )
+            readiness_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.research_readiness_cli",
+            )
+            handoff_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.translational_handoff_cli",
+            )
+            frontier_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.frontier_cli",
+            )
+        else:
+            demo_command = (*python_command, str(demo))
+            bounded_demo_command = (*python_command, str(bounded_demo))
+            replay_command = (*python_command, str(replay))
+            ingestion_command = (*python_command, str(ingestion))
+            readiness_command = (*python_command, str(readiness))
+            handoff_command = (*python_command, str(handoff))
+            frontier_command = (*python_command, str(frontier))
 
         burden_source = Path(temp_dir) / "burden.json"
         gap_source = Path(temp_dir) / "gap.json"
@@ -650,45 +727,207 @@ def main() -> int:
         )
 
         try:
-            venv.EnvBuilder(with_pip=True, clear=True).create(env_dir)
+            # Install only the wheel into a source-disjoint, site-disabled runtime.
             subprocess.run(
-                [str(python), "-m", "pip", "install", "--no-deps", str(wheels[0])],
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--disable-pip-version-check",
+                    "--no-index",
+                    "--no-deps",
+                    "--target",
+                    str(install_root),
+                    str(wheels[0]),
+                ],
                 check=True,
                 capture_output=True,
                 text=True,
                 env=clean_env,
             )
+            for console_script in (
+                demo,
+                bounded_demo,
+                replay,
+                ingestion,
+                readiness,
+                handoff,
+            ):
+                if not console_script.is_file():
+                    return fail(
+                        f"wheel console script is missing: {console_script.name}"
+                    )
             public_api = subprocess.run(
                 [
-                    str(python),
+                    *python_command,
                     "-c",
                     (
                         "from agentic_drug_discovery import ("
+                        "CLINICAL_COHORT_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_CLOSED_LOOP_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_DESIGN_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_PATTERN_MIXTURE_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_PATTERN_MIXTURE_INFLUENCE_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_INFORMATIVE_CLUSTER_SIZE_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_CLUSTER_SUPERPOPULATION_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_PATTERN_MIXTURE_UNCERTAINTY_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_STRESS_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_RISK_OF_BIAS_REPORT_SCHEMA_VERSION, "
+                        "CLINICAL_RISK_OF_BIAS_SPEC_SCHEMA_VERSION, "
+                        "RESEARCH_READINESS_SCHEMA_VERSION, "
+                        "TRANSLATIONAL_HANDOFF_ALLOWED_USE, "
+                        "TRANSLATIONAL_HANDOFF_SCHEMA_VERSION, "
+                        "canonical_ratio_effect_measure, "
+                        "clinical_cohort_manifest_from_json, "
+                        "clinical_cohort_report_from_json, "
+                        "clinical_outcome_dependence_manifest_from_json, "
+                        "clinical_outcome_design_protocol_from_json, "
+                        "clinical_outcome_design_report_from_json, "
+                        "clinical_outcome_pattern_mixture_protocol_from_json, "
+                        "clinical_outcome_pattern_mixture_report_from_json, "
+                        "clinical_outcome_pattern_mixture_influence_protocol_from_json, "
+                        "clinical_outcome_pattern_mixture_influence_report_from_json, "
+                        "clinical_outcome_informative_cluster_size_protocol_from_json, "
+                        "clinical_outcome_informative_cluster_size_report_from_json, "
+                        "clinical_outcome_cluster_superpopulation_protocol_from_json, "
+                        "clinical_outcome_cluster_superpopulation_report_from_json, "
+                        "clinical_outcome_pattern_mixture_uncertainty_protocol_from_json, "
+                        "clinical_outcome_pattern_mixture_uncertainty_report_from_json, "
+                        "clinical_outcome_stress_protocol_from_json, "
+                        "clinical_outcome_stress_report_from_json, "
+                        "clinical_outcome_protocol_from_json, "
+                        "clinical_outcome_report_from_json, "
+                        "clinical_outcome_uncertainty_protocol_from_json, "
+                        "clinical_outcome_uncertainty_report_from_json, "
                         "compile_clinical_evidence_transition, "
+                        "compile_clinical_cohort_report, "
                         "compile_clinical_execution_batch, "
+                        "compile_clinical_risk_of_bias_report, "
                         "clinical_evidence_transition_from_json, "
                         "evaluate_policy_submission, "
+                        "evaluate_clinical_outcomes, "
+                        "evaluate_clinical_outcome_uncertainty, "
+                        "analyze_clinical_outcome_pattern_mixture, "
+                        "analyze_clinical_outcome_pattern_mixture_influence_calibration, "
+                        "analyze_clinical_outcome_informative_cluster_size, "
+                        "analyze_clinical_outcome_cluster_superpopulation, "
+                        "analyze_clinical_outcome_pattern_mixture_uncertainty, "
+                        "simulate_clinical_outcome_uncertainty_design, "
+                        "simulate_clinical_outcome_stress, "
                         "execute_clinical_evidence_batch, "
                         "policy_evaluation_report_from_json, "
                         "policy_evaluation_submission_from_json, "
                         "sealed_evaluation_board_from_json, "
                         "sealed_evaluation_vault_from_json, "
-                        "validate_clinical_evidence_transition"
+                        "research_readiness_integrity_sha256, "
+                        "research_readiness_profile_from_json, "
+                        "compile_translational_handoff_evidence, "
+                        "translational_handoff_from_json, "
+                        "ratio_benefit_direction, "
+                        "validate_clinical_evidence_transition, "
+                        "validate_clinical_outcome_uncertainty_report, "
+                        "validate_clinical_outcome_design_simulation_report, "
+                        "validate_clinical_outcome_pattern_mixture_report, "
+                        "validate_clinical_outcome_pattern_mixture_influence_calibration_report, "
+                        "validate_clinical_outcome_informative_cluster_size_report, "
+                        "validate_clinical_outcome_cluster_superpopulation_report, "
+                        "validate_clinical_outcome_pattern_mixture_uncertainty_report, "
+                        "validate_clinical_outcome_stress_simulation_report"
                         "); "
                         "assert CLINICAL_CLOSED_LOOP_SCHEMA_VERSION == "
                         "'adds.clinical-evidence-closed-loop-transition.v1'; "
+                        "assert CLINICAL_COHORT_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-evidence-cohort-report.v1'; "
+                        "assert CLINICAL_OUTCOME_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-evaluation-report.v1'; "
+                        "assert CLINICAL_OUTCOME_DESIGN_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-design-simulation-report.v1'; "
+                        "assert CLINICAL_OUTCOME_PATTERN_MIXTURE_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-pattern-mixture-report.v1'; "
+                        "assert CLINICAL_OUTCOME_PATTERN_MIXTURE_INFLUENCE_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-pattern-mixture-influence-calibration-report.v1'; "
+                        "assert CLINICAL_OUTCOME_INFORMATIVE_CLUSTER_SIZE_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-informative-cluster-size-report.v1'; "
+                        "assert CLINICAL_OUTCOME_CLUSTER_SUPERPOPULATION_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-cluster-superpopulation-report.v1'; "
+                        "assert CLINICAL_OUTCOME_PATTERN_MIXTURE_UNCERTAINTY_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-pattern-mixture-uncertainty-report.v1'; "
+                        "assert CLINICAL_OUTCOME_STRESS_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-stress-simulation-report.v1'; "
+                        "assert CLINICAL_OUTCOME_UNCERTAINTY_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-outcome-uncertainty-report.v1'; "
+                        "assert CLINICAL_RISK_OF_BIAS_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinical-risk-of-bias-report.v2'; "
+                        "assert CLINICAL_RISK_OF_BIAS_SPEC_SCHEMA_VERSION == "
+                        "'adds.clinical-risk-of-bias-spec.v2'; "
+                        "assert RESEARCH_READINESS_SCHEMA_VERSION == "
+                        "'adds.biohub-research-readiness.v1'; "
+                        "assert TRANSLATIONAL_HANDOFF_SCHEMA_VERSION == "
+                        "'adds.translational-handoff.v1'; "
+                        "assert TRANSLATIONAL_HANDOFF_ALLOWED_USE == "
+                        "'contextual_evidence_only'; "
+                        "assert canonical_ratio_effect_measure('Odds Ratio (OR)') == "
+                        "'odds_ratio'; "
+                        "assert ratio_benefit_direction(1.4, 2.2, "
+                        "'higher_is_better') == 'benefit'; "
                         "assert all(callable(item) for item in ("
+                        "clinical_cohort_manifest_from_json, "
+                        "clinical_cohort_report_from_json, "
+                        "clinical_outcome_dependence_manifest_from_json, "
+                        "clinical_outcome_design_protocol_from_json, "
+                        "clinical_outcome_design_report_from_json, "
+                        "clinical_outcome_pattern_mixture_protocol_from_json, "
+                        "clinical_outcome_pattern_mixture_report_from_json, "
+                        "clinical_outcome_pattern_mixture_influence_protocol_from_json, "
+                        "clinical_outcome_pattern_mixture_influence_report_from_json, "
+                        "clinical_outcome_informative_cluster_size_protocol_from_json, "
+                        "clinical_outcome_informative_cluster_size_report_from_json, "
+                        "clinical_outcome_cluster_superpopulation_protocol_from_json, "
+                        "clinical_outcome_cluster_superpopulation_report_from_json, "
+                        "clinical_outcome_pattern_mixture_uncertainty_protocol_from_json, "
+                        "clinical_outcome_pattern_mixture_uncertainty_report_from_json, "
+                        "clinical_outcome_stress_protocol_from_json, "
+                        "clinical_outcome_stress_report_from_json, "
+                        "clinical_outcome_protocol_from_json, "
+                        "clinical_outcome_report_from_json, "
+                        "clinical_outcome_uncertainty_protocol_from_json, "
+                        "clinical_outcome_uncertainty_report_from_json, "
+                        "compile_clinical_cohort_report, "
                         "compile_clinical_evidence_transition, "
                         "compile_clinical_execution_batch, "
+                        "compile_clinical_risk_of_bias_report, "
                         "clinical_evidence_transition_from_json, "
                         "evaluate_policy_submission, "
+                        "evaluate_clinical_outcomes, "
+                        "evaluate_clinical_outcome_uncertainty, "
+                        "analyze_clinical_outcome_pattern_mixture, "
+                        "analyze_clinical_outcome_pattern_mixture_influence_calibration, "
+                        "analyze_clinical_outcome_informative_cluster_size, "
+                        "analyze_clinical_outcome_cluster_superpopulation, "
+                        "analyze_clinical_outcome_pattern_mixture_uncertainty, "
+                        "simulate_clinical_outcome_uncertainty_design, "
+                        "simulate_clinical_outcome_stress, "
                         "execute_clinical_evidence_batch, "
                         "policy_evaluation_report_from_json, "
                         "policy_evaluation_submission_from_json, "
                         "sealed_evaluation_board_from_json, "
                         "sealed_evaluation_vault_from_json, "
-                        "validate_clinical_evidence_transition"
+                        "research_readiness_integrity_sha256, "
+                        "research_readiness_profile_from_json, "
+                        "compile_translational_handoff_evidence, "
+                        "translational_handoff_from_json, "
+                        "validate_clinical_evidence_transition, "
+                        "validate_clinical_outcome_uncertainty_report, "
+                        "validate_clinical_outcome_design_simulation_report, "
+                        "validate_clinical_outcome_pattern_mixture_report, "
+                        "validate_clinical_outcome_pattern_mixture_influence_calibration_report, "
+                        "validate_clinical_outcome_informative_cluster_size_report, "
+                        "validate_clinical_outcome_cluster_superpopulation_report, "
+                        "validate_clinical_outcome_pattern_mixture_uncertainty_report, "
+                        "validate_clinical_outcome_stress_simulation_report"
                         ")); "
                         "print('public-api-ok')"
                     ),
@@ -699,8 +938,32 @@ def main() -> int:
                 text=True,
                 env=clean_env,
             )
+            readiness_help = subprocess.run(
+                [*readiness_command, "--help"],
+                cwd=temp_dir,
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            )
+            handoff_help = subprocess.run(
+                [*handoff_command, "--help"],
+                cwd=temp_dir,
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            )
+            frontier_help = subprocess.run(
+                [*frontier_command, "--help"],
+                cwd=temp_dir,
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            )
             completed = subprocess.run(
-                [str(demo)],
+                demo_command,
                 cwd=temp_dir,
                 check=True,
                 capture_output=True,
@@ -708,7 +971,7 @@ def main() -> int:
                 env=clean_env,
             )
             bounded = subprocess.run(
-                [str(bounded_demo)],
+                bounded_demo_command,
                 cwd=temp_dir,
                 check=True,
                 capture_output=True,
@@ -717,7 +980,7 @@ def main() -> int:
             )
             bundle = subprocess.run(
                 [
-                    str(python),
+                    *python_command,
                     "-c",
                     (
                         "from agentic_drug_discovery import ReplayBundle, "
@@ -736,7 +999,7 @@ def main() -> int:
                 env=clean_env,
             )
             replayed = subprocess.run(
-                [str(replay)],
+                replay_command,
                 cwd=temp_dir,
                 input=bundle.stdout,
                 check=True,
@@ -760,7 +1023,7 @@ def main() -> int:
             ):
                 subprocess.run(
                     [
-                        str(ingestion),
+                        *ingestion_command,
                         "capture",
                         "--input-file",
                         str(source_path),
@@ -785,7 +1048,7 @@ def main() -> int:
                 )
             ingested = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "compile",
                     "--job",
                     str(job_path),
@@ -806,7 +1069,7 @@ def main() -> int:
             )
             subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "capture",
                     "--input-file",
                     str(mmwr_source),
@@ -833,7 +1096,7 @@ def main() -> int:
             )
             mmwr_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-cdc-mmwr",
                     "--job",
                     str(mmwr_job_path),
@@ -850,7 +1113,7 @@ def main() -> int:
             )
             subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "capture",
                     "--input-file",
                     str(pubmed_source),
@@ -877,7 +1140,7 @@ def main() -> int:
             )
             pubmed_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-ncbi-pubmed",
                     "--job",
                     str(pubmed_job_path),
@@ -914,7 +1177,7 @@ def main() -> int:
                     source_id = f"chembl-{resource}-{identifier}"
                 subprocess.run(
                     [
-                        str(ingestion),
+                        *ingestion_command,
                         "capture",
                         "--input-file",
                         str(chembl_source_paths[resource]),
@@ -940,7 +1203,7 @@ def main() -> int:
                     env=clean_env,
                 )
             chembl_extract_args = [
-                str(ingestion),
+                *ingestion_command,
                 "extract-chembl-activity",
                 "--job",
                 str(chembl_job_path),
@@ -960,7 +1223,7 @@ def main() -> int:
             )
             subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "capture",
                     "--input-file",
                     str(disease_model_source),
@@ -987,7 +1250,7 @@ def main() -> int:
             )
             disease_model_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-ncbi-pubmed-disease-model",
                     "--job",
                     str(disease_model_job_path),
@@ -1018,7 +1281,7 @@ def main() -> int:
             ):
                 subprocess.run(
                     [
-                        str(ingestion),
+                        *ingestion_command,
                         "capture",
                         "--input-file",
                         str(source_path),
@@ -1045,7 +1308,7 @@ def main() -> int:
                 )
             clinical_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-clinicaltrials-gov",
                     "--job",
                     str(clinical_job_path),
@@ -1062,7 +1325,7 @@ def main() -> int:
             )
             clinical_portfolio_extracted = subprocess.run(
                 [
-                    str(ingestion),
+                    *ingestion_command,
                     "extract-clinicaltrials-gov-portfolio",
                     "--job",
                     str(clinical_portfolio_path),
@@ -1439,15 +1702,32 @@ def main() -> int:
 
     if public_api.stdout.strip() != "public-api-ok":
         return fail(
-            "sealed evaluation and clinical closed-loop APIs were not importable "
+            "sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture/"
+            "pattern-mixture-uncertainty/influence/informative-cluster-size/"
+            "cluster-superpopulation, and closed-loop "
+            "APIs were not importable "
             "from the wheel"
         )
+    if "research profile" not in readiness_help.stdout:
+        return fail("research-readiness console command help was not available")
+    if "translational handoff" not in handoff_help.stdout:
+        return fail("translational-handoff console command help was not available")
+    if "ADDS-Frontier research contracts" not in frontier_help.stdout:
+        return fail("ADDS-Frontier console command help was not available")
+    if "validate-coupled-placebo" not in frontier_help.stdout:
+        return fail("ADDS-Frontier coupled-placebo command was not available")
+    if "validate-tokenizer-placebo" not in frontier_help.stdout:
+        return fail("ADDS-Frontier tokenizer-placebo command was not available")
 
     print(
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
         "CDC MMWR, NCBI PubMed, ChEMBL activity, PubMed disease-model, and "
         "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
-        "plus sealed evaluation and clinical closed-loop API smoke tests "
+        "plus sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture/"
+        "pattern-mixture-uncertainty/influence/informative-cluster-size/"
+        "cluster-superpopulation, research-readiness, translational-handoff, ADDS-Frontier, and "
+        "closed-loop API "
+        "smoke tests "
         f"completed for {wheels[0].name}"
     )
     return 0

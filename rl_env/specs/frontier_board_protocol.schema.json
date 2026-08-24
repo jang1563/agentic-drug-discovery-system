@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/frontier_board_protocol.schema.json",
+  "title": "ADDS-Frontier Private Board Protocol",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "board_id",
+    "version",
+    "status",
+    "registered_on",
+    "task_target",
+    "tasks_per_family",
+    "allocation_policy",
+    "curation_policy",
+    "oracle_policy",
+    "contamination_policy",
+    "admission_gates",
+    "nonclaims",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-board-protocol.v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "version": {"type": "string", "minLength": 1},
+    "status": {"const": "preregistered_unpopulated"},
+    "registered_on": {"type": "string", "format": "date"},
+    "task_target": {"const": 40},
+    "tasks_per_family": {"const": 8},
+    "allocation_policy": {"$ref": "#/$defs/allocationPolicy"},
+    "curation_policy": {"$ref": "#/$defs/curationPolicy"},
+    "oracle_policy": {"$ref": "#/$defs/oraclePolicy"},
+    "contamination_policy": {"$ref": "#/$defs/contaminationPolicy"},
+    "admission_gates": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "task_packet_integrity"},
+        {"const": "oracle_commitment_sealed"},
+        {"const": "independent_scientific_review"},
+        {"const": "evidence_lineage_review"},
+        {"const": "temporal_leakage_review"},
+        {"const": "counterfactual_mutation_review"},
+        {"const": "expert_solvability"},
+        {"const": "structured_oracle_replay"},
+        {"const": "conflict_of_interest_clear"},
+        {"const": "contamination_canary_clear"}
+      ],
+      "items": false,
+      "minItems": 10,
+      "maxItems": 10
+    },
+    "nonclaims": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "domains": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "hematology"},
+        {"const": "immune_inflammatory"},
+        {"const": "oncology"},
+        {"const": "neurology"},
+        {"const": "metabolic"},
+        {"const": "infectious_disease"},
+        {"const": "cardiovascular"},
+        {"const": "rare_genetic"}
+      ],
+      "items": false,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "allocationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disease_domains",
+        "calibration_domains",
+        "sealed_domains",
+        "calibration_task_count",
+        "sealed_task_count",
+        "temporal_regimes",
+        "temporal_task_counts",
+        "exact_disease_identity_private_until_release",
+        "unique_program_commitment_per_task"
+      ],
+      "properties": {
+        "disease_domains": {"$ref": "#/$defs/domains"},
+        "calibration_domains": {
+          "type": "array",
+          "prefixItems": [{"const": "hematology"}, {"const": "immune_inflammatory"}],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "sealed_domains": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "oncology"},
+            {"const": "neurology"},
+            {"const": "metabolic"},
+            {"const": "infectious_disease"},
+            {"const": "cardiovascular"},
+            {"const": "rare_genetic"}
+          ],
+          "items": false,
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "calibration_task_count": {"const": 10},
+        "sealed_task_count": {"const": 30},
+        "temporal_regimes": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "historical_pre_2024"},
+            {"const": "historical_2024_2025"},
+            {"const": "contemporary_2026"}
+          ],
+          "items": false,
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "temporal_task_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["historical_pre_2024", "historical_2024_2025", "contemporary_2026"],
+          "properties": {
+            "historical_pre_2024": {"const": 15},
+            "historical_2024_2025": {"const": 15},
+            "contemporary_2026": {"const": 10}
+          }
+        },
+        "exact_disease_identity_private_until_release": {"const": true},
+        "unique_program_commitment_per_task": {"const": true}
+      }
+    },
+    "curationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum_independent_curators",
+        "author_cannot_vote",
+        "adjudicator_cannot_vote",
+        "conflict_declaration_required",
+        "reviewers_blinded_to_model_outputs",
+        "all_review_timestamps_precede_baseline_runs"
+      ],
+      "properties": {
+        "minimum_independent_curators": {"const": 3},
+        "author_cannot_vote": {"const": true},
+        "adjudicator_cannot_vote": {"const": true},
+        "conflict_declaration_required": {"const": true},
+        "reviewers_blinded_to_model_outputs": {"const": true},
+        "all_review_timestamps_precede_baseline_runs": {"const": true}
+      }
+    },
+    "oraclePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "structured_oracle_minimum_success",
+        "expert_solve_required",
+        "canonical_and_mutation_replay_required",
+        "oracle_bytes_sealed_until_evaluation_close"
+      ],
+      "properties": {
+        "structured_oracle_minimum_success": {"const": 0.95},
+        "expert_solve_required": {"const": true},
+        "canonical_and_mutation_replay_required": {"const": true},
+        "oracle_bytes_sealed_until_evaluation_close": {"const": true}
+      }
+    },
+    "contaminationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_runs_before_full_freeze_prohibited",
+        "model_failure_filtering_prohibited",
+        "private_canary_required_per_sealed_task",
+        "rotating_sealed_partition",
+        "public_development_oracles_excluded"
+      ],
+      "properties": {
+        "model_runs_before_full_freeze_prohibited": {"const": true},
+        "model_failure_filtering_prohibited": {"const": true},
+        "private_canary_required_per_sealed_task": {"const": true},
+        "rotating_sealed_partition": {"const": true},
+        "public_development_oracles_excluded": {"const": true}
+      }
+    }
+  }
+}

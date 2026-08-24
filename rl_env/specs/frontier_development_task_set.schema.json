@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/frontier_development_task_set.schema.json",
+  "title": "ADDS-Frontier Development Task Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "set_id",
+    "set_role",
+    "benchmark_evidence_claimed",
+    "baseline_model_runs_started",
+    "tasks",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-task-set.v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "set_id": {"const": "adds-frontier-development-tranche-v1"},
+    "set_role": {"const": "public_development_only"},
+    "benchmark_evidence_claimed": {"const": false},
+    "baseline_model_runs_started": {"const": false},
+    "tasks": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/task"}
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "date": {"type": "string", "format": "date"},
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//).+$"
+    },
+    "evidenceNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "artifact_path",
+        "artifact_sha256",
+        "availability_date",
+        "lineage_id",
+        "evidence_role"
+      ],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/text"},
+        "artifact_path": {"$ref": "#/$defs/relativePath"},
+        "artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "availability_date": {"$ref": "#/$defs/date"},
+        "lineage_id": {"$ref": "#/$defs/text"},
+        "evidence_role": {
+          "enum": ["source", "context", "contradiction", "derivative", "decision_record"]
+        }
+      }
+    },
+    "lineageEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parent_evidence_id", "child_evidence_id", "relationship"],
+      "properties": {
+        "parent_evidence_id": {"$ref": "#/$defs/text"},
+        "child_evidence_id": {"$ref": "#/$defs/text"},
+        "relationship": {
+          "enum": ["derives_from", "corroborates", "supersedes", "conflicts_with"]
+        }
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage_id",
+        "stage_kind",
+        "as_of_date",
+        "accessible_evidence_ids",
+        "required_gates",
+        "max_tool_calls"
+      ],
+      "properties": {
+        "stage_id": {"type": "string", "pattern": "^s[0-9]{2}$"},
+        "stage_kind": {
+          "enum": ["retrieve", "identity", "chronology", "lineage", "alignment", "synthesis", "action", "replay"]
+        },
+        "as_of_date": {"$ref": "#/$defs/date"},
+        "accessible_evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/text"}
+        },
+        "required_gates": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "evidence_retrieval_complete",
+              "identity_continuity",
+              "cutoff_compliance",
+              "lineage_independence",
+              "endpoint_population_alignment",
+              "uncertainty_handling",
+              "disposition_correct",
+              "next_action_correct",
+              "risk_flags_correct",
+              "witness_valid",
+              "blocker_certificate_valid",
+              "budget_compliance",
+              "exact_replay"
+            ]
+          }
+        },
+        "max_tool_calls": {"type": "integer", "minimum": 0}
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "family_id",
+        "seed_id",
+        "disease_area",
+        "prompt",
+        "stage_budget",
+        "tool_call_budget",
+        "evidence_nodes",
+        "lineage_edges",
+        "stages",
+        "nonclaim"
+      ],
+      "properties": {
+        "task_id": {"type": "string", "pattern": "^frontier-dev-[a-z0-9-]+-[0-9]{3}$"},
+        "family_id": {
+          "enum": [
+            "evidence_lineage_trap",
+            "temporal_reversal",
+            "translational_handoff",
+            "non_exchangeable_replication",
+            "budgeted_evidence_resolution"
+          ]
+        },
+        "seed_id": {"type": "string", "pattern": "^frontier-seed-[a-z0-9-]+-[0-9]{3}$"},
+        "disease_area": {"$ref": "#/$defs/text"},
+        "prompt": {"$ref": "#/$defs/text"},
+        "stage_budget": {"type": "integer", "minimum": 6, "maximum": 12},
+        "tool_call_budget": {"type": "integer", "minimum": 1},
+        "evidence_nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/evidenceNode"}
+        },
+        "lineage_edges": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/lineageEdge"}
+        },
+        "stages": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 12,
+          "items": {"$ref": "#/$defs/stage"}
+        },
+        "nonclaim": {
+          "const": "This public development task is not a private pilot-board item or benchmark evidence."
+        }
+      }
+    }
+  }
+}

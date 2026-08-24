@@ -1,0 +1,1806 @@
+{
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_cluster_superpopulation_report.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Aggregate conditional-versus-superpopulation calibration, realized-design, and influence report.",
+  "properties": {
+    "integrity_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "report": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate_simulation_only": {
+          "const": true
+        },
+        "automatic_estimand_selection_included": {
+          "const": false
+        },
+        "cluster_count_rule": {
+          "enum": [
+            "match_template_count"
+          ],
+          "type": "string"
+        },
+        "cluster_level_records_included": {
+          "const": false
+        },
+        "cluster_superpopulation_resampling_included": {
+          "const": true
+        },
+        "confidence_level": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "coverage_target": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "direction_threshold": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "dominant_cluster_override_allowed": {
+          "const": false
+        },
+        "empirical_template_sampling_frame": {
+          "const": true
+        },
+        "external_transportability_claimed": {
+          "const": false
+        },
+        "fixed_profile_known_truths_preserved": {
+          "const": true
+        },
+        "fixed_profile_protocol_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "fixed_profile_protocol_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "fixed_profile_report_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "identification_and_sampling_uncertainty_separated": {
+          "const": true
+        },
+        "iid_cluster_sampling_assumed": {
+          "const": true
+        },
+        "limitations": {
+          "const": [
+            "The report is a synthetic cluster-superpopulation study and contains no real clinical outcomes, dependence manifest, or deployed policy result.",
+            "The sampling frame is the finite empirical support of each fixed-profile scenario; it is not an external clinical population and does not establish transportability.",
+            "Clusters are sampled independently and uniformly with replacement, their sizes, prediction-stratum layouts, and favorable prevalences remain jointly attached to the sampled template, and each replicate keeps the template cluster count.",
+            "Uniform empirical-template sampling preserves the fixed-profile unit-weighted and cluster-balanced known truths exactly, so the comparison isolates sampling-frame variance under this declared model rather than changing the estimand.",
+            "Unit-weighted and cluster-balanced functionals answer different questions under informative cluster size; neither is selected automatically or preferred without a prospectively declared scientific estimand.",
+            "The unit-weighted functional is estimated by a random-denominator ratio estimator, so finite-cluster bias is measured rather than assumed absent.",
+            "No replicate is removed, reweighted, or selected after observing realized cluster dominance, support, direction, coverage, or calibration; production eligibility is reported only as an aggregate design diagnostic.",
+            "Delete-mj changes the unequal-size jackknife calculation but does not convert the unit-weighted estimator into a cluster-balanced estimand.",
+            "Influence diagnostics use method-specific scales, handle largest-cluster ties explicitly, and are comparable only within method; no replicate- or cluster-level records are exposed.",
+            "Every interval remains conditional on one binary log-IMOR pattern-mixture functional; missing-data identification uncertainty and cluster-sampling uncertainty are reported separately rather than combined.",
+            "Monte Carlo bounds quantify finite simulation error for rates, bias, and mean interval width; the SE-to-empirical-SD ratio is a point diagnostic.",
+            "Passing this synthetic study does not establish efficacy, safety, benefit-risk, policy superiority, treatment utility, regulatory acceptability, or performance in a new sampling frame."
+          ]
+        },
+        "log_imor_grid": {
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "maximum_absolute_bias": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "maximum_production_cluster_unit_fraction": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "method_id": {
+          "const": "adds.pattern-mixture.cluster-superpopulation-calibration.v1"
+        },
+        "methods": {
+          "items": {
+            "enum": [
+              "unit_weighted_delete_one_student_t",
+              "unit_weighted_delete_mj_student_t",
+              "cluster_balanced_delete_one_student_t"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "minimum_interval_yield": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "minimum_production_clusters": {
+          "type": "integer"
+        },
+        "monte_carlo_confidence_level": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        "post_hoc_design_filtering_included": {
+          "const": false
+        },
+        "primary_metric": {
+          "enum": [
+            "observed_favorable_rate",
+            "policy_a_brier_score",
+            "policy_b_brier_score",
+            "policy_a_calibration_in_the_large",
+            "policy_b_calibration_in_the_large",
+            "policy_a_classification_accuracy",
+            "policy_b_classification_accuracy",
+            "brier_difference_b_minus_a"
+          ],
+          "type": "string"
+        },
+        "protocol_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "protocol_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "random_seed": {
+          "maximum": 9223372036854775807,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "real_clinical_outcomes_included": {
+          "const": false
+        },
+        "reference_log_imor": {
+          "type": "number"
+        },
+        "replicate_level_records_included": {
+          "const": false
+        },
+        "replicates": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "rng_method_id": {
+          "const": "adds.mt19937-block-polya-urn-informative-evaluability.v1"
+        },
+        "sampling_model": {
+          "enum": [
+            "uniform_empirical_template_with_replacement"
+          ],
+          "type": "string"
+        },
+        "scenario_results": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "cluster_balanced_reference_direction": {
+                "enum": [
+                  "below",
+                  "at",
+                  "above"
+                ],
+                "type": "string"
+              },
+              "conditional_comparisons": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage_rate_change": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "fixed_profile_calibration_target_met": {
+                      "type": "boolean"
+                    },
+                    "fixed_profile_standard_error_calibration_target_met": {
+                      "type": "boolean"
+                    },
+                    "fixed_profile_standard_error_to_empirical_sd_ratio": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "fixed_profile_target_bias": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "fixed_profile_target_coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "confidence_level": {
+                          "maximum": 1.0,
+                          "minimum": 0.0,
+                          "type": "number"
+                        },
+                        "event_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "lower": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "rate": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "total_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "upper": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        }
+                      },
+                      "required": [
+                        "confidence_level",
+                        "event_count",
+                        "lower",
+                        "rate",
+                        "total_count",
+                        "upper"
+                      ],
+                      "type": "object"
+                    },
+                    "fixed_profile_target_true_value": {
+                      "type": "number"
+                    },
+                    "full_calibration_recovered": {
+                      "type": "boolean"
+                    },
+                    "log_imor": {
+                      "type": "number"
+                    },
+                    "method": {
+                      "enum": [
+                        "unit_weighted_delete_one_student_t",
+                        "unit_weighted_delete_mj_student_t",
+                        "cluster_balanced_delete_one_student_t"
+                      ],
+                      "type": "string"
+                    },
+                    "metric": {
+                      "enum": [
+                        "observed_favorable_rate",
+                        "policy_a_brier_score",
+                        "policy_b_brier_score",
+                        "policy_a_calibration_in_the_large",
+                        "policy_b_calibration_in_the_large",
+                        "policy_a_classification_accuracy",
+                        "policy_b_classification_accuracy",
+                        "brier_difference_b_minus_a"
+                      ],
+                      "type": "string"
+                    },
+                    "standard_error_calibration_recovered": {
+                      "type": "boolean"
+                    },
+                    "standard_error_ratio_change": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "superpopulation_calibration_target_met": {
+                      "type": "boolean"
+                    },
+                    "superpopulation_standard_error_calibration_target_met": {
+                      "type": "boolean"
+                    },
+                    "superpopulation_standard_error_to_empirical_sd_ratio": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "superpopulation_target_bias": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "superpopulation_target_coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "confidence_level": {
+                          "maximum": 1.0,
+                          "minimum": 0.0,
+                          "type": "number"
+                        },
+                        "event_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "lower": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "rate": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "total_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "upper": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        }
+                      },
+                      "required": [
+                        "confidence_level",
+                        "event_count",
+                        "lower",
+                        "rate",
+                        "total_count",
+                        "upper"
+                      ],
+                      "type": "object"
+                    },
+                    "target_bias_change": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "target_estimand": {
+                      "enum": [
+                        "unit_weighted",
+                        "cluster_balanced"
+                      ],
+                      "type": "string"
+                    },
+                    "target_true_value": {
+                      "type": "number"
+                    },
+                    "truth_difference": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "coverage_rate_change",
+                    "fixed_profile_calibration_target_met",
+                    "fixed_profile_standard_error_calibration_target_met",
+                    "fixed_profile_standard_error_to_empirical_sd_ratio",
+                    "fixed_profile_target_bias",
+                    "fixed_profile_target_coverage",
+                    "fixed_profile_target_true_value",
+                    "full_calibration_recovered",
+                    "log_imor",
+                    "method",
+                    "metric",
+                    "standard_error_calibration_recovered",
+                    "standard_error_ratio_change",
+                    "superpopulation_calibration_target_met",
+                    "superpopulation_standard_error_calibration_target_met",
+                    "superpopulation_standard_error_to_empirical_sd_ratio",
+                    "superpopulation_target_bias",
+                    "superpopulation_target_coverage",
+                    "target_bias_change",
+                    "target_estimand",
+                    "target_true_value",
+                    "truth_difference"
+                  ],
+                  "type": "object"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "design_diagnostic": {
+                "additionalProperties": false,
+                "properties": {
+                  "dominant_cluster_rate": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "confidence_level": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "event_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "lower": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      },
+                      "rate": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      },
+                      "total_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "upper": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      }
+                    },
+                    "required": [
+                      "confidence_level",
+                      "event_count",
+                      "lower",
+                      "rate",
+                      "total_count",
+                      "upper"
+                    ],
+                    "type": "object"
+                  },
+                  "expected_cluster_size": {
+                    "type": "number"
+                  },
+                  "insufficient_cluster_rate": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "confidence_level": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "event_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "lower": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      },
+                      "rate": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      },
+                      "total_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "upper": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      }
+                    },
+                    "required": [
+                      "confidence_level",
+                      "event_count",
+                      "lower",
+                      "rate",
+                      "total_count",
+                      "upper"
+                    ],
+                    "type": "object"
+                  },
+                  "maximum_realized_total_units": {
+                    "type": "integer"
+                  },
+                  "mean_maximum_cluster_fraction": {
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "type": "number"
+                  },
+                  "mean_realized_total_units": {
+                    "type": "number"
+                  },
+                  "mean_unique_template_types": {
+                    "type": "number"
+                  },
+                  "minimum_realized_total_units": {
+                    "type": "integer"
+                  },
+                  "p95_maximum_cluster_fraction": {
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "type": "number"
+                  },
+                  "production_eligible_rate": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "confidence_level": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "event_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "lower": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      },
+                      "rate": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      },
+                      "total_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "upper": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      }
+                    },
+                    "required": [
+                      "confidence_level",
+                      "event_count",
+                      "lower",
+                      "rate",
+                      "total_count",
+                      "upper"
+                    ],
+                    "type": "object"
+                  },
+                  "replicate_count": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "sampled_cluster_count": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "template_type_count": {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "unique_largest_cluster_rate": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "confidence_level": {
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "type": "number"
+                      },
+                      "event_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "lower": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      },
+                      "rate": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      },
+                      "total_count": {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "upper": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "maximum": 1.0,
+                        "minimum": 0.0
+                      }
+                    },
+                    "required": [
+                      "confidence_level",
+                      "event_count",
+                      "lower",
+                      "rate",
+                      "total_count",
+                      "upper"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "dominant_cluster_rate",
+                  "expected_cluster_size",
+                  "insufficient_cluster_rate",
+                  "maximum_realized_total_units",
+                  "mean_maximum_cluster_fraction",
+                  "mean_realized_total_units",
+                  "mean_unique_template_types",
+                  "minimum_realized_total_units",
+                  "p95_maximum_cluster_fraction",
+                  "production_eligible_rate",
+                  "replicate_count",
+                  "sampled_cluster_count",
+                  "template_type_count",
+                  "unique_largest_cluster_rate"
+                ],
+                "type": "object"
+              },
+              "endpoint_family": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "evaluability_rng_stream_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "favorable_prevalence_contrast_unit_minus_cluster": {
+                "type": "number"
+              },
+              "fixed_profile_scenario_fingerprint": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "influence_diagnostics": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "analyzable_replicate_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "basis": {
+                      "enum": [
+                        "leave_one_out_shift",
+                        "pseudovalue_contribution"
+                      ],
+                      "type": "string"
+                    },
+                    "largest_cluster_deletion_direction_flip": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "confidence_level": {
+                          "maximum": 1.0,
+                          "minimum": 0.0,
+                          "type": "number"
+                        },
+                        "event_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "lower": {
+                          "anyOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "rate": {
+                          "anyOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "total_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "upper": {
+                          "anyOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        }
+                      },
+                      "required": [
+                        "confidence_level",
+                        "event_count",
+                        "lower",
+                        "rate",
+                        "total_count",
+                        "upper"
+                      ],
+                      "type": "object"
+                    },
+                    "largest_cluster_deletion_direction_flip_applicable": {
+                      "type": "boolean"
+                    },
+                    "mean_maximum_absolute_influence": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "mean_maximum_absolute_influence_share": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "method": {
+                      "enum": [
+                        "unit_weighted_delete_one_student_t",
+                        "unit_weighted_delete_mj_student_t",
+                        "cluster_balanced_delete_one_student_t"
+                      ],
+                      "type": "string"
+                    },
+                    "p95_maximum_absolute_influence": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "primary_metric": {
+                      "enum": [
+                        "observed_favorable_rate",
+                        "policy_a_brier_score",
+                        "policy_b_brier_score",
+                        "policy_a_calibration_in_the_large",
+                        "policy_b_calibration_in_the_large",
+                        "policy_a_classification_accuracy",
+                        "policy_b_classification_accuracy",
+                        "brier_difference_b_minus_a"
+                      ],
+                      "type": "string"
+                    },
+                    "reference_log_imor": {
+                      "type": "number"
+                    },
+                    "unique_largest_cluster_most_influential": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "confidence_level": {
+                          "maximum": 1.0,
+                          "minimum": 0.0,
+                          "type": "number"
+                        },
+                        "event_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "lower": {
+                          "anyOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "rate": {
+                          "anyOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "total_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "upper": {
+                          "anyOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        }
+                      },
+                      "required": [
+                        "confidence_level",
+                        "event_count",
+                        "lower",
+                        "rate",
+                        "total_count",
+                        "upper"
+                      ],
+                      "type": "object"
+                    },
+                    "unique_largest_cluster_rate": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "confidence_level": {
+                          "maximum": 1.0,
+                          "minimum": 0.0,
+                          "type": "number"
+                        },
+                        "event_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "lower": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "rate": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        },
+                        "total_count": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "upper": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "maximum": 1.0,
+                          "minimum": 0.0
+                        }
+                      },
+                      "required": [
+                        "confidence_level",
+                        "event_count",
+                        "lower",
+                        "rate",
+                        "total_count",
+                        "upper"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "analyzable_replicate_count",
+                    "basis",
+                    "largest_cluster_deletion_direction_flip",
+                    "largest_cluster_deletion_direction_flip_applicable",
+                    "mean_maximum_absolute_influence",
+                    "mean_maximum_absolute_influence_share",
+                    "method",
+                    "p95_maximum_absolute_influence",
+                    "primary_metric",
+                    "reference_log_imor",
+                    "unique_largest_cluster_most_influential",
+                    "unique_largest_cluster_rate"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 3,
+                "minItems": 1,
+                "type": "array"
+              },
+              "method_results": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "all_metric_calibration_targets_met": {
+                      "type": "boolean"
+                    },
+                    "method": {
+                      "enum": [
+                        "unit_weighted_delete_one_student_t",
+                        "unit_weighted_delete_mj_student_t",
+                        "cluster_balanced_delete_one_student_t"
+                      ],
+                      "type": "string"
+                    },
+                    "metric_inference": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "all_grid_calibration_targets_met": {
+                            "type": "boolean"
+                          },
+                          "grid_inference": {
+                            "items": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "alternate_estimand_bias": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "alternate_true_value": {
+                                  "type": "number"
+                                },
+                                "bias_target_met": {
+                                  "type": "boolean"
+                                },
+                                "calibration_target_met": {
+                                  "type": "boolean"
+                                },
+                                "cluster_balanced_true_value": {
+                                  "type": "number"
+                                },
+                                "coverage_target": {
+                                  "maximum": 1.0,
+                                  "minimum": 0.0,
+                                  "type": "number"
+                                },
+                                "coverage_target_met": {
+                                  "type": "boolean"
+                                },
+                                "covered_count": {
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                "empirical_standard_deviation": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "estimand_contrast_unit_minus_cluster": {
+                                  "type": "number"
+                                },
+                                "informative_missingness_odds_ratio": {
+                                  "type": "number"
+                                },
+                                "interval_count": {
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                "interval_width_empirical_standard_deviation": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "interval_yield": {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "confidence_level": {
+                                      "maximum": 1.0,
+                                      "minimum": 0.0,
+                                      "type": "number"
+                                    },
+                                    "event_count": {
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    },
+                                    "lower": {
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ],
+                                      "maximum": 1.0,
+                                      "minimum": 0.0
+                                    },
+                                    "rate": {
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ],
+                                      "maximum": 1.0,
+                                      "minimum": 0.0
+                                    },
+                                    "total_count": {
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    },
+                                    "upper": {
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ],
+                                      "maximum": 1.0,
+                                      "minimum": 0.0
+                                    }
+                                  },
+                                  "required": [
+                                    "confidence_level",
+                                    "event_count",
+                                    "lower",
+                                    "rate",
+                                    "total_count",
+                                    "upper"
+                                  ],
+                                  "type": "object"
+                                },
+                                "interval_yield_target_met": {
+                                  "type": "boolean"
+                                },
+                                "log_imor": {
+                                  "type": "number"
+                                },
+                                "maximum_absolute_bias": {
+                                  "maximum": 1.0,
+                                  "minimum": 0.0,
+                                  "type": "number"
+                                },
+                                "mean_estimate": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "mean_interval_width": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "mean_interval_width_monte_carlo_lower": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "mean_interval_width_monte_carlo_upper": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "mean_reported_standard_error": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "method": {
+                                  "enum": [
+                                    "unit_weighted_delete_one_student_t",
+                                    "unit_weighted_delete_mj_student_t",
+                                    "cluster_balanced_delete_one_student_t"
+                                  ],
+                                  "type": "string"
+                                },
+                                "metric": {
+                                  "enum": [
+                                    "observed_favorable_rate",
+                                    "policy_a_brier_score",
+                                    "policy_b_brier_score",
+                                    "policy_a_calibration_in_the_large",
+                                    "policy_b_calibration_in_the_large",
+                                    "policy_a_classification_accuracy",
+                                    "policy_b_classification_accuracy",
+                                    "brier_difference_b_minus_a"
+                                  ],
+                                  "type": "string"
+                                },
+                                "minimum_interval_yield": {
+                                  "maximum": 1.0,
+                                  "minimum": 0.0,
+                                  "type": "number"
+                                },
+                                "monte_carlo_absolute_bias_upper": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "monte_carlo_bias_lower": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "monte_carlo_bias_upper": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "point_estimate_count": {
+                                  "minimum": 0,
+                                  "type": "integer"
+                                },
+                                "replicate_count": {
+                                  "minimum": 1,
+                                  "type": "integer"
+                                },
+                                "root_mean_squared_reported_standard_error": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "standard_error_calibration_lower": {
+                                  "type": "number"
+                                },
+                                "standard_error_calibration_target_met": {
+                                  "type": "boolean"
+                                },
+                                "standard_error_calibration_upper": {
+                                  "type": "number"
+                                },
+                                "standard_error_to_empirical_sd_ratio": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "status_counts": {
+                                  "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "count": {
+                                        "minimum": 0,
+                                        "type": "integer"
+                                      },
+                                      "status": {
+                                        "enum": [
+                                          "computed",
+                                          "insufficient_simulation_clusters",
+                                          "cluster_empty_reference_stratum",
+                                          "cluster_degenerate_reference_stratum",
+                                          "zero_resampling_variance"
+                                        ],
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "count",
+                                      "status"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 5,
+                                  "minItems": 5,
+                                  "type": "array"
+                                },
+                                "target_bias": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "target_coverage": {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "confidence_level": {
+                                      "maximum": 1.0,
+                                      "minimum": 0.0,
+                                      "type": "number"
+                                    },
+                                    "event_count": {
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    },
+                                    "lower": {
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ],
+                                      "maximum": 1.0,
+                                      "minimum": 0.0
+                                    },
+                                    "rate": {
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ],
+                                      "maximum": 1.0,
+                                      "minimum": 0.0
+                                    },
+                                    "total_count": {
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    },
+                                    "upper": {
+                                      "anyOf": [
+                                        {
+                                          "type": "number"
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ],
+                                      "maximum": 1.0,
+                                      "minimum": 0.0
+                                    }
+                                  },
+                                  "required": [
+                                    "confidence_level",
+                                    "event_count",
+                                    "lower",
+                                    "rate",
+                                    "total_count",
+                                    "upper"
+                                  ],
+                                  "type": "object"
+                                },
+                                "target_estimand": {
+                                  "enum": [
+                                    "unit_weighted",
+                                    "cluster_balanced"
+                                  ],
+                                  "type": "string"
+                                },
+                                "target_true_value": {
+                                  "type": "number"
+                                },
+                                "unit_weighted_true_value": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "alternate_estimand_bias",
+                                "alternate_true_value",
+                                "bias_target_met",
+                                "calibration_target_met",
+                                "cluster_balanced_true_value",
+                                "coverage_target",
+                                "coverage_target_met",
+                                "covered_count",
+                                "empirical_standard_deviation",
+                                "estimand_contrast_unit_minus_cluster",
+                                "informative_missingness_odds_ratio",
+                                "interval_count",
+                                "interval_width_empirical_standard_deviation",
+                                "interval_yield",
+                                "interval_yield_target_met",
+                                "log_imor",
+                                "maximum_absolute_bias",
+                                "mean_estimate",
+                                "mean_interval_width",
+                                "mean_interval_width_monte_carlo_lower",
+                                "mean_interval_width_monte_carlo_upper",
+                                "mean_reported_standard_error",
+                                "method",
+                                "metric",
+                                "minimum_interval_yield",
+                                "monte_carlo_absolute_bias_upper",
+                                "monte_carlo_bias_lower",
+                                "monte_carlo_bias_upper",
+                                "point_estimate_count",
+                                "replicate_count",
+                                "root_mean_squared_reported_standard_error",
+                                "standard_error_calibration_lower",
+                                "standard_error_calibration_target_met",
+                                "standard_error_calibration_upper",
+                                "standard_error_to_empirical_sd_ratio",
+                                "status_counts",
+                                "target_bias",
+                                "target_coverage",
+                                "target_estimand",
+                                "target_true_value",
+                                "unit_weighted_true_value"
+                              ],
+                              "type": "object"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          },
+                          "metric": {
+                            "enum": [
+                              "observed_favorable_rate",
+                              "policy_a_brier_score",
+                              "policy_b_brier_score",
+                              "policy_a_calibration_in_the_large",
+                              "policy_b_calibration_in_the_large",
+                              "policy_a_classification_accuracy",
+                              "policy_b_classification_accuracy",
+                              "brier_difference_b_minus_a"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "all_grid_calibration_targets_met",
+                          "grid_inference",
+                          "metric"
+                        ],
+                        "type": "object"
+                      },
+                      "maxItems": 8,
+                      "minItems": 1,
+                      "type": "array"
+                    },
+                    "target_estimand": {
+                      "enum": [
+                        "unit_weighted",
+                        "cluster_balanced"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "all_metric_calibration_targets_met",
+                    "method",
+                    "metric_inference",
+                    "target_estimand"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 3,
+                "minItems": 1,
+                "type": "array"
+              },
+              "outcome_rng_stream_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "rng_stream_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "scenario_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "size_outcome_correlation": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "size_outcome_covariance": {
+                "type": "number"
+              },
+              "stage": {
+                "enum": [
+                  "disease_context",
+                  "target_nomination",
+                  "modality_selection",
+                  "candidate_generation",
+                  "lead_optimization",
+                  "preclinical_validation",
+                  "clinical_strategy",
+                  "regulatory_postmarket"
+                ],
+                "type": "string"
+              },
+              "superpopulation_cluster_balanced_favorable_prevalence": {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              "superpopulation_unit_weighted_favorable_prevalence": {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              "template_cluster_sizes": {
+                "items": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "template_favorable_prevalences": {
+                "items": {
+                  "exclusiveMaximum": 1.0,
+                  "exclusiveMinimum": 0.0,
+                  "type": "number"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "template_sampling_rng_stream_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "true_log_imor": {
+                "type": "number"
+              },
+              "truth_direction_disagrees": {
+                "type": "boolean"
+              },
+              "unit_weighted_reference_direction": {
+                "enum": [
+                  "below",
+                  "at",
+                  "above"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "cluster_balanced_reference_direction",
+              "conditional_comparisons",
+              "design_diagnostic",
+              "endpoint_family",
+              "evaluability_rng_stream_sha256",
+              "favorable_prevalence_contrast_unit_minus_cluster",
+              "fixed_profile_scenario_fingerprint",
+              "influence_diagnostics",
+              "method_results",
+              "outcome_rng_stream_sha256",
+              "rng_stream_sha256",
+              "scenario_id",
+              "size_outcome_correlation",
+              "size_outcome_covariance",
+              "stage",
+              "superpopulation_cluster_balanced_favorable_prevalence",
+              "superpopulation_unit_weighted_favorable_prevalence",
+              "template_cluster_sizes",
+              "template_favorable_prevalences",
+              "template_sampling_rng_stream_sha256",
+              "true_log_imor",
+              "truth_direction_disagrees",
+              "unit_weighted_reference_direction"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "standard_error_calibration_lower": {
+          "type": "number"
+        },
+        "standard_error_calibration_upper": {
+          "type": "number"
+        },
+        "stress_protocol_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "stress_protocol_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "unit_level_records_included": {
+          "const": false
+        }
+      },
+      "required": [
+        "aggregate_simulation_only",
+        "automatic_estimand_selection_included",
+        "cluster_count_rule",
+        "cluster_level_records_included",
+        "cluster_superpopulation_resampling_included",
+        "confidence_level",
+        "coverage_target",
+        "direction_threshold",
+        "dominant_cluster_override_allowed",
+        "empirical_template_sampling_frame",
+        "external_transportability_claimed",
+        "fixed_profile_known_truths_preserved",
+        "fixed_profile_protocol_fingerprint",
+        "fixed_profile_protocol_id",
+        "fixed_profile_report_fingerprint",
+        "identification_and_sampling_uncertainty_separated",
+        "iid_cluster_sampling_assumed",
+        "limitations",
+        "log_imor_grid",
+        "maximum_absolute_bias",
+        "maximum_production_cluster_unit_fraction",
+        "method_id",
+        "methods",
+        "minimum_interval_yield",
+        "minimum_production_clusters",
+        "monte_carlo_confidence_level",
+        "post_hoc_design_filtering_included",
+        "primary_metric",
+        "protocol_fingerprint",
+        "protocol_id",
+        "random_seed",
+        "real_clinical_outcomes_included",
+        "reference_log_imor",
+        "replicate_level_records_included",
+        "replicates",
+        "rng_method_id",
+        "sampling_model",
+        "scenario_results",
+        "standard_error_calibration_lower",
+        "standard_error_calibration_upper",
+        "stress_protocol_fingerprint",
+        "stress_protocol_id",
+        "unit_level_records_included"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "adds.clinical-outcome-cluster-superpopulation-report.v1"
+    }
+  },
+  "required": [
+    "integrity_sha256",
+    "report",
+    "schema_version"
+  ],
+  "title": "Clinical outcome cluster-superpopulation report",
+  "type": "object"
+}

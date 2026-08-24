@@ -11,6 +11,13 @@ from datetime import date
 from enum import Enum
 from typing import Any
 
+from .clinical_effects import (
+    canonical_effect_measure,
+    effect_benefit_direction,
+    effect_favorable_direction,
+    validate_effect_contract,
+    validate_effect_scale_interval,
+)
 from .execution import EvidenceDraft, ToolOutcome, ToolStatus
 from .clinical_synthesis import (
     ClinicalSynthesisError,
@@ -467,20 +474,49 @@ def _source_measurement(value: Any) -> tuple[bool, float | None]:
     return number is not None, number
 
 
-def _arm_title_tokens(value: str) -> frozenset[str]:
+def _arm_title_tokens(
+    value: str,
+    identity_aliases: Sequence[str] = (),
+) -> frozenset[str]:
+    normalized = value.casefold()
+    for alias in sorted(identity_aliases, key=len, reverse=True):
+        pattern = re.escape(alias.casefold())
+        normalized = re.sub(
+            rf"(?<![a-z0-9]){pattern}(?![a-z0-9])",
+            "candidate",
+            normalized,
+        )
+    value = re.sub(
+        r"\b\d+(?:\.\d+)?\s*(?:mg|milligrams?)\b",
+        " ",
+        normalized,
+    )
     tokens = [
-        token
-        for token in re.findall(r"[a-z]+|[0-9]+", value.casefold())
-        if token not in {"mg", "milligram", "milligrams"}
+        "hydrochloride" if token == "hcl" else token
+        for token in re.findall(r"[a-z]+|[0-9]+", value)
+        if token
+        not in {
+            "induction",
+            "intervention",
+            "maintenance",
+            "period",
+            "mg",
+            "milligram",
+            "milligrams",
+        }
     ]
     if "on" in tokens and "treatment" in tokens:
         tokens = [token for token in tokens if token not in {"on", "treatment"}]
     return frozenset(tokens)
 
 
-def _compatible_arm_titles(left: str, right: str) -> bool:
-    left_tokens = _arm_title_tokens(left)
-    right_tokens = _arm_title_tokens(right)
+def _compatible_arm_titles(
+    left: str,
+    right: str,
+    identity_aliases: Sequence[str] = (),
+) -> bool:
+    left_tokens = _arm_title_tokens(left, identity_aliases)
+    right_tokens = _arm_title_tokens(right, identity_aliases)
     if not left_tokens or not right_tokens:
         return False
     return left_tokens == right_tokens
@@ -755,8 +791,7 @@ def _approved_identity_aliases(
         if len(normalized_declared) != len(set(normalized_declared)):
             return None
     return frozenset(
-        _normalized(item)
-        for item in (identity_id, identity_name, *declared)
+        _normalized(item) for item in (identity_id, identity_name, *declared)
     )
 
 
@@ -2634,9 +2669,7 @@ def _map_pinned_clinical_trial_design(
             "Candidate, disease, intervention, trial, and profile query must match.",
         )
     try:
-        (record,) = _parse_pinned_profile(
-            outcome, ("clinical_trial_design_supported",)
-        )
+        (record,) = _parse_pinned_profile(outcome, ("clinical_trial_design_supported",))
     except ValueError as exc:
         return _empty_result(
             mapper_id,
@@ -2647,17 +2680,14 @@ def _map_pinned_clinical_trial_design(
             details={"validation_error": str(exc)},
         )
     design_id = f"{trial_id}:design"
-    if (
-        not _record_context_matches(
-            record,
-            candidate_id=candidate_id,
-            intervention_id=intervention_id,
-            disease_id=disease_id,
-            trial_id=trial_id,
-            design_id=design_id,
-        )
-        or _normalized(record.object_value) != _normalized(disease.name)
-    ):
+    if not _record_context_matches(
+        record,
+        candidate_id=candidate_id,
+        intervention_id=intervention_id,
+        disease_id=disease_id,
+        trial_id=trial_id,
+        design_id=design_id,
+    ) or _normalized(record.object_value) != _normalized(disease.name):
         return _empty_result(
             mapper_id,
             outcome,
@@ -2686,11 +2716,11 @@ def _map_pinned_clinical_trial_design(
     registry_version = _text(metadata.get("registry_version"))
     arms_raw = metadata.get("arms")
     population_raw = metadata.get("population")
+    population_alignment_raw = metadata.get("population_alignment")
     endpoint_raw = metadata.get("endpoint")
     safety_raw = metadata.get("safety")
     if (
-        _normalized(str(metadata.get("provider_id", "")))
-        != "clinicaltrials_gov"
+        _normalized(str(metadata.get("provider_id", ""))) != "clinicaltrials_gov"
         or _normalized(str(metadata.get("registry", ""))) != "clinicaltrials.gov"
         or _normalized(str(metadata.get("study_type", ""))) != "interventional"
         or _normalized(str(metadata.get("overall_status", ""))) != "completed"
@@ -2701,12 +2731,12 @@ def _map_pinned_clinical_trial_design(
         or registry_version is None
         or record.source_version
         != f"clinicaltrials-gov-{trial_id}-version-{registry_version}"
-        or record.locator
-        != f"https://clinicaltrials.gov/api/v2/studies/{trial_id}"
+        or record.locator != f"https://clinicaltrials.gov/api/v2/studies/{trial_id}"
         or not isinstance(arms_raw, Sequence)
         or isinstance(arms_raw, (str, bytes))
         or len(arms_raw) != 2
         or not isinstance(population_raw, Mapping)
+        or not isinstance(population_alignment_raw, Mapping)
         or not isinstance(endpoint_raw, Mapping)
         or not isinstance(safety_raw, Mapping)
     ):
@@ -2747,23 +2777,18 @@ def _map_pinned_clinical_trial_design(
             },
         )
     approved_disease_aliases = _disease_identity_aliases(disease)
-    source_condition_aliases = {
-        _normalized(item) for item in source_conditions
-    }
+    source_condition_aliases = {_normalized(item) for item in source_conditions}
     explicit_disease_aliases = "identity_aliases" in disease.attributes
     if (
         approved_disease_aliases is None
         or (
             explicit_disease_aliases
-            and not source_condition_aliases.intersection(
-                approved_disease_aliases
-            )
+            and not source_condition_aliases.intersection(approved_disease_aliases)
         )
         or (
             not explicit_disease_aliases
             and not any(
-                _source_text_matches(disease.name, item)
-                for item in source_conditions
+                _source_text_matches(disease.name, item) for item in source_conditions
             )
         )
     ):
@@ -2845,6 +2870,7 @@ def _map_pinned_clinical_trial_design(
             (population.get("sex"), "population.sex"),
             (population.get("minimum_age"), "population.minimum_age"),
             (endpoint.get("endpoint_id"), "endpoint_id"),
+            (endpoint.get("treatment_phase"), "endpoint.treatment_phase"),
             (endpoint.get("name"), "endpoint.name"),
             (endpoint.get("outcome_type"), "endpoint.outcome_type"),
             (endpoint.get("time_frame"), "endpoint.time_frame"),
@@ -2885,46 +2911,91 @@ def _map_pinned_clinical_trial_design(
         comparator_measurement_valid, comparator_measurement = _source_measurement(
             comparator_arm["measurement"].get("value")
         )
-        if None in {
-            p_value,
-            parameter_value,
-            ci_percent,
+        if (
+            None
+            in {
+                p_value,
+                parameter_value,
+                ci_percent,
+                ci_lower,
+                ci_upper,
+            }
+            or not candidate_measurement_valid
+            or not comparator_measurement_valid
+        ):
+            raise ValueError("endpoint analysis contains non-numeric values")
+        endpoint_direction = _normalized(str(endpoint["favorable_direction"]))
+        treatment_phase = _normalized(str(endpoint["treatment_phase"]))
+        effect_measure = canonical_effect_measure(
+            str(analysis.get("parameter_type", ""))
+        )
+        effect_contract_valid = effect_measure is not None
+        effect_direction_contract = ""
+        if effect_measure is not None:
+            try:
+                effect_direction_contract = effect_favorable_direction(
+                    effect_measure,
+                    endpoint_direction,
+                )
+                validate_effect_contract(effect_measure, effect_direction_contract)
+                validate_effect_scale_interval(
+                    parameter_value,
+                    ci_lower,
+                    ci_upper,
+                    effect_measure,
+                    str(endpoint["unit"]),
+                )
+                if effect_measure == "risk_difference" and list(
+                    analysis.get("source_group_ids") or ()
+                ) != [
+                    candidate_arm.get("source_group_id"),
+                    comparator_arm.get("source_group_id"),
+                ]:
+                    raise ValueError(
+                        "risk_difference group order is not candidate then comparator"
+                    )
+            except ValueError:
+                effect_contract_valid = False
+        if (
+            _normalized(str(endpoint["outcome_type"])) != "primary"
+            or _normalized(str(endpoint["reporting_status"])) != "posted"
+            or endpoint_direction not in {"higher_is_better", "lower_is_better"}
+            or treatment_phase not in {"induction", "maintenance", "not_applicable"}
+            or effect_measure is None
+            or not effect_contract_valid
+            or analysis.get("p_value_relation") not in {"lt", "le", "eq", "ge", "gt"}
+            or not 0 < p_value <= 1
+            or not 0 < ci_percent <= 100
+        ):
+            raise ValueError("posted primary endpoint is not valid effect evidence")
+        effect_direction = effect_benefit_direction(
             ci_lower,
             ci_upper,
-        } or not candidate_measurement_valid or not comparator_measurement_valid:
-            raise ValueError("endpoint analysis contains non-numeric values")
-        arm_measurements_support_direction = (
-            candidate_measurement is None
-            or comparator_measurement is None
-            or candidate_measurement > comparator_measurement
+            effect_measure,
+            effect_direction_contract,
         )
-        if (
-            _normalized(str(metadata.get("effect_direction", ""))) != "benefit"
-            or _normalized(str(endpoint["outcome_type"])) != "primary"
-            or _normalized(str(endpoint["reporting_status"])) != "posted"
-            or _normalized(str(endpoint["favorable_direction"]))
-            != "higher_is_better"
-            or _normalized(str(analysis.get("parameter_type", "")))
-            not in {
-                "cox proportional hazard",
-                "hazard ratio",
-                "hazard ratio (hr)",
-                "hazard ratio, log",
-            }
-            or analysis.get("p_value_relation") not in {"lt", "le", "eq"}
-            or not 0 < p_value <= 0.05
-            or not 0 < parameter_value < 1
-            or not 0 < ci_lower <= parameter_value <= ci_upper < 1
-            or not 0 < ci_percent <= 100
-            or not arm_measurements_support_direction
-        ):
-            raise ValueError("posted primary endpoint does not prove bounded benefit")
+        treatment_phase_metadata = (
+            {"treatment_phase": treatment_phase}
+            if treatment_phase != "not_applicable"
+            else {}
+        )
+        bounded_clinical_interpretation = (
+            "posted_primary_time_to_event_benefit"
+            if effect_measure == "hazard_ratio" and effect_direction == "benefit"
+            else (
+                f"posted_primary_risk_difference_{effect_direction}"
+                if effect_measure == "risk_difference"
+                else f"posted_primary_ratio_effect_{effect_direction}"
+            )
+        )
+        if _normalized(str(metadata.get("effect_direction", ""))) != effect_direction:
+            raise ValueError("endpoint effect direction does not match its interval")
 
         safety = dict(safety_raw)
         safety_arms_raw = safety.get("arms")
         if (
-            safety.get("safety_id")
-            != f"{trial_id}:safety:serious-adverse-events"
+            safety.get("safety_id") != f"{trial_id}:safety:serious-adverse-events"
+            or safety.get("treatment_phase") != treatment_phase
             or safety.get("event_category") != "SERIOUS"
             or safety.get("reporting_status") != "POSTED"
             or _text(safety.get("time_frame")) is None
@@ -2967,11 +3038,11 @@ def _map_pinned_clinical_trial_design(
                 or re.fullmatch(r"EG[0-9]{3,}", source_group_id) is None
                 or source_group_title is None
                 or safety_arm_id is None
-                or safety_arm_id
-                != f"{safety['safety_id']}:arm:{source_group_id}"
+                or safety_arm_id != f"{safety['safety_id']}:arm:{source_group_id}"
                 or not _compatible_arm_titles(
                     str(canonical_arm.get("label", "")),
                     source_group_title,
+                    aliases if role == "candidate" else (),
                 )
                 or not isinstance(affected, int)
                 or isinstance(affected, bool)
@@ -2981,7 +3052,9 @@ def _map_pinned_clinical_trial_design(
                 or at_risk <= 0
                 or affected > at_risk
             ):
-                raise ValueError("safety arm identity or serious-event counts are invalid")
+                raise ValueError(
+                    "safety arm identity or serious-event counts are invalid"
+                )
             safety_roles.add(role)
             safety_group_ids.add(source_group_id)
             safety_arm_ids.add(safety_arm_id)
@@ -2991,13 +3064,31 @@ def _map_pinned_clinical_trial_design(
             or len(safety_arm_ids) != 2
         ):
             raise ValueError("safety arm identities must be unique and role-complete")
+        endpoint_counts = {
+            item["role"]: item["measurement"]["denominator"] for item in arm_values
+        }
+        safety_counts = {
+            item["role"]: item["serious_num_at_risk"] for item in safety_arm_values
+        }
+        population_alignment = {
+            "treatment_phase": treatment_phase,
+            "study_enrollment_count": enrollment_count,
+            "endpoint_analysis_participant_count": sum(endpoint_counts.values()),
+            "safety_at_risk_participant_count": sum(safety_counts.values()),
+            "rolewise_counts_match": endpoint_counts == safety_counts,
+            "same_participants_inferred": False,
+        }
+        if dict(population_alignment_raw) != population_alignment:
+            raise ValueError(
+                "population alignment does not match endpoint and safety counts"
+            )
     except (TypeError, ValueError) as exc:
         return _empty_result(
             mapper_id,
             outcome,
             PromotionStatus.ABSTAINED,
             "pinned_clinical_design_endpoint_not_supportive",
-            "Clinical design was not promoted beyond the bounded benefit contract.",
+            "Clinical design was not promoted beyond the bounded effect-evidence contract.",
             recommended_decision=Decision.DEFER,
             details={"validation_error": str(exc)},
         )
@@ -3108,6 +3199,7 @@ def _map_pinned_clinical_trial_design(
         biological_context={
             **base_context,
             "population_id": population["population_id"],
+            **treatment_phase_metadata,
         },
         metadata={
             "enrollment_count": population["enrollment_count"],
@@ -3116,12 +3208,18 @@ def _map_pinned_clinical_trial_design(
             "minimum_age": population["minimum_age"],
             "maximum_age": population.get("maximum_age"),
             "healthy_volunteers": population["healthy_volunteers"],
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
         },
     )
     endpoint_context = {
         **base_context,
         "population_id": population["population_id"],
         "endpoint_id": endpoint["endpoint_id"],
+        **treatment_phase_metadata,
         "arm_ids": expected_arm_ids,
     }
     endpoint_identity_draft = _draft(
@@ -3138,6 +3236,7 @@ def _map_pinned_clinical_trial_design(
         biological_context=endpoint_context,
         metadata={
             "name": endpoint["name"],
+            **treatment_phase_metadata,
             "outcome_type": endpoint["outcome_type"],
             "time_frame": endpoint["time_frame"],
             "parameter_type": endpoint["parameter_type"],
@@ -3153,12 +3252,13 @@ def _map_pinned_clinical_trial_design(
         object_value=disease.name,
         relation=EvidenceRelation.SUPPORTS,
         confidence=confidence,
-        direction="benefit",
+        direction=effect_direction,
         source_id=record.source_id,
         observed_at=record.observed_at,
         available_at=record.available_at,
         biological_context=endpoint_context,
         metadata={
+            **treatment_phase_metadata,
             "parameter_type": analysis["parameter_type"],
             "parameter_value": parameter_value,
             "confidence_interval_percent": ci_percent,
@@ -3171,16 +3271,16 @@ def _map_pinned_clinical_trial_design(
             "candidate_measurement_raw": candidate_arm["measurement"]["value"],
             "comparator_measurement_raw": comparator_arm["measurement"]["value"],
             "descriptive_arm_measurement_complete": (
-                candidate_measurement is not None
-                and comparator_measurement is not None
+                candidate_measurement is not None and comparator_measurement is not None
             ),
             "unit": endpoint["unit"],
-            "bounded_interpretation": "posted_primary_time_to_event_benefit",
+            "bounded_interpretation": bounded_clinical_interpretation,
         },
     )
     safety_context = {
         **base_context,
         "safety_id": safety["safety_id"],
+        **treatment_phase_metadata,
         "arm_ids": expected_arm_ids,
     }
     safety_identity_draft = _draft(
@@ -3197,6 +3297,7 @@ def _map_pinned_clinical_trial_design(
         biological_context=safety_context,
         metadata={
             "event_category": safety["event_category"],
+            **treatment_phase_metadata,
             "reporting_status": safety["reporting_status"],
             "time_frame": safety["time_frame"],
             "event_term_count": safety["event_term_count"],
@@ -3216,6 +3317,7 @@ def _map_pinned_clinical_trial_design(
         biological_context=safety_context,
         metadata={
             "event_category": safety["event_category"],
+            **treatment_phase_metadata,
             "reporting_status": safety["reporting_status"],
             "arm_summaries": [
                 {
@@ -3277,7 +3379,15 @@ def _map_pinned_clinical_trial_design(
         stage=outcome.request.stage,
         identifiers={"canonical": population["population_id"]},
         supporting_evidence=(population_draft.evidence_id,),
-        attributes={"source_description_sha256": population.get("description_sha256")},
+        attributes={
+            "source_description_sha256": population.get("description_sha256"),
+            **treatment_phase_metadata,
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
+        },
     )
     endpoint_record = TrialEndpointRecord(
         endpoint_id=endpoint["endpoint_id"],
@@ -3303,6 +3413,12 @@ def _map_pinned_clinical_trial_design(
         ),
         attributes={
             "favorable_direction": endpoint["favorable_direction"],
+            **treatment_phase_metadata,
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
             "analysis": analysis,
         },
     )
@@ -3320,9 +3436,7 @@ def _map_pinned_clinical_trial_design(
             stage=outcome.request.stage,
             identifiers={
                 "canonical": item["safety_arm_id"],
-                "clinicaltrials_gov_adverse_event_group": item[
-                    "source_group_id"
-                ],
+                "clinicaltrials_gov_adverse_event_group": item["source_group_id"],
             },
             supporting_evidence=(
                 safety_identity_draft.evidence_id,
@@ -3352,6 +3466,12 @@ def _map_pinned_clinical_trial_design(
         ),
         attributes={
             "interpretation": "posted_aggregate_serious_adverse_event_counts_only",
+            **treatment_phase_metadata,
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
             "safety_acceptability_inferred": False,
         },
     )
@@ -3375,6 +3495,12 @@ def _map_pinned_clinical_trial_design(
             "registry_version": registry_version,
             "source_record_id": record.record_id,
             "source_lineage_ids": lineages,
+            **treatment_phase_metadata,
+            **(
+                {"population_alignment": population_alignment}
+                if treatment_phase != "not_applicable"
+                else {}
+            ),
         },
     )
     previous_intervention_support = (
@@ -3493,7 +3619,7 @@ def _map_pinned_clinical_trial_design(
         status=PromotionStatus.PROMOTED,
         code="pinned_clinical_trial_design_promoted",
         message=(
-            "Exact posted endpoint, serious-adverse-event summary, population, "
+            "Exact posted ratio endpoint, serious-adverse-event summary, population, "
             "and arm identities were promoted atomically."
         ),
         evidence_drafts=drafts,
@@ -3501,7 +3627,9 @@ def _map_pinned_clinical_trial_design(
         intervention_updates=(intervention,),
         trial_updates=(trial,),
         trial_design_updates=(design_record,),
-        recommended_decision=Decision.ADVANCE,
+        recommended_decision=(
+            Decision.ADVANCE if effect_direction == "benefit" else Decision.HOLD
+        ),
         details={
             "trial_id": trial_id,
             "design_id": design_id,
@@ -3510,6 +3638,8 @@ def _map_pinned_clinical_trial_design(
             "endpoint_id": endpoint["endpoint_id"],
             "safety_id": safety["safety_id"],
             "registry_version": registry_version,
+            "effect_direction": effect_direction,
+            "population_alignment": population_alignment,
         },
     )
 
@@ -3610,9 +3740,7 @@ def _map_pinned_clinical_trial_disposition(
         "clinical_primary_endpoint_not_met",
     )
     try:
-        registry_record, publication_record = _parse_pinned_profile(
-            outcome, predicates
-        )
+        registry_record, publication_record = _parse_pinned_profile(outcome, predicates)
     except ValueError as exc:
         return _empty_result(
             mapper_id,
@@ -3685,23 +3813,17 @@ def _map_pinned_clinical_trial_disposition(
     registry = registry_record.metadata
     publication = publication_record.metadata
     registry_aliases = _metadata_text_values(registry_record, "candidate_aliases")
-    publication_aliases = _metadata_text_values(
-        publication_record, "candidate_aliases"
-    )
+    publication_aliases = _metadata_text_values(publication_record, "candidate_aliases")
     source_interventions = _metadata_text_values(
         registry_record, "source_interventions"
     )
     source_conditions = _metadata_text_values(registry_record, "source_conditions")
-    registry_lineages = _metadata_text_values(
-        registry_record, "source_lineage_ids"
-    )
+    registry_lineages = _metadata_text_values(registry_record, "source_lineage_ids")
     publication_lineages = _metadata_text_values(
         publication_record, "source_lineage_ids"
     )
     shared_lineage = _text(registry.get("shared_trial_lineage_id"))
-    publication_shared_lineage = _text(
-        publication.get("shared_trial_lineage_id")
-    )
+    publication_shared_lineage = _text(publication.get("shared_trial_lineage_id"))
     registry_version = _text(registry.get("registry_version"))
     pmid = _text(publication.get("pmid"))
     publication_date = _text(publication.get("publication_date"))
@@ -3723,22 +3845,15 @@ def _map_pinned_clinical_trial_disposition(
         )
 
     registry_alias_set = {_normalized(item) for item in registry_aliases or ()}
-    publication_alias_set = {
-        _normalized(item) for item in publication_aliases or ()
-    }
-    source_intervention_set = {
-        _normalized(item) for item in source_interventions or ()
-    }
+    publication_alias_set = {_normalized(item) for item in publication_aliases or ()}
+    source_intervention_set = {_normalized(item) for item in source_interventions or ()}
     expected_shared_lineage = f"sponsor-protocol:{protocol_id}"
     if (
-        _normalized(str(registry.get("provider_id", "")))
-        != "clinicaltrials_gov"
-        or _normalized(str(registry.get("registry", "")))
-        != "clinicaltrials.gov"
+        _normalized(str(registry.get("provider_id", ""))) != "clinicaltrials_gov"
+        or _normalized(str(registry.get("registry", ""))) != "clinicaltrials.gov"
         or _normalized(str(registry.get("study_type", ""))) != "interventional"
         or _normalized(str(registry.get("overall_status", ""))) != "terminated"
-        or _normalized(str(registry.get("why_stopped_code", "")))
-        != "lack_of_efficacy"
+        or _normalized(str(registry.get("why_stopped_code", ""))) != "lack_of_efficacy"
         or _text(registry.get("why_stopped")) is None
         or _text(registry.get("phase")) is None
         or _text(registry.get("primary_endpoint")) is None
@@ -3764,8 +3879,7 @@ def _map_pinned_clinical_trial_disposition(
         or not any(
             _source_text_matches(disease.name, item) for item in source_conditions
         )
-        or _normalized(str(publication.get("provider_id", "")))
-        != "ncbi_pubmed"
+        or _normalized(str(publication.get("provider_id", ""))) != "ncbi_pubmed"
         or pmid is None
         or re.fullmatch(r"[1-9][0-9]{0,15}", pmid) is None
         or publication_record.source_id != f"ncbi-pubmed-{pmid}"
@@ -4481,11 +4595,9 @@ def _map_clinical_endpoint_mapping(
             "Endpoint mapping declaration failed strict schema validation.",
             details={"validation_error": str(exc)},
         )
-    if (
-        spec != request_spec
-        or to_primitive(outcome.payload)
-        != clinical_endpoint_mapping_spec_to_dict(spec)
-    ):
+    if spec != request_spec or to_primitive(
+        outcome.payload
+    ) != clinical_endpoint_mapping_spec_to_dict(spec):
         return _empty_result(
             mapper_id,
             outcome,
@@ -4512,8 +4624,7 @@ def _map_clinical_endpoint_mapping(
         or _normalized(context.subject) != _normalized(candidate.name)
         or _normalized(context.object_value) != _normalized(disease.name)
         or context.biological_context.get("disease_id") != spec.disease_id
-        or context.biological_context.get("intervention_id")
-        != spec.intervention_id
+        or context.biological_context.get("intervention_id") != spec.intervention_id
         or context.biological_context.get("mapping_id") != spec.mapping_id
         or context.biological_context.get("portfolio_id") != spec.portfolio_id
     ):
@@ -4650,10 +4761,9 @@ def _map_clinical_benefit_risk_synthesis(
             "Clinical synthesis declaration failed strict schema validation.",
             details={"validation_error": str(exc)},
         )
-    if (
-        spec != request_spec
-        or to_primitive(outcome.payload) != clinical_synthesis_spec_to_dict(spec)
-    ):
+    if spec != request_spec or to_primitive(
+        outcome.payload
+    ) != clinical_synthesis_spec_to_dict(spec):
         return _empty_result(
             mapper_id,
             outcome,
@@ -4672,8 +4782,7 @@ def _map_clinical_benefit_risk_synthesis(
         or _normalized(context.subject) != _normalized(candidate.name)
         or _normalized(context.object_value) != _normalized(disease.name)
         or context.biological_context.get("disease_id") != spec.disease_id
-        or context.biological_context.get("intervention_id")
-        != spec.intervention_id
+        or context.biological_context.get("intervention_id") != spec.intervention_id
         or context.biological_context.get("endpoint_mapping_id")
         != spec.endpoint_mapping_id
         or context.biological_context.get("synthesis_id") != spec.synthesis_id

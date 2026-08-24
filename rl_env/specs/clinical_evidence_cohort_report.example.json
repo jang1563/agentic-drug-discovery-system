@@ -1,0 +1,1607 @@
+{
+  "integrity_sha256": "fbb96d09fad8cbe8e38443d2907e95b94a38f639a1dfa66d65d0d6411fa37872",
+  "report": {
+    "actions": [
+      {
+        "action_fingerprint": "3bd5d40a578a5886df65fc3780a76e1d829df7475d23584e847092d0aa8061b3",
+        "action_id": "retrieve-safety-followup",
+        "max_cost": 0.1,
+        "operation": "retrieve_posted_safety_update",
+        "purpose": "Retrieve a later posted aggregate safety follow-up.",
+        "selected_packages": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        },
+        "tool_id": "clinical_registry_followup",
+        "total_planned_cost": 0.1
+      }
+    ],
+    "analysis_scope": "workflow_behavior_diagnostics",
+    "cohort_id": "synthetic-clinical-policy-sensitivity",
+    "cohort_specification_sha256": "597b742dba4c4868cb8bc5ab81cf75465831aaf2836ade0266e03c2d16eb4061",
+    "decisions": [
+      {
+        "decision": "advance",
+        "packages": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        }
+      },
+      {
+        "decision": "hold",
+        "packages": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        }
+      },
+      {
+        "decision": "defer",
+        "packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      }
+    ],
+    "dimensions": [
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "source_independence",
+        "gap": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 2,
+          "rate": 1.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "trial_count",
+        "gap": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "benefit_direction",
+        "gap": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 2,
+          "rate": 1.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "benefit_precision",
+        "gap": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 2,
+          "rate": 1.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "descriptive_arm_measurement_completeness",
+        "gap": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 2,
+          "rate": 1.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "safety_direction",
+        "gap": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 2,
+          "rate": 1.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "safety_exposure",
+        "gap": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "endpoint_timeframe_alignment",
+        "gap": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 2,
+          "rate": 1.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "safety_timeframe_alignment",
+        "gap": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 2,
+          "rate": 1.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking_signal": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "dimension": "measurement_unit_alignment",
+        "gap": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "satisfied": {
+          "count": 2,
+          "rate": 1.0,
+          "total": 2
+        }
+      }
+    ],
+    "earliest_as_of_date": "2025-01-02",
+    "evidence_unit_count": 1,
+    "evidence_units_source_disjoint": true,
+    "evidence_units_trial_disjoint": true,
+    "gaps": [
+      {
+        "blocking": false,
+        "code": "insufficient_independent_trials",
+        "dimension": "trial_count",
+        "present_packages": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "benefit_not_demonstrated",
+        "dimension": "benefit_direction",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "benefit_direction_conflict",
+        "dimension": "benefit_direction",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": true,
+        "code": "benefit_harm_signal",
+        "dimension": "benefit_direction",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "imprecise_benefit_estimate",
+        "dimension": "benefit_precision",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "missing_descriptive_arm_measurement",
+        "dimension": "descriptive_arm_measurement_completeness",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": true,
+        "code": "higher_observed_serious_event_risk",
+        "dimension": "safety_direction",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "safety_direction_conflict",
+        "dimension": "safety_direction",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "insufficient_safety_exposure",
+        "dimension": "safety_exposure",
+        "present_packages": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 1,
+          "rate": 0.5,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "endpoint_timeframe_mismatch",
+        "dimension": "endpoint_timeframe_alignment",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "safety_timeframe_mismatch",
+        "dimension": "safety_timeframe_alignment",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      },
+      {
+        "blocking": false,
+        "code": "measurement_unit_mismatch",
+        "dimension": "measurement_unit_alignment",
+        "present_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        },
+        "targeted_packages": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 2
+        }
+      }
+    ],
+    "latest_as_of_date": "2025-01-02",
+    "limitations": [
+      "Cohort diagnostics describe workflow behavior without outcome labels; they cannot estimate clinical utility, correctness, safety, or calibration.",
+      "Package counts can include multiple policies applied to the same evidence unit and are not independent clinical observations.",
+      "Matched policy comparisons are descriptive sensitivity analyses on shared evidence units and do not identify a superior policy.",
+      "Source-hash or trial-id disjointness does not establish population independence, comparability, transportability, or absence of bias.",
+      "Gap mass, bounded VOI, action frequency, and planned cost remain uncalibrated workflow quantities, not economic or clinical value.",
+      "No cross-trial or cross-program pooling, benefit-risk scoring, treatment recommendation, clinical acceptability inference, or terminal decision is performed."
+    ],
+    "manifest_fingerprint": "f035cf86dc2496a9fbc35a154e30434f097ec6814484de5ffe1a62876a2536fa",
+    "matched_policy_comparisons": [
+      {
+        "changed_action_plans": {
+          "count": 1,
+          "rate": 1.0,
+          "total": 1
+        },
+        "changed_decisions": {
+          "count": 1,
+          "rate": 1.0,
+          "total": 1
+        },
+        "changed_gap_profiles": {
+          "count": 1,
+          "rate": 1.0,
+          "total": 1
+        },
+        "decision_transitions": [
+          {
+            "count": 0,
+            "decision_a": "advance",
+            "decision_b": "advance"
+          },
+          {
+            "count": 0,
+            "decision_a": "advance",
+            "decision_b": "hold"
+          },
+          {
+            "count": 0,
+            "decision_a": "advance",
+            "decision_b": "defer"
+          },
+          {
+            "count": 1,
+            "decision_a": "hold",
+            "decision_b": "advance"
+          },
+          {
+            "count": 0,
+            "decision_a": "hold",
+            "decision_b": "hold"
+          },
+          {
+            "count": 0,
+            "decision_a": "hold",
+            "decision_b": "defer"
+          },
+          {
+            "count": 0,
+            "decision_a": "defer",
+            "decision_b": "advance"
+          },
+          {
+            "count": 0,
+            "decision_a": "defer",
+            "decision_b": "hold"
+          },
+          {
+            "count": 0,
+            "decision_a": "defer",
+            "decision_b": "defer"
+          }
+        ],
+        "evidence_unit_ids": [
+          "d2475391c08d8671c20b69a9cd9fcbf9623fc81f9b63e2fa0451562d7dfe0b66"
+        ],
+        "gap_comparisons": [
+          {
+            "both": 0,
+            "code": "insufficient_independent_trials",
+            "neither": 0,
+            "policy_a_only": 1,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "benefit_not_demonstrated",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "benefit_direction_conflict",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "benefit_harm_signal",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "imprecise_benefit_estimate",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "missing_descriptive_arm_measurement",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "higher_observed_serious_event_risk",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "safety_direction_conflict",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "insufficient_safety_exposure",
+            "neither": 0,
+            "policy_a_only": 1,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "endpoint_timeframe_mismatch",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "safety_timeframe_mismatch",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          },
+          {
+            "both": 0,
+            "code": "measurement_unit_mismatch",
+            "neither": 1,
+            "policy_a_only": 0,
+            "policy_b_only": 0
+          }
+        ],
+        "policy_a": {
+          "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+          "policy_id": "synthetic-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "policy_a_total_planned_cost": 0.1,
+        "policy_b": {
+          "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+          "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "policy_b_total_planned_cost": 0.0
+      }
+    ],
+    "method_id": "adds.clinical-evidence-cohort-diagnostics.v1",
+    "outcome_calibration_status": "not_estimable_without_independent_outcomes",
+    "outcome_labels_included": false,
+    "package_count": 2,
+    "package_validation_scope": "integrity_and_structure",
+    "packages": [
+      {
+        "as_of_date": "2025-01-02",
+        "candidate_id": "CHEMBL_TEST",
+        "decision": "hold",
+        "dimension_statuses": [
+          {
+            "dimension": "source_independence",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "trial_count",
+            "status": "gap"
+          },
+          {
+            "dimension": "benefit_direction",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "benefit_precision",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "descriptive_arm_measurement_completeness",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "safety_direction",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "safety_exposure",
+            "status": "gap"
+          },
+          {
+            "dimension": "endpoint_timeframe_alignment",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "safety_timeframe_alignment",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "measurement_unit_alignment",
+            "status": "satisfied"
+          }
+        ],
+        "disease_id": "MONDO_TEST",
+        "endpoint_family": "progression_free_survival",
+        "endpoint_mapping_id": "CHEMBL_TEST:MONDO_TEST:pfs-map:v1",
+        "evidence_unit_id": "d2475391c08d8671c20b69a9cd9fcbf9623fc81f9b63e2fa0451562d7dfe0b66",
+        "gap_codes": [
+          "insufficient_independent_trials",
+          "insufficient_safety_exposure"
+        ],
+        "integrity_sha256": "5cdf65b91e5947377af574e92c17a42787af1b0e8b26ba2dbb5e1ae655177dfb",
+        "intervention_id": "CHEMBL_TEST",
+        "package_id": "synthetic-clinical-evidence-decision-package",
+        "plan_code": "clinical_evidence_acquisition_planned",
+        "planned_cost": 0.1,
+        "policy": {
+          "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+          "policy_id": "synthetic-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "program_id": "benefit-risk-program",
+        "selected_actions": [
+          {
+            "action_fingerprint": "3bd5d40a578a5886df65fc3780a76e1d829df7475d23584e847092d0aa8061b3",
+            "action_id": "retrieve-safety-followup",
+            "max_cost": 0.1,
+            "operation": "retrieve_posted_safety_update",
+            "purpose": "Retrieve a later posted aggregate safety follow-up.",
+            "rank": 1,
+            "tool_id": "clinical_registry_followup"
+          }
+        ],
+        "source_content_hashes": [
+          "63aafdc5ff7c0582930d5a32a7018070f830547d5e8d5521c56be093eea5beaf",
+          "b38ff7101866615de08e6e206a945cde0c184b1ae16532dd544787307b34310b"
+        ],
+        "stage": "regulatory_postmarket",
+        "state_sha256": null,
+        "synthesis_fingerprint": "c060931764903094373c18d8aa3381b189e1d78507d3e38603e77c084baf0e41",
+        "synthesis_id": "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1",
+        "targeted_gap_codes": [
+          "insufficient_safety_exposure"
+        ],
+        "trial_ids": [
+          "NCT00000001",
+          "NCT00000002"
+        ],
+        "untargeted_gap_codes": [
+          "insufficient_independent_trials"
+        ]
+      },
+      {
+        "as_of_date": "2025-01-02",
+        "candidate_id": "CHEMBL_TEST",
+        "decision": "advance",
+        "dimension_statuses": [
+          {
+            "dimension": "source_independence",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "trial_count",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "benefit_direction",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "benefit_precision",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "descriptive_arm_measurement_completeness",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "safety_direction",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "safety_exposure",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "endpoint_timeframe_alignment",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "safety_timeframe_alignment",
+            "status": "satisfied"
+          },
+          {
+            "dimension": "measurement_unit_alignment",
+            "status": "satisfied"
+          }
+        ],
+        "disease_id": "MONDO_TEST",
+        "endpoint_family": "progression_free_survival",
+        "endpoint_mapping_id": "CHEMBL_TEST:MONDO_TEST:pfs-map:v1",
+        "evidence_unit_id": "d2475391c08d8671c20b69a9cd9fcbf9623fc81f9b63e2fa0451562d7dfe0b66",
+        "gap_codes": [],
+        "integrity_sha256": "f3cc2fcdc269fdbc50c9f65c38e04ea579d97e257d73cb3869114078b6b7611f",
+        "intervention_id": "CHEMBL_TEST",
+        "package_id": "synthetic-clinical-evidence-decision-package-relaxed",
+        "plan_code": "clinical_evidence_workflow_ready",
+        "planned_cost": 0.0,
+        "policy": {
+          "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+          "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "program_id": "benefit-risk-program",
+        "selected_actions": [],
+        "source_content_hashes": [
+          "63aafdc5ff7c0582930d5a32a7018070f830547d5e8d5521c56be093eea5beaf",
+          "b38ff7101866615de08e6e206a945cde0c184b1ae16532dd544787307b34310b"
+        ],
+        "stage": "regulatory_postmarket",
+        "state_sha256": null,
+        "synthesis_fingerprint": "c060931764903094373c18d8aa3381b189e1d78507d3e38603e77c084baf0e41",
+        "synthesis_id": "CHEMBL_TEST:MONDO_TEST:pfs-benefit-risk:v1",
+        "targeted_gap_codes": [],
+        "trial_ids": [
+          "NCT00000001",
+          "NCT00000002"
+        ],
+        "untargeted_gap_codes": []
+      }
+    ],
+    "performance_metrics_included": false,
+    "policy_count": 2,
+    "policy_strata": [
+      {
+        "actions": [
+          {
+            "action_fingerprint": "3bd5d40a578a5886df65fc3780a76e1d829df7475d23584e847092d0aa8061b3",
+            "action_id": "retrieve-safety-followup",
+            "max_cost": 0.1,
+            "operation": "retrieve_posted_safety_update",
+            "purpose": "Retrieve a later posted aggregate safety follow-up.",
+            "selected_packages": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            },
+            "tool_id": "clinical_registry_followup",
+            "total_planned_cost": 0.1
+          }
+        ],
+        "decisions": [
+          {
+            "decision": "advance",
+            "packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "decision": "hold",
+            "packages": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "decision": "defer",
+            "packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          }
+        ],
+        "dimensions": [
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "source_independence",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "trial_count",
+            "gap": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "benefit_direction",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "benefit_precision",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "descriptive_arm_measurement_completeness",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "safety_direction",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "safety_exposure",
+            "gap": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "endpoint_timeframe_alignment",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "safety_timeframe_alignment",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "measurement_unit_alignment",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          }
+        ],
+        "evidence_unit_ids": [
+          "d2475391c08d8671c20b69a9cd9fcbf9623fc81f9b63e2fa0451562d7dfe0b66"
+        ],
+        "gaps": [
+          {
+            "blocking": false,
+            "code": "insufficient_independent_trials",
+            "dimension": "trial_count",
+            "present_packages": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "benefit_not_demonstrated",
+            "dimension": "benefit_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "benefit_direction_conflict",
+            "dimension": "benefit_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": true,
+            "code": "benefit_harm_signal",
+            "dimension": "benefit_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "imprecise_benefit_estimate",
+            "dimension": "benefit_precision",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "missing_descriptive_arm_measurement",
+            "dimension": "descriptive_arm_measurement_completeness",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": true,
+            "code": "higher_observed_serious_event_risk",
+            "dimension": "safety_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "safety_direction_conflict",
+            "dimension": "safety_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "insufficient_safety_exposure",
+            "dimension": "safety_exposure",
+            "present_packages": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "endpoint_timeframe_mismatch",
+            "dimension": "endpoint_timeframe_alignment",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "safety_timeframe_mismatch",
+            "dimension": "safety_timeframe_alignment",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "measurement_unit_mismatch",
+            "dimension": "measurement_unit_alignment",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          }
+        ],
+        "package_ids": [
+          "synthetic-clinical-evidence-decision-package"
+        ],
+        "policy": {
+          "policy_fingerprint": "ec24832aa02274b533b8ebcb7381a6211616f5dfcc41e4fa2f0770e5c504c300",
+          "policy_id": "synthetic-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "total_planned_cost": 0.1
+      },
+      {
+        "actions": [],
+        "decisions": [
+          {
+            "decision": "advance",
+            "packages": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "decision": "hold",
+            "packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "decision": "defer",
+            "packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          }
+        ],
+        "dimensions": [
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "source_independence",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "trial_count",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "benefit_direction",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "benefit_precision",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "descriptive_arm_measurement_completeness",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "safety_direction",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "safety_exposure",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "endpoint_timeframe_alignment",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "safety_timeframe_alignment",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking_signal": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "dimension": "measurement_unit_alignment",
+            "gap": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "satisfied": {
+              "count": 1,
+              "rate": 1.0,
+              "total": 1
+            }
+          }
+        ],
+        "evidence_unit_ids": [
+          "d2475391c08d8671c20b69a9cd9fcbf9623fc81f9b63e2fa0451562d7dfe0b66"
+        ],
+        "gaps": [
+          {
+            "blocking": false,
+            "code": "insufficient_independent_trials",
+            "dimension": "trial_count",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "benefit_not_demonstrated",
+            "dimension": "benefit_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "benefit_direction_conflict",
+            "dimension": "benefit_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": true,
+            "code": "benefit_harm_signal",
+            "dimension": "benefit_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "imprecise_benefit_estimate",
+            "dimension": "benefit_precision",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "missing_descriptive_arm_measurement",
+            "dimension": "descriptive_arm_measurement_completeness",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": true,
+            "code": "higher_observed_serious_event_risk",
+            "dimension": "safety_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "safety_direction_conflict",
+            "dimension": "safety_direction",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "insufficient_safety_exposure",
+            "dimension": "safety_exposure",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "endpoint_timeframe_mismatch",
+            "dimension": "endpoint_timeframe_alignment",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "safety_timeframe_mismatch",
+            "dimension": "safety_timeframe_alignment",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          },
+          {
+            "blocking": false,
+            "code": "measurement_unit_mismatch",
+            "dimension": "measurement_unit_alignment",
+            "present_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            },
+            "targeted_packages": {
+              "count": 0,
+              "rate": 0.0,
+              "total": 1
+            }
+          }
+        ],
+        "package_ids": [
+          "synthetic-clinical-evidence-decision-package-relaxed"
+        ],
+        "policy": {
+          "policy_fingerprint": "bb987c451a5bb1e9070074fe96b305f3273dadcb23768e500b5d8484bc88871a",
+          "policy_id": "synthetic-relaxed-clinical-workflow-policy",
+          "policy_version": "1"
+        },
+        "total_planned_cost": 0.0
+      }
+    ],
+    "program_count": 1,
+    "provenance_overlaps": []
+  },
+  "schema_version": "adds.clinical-evidence-cohort-report.v1"
+}

@@ -1,0 +1,791 @@
+{
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_cluster_superpopulation_summary.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Compact human- and machine-readable projection of the public cluster-superpopulation calibration report.",
+  "properties": {
+    "cluster_count_rule": {
+      "enum": [
+        "match_template_count"
+      ],
+      "type": "string"
+    },
+    "comparison_cell_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "direction_threshold": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "type": "number"
+    },
+    "external_transportability_claimed": {
+      "type": "boolean"
+    },
+    "fixed_profile_full_calibration_pass_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "fixed_profile_known_truths_preserved": {
+      "type": "boolean"
+    },
+    "fixed_profile_protocol_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "fixed_profile_report_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "fixed_profile_standard_error_calibration_pass_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "full_calibration_recovered_cell_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "post_hoc_design_filtering_included": {
+      "type": "boolean"
+    },
+    "primary_metric": {
+      "enum": [
+        "observed_favorable_rate",
+        "policy_a_brier_score",
+        "policy_b_brier_score",
+        "policy_a_calibration_in_the_large",
+        "policy_b_calibration_in_the_large",
+        "policy_a_classification_accuracy",
+        "policy_b_classification_accuracy",
+        "brier_difference_b_minus_a"
+      ],
+      "type": "string"
+    },
+    "protocol_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "reference_log_imor": {
+      "type": "number"
+    },
+    "replicates": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "report_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "sampling_model": {
+      "enum": [
+        "uniform_empirical_template_with_replacement"
+      ],
+      "type": "string"
+    },
+    "scenarios": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "cluster_balanced_reference_direction": {
+            "enum": [
+              "below",
+              "at",
+              "above"
+            ],
+            "type": "string"
+          },
+          "dominant_cluster_rate": {
+            "additionalProperties": false,
+            "properties": {
+              "event_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "lower": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              "rate": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              "total_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "upper": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "maximum": 1.0,
+                "minimum": 0.0
+              }
+            },
+            "required": [
+              "event_count",
+              "lower",
+              "rate",
+              "total_count",
+              "upper"
+            ],
+            "type": "object"
+          },
+          "favorable_prevalence_contrast_unit_minus_cluster": {
+            "type": "number"
+          },
+          "maximum_template_cluster_size": {
+            "type": "integer"
+          },
+          "mean_maximum_cluster_fraction": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "mean_realized_total_units": {
+            "type": "number"
+          },
+          "mean_unique_template_types": {
+            "type": "number"
+          },
+          "methods": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "all_superpopulation_metric_calibration_targets_met": {
+                  "type": "boolean"
+                },
+                "coverage_rate_change": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "fixed_profile_standard_error_to_empirical_sd_ratio": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "fixed_profile_target_bias": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "fixed_profile_target_coverage": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "event_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "lower": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "rate": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "total_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "upper": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    }
+                  },
+                  "required": [
+                    "event_count",
+                    "lower",
+                    "rate",
+                    "total_count",
+                    "upper"
+                  ],
+                  "type": "object"
+                },
+                "influence_basis": {
+                  "type": "string"
+                },
+                "largest_cluster_deletion_direction_flip": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "event_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "lower": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "rate": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "total_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "upper": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    }
+                  },
+                  "required": [
+                    "event_count",
+                    "lower",
+                    "rate",
+                    "total_count",
+                    "upper"
+                  ],
+                  "type": "object"
+                },
+                "mean_maximum_absolute_influence": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "mean_maximum_absolute_influence_share": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "method": {
+                  "enum": [
+                    "unit_weighted_delete_one_student_t",
+                    "unit_weighted_delete_mj_student_t",
+                    "cluster_balanced_delete_one_student_t"
+                  ],
+                  "type": "string"
+                },
+                "p95_maximum_absolute_influence": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "reference_superpopulation_calibration_target_met": {
+                  "type": "boolean"
+                },
+                "reference_target_truth": {
+                  "type": "number"
+                },
+                "reference_truth_difference_from_fixed_profile": {
+                  "type": "number"
+                },
+                "standard_error_calibration_recovered": {
+                  "type": "boolean"
+                },
+                "standard_error_ratio_change": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "superpopulation_standard_error_to_empirical_sd_ratio": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "superpopulation_target_bias": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "superpopulation_target_coverage": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "event_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "lower": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "rate": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "total_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "upper": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    }
+                  },
+                  "required": [
+                    "event_count",
+                    "lower",
+                    "rate",
+                    "total_count",
+                    "upper"
+                  ],
+                  "type": "object"
+                },
+                "target_estimand": {
+                  "enum": [
+                    "unit_weighted",
+                    "cluster_balanced"
+                  ],
+                  "type": "string"
+                },
+                "unique_largest_cluster_most_influential": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "event_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "lower": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "rate": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "total_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "upper": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    }
+                  },
+                  "required": [
+                    "event_count",
+                    "lower",
+                    "rate",
+                    "total_count",
+                    "upper"
+                  ],
+                  "type": "object"
+                },
+                "unique_largest_cluster_rate": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "event_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "lower": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "rate": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    },
+                    "total_count": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "upper": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "maximum": 1.0,
+                      "minimum": 0.0
+                    }
+                  },
+                  "required": [
+                    "event_count",
+                    "lower",
+                    "rate",
+                    "total_count",
+                    "upper"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "all_superpopulation_metric_calibration_targets_met",
+                "coverage_rate_change",
+                "fixed_profile_standard_error_to_empirical_sd_ratio",
+                "fixed_profile_target_bias",
+                "fixed_profile_target_coverage",
+                "influence_basis",
+                "largest_cluster_deletion_direction_flip",
+                "mean_maximum_absolute_influence",
+                "mean_maximum_absolute_influence_share",
+                "method",
+                "p95_maximum_absolute_influence",
+                "reference_superpopulation_calibration_target_met",
+                "reference_target_truth",
+                "reference_truth_difference_from_fixed_profile",
+                "standard_error_calibration_recovered",
+                "standard_error_ratio_change",
+                "superpopulation_standard_error_to_empirical_sd_ratio",
+                "superpopulation_target_bias",
+                "superpopulation_target_coverage",
+                "target_estimand",
+                "unique_largest_cluster_most_influential",
+                "unique_largest_cluster_rate"
+              ],
+              "type": "object"
+            },
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "minimum_template_cluster_size": {
+            "type": "integer"
+          },
+          "p95_maximum_cluster_fraction": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "production_eligible_rate": {
+            "additionalProperties": false,
+            "properties": {
+              "event_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "lower": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              "rate": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              "total_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "upper": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "maximum": 1.0,
+                "minimum": 0.0
+              }
+            },
+            "required": [
+              "event_count",
+              "lower",
+              "rate",
+              "total_count",
+              "upper"
+            ],
+            "type": "object"
+          },
+          "scenario_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "size_outcome_correlation": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "size_outcome_covariance": {
+            "type": "number"
+          },
+          "superpopulation_cluster_balanced_favorable_prevalence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "superpopulation_unit_weighted_favorable_prevalence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "template_cluster_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "truth_direction_disagrees": {
+            "type": "boolean"
+          },
+          "unit_weighted_reference_direction": {
+            "enum": [
+              "below",
+              "at",
+              "above"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "cluster_balanced_reference_direction",
+          "dominant_cluster_rate",
+          "favorable_prevalence_contrast_unit_minus_cluster",
+          "maximum_template_cluster_size",
+          "mean_maximum_cluster_fraction",
+          "mean_realized_total_units",
+          "mean_unique_template_types",
+          "methods",
+          "minimum_template_cluster_size",
+          "p95_maximum_cluster_fraction",
+          "production_eligible_rate",
+          "scenario_id",
+          "size_outcome_correlation",
+          "size_outcome_covariance",
+          "superpopulation_cluster_balanced_favorable_prevalence",
+          "superpopulation_unit_weighted_favorable_prevalence",
+          "template_cluster_count",
+          "truth_direction_disagrees",
+          "unit_weighted_reference_direction"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "adds.clinical-outcome-cluster-superpopulation-summary.v1"
+    },
+    "standard_error_calibration_recovered_cell_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "superpopulation_full_calibration_pass_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "superpopulation_standard_error_calibration_pass_count": {
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "cluster_count_rule",
+    "comparison_cell_count",
+    "direction_threshold",
+    "external_transportability_claimed",
+    "fixed_profile_full_calibration_pass_count",
+    "fixed_profile_known_truths_preserved",
+    "fixed_profile_protocol_fingerprint",
+    "fixed_profile_report_fingerprint",
+    "fixed_profile_standard_error_calibration_pass_count",
+    "full_calibration_recovered_cell_count",
+    "post_hoc_design_filtering_included",
+    "primary_metric",
+    "protocol_fingerprint",
+    "reference_log_imor",
+    "replicates",
+    "report_fingerprint",
+    "sampling_model",
+    "scenarios",
+    "schema_version",
+    "standard_error_calibration_recovered_cell_count",
+    "superpopulation_full_calibration_pass_count",
+    "superpopulation_standard_error_calibration_pass_count"
+  ],
+  "title": "Clinical outcome cluster-superpopulation summary",
+  "type": "object"
+}

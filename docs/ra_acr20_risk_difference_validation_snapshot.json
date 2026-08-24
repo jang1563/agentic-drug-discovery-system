@@ -1,0 +1,172 @@
+{
+  "schema_version": "adds.ra-acr20-risk-difference-validation-snapshot.v1",
+  "generated_at": "2026-08-20T20:10:00Z",
+  "research_question": "Can a second immune-inflammatory disease preserve a source-pinned percentage-point efficacy result and retain uncertainty as a committed HOLD without inferring additive sign, participant identity, or clinical acceptability?",
+  "public_payload_policy": {
+    "contains_source_bytes": false,
+    "contains_reviewer_text": false,
+    "contains_review_jobs": false,
+    "contains_local_paths": false,
+    "external_artifacts_required_for_exact_replay": true
+  },
+  "screening": {
+    "disease_id": "MONDO:0008383",
+    "disease_name": "rheumatoid arthritis",
+    "screened_trial_count": 5,
+    "selection_policy": [
+      "full source chronology",
+      "posted primary bounded-percent endpoint",
+      "candidate-then-comparator additive analysis order",
+      "typed p-value and confidence interval",
+      "exact endpoint and serious-safety arm identities"
+    ]
+  },
+  "selected_trial": {
+    "trial_id": "NCT00383188",
+    "registry_version": "2026-08-20",
+    "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT00383188",
+    "source_content_sha256": "399f4d167ff53d8207f1b5c5cad5b70adea5c4d2d0377b41cb6ee8c0c618676a",
+    "sanitized_provider_output_sha256": "4615b147bd5e5c067a6fe7b4102fb0f3212b13b874cbe3cde2714eb71a72a20b",
+    "compiled_manifest_sha256": "e1f65293e927ace4aa4c61787f5d8cb5869f567b0f8d4dba32af9311050bed00",
+    "compile_review_sha256": "382a91736859e9d2c41b21ca07f46b4ea780df2d3d55a11e241571c0a6b62ff6",
+    "candidate": {
+      "candidate_id": "CHEMBL1088751",
+      "canonical_name": "PH-797804",
+      "registry_intervention_aliases": [
+        "PH-797804"
+      ],
+      "identity_resolution": "canonical_name_binding"
+    },
+    "study": {
+      "phase": "PHASE2",
+      "overall_status": "COMPLETED",
+      "study_enrollment_count": 305,
+      "endpoint_population": "full_analysis_set"
+    },
+    "endpoint": {
+      "endpoint_id": "NCT00383188:endpoint:primary-0",
+      "name": "Percentage of Participants Achieving American College of Rheumatology 20 Percent (%) (ACR 20) Response at Week 12",
+      "outcome_type": "PRIMARY",
+      "time_frame": "Week 12",
+      "unit": "percentage of participants",
+      "favorable_direction": "higher_is_better",
+      "effect": {
+        "registry_parameter_type": "Difference in percentage",
+        "canonical_measure": "risk_difference",
+        "scale": "percentage_points",
+        "null_value": 0.0,
+        "estimate": 8.05,
+        "confidence_interval_percent": 95.0,
+        "confidence_interval_lower": -7.565,
+        "confidence_interval_upper": 23.664,
+        "confidence_interval_width_percentage_points": 31.229,
+        "p_value_relation": "eq",
+        "p_value": 0.3131,
+        "direction": "null_or_uncertain"
+      }
+    },
+    "arms": [
+      {
+        "role": "candidate",
+        "endpoint_group_id": "OG000",
+        "safety_group_id": "EG000",
+        "label": "PH-797804, 0.5 mg",
+        "endpoint_value": 39.13,
+        "endpoint_denominator": 69,
+        "serious_num_affected": 2,
+        "serious_num_at_risk": 69,
+        "observed_serious_event_risk": 0.028985507246376812
+      },
+      {
+        "role": "comparator",
+        "endpoint_group_id": "OG004",
+        "safety_group_id": "EG004",
+        "label": "Placebo",
+        "endpoint_value": 31.08,
+        "endpoint_denominator": 74,
+        "serious_num_affected": 1,
+        "serious_num_at_risk": 75,
+        "observed_serious_event_risk": 0.013333333333333334
+      }
+    ],
+    "observed_serious_event_risk_difference": 0.01565217391304348,
+    "population_boundary": {
+      "endpoint_analysis_participant_count": 143,
+      "safety_at_risk_participant_count": 144,
+      "rolewise_counts_match": false,
+      "same_participants_inferred": false
+    },
+    "execution": {
+      "run_status": "committed",
+      "promotion_status": "promoted",
+      "recommended_decision": "hold",
+      "final_stage": "clinical_strategy",
+      "bounded_interpretation": "posted_primary_risk_difference_null_or_uncertain"
+    }
+  },
+  "screened_controls": [
+    {
+      "trial_id": "NCT02899988",
+      "source_content_sha256": "f0c6c327549909a8a520402a7154963137d84f184203b7e3397a74e78892c0ad",
+      "disposition": "excluded",
+      "reason_codes": [
+        "additive_analysis_lists_comparator_before_candidate",
+        "effect_sign_not_inferred"
+      ]
+    },
+    {
+      "trial_id": "NCT03482011",
+      "source_content_sha256": "39d4a250d1219ad7a7ca912e89fe4368eef772d82c2ae333318cd67f5ef3863d",
+      "disposition": "excluded",
+      "reason_codes": [
+        "additive_analysis_lists_comparator_before_candidate",
+        "candidate_endpoint_safety_denominators_differ",
+        "effect_sign_not_inferred"
+      ]
+    },
+    {
+      "trial_id": "NCT01039688",
+      "source_content_sha256": "3cf2f2699cd69852ad080574d9d95b1401c14ff2f7a6ac5ffba8a6b413b11f8b",
+      "disposition": "deferred",
+      "reason_codes": [
+        "primary_completion_date_has_month_precision",
+        "exact_day_chronology_not_imputed"
+      ]
+    },
+    {
+      "trial_id": "NCT03926195",
+      "source_content_sha256": "ead8e213522d45c633cd259f17644c3ef614767ecffb01250559102ab091ed68",
+      "disposition": "deferred",
+      "reason_codes": [
+        "source_analysis_p_value_absent",
+        "bounded_effect_rule_requires_typed_p_value"
+      ]
+    }
+  ],
+  "decision_layer": {
+    "ratio_precision_metric": "log_effect_ci_width",
+    "risk_difference_precision_metric": "confidence_interval_width_percentage_points",
+    "scale_specific_policy_threshold_required": true,
+    "synthetic_additive_tensor_adversarial_tests_passed": true,
+    "real_multi_trial_additive_tensor_compiled": false,
+    "real_multi_trial_boundary": "Only one source-pinned RA trial passed the bounded selection contract; no trial was duplicated or pooled to satisfy the two-source tensor minimum."
+  },
+  "claims": {
+    "second_immune_inflammatory_disease_provider_replication": true,
+    "absolute_percentage_point_effect_supported": true,
+    "additive_decision_tensor_contract_supported": true,
+    "source_provenance_preserved": true,
+    "real_multi_trial_additive_tensor_compiled": false,
+    "cross_trial_pooling_performed": false,
+    "participant_identity_inferred": false,
+    "clinical_acceptability_inferred": false,
+    "therapeutic_recommendation_made": false
+  },
+  "limitations": [
+    "This is one public registry contract replication, not an independent reanalysis of participant-level data.",
+    "The confidence interval crosses the additive null; the result is retained as null_or_uncertain and does not advance the workflow.",
+    "Endpoint and safety denominators differ in the comparator role, and participant identity is not inferred.",
+    "No source-disjoint real RA pair yet satisfies the same endpoint-family contract for multi-trial tensor compilation.",
+    "Observed serious-event risks are descriptive and do not establish comparative safety or acceptability."
+  ]
+}

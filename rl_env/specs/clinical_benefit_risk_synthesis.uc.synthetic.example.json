@@ -1,0 +1,32 @@
+{
+  "schema_version": "adds.clinical-benefit-risk-synthesis-spec.v1",
+  "synthesis_id": "SYNTHETIC:UC-CANDIDATE-001:MONDO-0005101:remission-benefit-risk:v1",
+  "candidate_id": "SYNTHETIC:UC-CANDIDATE-001",
+  "intervention_id": "SYNTHETIC:UC-CANDIDATE-001",
+  "disease_id": "MONDO:0005101",
+  "endpoint_mapping_id": "SYNTHETIC:UC-CANDIDATE-001:MONDO-0005101:remission-map:v1",
+  "endpoint_family": "clinical_remission",
+  "effect_measure": "odds_ratio",
+  "effect_measure_favorable_direction": "higher_is_better",
+  "safety_measure": "serious_adverse_event_risk_difference",
+  "harmonization_policy_id": "adds.descriptive-cross-trial-benefit-risk.v1",
+  "selections": [
+    {
+      "trial_id": "NCT90000001",
+      "design_id": "NCT90000001:design",
+      "endpoint_id": "NCT90000001:endpoint:clinical-remission",
+      "safety_id": "NCT90000001:safety:serious-adverse-events"
+    },
+    {
+      "trial_id": "NCT90000002",
+      "design_id": "NCT90000002:design",
+      "endpoint_id": "NCT90000002:endpoint:clinical-remission",
+      "safety_id": "NCT90000002:safety:serious-adverse-events"
+    }
+  ],
+  "stage": "regulatory_postmarket",
+  "metadata": {
+    "payload_class": "synthetic_conformance",
+    "clinical_use": "prohibited"
+  }
+}

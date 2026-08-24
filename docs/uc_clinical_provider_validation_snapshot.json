@@ -1,0 +1,198 @@
+{
+  "cross_study_boundary": {
+    "benefit_risk_acceptability_inferred": false,
+    "maintenance_endpoint_promoted": false,
+    "pooled_effect_estimate_computed": false,
+    "reason": "The two studies differ in phase, endpoint time, population wording, registry arm ordering, and safety follow-up; this validation tests contract execution and direction-aware gating, not pooled efficacy.",
+    "same_candidate_id": true,
+    "same_disease_id": true,
+    "same_treatment_phase": true
+  },
+  "generated_at": "2026-08-20T12:00:00+00:00",
+  "public_payload_policy": {
+    "contains_local_paths": false,
+    "contains_review_jobs": false,
+    "contains_reviewer_text": false,
+    "contains_source_bytes": false,
+    "external_artifacts_required_for_exact_replay": true
+  },
+  "schema_version": "adds.uc-clinical-provider-validation-snapshot.v1",
+  "studies": [
+    {
+      "artifact_hashes": {
+        "extracted_job_canonical_sha256": "e82bdc1c09f4bafab3493cc7df0999a27853af1c7a9ebd395ab709de46167672",
+        "manifest_canonical_sha256": "cc6db22feffac8ade299d906cafb05fbbbe91dd1320746e238d2ca70d11a8624",
+        "review_job_canonical_sha256": "b8810042afc1c18ebb0fdc7753c486befffae22ed6783b9cc2996d3d6368ad6f",
+        "source_content_sha256": "ce2687e2ebf865d850ed90d58375773c1cdfadb60109771db94c6bccd88d66ff"
+      },
+      "candidate_id": "OZANIMOD",
+      "candidate_name_in_source_contract": "Ozanimod",
+      "disease_id": "MONDO:0005101",
+      "endpoint": {
+        "confidence_interval_lower": 0.969,
+        "confidence_interval_percent": 95.0,
+        "confidence_interval_upper": 10.984,
+        "effect_direction": "null_or_uncertain",
+        "name": "Percentage of Participants Who Achieved Clinical Remission Based on the Central Read of the Mayo Score (MS), at Week 8",
+        "p_value": 0.0482,
+        "p_value_relation": "eq",
+        "parameter_type": "Odds Ratio (OR)",
+        "parameter_value": 3.262,
+        "source_group_ids": [
+          "OG000",
+          "OG002"
+        ],
+        "time_frame": "Week 8"
+      },
+      "nct_id": "NCT01647516",
+      "phase": "PHASE2",
+      "registry_version": "2026-08-20",
+      "safety": {
+        "arms": [
+          {
+            "role": "comparator",
+            "serious_num_affected": 4,
+            "serious_num_at_risk": 65,
+            "source_group_id": "EG000"
+          },
+          {
+            "role": "candidate",
+            "serious_num_affected": 2,
+            "serious_num_at_risk": 67,
+            "source_group_id": "EG002"
+          }
+        ],
+        "bounded_interpretation": "posted aggregate serious-adverse-event counts; attribution and acceptability not inferred",
+        "event_term_count": 38,
+        "safety_id": "NCT01647516:safety:serious-adverse-events",
+        "treatment_phase": "induction"
+      },
+      "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT01647516",
+      "source_version": "clinicaltrials-gov-NCT01647516-version-2026-08-20",
+      "treatment_phase": "induction",
+      "validation": {
+        "accepted_decision": "hold",
+        "attempted_decisions": [
+          "hold"
+        ],
+        "clinical_evidence_direction": "null_or_uncertain",
+        "committed_history_valid": true,
+        "final_program_status": "held",
+        "final_stage": "clinical_strategy",
+        "independent_source_count": 1,
+        "new_clinical_evidence_count": 8,
+        "promotion_code": "pinned_clinical_trial_design_promoted",
+        "promotion_details": {
+          "arm_ids": [
+            "NCT01647516:arm:OG000",
+            "NCT01647516:arm:OG002"
+          ],
+          "design_id": "NCT01647516:design",
+          "effect_direction": "null_or_uncertain",
+          "endpoint_id": "NCT01647516:endpoint:primary-0",
+          "population_id": "NCT01647516:population:primary-0",
+          "registry_version": "2026-08-20",
+          "safety_id": "NCT01647516:safety:serious-adverse-events",
+          "trial_id": "NCT01647516"
+        },
+        "promotion_status": "promoted",
+        "recommended_decision": "hold",
+        "stage_run_code": "stage_transition_committed",
+        "stage_run_details": {
+          "decision": "hold"
+        },
+        "stage_run_status": "committed",
+        "transition_blocking_codes": [],
+        "trial_design_count": 1
+      }
+    },
+    {
+      "artifact_hashes": {
+        "extracted_job_canonical_sha256": "7a1d3b7103793a7c4bb99d83c4ddba7128f798ffb4eb3a2ca4355377505efbc8",
+        "manifest_canonical_sha256": "75a7e76d802a051a013fb95a726d5be032382af479ecb124bbd67f59f10f3f95",
+        "review_job_canonical_sha256": "9e0ba1fd2c422f068014774836780f12e23afb7275aee60579f4eb6f874cf1bd",
+        "source_content_sha256": "fa48160bf981705439b8c3a759a2a17fbedead3d77cb3ee484afaeef16dd533c"
+      },
+      "candidate_id": "OZANIMOD",
+      "candidate_name_in_source_contract": "RPC1063",
+      "disease_id": "MONDO:0005101",
+      "endpoint": {
+        "confidence_interval_lower": 1.938,
+        "confidence_interval_percent": 95.0,
+        "confidence_interval_upper": 6.636,
+        "effect_direction": "benefit",
+        "name": "Percentage of Participants in Clinical Remission at 10 Weeks",
+        "p_value": 0.0001,
+        "p_value_relation": "eq",
+        "parameter_type": "Odds Ratio (OR)",
+        "parameter_value": 3.586,
+        "source_group_ids": [
+          "OG000",
+          "OG001"
+        ],
+        "time_frame": "At 10 Weeks"
+      },
+      "nct_id": "NCT02435992",
+      "phase": "PHASE3",
+      "registry_version": "2026-08-20",
+      "safety": {
+        "arms": [
+          {
+            "role": "candidate",
+            "serious_num_affected": 17,
+            "serious_num_at_risk": 429,
+            "source_group_id": "EG000"
+          },
+          {
+            "role": "comparator",
+            "serious_num_affected": 11,
+            "serious_num_at_risk": 216,
+            "source_group_id": "EG001"
+          }
+        ],
+        "bounded_interpretation": "posted aggregate serious-adverse-event counts; attribution and acceptability not inferred",
+        "event_term_count": 55,
+        "safety_id": "NCT02435992:safety:serious-adverse-events",
+        "treatment_phase": "induction"
+      },
+      "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT02435992",
+      "source_version": "clinicaltrials-gov-NCT02435992-version-2026-08-20",
+      "treatment_phase": "induction",
+      "validation": {
+        "accepted_decision": "advance",
+        "attempted_decisions": [
+          "advance"
+        ],
+        "clinical_evidence_direction": "benefit",
+        "committed_history_valid": true,
+        "final_program_status": "active",
+        "final_stage": "regulatory_postmarket",
+        "independent_source_count": 1,
+        "new_clinical_evidence_count": 8,
+        "promotion_code": "pinned_clinical_trial_design_promoted",
+        "promotion_details": {
+          "arm_ids": [
+            "NCT02435992:arm:OG000",
+            "NCT02435992:arm:OG001"
+          ],
+          "design_id": "NCT02435992:design",
+          "effect_direction": "benefit",
+          "endpoint_id": "NCT02435992:endpoint:primary-0",
+          "population_id": "NCT02435992:population:primary-0",
+          "registry_version": "2026-08-20",
+          "safety_id": "NCT02435992:safety:serious-adverse-events",
+          "trial_id": "NCT02435992"
+        },
+        "promotion_status": "promoted",
+        "recommended_decision": "advance",
+        "stage_run_code": "stage_transition_committed",
+        "stage_run_details": {
+          "decision": "advance"
+        },
+        "stage_run_status": "committed",
+        "transition_blocking_codes": [],
+        "trial_design_count": 1
+      }
+    }
+  ]
+}

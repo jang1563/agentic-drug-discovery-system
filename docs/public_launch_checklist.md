@@ -1,9 +1,10 @@
 # Public Launch Checklist
 
 This checklist is the human-readable companion to `release_decision_packet.json`.
-It records the approved and published 0.3.0.dev2 public development release.
-The 0.2.0 tag remains the latest stable release, and every future public update
-requires a new exact-package review and explicit human approval.
+It records the `candidate_pending_human_approval` state for the 0.3.0.dev3
+candidate while preserving the approved 0.3.0.dev2 public baseline. The 0.2.0
+tag remains the latest stable release. No candidate may update either public
+surface without a new exact-package review and explicit human approval.
 Scientific anchors: `docs/12_scd_vertical_slice.md`,
 `docs/13_target_id_governance_node.md`, and
 `docs/public_evidence_summary.json`. Execution contracts:
@@ -20,7 +21,14 @@ are in `docs/23_clinical_portfolio_endpoint_mapping.md`; typed policy replanning
 resume are in `docs/24_policy_replanning_and_resume.md`; cutoff-safe matched and sealed policy
 evaluation is in `docs/25_cutoff_safe_policy_evaluation.md`; independently curated held-out
 preregistration and stage-stratified uncertainty are in
-`docs/26_independent_heldout_evaluation.md`. The external scorer is under `benchmark/`,
+`docs/26_independent_heldout_evaluation.md`; the synthetic cross-disease UC conformance boundary is
+in `docs/41_ulcerative_colitis_conformance_slice.md`, and the separate public-source UC provider
+execution is in `docs/42_uc_provider_validation.md`; its single-trial induction/maintenance
+population boundary is in `docs/43_uc_phase_population_alignment.md`, and the independent primary
+maintenance percentage-point replication is in
+`docs/44_uc_maintenance_risk_difference_replication.md`; the second-disease RA HOLD replication is
+in `docs/45_ra_acr20_risk_difference_hold_replication.md`; the first real source-disjoint additive
+tensor is in `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`. The external scorer is under `benchmark/`,
 `scripts/audit/validate_vertical_slice_doc.py` checks the vertical-slice claims, and
 `scripts/audit/validate_policy_evaluation_snapshot.py` checks the sealed-evaluation aggregate.
 
@@ -28,13 +36,56 @@ preregistration and stage-stratified uncertainty are in
 
 | Surface | Current state | Publication record |
 | --- | --- | --- |
-| GitHub | 0.3.0.dev2 public baseline on `main` | Approved content published through PR 18 at `ea9cc3575fa687a3f05b6e0f9bf81a85413e5436` |
-| Hugging Face | 0.3.0.dev2 public, ungated exact-source mirror | Initial approved upload `8125fcfdb4984045948c2ffacb37c2c6f0c3ae70`; 169 files |
+| GitHub | 0.3.0.dev2 public baseline on `main`; 0.3.0.dev3 candidate not approved or merged | Baseline content published through PR 18 at `ea9cc3575fa687a3f05b6e0f9bf81a85413e5436` |
+| Hugging Face | 0.3.0.dev2 public exact-source mirror; 0.3.0.dev3 candidate not uploaded | Baseline upload `8125fcfdb4984045948c2ffacb37c2c6f0c3ae70`; 169 files |
 
-Machine status is `public_released_after_human_approval`. The 0.3.0.dev2 public
-development release was approved after its exact candidate commit, tree,
-release audits, GitHub PR, validated Hugging Face package, and human/visual QA
-were presented.
+Machine status is `candidate_pending_human_approval`. The public repositories
+remain at 0.3.0.dev2 while the 0.3.0.dev3 exact candidate is reviewed and
+validated.
+
+## 0.3.0.dev3 Candidate Gate
+
+- [x] Unequal/influential-cluster calibration code, CLI, schemas, exact synthetic artifacts,
+  research note, and fail-closed tests are present.
+- [x] Public outputs are aggregate-only and preserve the dominant-cluster production hard stop.
+- [x] Empirical-template cluster-superpopulation calibration binds the exact conditional report,
+  preserves all known truths, reports realized dominance without filtering, and carries an explicit
+  no-external-transportability boundary.
+- [x] Hazard-, odds-, and risk-ratio semantics use one fixed measure/direction contract across
+  provider extraction, semantic promotion, endpoint mapping, synthesis, and evidence cells.
+- [x] Percentage-point risk differences use null 0, explicit percent units, endpoint-declared
+  direction, and candidate-first sign binding through non-pooled synthesis; the decision tensor
+  uses a separate preregistered percentage-point CI-width threshold.
+- [x] The ulcerative-colitis synthetic conformance surface remains distinct from two public-source
+  provider-only induction runs; neither is represented as pooled efficacy, safety acceptability,
+  independent disease-slice review, or a therapeutic claim.
+- [x] The UC induction/maintenance population-alignment run preserves distinct phase counts,
+  treats the shared NCT/source as one trial, and never infers participant identity or longitudinal
+  exchangeability.
+- [x] The independent UC maintenance replication records its screened exclusions and exact hashes,
+  and is not represented as same-candidate replication, pooled efficacy, safety acceptability, or
+  a treatment recommendation.
+- [x] The RA ACR20 replication commits a source-valid null-crossing result on `HOLD`, records
+  denominator mismatch and screened controls.
+- [x] The olokizumab RA pair compiles two source-disjoint Week-12 ACR20 cells, preserves source
+  proportions and distinct inadequate-response populations, and remains on `HOLD` without a
+  pooled efficacy, comparative-safety, population-exchangeability, or treatment claim.
+- [x] The follow-on population diagnostic binds exact source fields to the two prior-therapy
+  strata, preserves one trial per stratum, and emits no transport estimate while target,
+  replication, covariate, transport-model, risk-of-bias, and independent-review gaps remain.
+- [x] The independent MTX-IR follow-on binds `NCT02760407` and `NCT02760368` to one reviewed
+  stratum with two-trial support. It preserves month-precision source chronology, removes only the
+  distinct-strata and no-within-stratum-replication blockers, and retains non-pooling, `HOLD`, five
+  transport blockers, and all prohibited-inference flags.
+- [x] The outcome-specific follow-on binds exact registry fields and registry-labeled protocol/SAP
+  PDF hashes, pages, sections, excerpts, and dates; verifies source-specific arm/endpoint identity;
+  distinguishes complete ITT analysis denominators from unverified observed-outcome completeness;
+  records two `some_concerns` overall judgments; and resolves only `risk_of_bias_not_assessed`
+  without pooling, transport, treatment, or independent-review claims.
+- [x] Release metadata records an unmerged and not-uploaded candidate.
+- [ ] The exact committed source and generated Hugging Face package pass every blocking command.
+- [ ] GitHub Actions passes for the exact candidate commit.
+- [ ] The owner approves that exact commit and package before merge or upload.
 
 ## 0.2.0 Baseline Record
 
@@ -142,8 +193,9 @@ were presented.
 
 ## 0.3.0.dev2 Publication Record
 
-- [x] The strict ClinicalTrials.gov provider accepts only the frozen exact-p-value,
-  hazard-ratio-alias, missing-value, arm-title, and sparse zero-risk variants.
+- [x] The strict ClinicalTrials.gov v3 provider accepts frozen hazard-, odds-, and risk-ratio
+  aliases, preserves valid benefit/harm/uncertain intervals, binds endpoint and safety treatment
+  phase, and permits sparse zero counts only for unselected groups.
 - [x] Missing descriptive arm summaries retain their raw source marker, serialize as `null`, and
   produce a typed tenth tensor dimension and provenance-linked workflow gap.
 - [x] Unsupported effect aliases, title qualifiers, arbitrary missing markers, selected zero-risk
@@ -166,6 +218,8 @@ python3 scripts/audit/validate_hf_release_package.py
 python3 scripts/audit/validate_public_launch_packet.py
 python3 scripts/audit/validate_vertical_slice_doc.py
 python3 scripts/audit/validate_policy_evaluation_snapshot.py
+python3 scripts/audit/validate_biohub_research_readiness.py
+python3 scripts/audit/validate_translational_handoff.py
 python3 -m unittest discover -s tests -v
 python3 -m ruff check agentic_drug_discovery tests adapters/boltz_adapter.py adapters/chembl_adapter.py adapters/opentargets_adapter.py adapters/execution_registry.py adapters/pinned_evidence_adapter.py adapters/clinical_synthesis_adapter.py scripts/audit
 python3 -m pytest -q benchmark/tests

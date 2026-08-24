@@ -1,0 +1,43 @@
+{
+  "schema_version": "adds.clinical-endpoint-mapping-spec.v1",
+  "mapping_id": "SYNTHETIC:UC-CANDIDATE-001:MONDO-0005101:remission-map:v1",
+  "portfolio_id": "synthetic-uc-remission-portfolio-v1",
+  "candidate_id": "SYNTHETIC:UC-CANDIDATE-001",
+  "intervention_id": "SYNTHETIC:UC-CANDIDATE-001",
+  "disease_id": "MONDO:0005101",
+  "endpoint_family_id": "clinical_remission",
+  "endpoint_family_label": "Clinical remission",
+  "ontology": {
+    "system": "urn:adds:synthetic-uc-endpoint-ontology",
+    "version": "1.0",
+    "code": "UC_CLINICAL_REMISSION",
+    "label": "Clinical remission"
+  },
+  "effect_measure": "odds_ratio",
+  "favorable_direction": "higher_is_better",
+  "safety_measure": "serious_adverse_event_risk_difference",
+  "bindings": [
+    {
+      "trial_id": "NCT90000001",
+      "design_id": "NCT90000001:design",
+      "endpoint_id": "NCT90000001:endpoint:clinical-remission",
+      "safety_id": "NCT90000001:safety:serious-adverse-events"
+    },
+    {
+      "trial_id": "NCT90000002",
+      "design_id": "NCT90000002:design",
+      "endpoint_id": "NCT90000002:endpoint:clinical-remission",
+      "safety_id": "NCT90000002:safety:serious-adverse-events"
+    }
+  ],
+  "review": {
+    "status": "approved",
+    "reviewer_id": "reviewer:synthetic-uc-conformance",
+    "reviewed_at": "2026-08-20T00:00:00+00:00"
+  },
+  "stage": "regulatory_postmarket",
+  "metadata": {
+    "review_note": "Synthetic UC conformance mapping; no real trial, reviewer, ontology-authority resolution, or clinical conclusion is represented.",
+    "review_protocol_id": "adds.endpoint-mapping-review.v1"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/frontier_development_curation_tranche.schema.json",
+  "title": "ADDS-Frontier Development Curation Tranche",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "set_id",
+    "status",
+    "canonical_task_target",
+    "development_fixture_count",
+    "independent_review_complete",
+    "baseline_model_runs_started",
+    "benchmark_evidence_claimed",
+    "task_set_integrity_sha256",
+    "oracle_set_integrity_sha256",
+    "records",
+    "nonclaim",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-curation-tranche.v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "set_id": {"const": "adds-frontier-development-tranche-v1"},
+    "status": {"const": "development_curation_in_progress"},
+    "canonical_task_target": {"const": 40},
+    "development_fixture_count": {"const": 5},
+    "independent_review_complete": {"const": false},
+    "baseline_model_runs_started": {"const": false},
+    "benchmark_evidence_claimed": {"const": false},
+    "task_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "oracle_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "records": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/record"}
+    },
+    "nonclaim": {
+      "const": "Development fixtures do not count toward the independently curated 40-task pilot board."
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "family_id",
+        "authoring_blinded_to_baseline",
+        "scientific_review_status",
+        "lineage_review_status",
+        "leakage_review_status",
+        "mutation_review_status",
+        "independent_curator_count",
+        "curator_roster_commitment",
+        "board_admitted"
+      ],
+      "properties": {
+        "task_id": {"type": "string", "pattern": "^frontier-dev-[a-z0-9-]+-[0-9]{3}$"},
+        "family_id": {
+          "enum": [
+            "evidence_lineage_trap",
+            "temporal_reversal",
+            "translational_handoff",
+            "non_exchangeable_replication",
+            "budgeted_evidence_resolution"
+          ]
+        },
+        "authoring_blinded_to_baseline": {"const": true},
+        "scientific_review_status": {"const": "pending"},
+        "lineage_review_status": {"const": "pending"},
+        "leakage_review_status": {"const": "pending"},
+        "mutation_review_status": {"const": "pending"},
+        "independent_curator_count": {"const": 0},
+        "curator_roster_commitment": {"type": "null"},
+        "board_admitted": {"const": false}
+      }
+    }
+  }
+}

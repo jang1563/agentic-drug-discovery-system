@@ -1,0 +1,231 @@
+{
+  "cross_phase_boundary": {
+    "independent_trial_count": 1,
+    "longitudinal_exchangeability_approved": false,
+    "participant_overlap_inferred": false,
+    "pooled_effect_estimate_computed": false,
+    "reason": "Induction and maintenance are phase-bound analyses from one registry record. Re-randomization and aggregate counts do not establish participant identity or independent-trial replication.",
+    "same_nct_id": true,
+    "same_source_content_sha256": true
+  },
+  "generated_at": "2026-08-20T12:00:00+00:00",
+  "phases": [
+    {
+      "artifact_hashes": {
+        "extracted_job_canonical_sha256": "d4b286991ab9a537d643dfabc00bf4600d3aec0259a2397e892ee6ae43d1fae6",
+        "manifest_canonical_sha256": "7f7f489e8d7f118ca3f9c3754ae8e412e7524020f363600b94b407d3225fd924",
+        "review_job_canonical_sha256": "9e0ba1fd2c422f068014774836780f12e23afb7275aee60579f4eb6f874cf1bd",
+        "source_content_sha256": "fa48160bf981705439b8c3a759a2a17fbedead3d77cb3ee484afaeef16dd533c"
+      },
+      "candidate_id": "OZANIMOD",
+      "candidate_name_in_source_contract": "RPC1063",
+      "disease_id": "MONDO:0005101",
+      "endpoint": {
+        "confidence_interval_lower": 1.938,
+        "confidence_interval_percent": 95.0,
+        "confidence_interval_upper": 6.636,
+        "effect_direction": "benefit",
+        "name": "Percentage of Participants in Clinical Remission at 10 Weeks",
+        "p_value": 0.0001,
+        "p_value_relation": "eq",
+        "parameter_type": "Odds Ratio (OR)",
+        "parameter_value": 3.586,
+        "source_group_ids": [
+          "OG000",
+          "OG001"
+        ],
+        "time_frame": "At 10 Weeks"
+      },
+      "nct_id": "NCT02435992",
+      "phase": "PHASE3",
+      "population_alignment": {
+        "endpoint_analysis_participant_count": 645,
+        "rolewise_counts_match": true,
+        "safety_at_risk_participant_count": 645,
+        "same_participants_inferred": false,
+        "study_enrollment_count": 1012,
+        "treatment_phase": "induction"
+      },
+      "registry_version": "2026-08-20",
+      "safety": {
+        "arms": [
+          {
+            "role": "candidate",
+            "serious_num_affected": 17,
+            "serious_num_at_risk": 429,
+            "source_group_id": "EG000"
+          },
+          {
+            "role": "comparator",
+            "serious_num_affected": 11,
+            "serious_num_at_risk": 216,
+            "source_group_id": "EG001"
+          }
+        ],
+        "bounded_interpretation": "posted aggregate serious-adverse-event counts; attribution and acceptability not inferred",
+        "event_term_count": 55,
+        "safety_id": "NCT02435992:safety:serious-adverse-events",
+        "treatment_phase": "induction"
+      },
+      "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT02435992",
+      "source_version": "clinicaltrials-gov-NCT02435992-version-2026-08-20",
+      "treatment_phase": "induction",
+      "validation": {
+        "accepted_decision": "advance",
+        "attempted_decisions": [
+          "advance"
+        ],
+        "clinical_evidence_direction": "benefit",
+        "committed_history_valid": true,
+        "final_program_status": "active",
+        "final_stage": "regulatory_postmarket",
+        "independent_source_count": 1,
+        "new_clinical_evidence_count": 8,
+        "promotion_code": "pinned_clinical_trial_design_promoted",
+        "promotion_details": {
+          "arm_ids": [
+            "NCT02435992:arm:OG000",
+            "NCT02435992:arm:OG001"
+          ],
+          "design_id": "NCT02435992:design",
+          "effect_direction": "benefit",
+          "endpoint_id": "NCT02435992:endpoint:primary-0",
+          "population_alignment": {
+            "endpoint_analysis_participant_count": 645,
+            "rolewise_counts_match": true,
+            "safety_at_risk_participant_count": 645,
+            "same_participants_inferred": false,
+            "study_enrollment_count": 1012,
+            "treatment_phase": "induction"
+          },
+          "population_id": "NCT02435992:population:primary-0",
+          "registry_version": "2026-08-20",
+          "safety_id": "NCT02435992:safety:serious-adverse-events",
+          "trial_id": "NCT02435992"
+        },
+        "promotion_status": "promoted",
+        "recommended_decision": "advance",
+        "stage_run_code": "stage_transition_committed",
+        "stage_run_details": {
+          "decision": "advance"
+        },
+        "stage_run_status": "committed",
+        "transition_blocking_codes": [],
+        "trial_design_count": 1
+      }
+    },
+    {
+      "artifact_hashes": {
+        "extracted_job_canonical_sha256": "43dfcb96048442997d4c698e46dcdc523e9c62fbed504273d3458084a95b3cfd",
+        "manifest_canonical_sha256": "3bdc891244fd1a9b636d3980a19fa9730eac2d0d4a4d3952befa21fdbfa574e2",
+        "review_job_canonical_sha256": "f7f81ded7b3f2252f4dadb5465ba0f03683a3a928d978688056c27f049c6dde3",
+        "source_content_sha256": "fa48160bf981705439b8c3a759a2a17fbedead3d77cb3ee484afaeef16dd533c"
+      },
+      "candidate_id": "OZANIMOD",
+      "candidate_name_in_source_contract": "RPC1063",
+      "disease_id": "MONDO:0005101",
+      "endpoint": {
+        "confidence_interval_lower": 1.767,
+        "confidence_interval_percent": 95.0,
+        "confidence_interval_upper": 4.294,
+        "effect_direction": "benefit",
+        "name": "Percentage of Participants in Clinical Remission at 52 Weeks",
+        "p_value": 0.0001,
+        "p_value_relation": "eq",
+        "parameter_type": "Odds Ratio (OR)",
+        "parameter_value": 2.755,
+        "source_group_ids": [
+          "OG003",
+          "OG004"
+        ],
+        "time_frame": "At 52 Weeks"
+      },
+      "nct_id": "NCT02435992",
+      "phase": "PHASE3",
+      "population_alignment": {
+        "endpoint_analysis_participant_count": 457,
+        "rolewise_counts_match": true,
+        "safety_at_risk_participant_count": 457,
+        "same_participants_inferred": false,
+        "study_enrollment_count": 1012,
+        "treatment_phase": "maintenance"
+      },
+      "registry_version": "2026-08-20",
+      "safety": {
+        "arms": [
+          {
+            "role": "candidate",
+            "serious_num_affected": 12,
+            "serious_num_at_risk": 230,
+            "source_group_id": "EG003"
+          },
+          {
+            "role": "comparator",
+            "serious_num_affected": 18,
+            "serious_num_at_risk": 227,
+            "source_group_id": "EG004"
+          }
+        ],
+        "bounded_interpretation": "posted aggregate serious-adverse-event counts; attribution and acceptability not inferred",
+        "event_term_count": 55,
+        "safety_id": "NCT02435992:safety:serious-adverse-events",
+        "treatment_phase": "maintenance"
+      },
+      "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT02435992",
+      "source_version": "clinicaltrials-gov-NCT02435992-version-2026-08-20",
+      "treatment_phase": "maintenance",
+      "validation": {
+        "accepted_decision": "advance",
+        "attempted_decisions": [
+          "advance"
+        ],
+        "clinical_evidence_direction": "benefit",
+        "committed_history_valid": true,
+        "final_program_status": "active",
+        "final_stage": "regulatory_postmarket",
+        "independent_source_count": 1,
+        "new_clinical_evidence_count": 8,
+        "promotion_code": "pinned_clinical_trial_design_promoted",
+        "promotion_details": {
+          "arm_ids": [
+            "NCT02435992:arm:OG003",
+            "NCT02435992:arm:OG004"
+          ],
+          "design_id": "NCT02435992:design",
+          "effect_direction": "benefit",
+          "endpoint_id": "NCT02435992:endpoint:primary-1",
+          "population_alignment": {
+            "endpoint_analysis_participant_count": 457,
+            "rolewise_counts_match": true,
+            "safety_at_risk_participant_count": 457,
+            "same_participants_inferred": false,
+            "study_enrollment_count": 1012,
+            "treatment_phase": "maintenance"
+          },
+          "population_id": "NCT02435992:population:primary-1",
+          "registry_version": "2026-08-20",
+          "safety_id": "NCT02435992:safety:serious-adverse-events",
+          "trial_id": "NCT02435992"
+        },
+        "promotion_status": "promoted",
+        "recommended_decision": "advance",
+        "stage_run_code": "stage_transition_committed",
+        "stage_run_details": {
+          "decision": "advance"
+        },
+        "stage_run_status": "committed",
+        "transition_blocking_codes": [],
+        "trial_design_count": 1
+      }
+    }
+  ],
+  "public_payload_policy": {
+    "contains_local_paths": false,
+    "contains_review_jobs": false,
+    "contains_reviewer_text": false,
+    "contains_source_bytes": false,
+    "external_artifacts_required_for_exact_replay": true
+  },
+  "schema_version": "adds.uc-phase-population-validation-snapshot.v1",
+  "trial_id": "NCT02435992"
+}

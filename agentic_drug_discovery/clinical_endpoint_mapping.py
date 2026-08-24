@@ -10,6 +10,15 @@ from dataclasses import dataclass, field, replace
 from datetime import datetime
 from typing import Any
 
+from .clinical_effects import (
+    canonical_effect_measure,
+    validate_effect_contract,
+    validate_effect_measure_unit,
+)
+from .clinical_population import (
+    ClinicalPopulationAlignmentError,
+    validate_phase_bound_population_alignment,
+)
 from .models import (
     ClinicalEndpointBindingRecord,
     ClinicalEndpointMappingRecord,
@@ -17,6 +26,7 @@ from .models import (
     ProgramState,
     SerializableRecord,
     Stage,
+    TrialArmRole,
     _freeze_mapping,
     _require_instance,
     _require_text,
@@ -24,9 +34,7 @@ from .models import (
 )
 
 
-CLINICAL_ENDPOINT_MAPPING_SPEC_SCHEMA_VERSION = (
-    "adds.clinical-endpoint-mapping-spec.v1"
-)
+CLINICAL_ENDPOINT_MAPPING_SPEC_SCHEMA_VERSION = "adds.clinical-endpoint-mapping-spec.v1"
 _ENDPOINT_FAMILY_ID = re.compile(r"^[a-z][a-z0-9_]{0,127}$")
 _MAPPING_METADATA_FIELDS = frozenset({"review_note", "review_protocol_id"})
 
@@ -122,10 +130,10 @@ class ClinicalEndpointMappingSpec(SerializableRecord):
             raise ValueError("endpoint_family_id must be a canonical snake-case id")
         if self.stage is not Stage.REGULATORY_POSTMARKET:
             raise ValueError("endpoint mapping is limited to regulatory_postmarket")
-        if self.effect_measure != "hazard_ratio":
-            raise ValueError("v1 supports only hazard_ratio effect estimates")
-        if self.favorable_direction != "lower_is_better":
-            raise ValueError("hazard_ratio requires lower_is_better direction")
+        validate_effect_contract(
+            self.effect_measure,
+            self.favorable_direction,
+        )
         if self.safety_measure != "serious_adverse_event_risk_difference":
             raise ValueError("unsupported safety_measure")
         bindings = tuple(self.bindings)
@@ -233,12 +241,18 @@ def clinical_endpoint_mapping_spec_from_dict(
         )
         bindings.append(
             ClinicalEndpointSelection(
-                trial_id=_text(binding["trial_id"], f"{path}.bindings[{index}].trial_id"),
-                design_id=_text(binding["design_id"], f"{path}.bindings[{index}].design_id"),
+                trial_id=_text(
+                    binding["trial_id"], f"{path}.bindings[{index}].trial_id"
+                ),
+                design_id=_text(
+                    binding["design_id"], f"{path}.bindings[{index}].design_id"
+                ),
                 endpoint_id=_text(
                     binding["endpoint_id"], f"{path}.bindings[{index}].endpoint_id"
                 ),
-                safety_id=_text(binding["safety_id"], f"{path}.bindings[{index}].safety_id"),
+                safety_id=_text(
+                    binding["safety_id"], f"{path}.bindings[{index}].safety_id"
+                ),
             )
         )
     try:
@@ -345,14 +359,42 @@ def _resolve_binding(
         raise ClinicalEndpointMappingError(
             "selected endpoint/safety record is not posted primary data"
         )
+    try:
+        validate_phase_bound_population_alignment(design, endpoint, safety)
+    except ClinicalPopulationAlignmentError as exc:
+        raise ClinicalEndpointMappingError(
+            "selected endpoint/safety population alignment is invalid"
+        ) from exc
     analysis = _mapping(endpoint.attributes.get("analysis"), "endpoint.analysis")
     parameter_type = _normalized(
         _text(analysis.get("parameter_type"), "endpoint.analysis.parameter_type")
     )
-    if parameter_type not in {"hazard ratio", "hazard ratio (hr)"}:
+    if canonical_effect_measure(parameter_type) != spec.effect_measure:
         raise ClinicalEndpointMappingError(
-            "selected endpoint does not report the declared hazard ratio"
+            f"selected endpoint does not report declared {spec.effect_measure}"
         )
+    try:
+        validate_effect_measure_unit(spec.effect_measure, endpoint.unit)
+    except ValueError as exc:
+        raise ClinicalEndpointMappingError(
+            "selected endpoint effect scale is invalid"
+        ) from exc
+    if spec.effect_measure == "risk_difference":
+        arms_by_role = {item.role: item for item in design.arms}
+        candidate_arm = arms_by_role.get(TrialArmRole.CANDIDATE)
+        comparator_arm = arms_by_role.get(TrialArmRole.COMPARATOR)
+        if candidate_arm is None or comparator_arm is None:
+            raise ClinicalEndpointMappingError(
+                "selected endpoint candidate/comparator roles are incomplete"
+            )
+        expected_group_ids = [
+            candidate_arm.identifiers.get("clinicaltrials_gov_group"),
+            comparator_arm.identifiers.get("clinicaltrials_gov_group"),
+        ]
+        if list(analysis.get("source_group_ids") or ()) != expected_group_ids:
+            raise ClinicalEndpointMappingError(
+                "risk_difference group order must be candidate then comparator"
+            )
     source_evidence_ids = tuple(sorted(set(design.supporting_evidence)))
     source_content_hashes: set[str] = set()
     for evidence_id in source_evidence_ids:
@@ -382,7 +424,9 @@ def _resolve_binding(
             ) from exc
         source_content_hashes.add(digest)
     if not source_evidence_ids or not source_content_hashes:
-        raise ClinicalEndpointMappingError("selected design lacks source-pinned support")
+        raise ClinicalEndpointMappingError(
+            "selected design lacks source-pinned support"
+        )
     fingerprint_context = {
         "trial_id": selection.trial_id,
         "design_id": selection.design_id,
@@ -444,11 +488,7 @@ def compile_clinical_endpoint_mapping(
     )
     source_content_hashes = tuple(
         sorted(
-            {
-                digest
-                for binding in bindings
-                for digest in binding.source_content_hashes
-            }
+            {digest for binding in bindings for digest in binding.source_content_hashes}
         )
     )
     review_cutoff = spec.review.reviewed_at.date()
@@ -546,7 +586,9 @@ def validate_clinical_endpoint_mapping(
                 reviewed_at=record.reviewed_at,
             ),
             stage=record.stage,
-            metadata=_mapping(record.attributes.get("spec_metadata", {}), "spec_metadata"),
+            metadata=_mapping(
+                record.attributes.get("spec_metadata", {}), "spec_metadata"
+            ),
         )
         state_without_record = replace(
             state,

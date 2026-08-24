@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/clinical_outcome_design_simulation_protocol.schema.json",
+  "title": "Clinical Outcome Design Simulation Protocol",
+  "description": "Public prospective protocol for deterministic clustered-board coverage, interval-yield, imbalance, prevalence, ICC, and candidate-gate simulation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "protocol"],
+  "properties": {
+    "schema_version": {"const": "adds.clinical-outcome-design-simulation-protocol.v1"},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "version",
+        "registered_on",
+        "confidence_level",
+        "monte_carlo_confidence_level",
+        "replicates",
+        "random_seed",
+        "coverage_tolerance",
+        "minimum_interval_yield",
+        "gates",
+        "scenarios",
+        "simulation_method_id",
+        "rng_method_id",
+        "uncertainty_method_id",
+        "metadata"
+      ],
+      "properties": {
+        "protocol_id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "registered_on": {"type": "string", "format": "date"},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1.0},
+        "monte_carlo_confidence_level": {"type": "number", "exclusiveMinimum": 0.5, "exclusiveMaximum": 1.0},
+        "replicates": {"type": "integer", "minimum": 100, "maximum": 100000},
+        "random_seed": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+        "coverage_tolerance": {"type": "number", "minimum": 0.0, "exclusiveMaximum": 1.0},
+        "minimum_interval_yield": {"type": "number", "exclusiveMinimum": 0.0, "maximum": 1.0},
+        "gates": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {"$ref": "#/$defs/gate"}
+        },
+        "scenarios": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 128,
+          "items": {"$ref": "#/$defs/scenario"}
+        },
+        "simulation_method_id": {"const": "adds.prospective-clinical-outcome-design.beta-binomial.v1"},
+        "rng_method_id": {"const": "adds.mt19937-polya-urn.v1"},
+        "uncertainty_method_id": {"const": "adds.cluster-robust-clinical-outcome-uncertainty.cr1.v1"},
+        "metadata": {"type": "object"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "stage": {
+      "enum": [
+        "disease_context",
+        "target_nomination",
+        "modality_selection",
+        "candidate_generation",
+        "lead_optimization",
+        "preclinical_validation",
+        "clinical_strategy",
+        "regulatory_postmarket"
+      ]
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gate_id",
+        "minimum_evaluable_clusters",
+        "maximum_evaluable_cluster_fraction"
+      ],
+      "properties": {
+        "gate_id": {"type": "string", "minLength": 1},
+        "minimum_evaluable_clusters": {"type": "integer", "minimum": 2},
+        "maximum_evaluable_cluster_fraction": {"type": "number", "exclusiveMinimum": 0.0, "exclusiveMaximum": 1.0}
+      }
+    },
+    "probabilityPattern": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "stage",
+        "endpoint_family",
+        "cluster_sizes",
+        "favorable_prevalence",
+        "intracluster_correlation",
+        "evaluable_probability",
+        "classification_threshold",
+        "policy_a_probability_pattern",
+        "policy_b_probability_pattern"
+      ],
+      "properties": {
+        "scenario_id": {"type": "string", "minLength": 1},
+        "stage": {"$ref": "#/$defs/stage"},
+        "endpoint_family": {"type": "string", "minLength": 1},
+        "cluster_sizes": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 100000,
+          "items": {"type": "integer", "minimum": 1, "maximum": 100000}
+        },
+        "favorable_prevalence": {"type": "number", "exclusiveMinimum": 0.0, "exclusiveMaximum": 1.0},
+        "intracluster_correlation": {"type": "number", "minimum": 0.0, "exclusiveMaximum": 1.0},
+        "evaluable_probability": {"type": "number", "exclusiveMinimum": 0.0, "maximum": 1.0},
+        "classification_threshold": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        "policy_a_probability_pattern": {"$ref": "#/$defs/probabilityPattern"},
+        "policy_b_probability_pattern": {"$ref": "#/$defs/probabilityPattern"}
+      }
+    }
+  }
+}

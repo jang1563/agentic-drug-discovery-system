@@ -39,7 +39,8 @@ An uncommitted, replaced, or non-replayable synthesis cannot enter the tensor.
 Each `ClinicalEvidenceCell` retains one selected trial's:
 
 - trial, design, endpoint, safety, and synthesis study identities;
-- hazard ratio, confidence interval, and log-scale interval width;
+- supported ratio or percentage-point risk-difference effect, required favorable direction,
+  confidence interval, and scale-specific interval width;
 - candidate and comparator endpoint measurements, including source-reported missing values, unit,
   and time frame;
 - serious-event affected/at-risk counts, observed risks, and unadjusted risk difference;
@@ -54,7 +55,7 @@ The tensor evaluates ten ordered dimensions:
 | Source independence | Selected trial source hashes remain disjoint. |
 | Trial count | Meets the preregistered minimum independent-trial count. |
 | Benefit direction | Every trial's interval is entirely in the declared favorable direction. |
-| Benefit precision | Every log-scale interval width is at or below the policy threshold. |
+| Benefit precision | Every log-scale ratio width or percentage-point risk-difference width is at or below its matching policy threshold. |
 | Descriptive arm measurement completeness | Every selected candidate and comparator arm has a source-reported numeric summary. |
 | Safety direction | No trial has higher observed aggregate serious-event risk and directions agree. |
 | Safety exposure | Each candidate and comparator arm meets the minimum participant count. |
@@ -65,6 +66,15 @@ The tensor evaluates ten ordered dimensions:
 These are workflow criteria, not validated clinical decision thresholds. Exact-string alignment
 does not establish scientific comparability, and equal or lower observed aggregate serious-event
 risk does not establish safety.
+
+Precision policy is effect-scale specific. Ratio synthesis requires
+`maximum_log_effect_ci_width`; risk-difference synthesis requires
+`maximum_risk_difference_ci_width_percentage_points`. Applying a log width to an additive interval,
+or compiling without the matching threshold, fails closed. Percentage-point source intervals retain
+their width; proportion-scale source intervals derived from binary count endpoints are multiplied by
+100 only for the decision precision metric. Raw study estimates and intervals remain on their source
+scale. Optional additive fields are omitted from ratio serialization so existing ratio package
+fingerprints remain stable.
 
 ## Gap Ontology
 
@@ -136,11 +146,19 @@ non-finite values, unsupported schema versions, and integrity mismatches.
 
 Public machine contracts:
 
+- `rl_env/specs/clinical_evidence_decision_config.schema.json`
+- `rl_env/specs/clinical_evidence_decision_config.example.json`
+- `rl_env/specs/clinical_evidence_decision_summary.schema.json`
 - `rl_env/specs/clinical_evidence_decision_package.schema.json`
 - `rl_env/specs/clinical_evidence_decision_package.example.json`
 
 The adjacent example is fully synthetic and compiler-generated from two source-disjoint test
 bundles. It is a contract example, not a clinical result or calibrated action policy.
+
+A source-pinned rheumatoid-arthritis HOLD replication is documented in
+`docs/45_ra_acr20_risk_difference_hold_replication.md`. The follow-on same-candidate olokizumab pair
+executes the first real two-source additive tensor in
+`docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`.
 
 ## Minimal API
 
@@ -161,6 +179,27 @@ package = compile_clinical_decision_package(
 The caller must supply a preregistered policy and action catalog. The compiler does not invent
 clinical thresholds, resolution probabilities, relevance values, tools, or costs.
 
+## Stable CLI
+
+`adds-clinical-evidence` exposes the same contracts without requiring callers to assemble internal
+dataclasses:
+
+```bash
+adds-clinical-evidence summarize --package decision-package.json
+adds-clinical-evidence validate --package decision-package.json
+adds-clinical-evidence compile \
+  --state accepted-program-state.json \
+  --config decision-config.json \
+  --output decision-package.json
+adds-clinical-evidence validate \
+  --package decision-package.json \
+  --state accepted-program-state.json
+```
+
+Integrity-only validation checks the strict envelope. Supplying `--state` additionally recompiles
+the package and requires the selected synthesis and endpoint mapping to occur as exact updates in
+accepted packet history. Compile output is atomic and is not replaced without `--force`.
+
 ## Current Limitations
 
 - Hazard-ratio benefit endpoints and posted aggregate serious-event counts inherit the v1
@@ -170,7 +209,8 @@ clinical thresholds, resolution probabilities, relevance values, tools, or costs
 - Expected gap-resolution probabilities and decision relevance require external calibration.
 - Action selection is deterministic marginal greedy prioritization, not a causal, Bayesian, or
   health-economic VOI analysis.
-- Selected actions are planning records; provider execution and post-action synthesis refresh are
-  not yet connected into an automatic closed loop.
+- Selected-action execution and reviewer-gated synthesis refresh are available through the bounded
+  `clinical_closed_loop` API. The CLI intentionally does not invoke live providers or automate the
+  required reviewer refresh.
 - Population transportability, risk of bias, multiplicity, follow-up adjustment, censoring,
   exposure time, competing risks, and event-level causality are not inferred.

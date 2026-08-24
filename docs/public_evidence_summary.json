@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact": "agentic-drug-discovery-system",
-  "as_of_date": "2026-07-12",
+  "as_of_date": "2026-08-03",
   "purpose": "Aggregate-only claim ledger for the public research artifact",
   "provenance": {
     "source_commit": "See upload_manifest.json for each Hugging Face build",
@@ -171,11 +171,187 @@
     "current_recommendation_claim": false,
     "source_refresh_required": true
   },
+  "clinical_pattern_mixture_synthetic": {
+    "synthetic_only": true,
+    "stress_protocol_fingerprint": "1d195038b03855af77d96c1ee9f98cc28c8671ae89e678c9e199423162fb53f1",
+    "stress_report_fingerprint": "e9fc814c2432434bb3b7b739fa35abd55177116fe6086bfb30a386dc920ef19d",
+    "pattern_mixture_protocol_fingerprint": "0ff618274428cdd9db271b0f361bfa18c9334852bbcbc3f4bc0af1405f2ea3e2",
+    "pattern_mixture_report_fingerprint": "6a9376fb5c64fb449ee0972ea95430db780dfa6d830bf065b5996cb71092094f",
+    "replicates_per_scenario": 1000,
+    "scenario_count": 3,
+    "all_preregistered_aggregate_research_targets_met": true,
+    "informative_scenario_true_log_imor": -2.397895272798,
+    "informative_scenario_true_imor": 0.090909090909,
+    "informative_naive_population_favorable_rate_bias_range": [
+      0.164663202706,
+      0.165347670346
+    ],
+    "informative_naive_evaluable_absolute_bias_maximum": 0.003855315813,
+    "informative_truth_aligned_population_absolute_bias_maximum": 0.001117388503,
+    "point_envelope_is_sampling_coverage": false,
+    "continuous_gate_monte_carlo_confidence_bounds_included": false,
+    "operational_grid_uses_latent_truth": false,
+    "real_log_imor_range_elicited": false,
+    "real_board_validation": false,
+    "scope": "Prediction-stratified binary log-IMOR recovery diagnostic under exact synthetic evaluability and dependence scenarios"
+  },
+  "clinical_pattern_mixture_uncertainty_synthetic": {
+    "synthetic_only": true,
+    "uncertainty_protocol_fingerprint": "9152583c61349513987ef45d6553d9e2157b723dcc57e9640a26d8d4c498bea4",
+    "uncertainty_report_fingerprint": "931b7bb9cc06f1949085e9763bb2f93671a8a29547c1036cc31d0245cc02b045",
+    "stress_protocol_fingerprint": "1d195038b03855af77d96c1ee9f98cc28c8671ae89e678c9e199423162fb53f1",
+    "pattern_mixture_protocol_fingerprint": "0ff618274428cdd9db271b0f361bfa18c9334852bbcbc3f4bc0af1405f2ea3e2",
+    "pattern_mixture_report_fingerprint": "6a9376fb5c64fb449ee0972ea95430db780dfa6d830bf065b5996cb71092094f",
+    "replicates_per_scenario": 1000,
+    "scenario_count": 3,
+    "dependence_closed_grid_metric_cells": 240,
+    "all_preregistered_research_targets_met": true,
+    "coverage_target": 0.87,
+    "minimum_dependence_closed_model_functional_coverage_lower": 0.874464643411,
+    "hidden_linkage_nominal_minimum_coverage_lower_range": [
+      0.830759928423,
+      0.83287629787
+    ],
+    "dependence_closed_standard_error_calibration_ratio_range": [
+      0.94450326421,
+      1.018672399552
+    ],
+    "hidden_linkage_anchor_coverage_gain_range": [
+      0.054,
+      0.06
+    ],
+    "hidden_linkage_anchor_standard_error_ratio_range": [
+      1.239623771263,
+      1.254565979018
+    ],
+    "interval_yield": 1.0,
+    "interval_yield_wilson_lower": 0.996173241514,
+    "automatic_dependence_closure_included": false,
+    "identification_and_sampling_uncertainty_combined": false,
+    "population_coverage_interpretable_away_from_true_shift": false,
+    "real_board_validation": false,
+    "scope": "Delete-one-cluster sampling calibration for fixed binary log-IMOR model functionals under exact synthetic dependence blocks"
+  },
+  "clinical_pattern_mixture_influence_calibration_synthetic": {
+    "synthetic_only": true,
+    "influence_protocol_fingerprint": "a57300753f0467f7589aa54c86f94bd7c25448ed37e92abba6c757af61376694",
+    "influence_report_fingerprint": "80ab9f4ae9dc2c0953bc302151a3846e9dce414a529b7911ad34fe3cd971abc9",
+    "stress_protocol_fingerprint": "7952aa48e2eb5cecd26196b7c3ba599bc44933e8c1d92e8b56da8be946f72f7d",
+    "stress_report_fingerprint": "1dfdde5523e5b0d89bbf73d315f496a30499e9838e011ffca1558a15e17be481",
+    "pattern_mixture_protocol_fingerprint": "c638c88456d065ae26562516a25317591573a0aba892cc36d2b8283890b591d0",
+    "pattern_mixture_report_fingerprint": "5321f2dc596c1d9b29200adb4610ac6a69870c440da8bf883ca18dfbe7fe39ed",
+    "replicates_per_scenario": 500,
+    "scenario_count": 4,
+    "method_grid_metric_cells": 640,
+    "production_eligible_scenario_count": 3,
+    "all_production_eligible_student_t_candidate_targets_met": true,
+    "all_production_eligible_delete_mj_sensitivity_targets_met": true,
+    "all_dominant_cluster_hard_stops_preserved": true,
+    "coverage_target": 0.87,
+    "delete_one_normal_minimum_coverage_lower_range": [
+      0.872793949134,
+      0.895146450127
+    ],
+    "delete_one_student_t_minimum_coverage_lower_range": [
+      0.901931595983,
+      0.929572803164
+    ],
+    "delete_mj_student_t_minimum_coverage_lower_range": [
+      0.901931595983,
+      0.927231838828
+    ],
+    "webb_multiplier_minimum_coverage_lower_range": [
+      0.833333984654,
+      0.875013037572
+    ],
+    "webb_all_cell_target_failed_scenarios": [
+      "balanced-few-8",
+      "balanced-reference-12",
+      "dominant-cluster-12"
+    ],
+    "dominant_cluster_maximum_unit_fraction": 0.266666666667,
+    "automatic_method_selection_included": false,
+    "dominant_cluster_override_allowed": false,
+    "webb_multiplier_operational": false,
+    "identification_and_sampling_uncertainty_combined": false,
+    "real_board_validation": false,
+    "scope": "Unequal and influential dependence-block calibration for fixed binary log-IMOR model functionals under exact synthetic outcomes"
+  },
+  "clinical_informative_cluster_size_synthetic": {
+    "synthetic_only": true,
+    "protocol_fingerprint": "23918d52ed465928701ddd70ca40f5a7dc139a75afe84bafca691529997d0317",
+    "report_fingerprint": "1b0d6a6d8b4bead1b5ad06df5b83dac1296f1be39d072feb6de25bdd7aab8eda",
+    "stress_protocol_fingerprint": "7bf7793108e90b0d1928948511153d46cfa683471559a0176e2fda6fd152a379",
+    "replicates_per_scenario": 500,
+    "scenario_count": 5,
+    "method_grid_metric_cells": 600,
+    "production_eligible_scenario_count": 4,
+    "truth_direction_disagreement_scenario_count": 3,
+    "all_cell_bias_yield_and_coverage_targets_met": true,
+    "standard_error_calibration_failure_cell_count": 320,
+    "maximum_all_cell_absolute_own_target_bias": 0.007953423642,
+    "maximum_reference_absolute_own_target_bias": 0.001775576029,
+    "eligible_informative_reference_absolute_alternate_estimand_bias_range": [
+      0.04507081129,
+      0.047710024701
+    ],
+    "null_reference_standard_error_calibration_ratio_range": [
+      0.996490959642,
+      1.049040811537
+    ],
+    "eligible_informative_reference_standard_error_calibration_ratio_range": [
+      1.428414885004,
+      1.585506842833
+    ],
+    "all_null_all_cell_targets_met": true,
+    "all_eligible_informative_all_cell_targets_met": false,
+    "automatic_estimand_selection_included": false,
+    "delete_mj_estimand_correction_claimed": false,
+    "fixed_block_profiles_across_replicates": true,
+    "cluster_superpopulation_resampling_included": false,
+    "dominant_cluster_override_allowed": false,
+    "real_board_validation": false,
+    "scope": "Unit-weighted versus cluster-balanced pattern-mixture functionals under fixed synthetic size-outcome mean profiles"
+  },
+  "clinical_cluster_superpopulation_synthetic": {
+    "synthetic_only": true,
+    "protocol_fingerprint": "50f8494d73d32452f02a15595bae3b39549bc13069a65211af4d03500c8bafa4",
+    "report_fingerprint": "f9600e89c2e1f04800cdcc07e9ca573e76a13de26f05dbbeee8e745b53b94ef4",
+    "fixed_profile_protocol_fingerprint": "23918d52ed465928701ddd70ca40f5a7dc139a75afe84bafca691529997d0317",
+    "fixed_profile_report_fingerprint": "1b0d6a6d8b4bead1b5ad06df5b83dac1296f1be39d072feb6de25bdd7aab8eda",
+    "stress_protocol_fingerprint": "7bf7793108e90b0d1928948511153d46cfa683471559a0176e2fda6fd152a379",
+    "replicates_per_scenario": 500,
+    "scenario_count": 5,
+    "method_grid_metric_cells": 600,
+    "known_truth_difference_cell_count": 0,
+    "fixed_profile_standard_error_calibration_pass_count": 280,
+    "superpopulation_standard_error_calibration_pass_count": 600,
+    "standard_error_calibration_recovered_cell_count": 320,
+    "fixed_profile_full_calibration_pass_count": 280,
+    "superpopulation_full_calibration_pass_count": 520,
+    "full_calibration_recovered_cell_count": 240,
+    "maximum_all_cell_absolute_own_target_bias": 0.01774267005,
+    "dominant_informative_realized_dominance_rate": 0.628,
+    "dominant_informative_production_eligible_rate": 0.372,
+    "empirical_template_sampling_frame": true,
+    "fixed_profile_known_truths_preserved": true,
+    "post_hoc_design_filtering_included": false,
+    "external_transportability_claimed": false,
+    "automatic_estimand_selection_included": false,
+    "dominant_cluster_override_allowed": false,
+    "real_board_validation": false,
+    "scope": "Conditional versus finite empirical-template cluster-superpopulation calibration for fixed binary log-IMOR model functionals"
+  },
   "limitations": [
     "Aggregate results are not substitutes for released per-record evidence or independent replication",
     "Repeated observations on a fixed slice are not independent samples",
     "The SCD slice is one disease and eight assets after one gold reconciliation",
     "Target-ID cross-stage evidence is label-adjacent and evaluated on the same constructed set",
-    "No result is clinical validation, an approval prediction, or autonomous discovery capability evidence"
+    "No result is clinical validation, an approval prediction, or autonomous discovery capability evidence",
+    "Pattern-mixture point-envelope inclusion is not a sampling-coverage guarantee and the public log-IMOR grid is not elicited for a real clinical board",
+    "Pattern-mixture cluster-jackknife passage assumes evaluator-declared synthetic dependence blocks and does not discover or validate real clinical dependence",
+    "Unequal-cluster interval calibration does not select a universal method, rescue a dominant-cluster design, or establish the experimental multiplier as a regression wild-cluster bootstrap",
+    "Informative-cluster-size calibration does not select an estimand or establish cluster-superpopulation coverage from fixed synthetic block profiles",
+    "Empirical-template cluster-superpopulation calibration preserves one finite synthetic support and does not establish external transportability, rescue dominant unit-weighted undercoverage, or justify post-hoc design filtering"
   ]
 }

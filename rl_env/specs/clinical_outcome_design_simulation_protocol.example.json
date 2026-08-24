@@ -1,0 +1,72 @@
+{
+  "integrity_sha256": "29ebd6e0590535b0211912c0cbac8fc1770739f02e2c57f7d7889f774941bb26",
+  "protocol": {
+    "confidence_level": 0.95,
+    "coverage_tolerance": 0.08,
+    "gates": [
+      {
+        "gate_id": "exploratory-g08-share40",
+        "maximum_evaluable_cluster_fraction": 0.4,
+        "minimum_evaluable_clusters": 8
+      },
+      {
+        "gate_id": "balanced-g12-share25",
+        "maximum_evaluable_cluster_fraction": 0.25,
+        "minimum_evaluable_clusters": 12
+      }
+    ],
+    "metadata": {
+      "design_scope": "synthetic stage-by-endpoint candidate-gate study",
+      "public_example": true
+    },
+    "minimum_interval_yield": 0.8,
+    "monte_carlo_confidence_level": 0.95,
+    "protocol_id": "synthetic-prospective-cluster-design",
+    "random_seed": 20260802,
+    "registered_on": "2026-08-02",
+    "replicates": 300,
+    "rng_method_id": "adds.mt19937-polya-urn.v1",
+    "scenarios": [
+      {
+        "classification_threshold": 0.5,
+        "cluster_sizes": [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        "endpoint_family": "composite_benefit_risk",
+        "evaluable_probability": 0.9,
+        "favorable_prevalence": 0.35,
+        "intracluster_correlation": 0.1,
+        "policy_a_probability_pattern": [0.2, 0.4, 0.6, 0.8],
+        "policy_b_probability_pattern": [0.3, 0.5, 0.7, 0.9],
+        "scenario_id": "balanced-12-moderate-icc",
+        "stage": "clinical_strategy"
+      },
+      {
+        "classification_threshold": 0.5,
+        "cluster_sizes": [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        "endpoint_family": "composite_benefit_risk",
+        "evaluable_probability": 0.9,
+        "favorable_prevalence": 0.15,
+        "intracluster_correlation": 0.05,
+        "policy_a_probability_pattern": [0.1, 0.2, 0.4, 0.7],
+        "policy_b_probability_pattern": [0.2, 0.3, 0.5, 0.8],
+        "scenario_id": "balanced-24-low-prevalence",
+        "stage": "clinical_strategy"
+      },
+      {
+        "classification_threshold": 0.5,
+        "cluster_sizes": [20, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+        "endpoint_family": "postmarket_safety",
+        "evaluable_probability": 0.85,
+        "favorable_prevalence": 0.25,
+        "intracluster_correlation": 0.1,
+        "policy_a_probability_pattern": [0.15, 0.35, 0.55, 0.75],
+        "policy_b_probability_pattern": [0.25, 0.45, 0.65, 0.85],
+        "scenario_id": "imbalanced-12-moderate-icc",
+        "stage": "regulatory_postmarket"
+      }
+    ],
+    "simulation_method_id": "adds.prospective-clinical-outcome-design.beta-binomial.v1",
+    "uncertainty_method_id": "adds.cluster-robust-clinical-outcome-uncertainty.cr1.v1",
+    "version": "1.0.0"
+  },
+  "schema_version": "adds.clinical-outcome-design-simulation-protocol.v1"
+}
