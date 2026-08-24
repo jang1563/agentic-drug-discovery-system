@@ -1,0 +1,279 @@
+{
+  "schema_version": "adds.frontier-research-protocol.v1",
+  "protocol_id": "adds-frontier-v1",
+  "version": "1.0.0-pilot",
+  "status": "preregistered_pilot_design",
+  "registered_on": "2026-08-21",
+  "research_question": "Can a scientific agent acquire and synthesize sufficient time-valid, lineage-aware evidence to earn each state transition in a long-horizon drug-discovery trajectory without relying on final-outcome recall?",
+  "primary_metric": {
+    "metric_id": "fully_authorized_trajectory_success",
+    "name": "Fully Authorized Trajectory Success at pass@1",
+    "success_rule": "all_mandatory_gates_and_zero_unauthorized_commits",
+    "final_answer_override_allowed": false
+  },
+  "frontier_launch_band": {
+    "lower": 0.005,
+    "nominal": 0.02,
+    "upper": 0.05,
+    "used_for_task_selection": false
+  },
+  "action_ontology": {
+    "dispositions": [
+      "advance",
+      "hold",
+      "terminate"
+    ],
+    "next_actions": [
+      "retrieve",
+      "verify",
+      "experiment",
+      "human_review",
+      "none"
+    ],
+    "risk_flags": [
+      "safety",
+      "contradiction",
+      "provenance",
+      "out_of_distribution",
+      "temporal_leakage"
+    ]
+  },
+  "mandatory_gates": [
+    "evidence_retrieval_complete",
+    "identity_continuity",
+    "cutoff_compliance",
+    "lineage_independence",
+    "endpoint_population_alignment",
+    "uncertainty_handling",
+    "disposition_correct",
+    "next_action_correct",
+    "risk_flags_correct",
+    "witness_valid",
+    "blocker_certificate_valid",
+    "budget_compliance",
+    "exact_replay"
+  ],
+  "task_families": [
+    {
+      "family_id": "evidence_lineage_trap",
+      "name": "Evidence Lineage Trap",
+      "research_question": "Can the agent distinguish source-file diversity from independence of the underlying scientific evidence?",
+      "required_gates": [
+        "evidence_retrieval_complete",
+        "identity_continuity",
+        "lineage_independence",
+        "disposition_correct",
+        "risk_flags_correct",
+        "witness_valid",
+        "blocker_certificate_valid",
+        "exact_replay"
+      ],
+      "seed_artifacts": [
+        "docs/20_preclinical_provider_ingestion.md",
+        "docs/46_ra_olokizumab_source_disjoint_additive_tensor.md"
+      ],
+      "pilot_base_tasks": 8
+    },
+    {
+      "family_id": "temporal_reversal",
+      "name": "Temporal Reversal",
+      "research_question": "Can the agent reconstruct what was knowable at a cutoff and change disposition only when later evidence becomes admissible?",
+      "required_gates": [
+        "evidence_retrieval_complete",
+        "cutoff_compliance",
+        "uncertainty_handling",
+        "disposition_correct",
+        "next_action_correct",
+        "risk_flags_correct",
+        "witness_valid",
+        "exact_replay"
+      ],
+      "seed_artifacts": [
+        "docs/12_scd_vertical_slice.md",
+        "docs/25_cutoff_safe_policy_evaluation.md"
+      ],
+      "pilot_base_tasks": 8
+    },
+    {
+      "family_id": "translational_handoff",
+      "name": "Translational Handoff",
+      "research_question": "Can the agent preserve disease, target, perturbation, model-system, and claim identity across an upstream-to-clinical handoff without unsupported promotion?",
+      "required_gates": [
+        "evidence_retrieval_complete",
+        "identity_continuity",
+        "cutoff_compliance",
+        "uncertainty_handling",
+        "disposition_correct",
+        "next_action_correct",
+        "risk_flags_correct",
+        "witness_valid",
+        "blocker_certificate_valid",
+        "budget_compliance",
+        "exact_replay"
+      ],
+      "seed_artifacts": [
+        "docs/39_biohub_translational_evidence_bridge.md",
+        "docs/40_upstream_translational_handoff.md"
+      ],
+      "pilot_base_tasks": 8
+    },
+    {
+      "family_id": "non_exchangeable_replication",
+      "name": "Non-Exchangeable Replication",
+      "research_question": "Can the agent detect when apparently replicated trials cannot support pooling or transport because population, phase, endpoint, or estimand differs?",
+      "required_gates": [
+        "evidence_retrieval_complete",
+        "identity_continuity",
+        "lineage_independence",
+        "endpoint_population_alignment",
+        "uncertainty_handling",
+        "disposition_correct",
+        "next_action_correct",
+        "risk_flags_correct",
+        "witness_valid",
+        "blocker_certificate_valid",
+        "exact_replay"
+      ],
+      "seed_artifacts": [
+        "docs/47_ra_olokizumab_population_stratified_transport.md",
+        "docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md",
+        "docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md"
+      ],
+      "pilot_base_tasks": 8
+    },
+    {
+      "family_id": "budgeted_evidence_resolution",
+      "name": "Budgeted Evidence Resolution",
+      "research_question": "Can the agent choose a bounded next action that resolves the most decision-relevant evidence gap rather than merely producing a verdict?",
+      "required_gates": [
+        "evidence_retrieval_complete",
+        "identity_continuity",
+        "uncertainty_handling",
+        "disposition_correct",
+        "next_action_correct",
+        "risk_flags_correct",
+        "witness_valid",
+        "blocker_certificate_valid",
+        "budget_compliance",
+        "exact_replay"
+      ],
+      "seed_artifacts": [
+        "docs/27_clinical_evidence_tensor_and_voi.md",
+        "docs/28_clinical_evidence_closed_loop.md"
+      ],
+      "pilot_base_tasks": 8
+    }
+  ],
+  "benchmark_tiers": [
+    {
+      "tier_id": "diagnostic",
+      "primary": false,
+      "minimum_stages": 1,
+      "maximum_stages": 3,
+      "purpose": "Localize retrieval, identity, chronology, lineage, mapping, and action failures without making the component score the flagship claim."
+    },
+    {
+      "tier_id": "frontier",
+      "primary": true,
+      "minimum_stages": 6,
+      "maximum_stages": 12,
+      "purpose": "Measure complete evidence-authorized interactive trajectories under a common frozen environment and bounded budget."
+    }
+  ],
+  "sampling_policy": {
+    "pilot_base_task_count": 40,
+    "pilot_min_mutations_per_task": 5,
+    "full_base_task_minimum": 300,
+    "full_diagnostic_case_minimum": 1500,
+    "baseline_blind_selection": true,
+    "model_failure_filtering_prohibited": true,
+    "heldout_split_by_program_disease_time": true,
+    "rotating_private_test": true
+  },
+  "evaluation_policy": {
+    "structured_oracle_minimum_success": 0.95,
+    "independent_expert_baseline_required": true,
+    "common_frozen_environment_required": true,
+    "cost_and_wall_time_reporting_required": true,
+    "primary_pass_k": 1,
+    "reported_pass_k": [
+      1,
+      3,
+      8
+    ],
+    "program_clustered_intervals": true,
+    "paired_comparisons": true,
+    "partial_metrics": [
+      "valid_trajectory_survival",
+      "first_critical_failure_stage",
+      "evidence_retrieval_recall",
+      "witness_blocker_exactness",
+      "unauthorized_commit_rate",
+      "contradiction_recovery_rate",
+      "risk_coverage_cost",
+      "normalized_valid_progress"
+    ]
+  },
+  "threat_model": [
+    {
+      "threat_id": "benchmark_contamination",
+      "failure": "The model recalls task identities or answers instead of reasoning over the supplied evidence world.",
+      "required_control": "Use private rotating test tasks, opaque identities, contamination canaries, and model-access disclosure."
+    },
+    {
+      "threat_id": "post_cutoff_leakage",
+      "failure": "The agent uses evidence that was unavailable at the declared decision time.",
+      "required_control": "Serve only a frozen cutoff-safe corpus and include matched planted-leakage twins."
+    },
+    {
+      "threat_id": "identity_rebinding",
+      "failure": "A disease, target, candidate, intervention, trial, endpoint, or population silently changes across stages.",
+      "required_control": "Require canonical identity ledgers and identity-critical counterfactual mutations."
+    },
+    {
+      "threat_id": "derivative_source_double_counting",
+      "failure": "Multiple files derived from one underlying study are treated as independent replication.",
+      "required_control": "Score independence on an evidence-lineage graph rather than URL or file-hash disjointness alone."
+    },
+    {
+      "threat_id": "endpoint_population_mismatch",
+      "failure": "The agent pools or transports evidence across incompatible endpoints, phases, populations, or estimands.",
+      "required_control": "Require exact endpoint, timeframe, population, phase, and estimand bindings before synthesis."
+    },
+    {
+      "threat_id": "prompt_injection_in_source_text",
+      "failure": "Retrieved scientific text changes agent policy or evaluator instructions.",
+      "required_control": "Treat source text as untrusted data, separate control instructions, and include safe injection diagnostics."
+    },
+    {
+      "threat_id": "abstention_only_safety_gain",
+      "failure": "A policy appears safer only because it refuses nearly every task.",
+      "required_control": "Compare risk at matched coverage, cost, and wall time and report the complete Pareto surface."
+    },
+    {
+      "threat_id": "automation_bias",
+      "failure": "Readable provenance creates unjustified reviewer trust in an incorrect trajectory.",
+      "required_control": "Measure error detection, confidence calibration, and unsupported acceptance in a blinded human study."
+    },
+    {
+      "threat_id": "benchmark_author_overfitting",
+      "failure": "Tasks are retained or edited after observing which items frontier models fail.",
+      "required_control": "Freeze eligibility and sampling before baseline runs and prohibit model-failure-based filtering."
+    }
+  ],
+  "nonclaims": [
+    "A launch-band score is an observational target, not a task-selection criterion.",
+    "Design seeds and synthetic mutations are not benchmark performance evidence.",
+    "Cryptographic provenance does not establish source truth or scientific independence.",
+    "Full-trajectory success does not establish therapeutic efficacy or clinical utility.",
+    "No real independently curated ADDS-Frontier board result is currently claimed."
+  ],
+  "next_milestone": {
+    "name": "Five-family canonical pilot board",
+    "canonical_tasks_per_family": 8,
+    "status": "not_started",
+    "benchmark_evidence_claimed": false,
+    "exit_condition": "Forty baseline-blind, expert-solvable canonical tasks and at least five preregistered mutations per task pass oracle, lineage, cutoff, and replay review before any frontier model is scored."
+  },
+  "integrity_sha256": "59abdc8b0b2d5039f21ee2b0d7d434c2818102ffaf380aa311a17a81d7f91731"
+}

@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_tokenizer_independent_evaluation_report.schema.json",
+  "title": "ADDS-Frontier private independent tokenizer-family evaluation report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "protocol_integrity_sha256",
+    "parent_summary_integrity_sha256",
+    "private_packet_set_integrity_sha256",
+    "private_key_set_integrity_sha256",
+    "compiled_on",
+    "tokenizer_implementations",
+    "records",
+    "results_used_for_retuning",
+    "upstream_selection_changed",
+    "nonclaims",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-tokenizer-independent-evaluation-report.v1"},
+    "protocol_id": {"const": "adds-frontier-tokenizer-independent-family-evaluation-v1"},
+    "protocol_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "parent_summary_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_packet_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_key_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "tokenizer_implementations": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/implementation"},
+      "allOf": [
+        {"contains": {"type": "object", "required": ["evaluation_id"], "properties": {"evaluation_id": {"const": "bert_wordpiece_uncased"}}}},
+        {"contains": {"type": "object", "required": ["evaluation_id"], "properties": {"evaluation_id": {"const": "t5_sentencepiece_unigram"}}}}
+      ]
+    },
+    "records": {
+      "type": "array",
+      "minItems": 30,
+      "maxItems": 30,
+      "items": {"$ref": "#/$defs/record"}
+    },
+    "results_used_for_retuning": {"const": false},
+    "upstream_selection_changed": {"const": false},
+    "nonclaims": {"type": "array", "minItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluation_id",
+        "algorithm_family",
+        "package",
+        "package_version",
+        "model_repository",
+        "model_revision",
+        "license",
+        "asset_path",
+        "source_asset_url",
+        "source_asset_sha256",
+        "source_asset_size_bytes",
+        "normalization_policy",
+        "special_token_policy"
+      ],
+      "properties": {
+        "evaluation_id": {"enum": ["bert_wordpiece_uncased", "t5_sentencepiece_unigram"]},
+        "algorithm_family": {"enum": ["wordpiece", "sentencepiece_unigram"]},
+        "package": {"enum": ["tokenizers", "sentencepiece"]},
+        "package_version": {"enum": ["0.23.1", "0.2.2"]},
+        "model_repository": {"type": "string", "minLength": 1},
+        "model_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "license": {"const": "apache-2.0"},
+        "asset_path": {"enum": ["vocab.txt", "spiece.model"]},
+        "source_asset_url": {"type": "string", "format": "uri"},
+        "source_asset_sha256": {"$ref": "#/$defs/sha256"},
+        "source_asset_size_bytes": {"type": "integer", "minimum": 1},
+        "normalization_policy": {"type": "string", "minLength": 1},
+        "special_token_policy": {"type": "string", "minLength": 1},
+        "continuation_prefix": {"const": "##"},
+        "word_start_marker": {"const": "\u2581"}
+      }
+    },
+    "component_distances": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "piece_byte_length_l1_distance",
+        "boundary_class_l1_distance",
+        "combined_l1_distance"
+      ],
+      "properties": {
+        "piece_byte_length_l1_distance": {"type": "integer", "minimum": 0},
+        "boundary_class_l1_distance": {"type": "integer", "minimum": 0},
+        "combined_l1_distance": {"type": "integer", "minimum": 0}
+      }
+    },
+    "tokenizer_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluation_id",
+        "candidate_token_count",
+        "baseline_token_count",
+        "optimized_token_count",
+        "baseline_token_count_absolute_gap",
+        "optimized_token_count_absolute_gap",
+        "baseline_profile_component_distances",
+        "optimized_profile_component_distances",
+        "profile_nonregression_passed",
+        "profile_strict_improvement_passed",
+        "component_nonregression_count",
+        "component_strict_improvement_count",
+        "token_count_gap_nonregression_passed",
+        "token_count_gap_strict_improvement_passed",
+        "optimized_exact_token_count_match_passed",
+        "candidate_unknown_token_count",
+        "baseline_unknown_token_count",
+        "optimized_unknown_token_count"
+      ],
+      "properties": {
+        "evaluation_id": {"enum": ["bert_wordpiece_uncased", "t5_sentencepiece_unigram"]},
+        "candidate_token_count": {"type": "integer", "minimum": 1},
+        "baseline_token_count": {"type": "integer", "minimum": 1},
+        "optimized_token_count": {"type": "integer", "minimum": 1},
+        "baseline_token_count_absolute_gap": {"type": "integer", "minimum": 0},
+        "optimized_token_count_absolute_gap": {"type": "integer", "minimum": 0},
+        "baseline_profile_component_distances": {"$ref": "#/$defs/component_distances"},
+        "optimized_profile_component_distances": {"$ref": "#/$defs/component_distances"},
+        "profile_nonregression_passed": {"type": "boolean"},
+        "profile_strict_improvement_passed": {"type": "boolean"},
+        "component_nonregression_count": {"type": "integer", "minimum": 0, "maximum": 2},
+        "component_strict_improvement_count": {"type": "integer", "minimum": 0, "maximum": 2},
+        "token_count_gap_nonregression_passed": {"type": "boolean"},
+        "token_count_gap_strict_improvement_passed": {"type": "boolean"},
+        "optimized_exact_token_count_match_passed": {"type": "boolean"},
+        "candidate_unknown_token_count": {"type": "integer", "minimum": 0},
+        "baseline_unknown_token_count": {"type": "integer", "minimum": 0},
+        "optimized_unknown_token_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packet_id",
+        "family_id",
+        "trial_zero_summary_commitment",
+        "optimized_placebo_task_commitment",
+        "tokenizer_results",
+        "all_profile_nonregression_passed",
+        "any_profile_strict_improvement_passed",
+        "all_token_count_gap_nonregression_passed"
+      ],
+      "properties": {
+        "packet_id": {"type": "string", "pattern": "^tokenizer-placebo-[0-9a-f]{20}$"},
+        "family_id": {"enum": ["placebo_transport", "placebo_schema", "placebo_audit"]},
+        "trial_zero_summary_commitment": {"$ref": "#/$defs/sha256"},
+        "optimized_placebo_task_commitment": {"$ref": "#/$defs/sha256"},
+        "tokenizer_results": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"$ref": "#/$defs/tokenizer_result"},
+          "allOf": [
+            {"contains": {"type": "object", "required": ["evaluation_id"], "properties": {"evaluation_id": {"const": "bert_wordpiece_uncased"}}}},
+            {"contains": {"type": "object", "required": ["evaluation_id"], "properties": {"evaluation_id": {"const": "t5_sentencepiece_unigram"}}}}
+          ]
+        },
+        "all_profile_nonregression_passed": {"type": "boolean"},
+        "any_profile_strict_improvement_passed": {"type": "boolean"},
+        "all_token_count_gap_nonregression_passed": {"type": "boolean"}
+      }
+    }
+  }
+}

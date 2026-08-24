@@ -1,0 +1,449 @@
+{
+  "schema_version": "adds.frontier-task-set.v1",
+  "protocol_id": "adds-frontier-v1",
+  "set_id": "adds-frontier-development-tranche-v1",
+  "set_role": "public_development_only",
+  "benchmark_evidence_claimed": false,
+  "baseline_model_runs_started": false,
+  "tasks": [
+    {
+      "task_id": "frontier-dev-lineage-001",
+      "family_id": "evidence_lineage_trap",
+      "seed_id": "frontier-seed-lineage-001",
+      "disease_area": "rheumatoid_arthritis",
+      "prompt": "Determine whether apparently distinct preclinical and clinical evidence artifacts authorize independent corroboration, preserving underlying study lineage and issuing a bounded next action.",
+      "stage_budget": 6,
+      "tool_call_budget": 12,
+      "evidence_nodes": [
+        {
+          "evidence_id": "ev-lineage-preclinical",
+          "artifact_path": "docs/20_preclinical_provider_ingestion.md",
+          "artifact_sha256": "3a9d33ff1beb44bf11105b5925dc3969af0eb5bcf13c8eec9cdd45c3c860d311",
+          "availability_date": "2026-07-20",
+          "lineage_id": "lineage-preclinical-provider",
+          "evidence_role": "context"
+        },
+        {
+          "evidence_id": "ev-lineage-ra-tensor",
+          "artifact_path": "docs/46_ra_olokizumab_source_disjoint_additive_tensor.md",
+          "artifact_sha256": "44b354639bad93c48b1b54e9e790369552d46f09c7fe3e6a9fb87c5b7748ca37",
+          "availability_date": "2026-08-20",
+          "lineage_id": "lineage-olokizumab-trial-program",
+          "evidence_role": "source"
+        }
+      ],
+      "lineage_edges": [
+        {
+          "parent_evidence_id": "ev-lineage-preclinical",
+          "child_evidence_id": "ev-lineage-ra-tensor",
+          "relationship": "corroborates"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "s01",
+          "stage_kind": "retrieve",
+          "as_of_date": "2026-07-20",
+          "accessible_evidence_ids": ["ev-lineage-preclinical"],
+          "required_gates": ["evidence_retrieval_complete"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s02",
+          "stage_kind": "identity",
+          "as_of_date": "2026-07-20",
+          "accessible_evidence_ids": ["ev-lineage-preclinical"],
+          "required_gates": ["identity_continuity"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s03",
+          "stage_kind": "lineage",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-lineage-preclinical", "ev-lineage-ra-tensor"],
+          "required_gates": ["lineage_independence", "witness_valid"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s04",
+          "stage_kind": "synthesis",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-lineage-preclinical", "ev-lineage-ra-tensor"],
+          "required_gates": ["risk_flags_correct"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s05",
+          "stage_kind": "action",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-lineage-preclinical", "ev-lineage-ra-tensor"],
+          "required_gates": ["disposition_correct", "blocker_certificate_valid"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s06",
+          "stage_kind": "replay",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-lineage-preclinical", "ev-lineage-ra-tensor"],
+          "required_gates": ["exact_replay"],
+          "max_tool_calls": 2
+        }
+      ],
+      "nonclaim": "This public development task is not a private pilot-board item or benchmark evidence."
+    },
+    {
+      "task_id": "frontier-dev-temporal-001",
+      "family_id": "temporal_reversal",
+      "seed_id": "frontier-seed-temporal-001",
+      "disease_area": "sickle_cell_disease",
+      "prompt": "Reconstruct the authorized program state before and after a later evidence packet becomes admissible, without using retrieval time as evidence availability time.",
+      "stage_budget": 6,
+      "tool_call_budget": 12,
+      "evidence_nodes": [
+        {
+          "evidence_id": "ev-temporal-scd-slice",
+          "artifact_path": "docs/12_scd_vertical_slice.md",
+          "artifact_sha256": "26770fe23757f40951173ac2186a4446531226adcffc9f21cb5ab6972685654f",
+          "availability_date": "2026-07-12",
+          "lineage_id": "lineage-scd-vertical-slice",
+          "evidence_role": "decision_record"
+        },
+        {
+          "evidence_id": "ev-temporal-cutoff-eval",
+          "artifact_path": "docs/25_cutoff_safe_policy_evaluation.md",
+          "artifact_sha256": "b97ed8cbdfd0deb0745504ee1d885bcab48f638a10312ff90544738d150adabe",
+          "availability_date": "2026-07-23",
+          "lineage_id": "lineage-cutoff-evaluation",
+          "evidence_role": "source"
+        }
+      ],
+      "lineage_edges": [
+        {
+          "parent_evidence_id": "ev-temporal-scd-slice",
+          "child_evidence_id": "ev-temporal-cutoff-eval",
+          "relationship": "supersedes"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "s01",
+          "stage_kind": "retrieve",
+          "as_of_date": "2026-07-12",
+          "accessible_evidence_ids": ["ev-temporal-scd-slice"],
+          "required_gates": ["evidence_retrieval_complete"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s02",
+          "stage_kind": "chronology",
+          "as_of_date": "2026-07-12",
+          "accessible_evidence_ids": ["ev-temporal-scd-slice"],
+          "required_gates": ["cutoff_compliance", "risk_flags_correct"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s03",
+          "stage_kind": "synthesis",
+          "as_of_date": "2026-07-12",
+          "accessible_evidence_ids": ["ev-temporal-scd-slice"],
+          "required_gates": ["uncertainty_handling"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s04",
+          "stage_kind": "chronology",
+          "as_of_date": "2026-07-23",
+          "accessible_evidence_ids": ["ev-temporal-scd-slice", "ev-temporal-cutoff-eval"],
+          "required_gates": ["cutoff_compliance", "witness_valid"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s05",
+          "stage_kind": "action",
+          "as_of_date": "2026-07-23",
+          "accessible_evidence_ids": ["ev-temporal-scd-slice", "ev-temporal-cutoff-eval"],
+          "required_gates": ["disposition_correct", "next_action_correct"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s06",
+          "stage_kind": "replay",
+          "as_of_date": "2026-07-23",
+          "accessible_evidence_ids": ["ev-temporal-scd-slice", "ev-temporal-cutoff-eval"],
+          "required_gates": ["exact_replay"],
+          "max_tool_calls": 2
+        }
+      ],
+      "nonclaim": "This public development task is not a private pilot-board item or benchmark evidence."
+    },
+    {
+      "task_id": "frontier-dev-handoff-001",
+      "family_id": "translational_handoff",
+      "seed_id": "frontier-seed-handoff-001",
+      "disease_area": "synthetic_immune_perturbation",
+      "prompt": "Carry a contextual perturbation observation into a clinical planning state while preserving disease, target, model-system, and claim identity and preventing unsupported promotion.",
+      "stage_budget": 6,
+      "tool_call_budget": 12,
+      "evidence_nodes": [
+        {
+          "evidence_id": "ev-handoff-bridge",
+          "artifact_path": "docs/39_biohub_translational_evidence_bridge.md",
+          "artifact_sha256": "b39b8309d5dd5db8fd0543caa2ea22def769fb2071b92ede81b90831e9501bf8",
+          "availability_date": "2026-08-19",
+          "lineage_id": "lineage-translational-handoff",
+          "evidence_role": "context"
+        },
+        {
+          "evidence_id": "ev-handoff-m6",
+          "artifact_path": "docs/40_upstream_translational_handoff.md",
+          "artifact_sha256": "9da02e7aaf7444ae0984f0a04fafa885072142662b62617f7238d3085a4816c5",
+          "availability_date": "2026-08-20",
+          "lineage_id": "lineage-translational-handoff",
+          "evidence_role": "derivative"
+        }
+      ],
+      "lineage_edges": [
+        {
+          "parent_evidence_id": "ev-handoff-bridge",
+          "child_evidence_id": "ev-handoff-m6",
+          "relationship": "derives_from"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "s01",
+          "stage_kind": "retrieve",
+          "as_of_date": "2026-08-19",
+          "accessible_evidence_ids": ["ev-handoff-bridge"],
+          "required_gates": ["evidence_retrieval_complete"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s02",
+          "stage_kind": "identity",
+          "as_of_date": "2026-08-19",
+          "accessible_evidence_ids": ["ev-handoff-bridge"],
+          "required_gates": ["identity_continuity"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s03",
+          "stage_kind": "alignment",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-handoff-bridge", "ev-handoff-m6"],
+          "required_gates": ["cutoff_compliance", "uncertainty_handling"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s04",
+          "stage_kind": "synthesis",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-handoff-bridge", "ev-handoff-m6"],
+          "required_gates": ["risk_flags_correct", "witness_valid"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s05",
+          "stage_kind": "action",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-handoff-bridge", "ev-handoff-m6"],
+          "required_gates": ["disposition_correct", "next_action_correct", "blocker_certificate_valid", "budget_compliance"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s06",
+          "stage_kind": "replay",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-handoff-bridge", "ev-handoff-m6"],
+          "required_gates": ["exact_replay"],
+          "max_tool_calls": 2
+        }
+      ],
+      "nonclaim": "This public development task is not a private pilot-board item or benchmark evidence."
+    },
+    {
+      "task_id": "frontier-dev-exchangeability-001",
+      "family_id": "non_exchangeable_replication",
+      "seed_id": "frontier-seed-exchangeability-001",
+      "disease_area": "rheumatoid_arthritis",
+      "prompt": "Decide whether same-candidate ACR20 trial evidence supports replication or transport after population, phase, endpoint, timeframe, estimand, and risk-of-bias checks.",
+      "stage_budget": 6,
+      "tool_call_budget": 12,
+      "evidence_nodes": [
+        {
+          "evidence_id": "ev-exchange-transport",
+          "artifact_path": "docs/47_ra_olokizumab_population_stratified_transport.md",
+          "artifact_sha256": "a663f526df73aaa4b0c22802b84a1c2ec99243e450692015f593962deff6939e",
+          "availability_date": "2026-08-20",
+          "lineage_id": "lineage-olokizumab-transport-diagnostic",
+          "evidence_role": "context"
+        },
+        {
+          "evidence_id": "ev-exchange-replication",
+          "artifact_path": "docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md",
+          "artifact_sha256": "298a50986e2f7d0ebee0b5b46318091689159947f8f6e7862957f924eb29d7d2",
+          "availability_date": "2026-08-20",
+          "lineage_id": "lineage-olokizumab-mtx-ir-replication",
+          "evidence_role": "source"
+        },
+        {
+          "evidence_id": "ev-exchange-rob",
+          "artifact_path": "docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md",
+          "artifact_sha256": "84c624ce37a634598a685f222aac6bc6dd42d7d5a7803cfe30f7dcff9c032e24",
+          "availability_date": "2026-08-20",
+          "lineage_id": "lineage-olokizumab-mtx-ir-rob",
+          "evidence_role": "contradiction"
+        }
+      ],
+      "lineage_edges": [
+        {
+          "parent_evidence_id": "ev-exchange-transport",
+          "child_evidence_id": "ev-exchange-replication",
+          "relationship": "supersedes"
+        },
+        {
+          "parent_evidence_id": "ev-exchange-replication",
+          "child_evidence_id": "ev-exchange-rob",
+          "relationship": "corroborates"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "s01",
+          "stage_kind": "retrieve",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-exchange-transport"],
+          "required_gates": ["evidence_retrieval_complete"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s02",
+          "stage_kind": "identity",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication"],
+          "required_gates": ["identity_continuity", "lineage_independence"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s03",
+          "stage_kind": "alignment",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication"],
+          "required_gates": ["endpoint_population_alignment"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s04",
+          "stage_kind": "synthesis",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication", "ev-exchange-rob"],
+          "required_gates": ["uncertainty_handling", "risk_flags_correct", "witness_valid"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s05",
+          "stage_kind": "action",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication", "ev-exchange-rob"],
+          "required_gates": ["disposition_correct", "next_action_correct", "blocker_certificate_valid"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s06",
+          "stage_kind": "replay",
+          "as_of_date": "2026-08-20",
+          "accessible_evidence_ids": ["ev-exchange-transport", "ev-exchange-replication", "ev-exchange-rob"],
+          "required_gates": ["exact_replay"],
+          "max_tool_calls": 2
+        }
+      ],
+      "nonclaim": "This public development task is not a private pilot-board item or benchmark evidence."
+    },
+    {
+      "task_id": "frontier-dev-budget-001",
+      "family_id": "budgeted_evidence_resolution",
+      "seed_id": "frontier-seed-budget-001",
+      "disease_area": "cross_disease_clinical_planning",
+      "prompt": "Select the bounded evidence action with the highest decision relevance under a fixed tool budget, preserving source commitments through reviewer refresh and replay.",
+      "stage_budget": 6,
+      "tool_call_budget": 12,
+      "evidence_nodes": [
+        {
+          "evidence_id": "ev-budget-tensor",
+          "artifact_path": "docs/27_clinical_evidence_tensor_and_voi.md",
+          "artifact_sha256": "b411645782b112a0c112e4d01d27eaaf594293743b0020d714445123feb77828",
+          "availability_date": "2026-07-25",
+          "lineage_id": "lineage-clinical-decision-loop",
+          "evidence_role": "source"
+        },
+        {
+          "evidence_id": "ev-budget-closed-loop",
+          "artifact_path": "docs/28_clinical_evidence_closed_loop.md",
+          "artifact_sha256": "c6fca246d48f18ef3ed8689cb501740edd2e9b51f705eb3d6e7a0522d2bd9b3b",
+          "availability_date": "2026-07-26",
+          "lineage_id": "lineage-clinical-decision-loop",
+          "evidence_role": "derivative"
+        }
+      ],
+      "lineage_edges": [
+        {
+          "parent_evidence_id": "ev-budget-tensor",
+          "child_evidence_id": "ev-budget-closed-loop",
+          "relationship": "derives_from"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "s01",
+          "stage_kind": "retrieve",
+          "as_of_date": "2026-07-25",
+          "accessible_evidence_ids": ["ev-budget-tensor"],
+          "required_gates": ["evidence_retrieval_complete"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s02",
+          "stage_kind": "identity",
+          "as_of_date": "2026-07-25",
+          "accessible_evidence_ids": ["ev-budget-tensor"],
+          "required_gates": ["identity_continuity"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s03",
+          "stage_kind": "synthesis",
+          "as_of_date": "2026-07-26",
+          "accessible_evidence_ids": ["ev-budget-tensor", "ev-budget-closed-loop"],
+          "required_gates": ["uncertainty_handling", "witness_valid"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s04",
+          "stage_kind": "action",
+          "as_of_date": "2026-07-26",
+          "accessible_evidence_ids": ["ev-budget-tensor", "ev-budget-closed-loop"],
+          "required_gates": ["next_action_correct", "budget_compliance"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s05",
+          "stage_kind": "action",
+          "as_of_date": "2026-07-26",
+          "accessible_evidence_ids": ["ev-budget-tensor", "ev-budget-closed-loop"],
+          "required_gates": ["disposition_correct", "risk_flags_correct", "blocker_certificate_valid"],
+          "max_tool_calls": 2
+        },
+        {
+          "stage_id": "s06",
+          "stage_kind": "replay",
+          "as_of_date": "2026-07-26",
+          "accessible_evidence_ids": ["ev-budget-tensor", "ev-budget-closed-loop"],
+          "required_gates": ["exact_replay"],
+          "max_tool_calls": 2
+        }
+      ],
+      "nonclaim": "This public development task is not a private pilot-board item or benchmark evidence."
+    }
+  ],
+  "integrity_sha256": "6ce258b44c8d4c0b4b8c43dd1b48d0add9677df518e26d2ec841064012ac8242"
+}

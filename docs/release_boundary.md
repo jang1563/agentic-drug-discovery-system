@@ -20,6 +20,16 @@ This repository uses a conservative boundary so that future public or collaborat
 - Real policy checkpoints and policy-run artifacts containing full state or tool ledgers.
 - Real sealed boards, cached episode packets, label vaults, commitment nonces, policy submissions,
   and per-episode evaluations.
+- Real ADDS-Frontier task packets, oracle bytes, commitment nonces, exact disease/program
+  identities, curator identities, canary tokens, detailed preflight records, semantic-review arm
+  payloads, sealed mappings, reviewer responses, workflow and resolution ledgers, triage records,
+  canonical unblinding/replay details, resolution receipts, independent-oracle challenge packets,
+  keys, assignments, responses, comparisons, and ledgers, oracle-fragility detailed reports,
+  oracle-support curation packets, oracle-transition detailed reports, coupled-augmentation matched
+  records and sealed candidate/control bindings, coupled-placebo three-arm or tokenizer-placebo
+  five-arm packets, role keys, evidence text, per-placebo evaluation-only tokenizer diagnostics,
+  independent-family per-placebo reports, and frozen WordPiece/SentencePiece model assets,
+  adjudication records, admission records, and model submissions.
 - Real held-out curator identities, affiliation records, attestations, evidence snapshots, votes,
   rationales, adjudications, curation manifests, and per-episode curation results.
 - Real clinical decision policies, action catalogs, evidence tensors, and compiled decision
@@ -53,6 +63,13 @@ These may become release assets after a separate audit:
 - Payload-free source receipts and ingestion review reports after separate scientific and boundary review.
 - Aggregated benchmark metrics without evaluator-only labels or raw source snapshots.
 - Payload-free sealed-evaluation hashes and aggregate policy metrics after leakage review.
+- ADDS-Frontier allocation protocols, empty slot registries, private-payload schemas, salted
+  commitments, payload-free aggregate authoring progress, and payload-free automated preflight
+  and semantic-review readiness/workflow/resolution, independent-oracle challenge, and aggregate
+  oracle-fragility, oracle-support curation, oracle-transition audit, and matched coupled-
+  augmentation, coupled-placebo, and tokenizer-placebo readiness summaries, including payload-free
+  post-selection tokenizer diagnostics and locally pre-sealed independent-family protocols and
+  aggregate results, after boundary and integrity review.
 - Preregistered held-out protocols and payload-free stage-stratified aggregate reports after
   curator-privacy, label-leakage, and small-stratum review.
 - Compiler-generated synthetic clinical evidence decision packages after schema and provenance

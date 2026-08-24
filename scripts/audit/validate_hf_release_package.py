@@ -97,6 +97,9 @@ REQUIRED_HF_INCLUDES = {
     "docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md",
     "docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json",
     "docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json",
+    "docs/50_adds_frontier_research_protocol.md",
+    "docs/adds_frontier_research_protocol.json",
+    "docs/adds_frontier_board_protocol.json",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "github/README.md",
@@ -141,6 +144,7 @@ REQUIRED_HF_INCLUDES = {
     "tests/test_research_readiness.py",
     "tests/test_translational_handoff.py",
     "tests/test_cross_disease_clinical_conformance.py",
+    "tests/test_frontier_contract.py",
     "tests/fixtures/clinicaltrials_gov_study.synthetic.json",
     "benchmark/",
     "release_manifest.json",
@@ -164,6 +168,7 @@ REQUIRED_HF_EXCLUSIONS = {
     "raw source bundles, real provider review jobs, and ingestion runs",
     "real policy checkpoints and policy-run artifacts",
     "real sealed evaluation boards, cached episode packets, label vaults, commitment nonces, policy submissions, and per-episode evaluations",
+    "real ADDS-Frontier task packets, oracle bytes, commitment nonces, exact disease/program identities, curator identities, canary tokens, detailed preflight records, semantic-review arm payloads, sealed mappings, reviewer responses, workflow and resolution ledgers, triage records, canonical unblinding/replay details, resolution receipts, independent-oracle challenge packets, keys, assignments, responses, comparisons, and ledgers, oracle-fragility detailed reports, oracle-support curation packets, oracle-transition detailed reports, coupled-augmentation matched records and sealed candidate/control bindings, coupled-placebo three-arm and tokenizer-placebo five-arm packets, role keys, evidence text, per-placebo evaluation-only tokenizer diagnostics, independent-family per-placebo reports, and frozen WordPiece/SentencePiece model assets, adjudication records, admission records, and model submissions",
     "real held-out curator identities, attestations, votes, adjudications, curation manifests, and per-episode curation results",
     "real clinical decision policies, action catalogs, evidence tensors, and compiled decision packages",
     "real clinical cohort manifests, accepted-state bindings, package diagnostics, and cohort reports",
@@ -237,6 +242,9 @@ REQUIRED_PACKAGE_FILES = {
     "docs/49_ra_olokizumab_mtx_ir_outcome_risk_of_bias.md",
     "docs/ra_olokizumab_mtx_ir_risk_of_bias_spec.json",
     "docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json",
+    "docs/50_adds_frontier_research_protocol.md",
+    "docs/adds_frontier_research_protocol.json",
+    "docs/adds_frontier_board_protocol.json",
     "docs/retrospective_policy_evaluation_snapshot.json",
     "docs/public_evidence_summary.json",
     "pyproject.toml",
@@ -264,6 +272,23 @@ REQUIRED_PACKAGE_FILES = {
     "agentic_drug_discovery/clinical_outcome_cluster_superpopulation.py",
     "agentic_drug_discovery/research_readiness.py",
     "agentic_drug_discovery/research_readiness_cli.py",
+    "agentic_drug_discovery/frontier.py",
+    "agentic_drug_discovery/frontier_cli.py",
+    "agentic_drug_discovery/frontier_tasks.py",
+    "agentic_drug_discovery/frontier_board.py",
+    "agentic_drug_discovery/frontier_calibration.py",
+    "agentic_drug_discovery/frontier_preflight.py",
+    "agentic_drug_discovery/frontier_semantic_review.py",
+    "agentic_drug_discovery/frontier_semantic_workflow.py",
+    "agentic_drug_discovery/frontier_semantic_resolution.py",
+    "agentic_drug_discovery/frontier_oracle_challenge.py",
+    "agentic_drug_discovery/frontier_oracle_fragility.py",
+    "agentic_drug_discovery/frontier_oracle_support_curation.py",
+    "agentic_drug_discovery/frontier_oracle_transition_audit.py",
+    "agentic_drug_discovery/frontier_coupled_augmentation.py",
+    "agentic_drug_discovery/frontier_coupled_placebo.py",
+    "agentic_drug_discovery/frontier_tokenizer_placebo.py",
+    "agentic_drug_discovery/frontier_tokenizer_independent_evaluation.py",
     "agentic_drug_discovery/translational_handoff.py",
     "agentic_drug_discovery/translational_handoff_cli.py",
     "agentic_drug_discovery/clinical_closed_loop.py",
@@ -388,6 +413,71 @@ REQUIRED_PACKAGE_FILES = {
     "rl_env/specs/clinical_outcome_cluster_superpopulation_report.example.json",
     "rl_env/specs/clinical_outcome_cluster_superpopulation_summary.schema.json",
     "rl_env/specs/clinical_outcome_cluster_superpopulation_summary.example.json",
+    "rl_env/specs/frontier_research_protocol.schema.json",
+    "rl_env/specs/frontier_pilot_seed_manifest.schema.json",
+    "rl_env/specs/frontier_pilot_seed_manifest.example.json",
+    "rl_env/specs/frontier_development_task_set.schema.json",
+    "rl_env/specs/frontier_development_task_set.example.json",
+    "rl_env/specs/frontier_development_oracle_set.schema.json",
+    "rl_env/specs/frontier_development_oracle_set.example.json",
+    "rl_env/specs/frontier_development_curation_tranche.schema.json",
+    "rl_env/specs/frontier_development_curation_tranche.example.json",
+    "rl_env/specs/frontier_board_protocol.schema.json",
+    "rl_env/specs/frontier_private_board_slots.schema.json",
+    "rl_env/specs/frontier_private_board_slots.example.json",
+    "rl_env/specs/frontier_calibration_authoring_progress.schema.json",
+    "rl_env/specs/frontier_calibration_authoring_progress.json",
+    "rl_env/specs/frontier_private_calibration_task_set.schema.json",
+    "rl_env/specs/frontier_private_calibration_oracle_set.schema.json",
+    "rl_env/specs/frontier_private_calibration_preflight.schema.json",
+    "rl_env/specs/frontier_calibration_preflight_summary.schema.json",
+    "rl_env/specs/frontier_calibration_preflight_summary.json",
+    "rl_env/specs/frontier_private_semantic_review_packet_set.schema.json",
+    "rl_env/specs/frontier_private_semantic_review_key_set.schema.json",
+    "rl_env/specs/frontier_semantic_review_readiness_summary.schema.json",
+    "rl_env/specs/frontier_semantic_review_readiness_summary.json",
+    "rl_env/specs/frontier_private_semantic_review_response.schema.json",
+    "rl_env/specs/frontier_private_semantic_review_triage.schema.json",
+    "rl_env/specs/frontier_private_semantic_review_workflow_ledger.schema.json",
+    "rl_env/specs/frontier_semantic_review_workflow_summary.schema.json",
+    "rl_env/specs/frontier_semantic_review_workflow_summary.json",
+    "rl_env/specs/frontier_private_semantic_review_canonical_replay.schema.json",
+    "rl_env/specs/frontier_private_semantic_review_resolution_receipt.schema.json",
+    "rl_env/specs/frontier_private_semantic_review_resolution_ledger.schema.json",
+    "rl_env/specs/frontier_semantic_review_resolution_summary.schema.json",
+    "rl_env/specs/frontier_semantic_review_resolution_summary.json",
+    "rl_env/specs/frontier_private_oracle_challenge_packet_set.schema.json",
+    "rl_env/specs/frontier_private_oracle_challenge_key_set.schema.json",
+    "rl_env/specs/frontier_private_oracle_challenge_response.schema.json",
+    "rl_env/specs/frontier_private_oracle_challenge_comparison.schema.json",
+    "rl_env/specs/frontier_private_oracle_challenge_ledger.schema.json",
+    "rl_env/specs/frontier_oracle_challenge_readiness_summary.schema.json",
+    "rl_env/specs/frontier_oracle_challenge_readiness_summary.json",
+    "rl_env/specs/frontier_private_oracle_fragility_report.schema.json",
+    "rl_env/specs/frontier_oracle_fragility_summary.schema.json",
+    "rl_env/specs/frontier_oracle_fragility_summary.json",
+    "rl_env/specs/frontier_private_oracle_support_curation_packet_set.schema.json",
+    "rl_env/specs/frontier_oracle_support_curation_summary.schema.json",
+    "rl_env/specs/frontier_oracle_support_curation_summary.json",
+    "rl_env/specs/frontier_private_oracle_transition_audit_report.schema.json",
+    "rl_env/specs/frontier_oracle_transition_audit_summary.schema.json",
+    "rl_env/specs/frontier_oracle_transition_audit_summary.json",
+    "rl_env/specs/frontier_private_coupled_augmentation_packet_set.schema.json",
+    "rl_env/specs/frontier_coupled_augmentation_summary.schema.json",
+    "rl_env/specs/frontier_coupled_augmentation_summary.json",
+    "rl_env/specs/frontier_private_coupled_placebo_packet_set.schema.json",
+    "rl_env/specs/frontier_private_coupled_placebo_key_set.schema.json",
+    "rl_env/specs/frontier_coupled_placebo_summary.schema.json",
+    "rl_env/specs/frontier_coupled_placebo_summary.json",
+    "rl_env/specs/frontier_private_tokenizer_placebo_packet_set.schema.json",
+    "rl_env/specs/frontier_private_tokenizer_placebo_key_set.schema.json",
+    "rl_env/specs/frontier_tokenizer_placebo_summary.schema.json",
+    "rl_env/specs/frontier_tokenizer_placebo_summary.json",
+    "rl_env/specs/frontier_tokenizer_independent_evaluation_protocol.schema.json",
+    "rl_env/specs/frontier_tokenizer_independent_evaluation_protocol.json",
+    "rl_env/specs/frontier_private_tokenizer_independent_evaluation_report.schema.json",
+    "rl_env/specs/frontier_tokenizer_independent_evaluation_summary.schema.json",
+    "rl_env/specs/frontier_tokenizer_independent_evaluation_summary.json",
     "rl_env/specs/biohub_research_readiness.schema.json",
     "rl_env/specs/translational_handoff.schema.json",
     "rl_env/specs/translational_handoff.example.json",
@@ -442,6 +532,7 @@ REQUIRED_PACKAGE_FILES = {
     "tests/test_research_readiness.py",
     "tests/test_translational_handoff.py",
     "tests/test_cross_disease_clinical_conformance.py",
+    "tests/test_frontier_contract.py",
     "tests/fixtures/clinicaltrials_gov_study.synthetic.json",
     "scripts/audit/validate_policy_evaluation_snapshot.py",
     "scripts/audit/validate_biohub_research_readiness.py",
@@ -650,9 +741,7 @@ def validate_source() -> tuple[list[str], dict]:
                 "public Hugging Face package must use release_stage public_release"
             )
         if release_manifest.get("release_stage") != "public_release":
-            errors.append(
-                "canonical manifest must use release_stage public_release"
-            )
+            errors.append("canonical manifest must use release_stage public_release")
         if manifest.get("last_public_release_version") != manifest.get(
             "release_version"
         ):
@@ -685,15 +774,11 @@ def validate_source() -> tuple[list[str], dict]:
         if canonical_hf.get("current_public_version") != manifest.get(
             "release_version"
         ):
-            errors.append(
-                "canonical Hugging Face current_public_version must match"
-            )
+            errors.append("canonical Hugging Face current_public_version must match")
         if manifest.get("publication_record") != release_manifest.get(
             "publication_record"
         ):
-            errors.append(
-                "Hugging Face and canonical publication records must match"
-            )
+            errors.append("Hugging Face and canonical publication records must match")
 
     include = set(manifest.get("include") or [])
     exclude = set(manifest.get("exclude") or [])

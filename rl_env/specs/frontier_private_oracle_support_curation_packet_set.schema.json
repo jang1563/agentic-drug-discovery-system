@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_oracle_support_curation_packet_set.schema.json",
+  "title": "ADDS-Frontier private oracle support curation packet set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "curation_id", "protocol_id", "board_id", "compiled_on", "task_set_integrity_sha256", "oracle_set_integrity_sha256", "private_preflight_integrity_sha256", "private_fragility_report_integrity_sha256", "support_ablation_rule", "review_priority_rule", "packets", "task_packet_count", "canonical_stage_count", "planned_ablation_candidate_count", "applicable_ablation_candidate_count", "nonapplicable_ablation_candidate_count", "ablation_localization_pass_count", "witness_saturated_stage_count", "repeated_lineage_group_count", "lineage_redundancy_candidate_count", "support_selectivity_candidate_count", "protected_singleton_candidate_count", "witness_occurrence_role_counts", "applicable_candidate_role_counts", "machine_ablation_localization_ready", "oracle_revision_applied", "human_review_assignment_count", "human_decision_count", "challenge_assignment_authorized", "expert_solve_gate_changed", "admission_gate_changed", "integrity_sha256"],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-oracle-support-curation-packet-set.v1"},
+    "curation_id": {"const": "adds-frontier-oracle-support-curation-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "task_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "oracle_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_preflight_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_fragility_report_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "support_ablation_rule": {"const": "leave_one_witness_out_only_when_at_least_one_witness_remains"},
+    "review_priority_rule": {"const": "repeated_lineage_members_before_other_witness_saturation_candidates"},
+    "packets": {"type": "array", "minItems": 10, "maxItems": 10, "items": {"$ref": "#/$defs/packet"}},
+    "task_packet_count": {"const": 10},
+    "canonical_stage_count": {"const": 60},
+    "planned_ablation_candidate_count": {"type": "integer", "minimum": 60},
+    "applicable_ablation_candidate_count": {"type": "integer", "minimum": 0},
+    "nonapplicable_ablation_candidate_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "ablation_localization_pass_count": {"type": "integer", "minimum": 0},
+    "witness_saturated_stage_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "repeated_lineage_group_count": {"type": "integer", "minimum": 0},
+    "lineage_redundancy_candidate_count": {"type": "integer", "minimum": 0},
+    "support_selectivity_candidate_count": {"type": "integer", "minimum": 0},
+    "protected_singleton_candidate_count": {"type": "integer", "minimum": 0, "maximum": 60},
+    "witness_occurrence_role_counts": {"$ref": "#/$defs/role_counts"},
+    "applicable_candidate_role_counts": {"$ref": "#/$defs/role_counts"},
+    "machine_ablation_localization_ready": {"type": "boolean"},
+    "oracle_revision_applied": {"const": false},
+    "human_review_assignment_count": {"const": 0},
+    "human_decision_count": {"const": 0},
+    "challenge_assignment_authorized": {"const": false},
+    "expert_solve_gate_changed": {"const": false},
+    "admission_gate_changed": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonempty": {"type": "string", "minLength": 1},
+    "role_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "context", "contradiction", "derivative", "decision_record"],
+      "properties": {
+        "source": {"type": "integer", "minimum": 0},
+        "context": {"type": "integer", "minimum": 0},
+        "contradiction": {"type": "integer", "minimum": 0},
+        "derivative": {"type": "integer", "minimum": 0},
+        "decision_record": {"type": "integer", "minimum": 0}
+      }
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["disposition_correct", "next_action_correct", "risk_flags_correct", "witness_valid", "blocker_certificate_valid"],
+      "properties": {
+        "disposition_correct": {"const": true},
+        "next_action_correct": {"const": true},
+        "risk_flags_correct": {"const": true},
+        "witness_valid": {"const": false},
+        "blocker_certificate_valid": {"const": true}
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "evidence_id", "evidence_role", "lineage_id", "same_lineage_witness_count", "review_priority", "reason_codes", "ablation_applicable", "nonapplicability_reason", "counterfactual_witness_evidence_ids", "score_results", "isolated_witness_failure", "scientific_removal_supported", "automatic_oracle_edit_authorized"],
+      "properties": {
+        "candidate_id": {"type": "string", "pattern": "^ablation-[0-9a-f]{24}$"},
+        "evidence_id": {"$ref": "#/$defs/nonempty"},
+        "evidence_role": {"enum": ["source", "context", "contradiction", "derivative", "decision_record"]},
+        "lineage_id": {"$ref": "#/$defs/nonempty"},
+        "same_lineage_witness_count": {"type": "integer", "minimum": 1},
+        "review_priority": {"enum": ["lineage_redundancy_review", "support_selectivity_review", "protected_singleton"]},
+        "reason_codes": {"type": "array", "uniqueItems": true, "items": {"enum": ["witness_saturated_stage", "repeated_lineage_member", "would_leave_empty_witness_set"]}},
+        "ablation_applicable": {"type": "boolean"},
+        "nonapplicability_reason": {"type": ["string", "null"]},
+        "counterfactual_witness_evidence_ids": {"anyOf": [{"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonempty"}}, {"type": "null"}]},
+        "score_results": {"anyOf": [{"$ref": "#/$defs/scores"}, {"type": "null"}]},
+        "isolated_witness_failure": {"type": "boolean"},
+        "scientific_removal_supported": {"const": false},
+        "automatic_oracle_edit_authorized": {"const": false}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"ablation_applicable": {"const": true}}},
+          "then": {
+            "properties": {
+              "review_priority": {"enum": ["lineage_redundancy_review", "support_selectivity_review"]},
+              "nonapplicability_reason": {"type": "null"},
+              "counterfactual_witness_evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true},
+              "score_results": {"$ref": "#/$defs/scores"},
+              "isolated_witness_failure": {"const": true}
+            }
+          },
+          "else": {
+            "properties": {
+              "review_priority": {"const": "protected_singleton"},
+              "nonapplicability_reason": {"const": "would_leave_empty_witness_set"},
+              "counterfactual_witness_evidence_ids": {"type": "null"},
+              "score_results": {"type": "null"},
+              "isolated_witness_failure": {"const": false},
+              "reason_codes": {"contains": {"const": "would_leave_empty_witness_set"}}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"same_lineage_witness_count": {"minimum": 2}}},
+          "then": {
+            "properties": {
+              "review_priority": {"const": "lineage_redundancy_review"},
+              "reason_codes": {"contains": {"const": "repeated_lineage_member"}}
+            }
+          }
+        }
+      ]
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage_id", "accessible_evidence_count", "witness_count", "witness_saturated", "witness_lineage_count", "repeated_lineage_group_count", "candidates"],
+      "properties": {
+        "stage_id": {"type": "string", "pattern": "^s[0-9]{2}$"},
+        "accessible_evidence_count": {"type": "integer", "minimum": 1},
+        "witness_count": {"type": "integer", "minimum": 1},
+        "witness_saturated": {"type": "boolean"},
+        "witness_lineage_count": {"type": "integer", "minimum": 1},
+        "repeated_lineage_group_count": {"type": "integer", "minimum": 0},
+        "candidates": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/candidate"}}
+      }
+    },
+    "packet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slot_id", "task_id", "canonical_task_commitment", "author_oracle_commitment", "stage_records"],
+      "properties": {
+        "slot_id": {"type": "string", "pattern": "^slot-[a-z]+-[0-9]{2}$"},
+        "task_id": {"$ref": "#/$defs/nonempty"},
+        "canonical_task_commitment": {"$ref": "#/$defs/sha256"},
+        "author_oracle_commitment": {"$ref": "#/$defs/sha256"},
+        "stage_records": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/stage"}}
+      }
+    }
+  }
+}

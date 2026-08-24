@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_semantic_review_resolution_summary.schema.json",
+  "title": "ADDS-Frontier payload-free semantic-review resolution readiness",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "resolution_id", "workflow_id", "protocol_id", "board_id",
+    "status", "compiled_on", "workflow_summary_integrity_sha256",
+    "private_resolution_ledger_commitment", "packet_count",
+    "awaiting_reviewer_responses_count", "unblinding_contract_ready",
+    "canonical_replay_contract_ready", "resolution_receipt_contract_ready",
+    "gate_transition_rule_frozen", "unblinding_rule", "canonical_replay_rule",
+    "resolution_receipt_rule", "gate_transition_rule", "unblinded_packet_count",
+    "canonical_replay_count", "canonical_replay_pass_count",
+    "canonical_replay_failure_count", "resolution_receipt_count",
+    "independent_review_complete", "human_resolution_required", "board_admitted_count",
+    "baseline_model_runs_started", "benchmark_evidence_claimed",
+    "private_payload_published", "nonclaims", "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-semantic-review-resolution-summary.v1"},
+    "resolution_id": {"const": "adds-frontier-semantic-resolution-v1"},
+    "workflow_id": {"const": "adds-frontier-semantic-review-workflow-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "status": {"const": "resolution_contract_ready_no_unblinding"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "workflow_summary_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_resolution_ledger_commitment": {"$ref": "#/$defs/sha256"},
+    "packet_count": {"const": 20},
+    "awaiting_reviewer_responses_count": {"const": 20},
+    "unblinding_contract_ready": {"const": true},
+    "canonical_replay_contract_ready": {"const": true},
+    "resolution_receipt_contract_ready": {"const": true},
+    "gate_transition_rule_frozen": {"const": true},
+    "unblinding_rule": {"const": "three_response_consensus_candidate_before_sealed_key_opening"},
+    "canonical_replay_rule": {"const": "all_30_canonical_stage_components_exact"},
+    "resolution_receipt_rule": {"const": "human_resolution_receipt_before_admission_review"},
+    "gate_transition_rule": {"const": "resolution_evidence_never_changes_board_gates_automatically"},
+    "unblinded_packet_count": {"const": 0},
+    "canonical_replay_count": {"const": 0},
+    "canonical_replay_pass_count": {"const": 0},
+    "canonical_replay_failure_count": {"const": 0},
+    "resolution_receipt_count": {"const": 0},
+    "independent_review_complete": {"const": false},
+    "human_resolution_required": {"const": true},
+    "board_admitted_count": {"const": 0},
+    "baseline_model_runs_started": {"const": false},
+    "benchmark_evidence_claimed": {"const": false},
+    "private_payload_published": {"const": false},
+    "nonclaims": {
+      "type": "array", "minItems": 5, "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

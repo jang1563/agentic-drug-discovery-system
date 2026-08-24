@@ -41,8 +41,213 @@ disease/target slice.
 | Purpose | Build a verification-oriented, auditable decision environment for drug-discovery agents. |
 | Release status | 0.3.0.dev2 remains public on GitHub and Hugging Face. 0.3.0.dev3 is an unapproved, unmerged, and not-uploaded update candidate. 0.2.0 remains the latest tagged stable release. |
 | Core control frame | Verify, defer, stop, or flag rather than silently advancing uncertain claims. |
-| Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed or held-out boards, curator identities/attestations/votes/adjudications, real clinical decision policies/action catalogs/evidence tensors/packages, real clinical prediction submissions/outcome or dependence manifests/unit labels, real design/stress/sensitivity scenario elicitation or working records, unit-to-cluster assignments, cluster-level or unit-level scores, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
+| Not included | Raw source snapshots/bundles, real provider review jobs and ingestion runs, real sealed or held-out boards, private oracle-fragility stage/probe records, support-curation packets, transition-audit records, coupled-augmentation matched records, three-arm placebo packets/keys, five-arm tokenizer-placebo packets/keys and per-placebo evaluation diagnostics, or independent-family per-placebo reports and frozen tokenizer model assets, curator identities/attestations/votes/adjudications, real clinical decision policies/action catalogs/evidence tensors/packages, real clinical prediction submissions/outcome or dependence manifests/unit labels, real design/stress/sensitivity scenario elicitation or working records, unit-to-cluster assignments, cluster-level or unit-level scores, cached episode packets, label vaults, commitment nonces, policy submissions, per-episode evaluations, hidden labels, locked episodes, generated trajectories, run logs, credentials, local paths, or model weights. |
 | License | Apache-2.0. |
+
+## Flagship Frontier Direction
+
+**ADDS-Frontier** makes long-horizon, evidence-authorized drug-discovery trajectories the
+flagship research endpoint. A trajectory succeeds only when every retrieval, identity,
+chronology, lineage, endpoint/population, uncertainty, action, budget, witness, blocker, and
+replay gate passes with zero unauthorized commits. Existing fixed-slice results remain diagnostic
+controls rather than substitutes for this full-trajectory endpoint.
+
+The preregistered pilot design freezes five task families and a 40-task, baseline-blind curation
+target. Its 0.5%-5% launch band, centered near 2%, is observational and cannot be used to retain or
+discard tasks after model runs. Ten private calibration drafts are now authored and commitment-
+bound, but none has independent review, board admission, or a model run. This is authoring progress,
+not an independently curated board or a frontier performance result.
+
+An automated preflight now replays all 60 canonical stage labels through the factorized scorer and
+executes 50 contract mutations. All 60 scorer round-trips pass, and all 30 machine-decidable probes
+(source-id invariance, critical evidence removal, and temporal access rebinding) match their frozen
+contract outcomes. The remaining 20 evidence-reveal and identity-rebind probes are structurally
+valid but deliberately remain semantic-review-required. These checks establish executable contract
+behavior only; they do not establish oracle correctness, expert solvability, or model performance.
+
+The 20 unresolved probes are now materialized as private blinded two-arm review drafts. Each pair
+has a machine-verified minimal structural delta: ten add one independent synthetic evidence node
+from stage 4 onward, and ten rebind only program identity. Reviewer packets contain neither the
+canonical-arm mapping nor oracle labels; those remain in a separately committed private key set.
+This is review readiness, not review completion: assignments, responses, consensus labels, and
+adjudications all remain zero.
+
+The downstream response workflow is also executable. Each packet requires three unique,
+independence-attested, conflict-free responses bound to both arm commitments and all six stages.
+Each pair assessment must equal the component deltas derived from its twelve stage answers.
+Evidence-reveal pairs must remain action/support invariant until the arms' accessible-evidence
+sets first diverge, preventing future evidence from changing an earlier stage. Exact agreement
+then creates only a `consensus_candidate`; abstention or action, support, or changed-component
+disagreement routes to human adjudication in that priority order. These causal checks establish
+internal consistency, not scientific correctness. An empty private ledger binds all 20 packets,
+while every live packet remains unassigned.
+
+The sealed resolution layer now enforces the next boundary. Canonical-arm unblinding is allowed
+only after a recomputed three-response consensus candidate. The selected canonical arm is replayed
+against six private oracle stages and five factorized components per stage. A `30/30` replay still
+creates only resolution evidence: a conflict-free independent human receipt and the frozen board
+admission process remain required, and no resolution path changes a board gate automatically.
+Current unblinding, replay, receipt, and admission counts are all zero.
+
+An independent-oracle challenge layer now tests a different failure mode: shared bias between the
+author and the authored oracle. Each of the ten canonical calibration tasks has a private blind
+packet with no slot/task mapping, author oracle, mutation expectations, semantic-review material,
+or authoring sources. Exactly two conflict-free, independence-attested challengers must solve all
+six stages before the sealed mapping can open. Challenger disagreement and challenger abstention
+route before oracle access; exact challenger agreement is then checked against all 30 author-oracle
+components. Even three-way `30/30` agreement is only an `oracle_convergence_candidate`, not
+scientific correctness, expert-gate completion, or board admission. All ten packets are currently
+unassigned, with zero responses, convergence candidates, or adjudications.
+
+A machine-only oracle fragility audit now tests all five scorer components at every canonical
+stage using one valid mutation at a time. All `296/296` applicable probes fail exactly their target
+component; four next-action probes are nonapplicable because `terminate` requires `none`. This
+confirms scorer localization, not oracle quality. The more important finding is a hard support
+review trigger: all `60/60` stages cite every accessible evidence item, all `10/10` tasks remain
+witness-saturated across every stage, and seven stages cite multiple witness IDs from the same
+lineage. Therefore `oracle_support_ready_for_independent_challenge=false`; challenge assignment
+must remain blocked until human curation narrows and justifies support without changing any gate.
+
+The machine-only follow-on turns that finding into a deterministic curation workload without
+editing an oracle. Across 130 witness occurrences, 20 singleton witnesses are protected because
+removal would leave an empty support set. The other 110 become leave-one-out review candidates;
+all `110/110` counterfactuals fail only `witness_valid` under the frozen scorer. Fourteen candidates
+belong to repeated-lineage groups and receive lineage-review priority, while 96 receive general
+support-selectivity priority. Every candidate remains `scientific_removal_supported=false`, human
+assignments and decisions remain zero, and challenge assignment remains unauthorized.
+
+A cross-stage transition audit then decomposes all 50 adjacent canonical stages. It finds 20
+action-only transitions, 20 access/witness-only transitions, ten stable replay transitions, and
+zero transitions where action and witness change together. All 20 new accessible evidence items
+are mirrored exactly by witness deltas, while all 20 action changes occur without an access delta
+and coincide with blocker changes. This does not prove causal inconsistency: stage and gate
+progression may explain action changes, and newly visible evidence may be non-decision-changing.
+It does show that the canonical trajectories currently provide no direct evidence-to-action
+coupling coverage, so causal discriminability remains review-required and challenge assignment
+remains blocked.
+
+A controlled augmentation design now turns that coverage gap into a concrete next experiment.
+For each of the ten calibration tasks, one structurally exact `bounded_evidence_reveal` candidate
+is paired with the same task's machine-validated `source_id_rename` nuisance control. All `10/10`
+candidates add exactly one independent evidence node with no unrelated task-field change, and all
+`10/10` controls preserve the frozen contract outcome. The sealed author expectations target both
+next action and witness support, but they are selection criteria rather than observed labels.
+Human semantic labels, admitted coupled transitions, and oracle edits remain `0`; therefore the
+design is ready while scientific coupling and canonical coupling coverage remain false.
+
+The stronger follow-on adds a field-structure-matched content-null reveal. Ten private blinded
+triplets each contain canonical, targeted-reveal, and placebo-reveal arms. Candidate and placebo
+both add one independent `source` node at stage 4, expose it through stages 4-6, preserve every
+other field, and match whitespace-token count. Latin-square allocation limits every role/arm count
+to `3/3/4`. All structural and token-count checks pass `10/10`, but tokenizer-level matching,
+placebo scientific invariance, candidate coupling, and contrast identifiability remain false.
+Reviewer responses and all three label types remain `0`.
+
+The tokenizer-aware follow-on expands each task to five blinded arms: canonical, candidate, and
+three vocabulary-separated content-null placebos. All 30 placebo arms retain the same structural
+delta and whitespace length as their candidate. Across frozen `tiktoken 0.14.0` `cl100k_base` and
+`o200k_base` encodings, all 60 candidate/placebo token-count comparisons match exactly. A five-arm
+Latin square gives every role exactly two placements in every arm ID. Source-asset hashes and
+normalized vocabulary fingerprints are public and machine-validated. Relative to the frozen
+trial-zero baseline, deterministic search reduces aggregate token-profile L1 distance from `1908`
+to `1454` (`454`, or 23.8%): all `30/30` placebos improve strictly, all `120/120` byte-length and
+rank-decile components avoid regression, and `102/120` components improve strictly. This is an
+in-search proxy optimization, not external validation or distributional equivalence. Exact token
+byte-length and rank-decile histograms still match `0/60`, so tokenizer-count and deterministic-
+optimization controls are ready while tokenizer-distribution, lexical, scientific-invariance,
+coupling, and contrast claims remain false; reviewer responses and labels remain `0`.
+
+An evaluation-only post-selection diagnostic then applies frozen `r50k_base` and `p50k_base`
+without feeding either encoding back into search. Aggregate profile L1 falls from `2166` to `1940`
+(`226`, or 10.4%), and both tokenizer aggregates plus all three vocabulary-family aggregates
+improve. The stronger unit-level result fails: only `52/60` encoding comparisons and `26/30`
+placebos avoid regression, leaving four regressing placebos; exact held-out token counts match only
+`4/60`. Because this audit was not preregistered, the encodings share a 50k family, and the robust
+gate fails, `heldout_robust_placebo_generalization_ready=false` and held-out token-count control
+remains false.
+
+A separately sealed second-stage protocol evaluates genuinely different tokenizer algorithms:
+frozen BERT WordPiece and T5 SentencePiece unigram implementations with revision-pinned,
+hash-verified Apache-2.0 assets. The protocol was sealed locally before this evaluation, but was
+not publicly preregistered or externally timestamped; none of its results changed the upstream
+selection. Aggregate profile L1 falls from `1720` to `1532` (`188`, or 10.9%), and both tokenizer
+aggregates plus all three vocabulary-family aggregates improve. The strict result still fails:
+only `51/60` encoding comparisons, `94/120` profile components, and `23/30` placebos avoid
+regression; seven placebos regress, token-count-gap non-regression is `44/60`, and exact optimized
+token counts match only `1/60`. The retained public state therefore keeps
+`robust_independent_family_profile_generalization_ready=false`,
+`independent_family_token_count_confound_control_ready=false`, and
+`independent_family_control_ready=false`, with no retuning or scientific-invariance claim.
+
+- Human protocol: [`docs/50_adds_frontier_research_protocol.md`](docs/50_adds_frontier_research_protocol.md)
+- Machine contract: [`docs/adds_frontier_research_protocol.json`](docs/adds_frontier_research_protocol.json)
+- Pilot seed manifest: [`rl_env/specs/frontier_pilot_seed_manifest.example.json`](rl_env/specs/frontier_pilot_seed_manifest.example.json)
+- Development task set: [`rl_env/specs/frontier_development_task_set.example.json`](rl_env/specs/frontier_development_task_set.example.json)
+- Hash-bound public oracle: [`rl_env/specs/frontier_development_oracle_set.example.json`](rl_env/specs/frontier_development_oracle_set.example.json)
+- Curation status: [`rl_env/specs/frontier_development_curation_tranche.example.json`](rl_env/specs/frontier_development_curation_tranche.example.json)
+- Private-board protocol: [`docs/adds_frontier_board_protocol.json`](docs/adds_frontier_board_protocol.json)
+- Unpopulated 40-slot registry: [`rl_env/specs/frontier_private_board_slots.example.json`](rl_env/specs/frontier_private_board_slots.example.json)
+- Payload-free calibration progress: [`rl_env/specs/frontier_calibration_authoring_progress.json`](rl_env/specs/frontier_calibration_authoring_progress.json)
+- Progress schema: [`rl_env/specs/frontier_calibration_authoring_progress.schema.json`](rl_env/specs/frontier_calibration_authoring_progress.schema.json)
+- Payload-free automated preflight: [`rl_env/specs/frontier_calibration_preflight_summary.json`](rl_env/specs/frontier_calibration_preflight_summary.json)
+- Preflight schemas: [`rl_env/specs/frontier_calibration_preflight_summary.schema.json`](rl_env/specs/frontier_calibration_preflight_summary.schema.json) and [`rl_env/specs/frontier_private_calibration_preflight.schema.json`](rl_env/specs/frontier_private_calibration_preflight.schema.json)
+- Payload-free semantic-review readiness: [`rl_env/specs/frontier_semantic_review_readiness_summary.json`](rl_env/specs/frontier_semantic_review_readiness_summary.json)
+- Semantic-review schemas: [`rl_env/specs/frontier_semantic_review_readiness_summary.schema.json`](rl_env/specs/frontier_semantic_review_readiness_summary.schema.json), plus adjacent private packet/key contracts
+- Payload-free review workflow: [`rl_env/specs/frontier_semantic_review_workflow_summary.json`](rl_env/specs/frontier_semantic_review_workflow_summary.json)
+- Response/triage contracts: [`rl_env/specs/frontier_private_semantic_review_response.schema.json`](rl_env/specs/frontier_private_semantic_review_response.schema.json) and [`rl_env/specs/frontier_private_semantic_review_triage.schema.json`](rl_env/specs/frontier_private_semantic_review_triage.schema.json)
+- Payload-free resolution readiness: [`rl_env/specs/frontier_semantic_review_resolution_summary.json`](rl_env/specs/frontier_semantic_review_resolution_summary.json)
+- Replay/receipt contracts: [`rl_env/specs/frontier_private_semantic_review_canonical_replay.schema.json`](rl_env/specs/frontier_private_semantic_review_canonical_replay.schema.json) and [`rl_env/specs/frontier_private_semantic_review_resolution_receipt.schema.json`](rl_env/specs/frontier_private_semantic_review_resolution_receipt.schema.json)
+- Payload-free independent-oracle challenge readiness: [`rl_env/specs/frontier_oracle_challenge_readiness_summary.json`](rl_env/specs/frontier_oracle_challenge_readiness_summary.json)
+- Challenger contracts: [`rl_env/specs/frontier_private_oracle_challenge_response.schema.json`](rl_env/specs/frontier_private_oracle_challenge_response.schema.json) and [`rl_env/specs/frontier_private_oracle_challenge_comparison.schema.json`](rl_env/specs/frontier_private_oracle_challenge_comparison.schema.json), plus adjacent private packet/key/ledger schemas
+- Payload-free oracle fragility finding: [`rl_env/specs/frontier_oracle_fragility_summary.json`](rl_env/specs/frontier_oracle_fragility_summary.json)
+- Fragility contracts: [`rl_env/specs/frontier_oracle_fragility_summary.schema.json`](rl_env/specs/frontier_oracle_fragility_summary.schema.json) and [`rl_env/specs/frontier_private_oracle_fragility_report.schema.json`](rl_env/specs/frontier_private_oracle_fragility_report.schema.json)
+- Payload-free support-curation workload: [`rl_env/specs/frontier_oracle_support_curation_summary.json`](rl_env/specs/frontier_oracle_support_curation_summary.json)
+- Support-curation contracts: [`rl_env/specs/frontier_oracle_support_curation_summary.schema.json`](rl_env/specs/frontier_oracle_support_curation_summary.schema.json) and [`rl_env/specs/frontier_private_oracle_support_curation_packet_set.schema.json`](rl_env/specs/frontier_private_oracle_support_curation_packet_set.schema.json)
+- Payload-free transition coupling audit: [`rl_env/specs/frontier_oracle_transition_audit_summary.json`](rl_env/specs/frontier_oracle_transition_audit_summary.json)
+- Transition-audit contracts: [`rl_env/specs/frontier_oracle_transition_audit_summary.schema.json`](rl_env/specs/frontier_oracle_transition_audit_summary.schema.json) and [`rl_env/specs/frontier_private_oracle_transition_audit_report.schema.json`](rl_env/specs/frontier_private_oracle_transition_audit_report.schema.json)
+- Payload-free matched augmentation design: [`rl_env/specs/frontier_coupled_augmentation_summary.json`](rl_env/specs/frontier_coupled_augmentation_summary.json)
+- Augmentation contracts: [`rl_env/specs/frontier_coupled_augmentation_summary.schema.json`](rl_env/specs/frontier_coupled_augmentation_summary.schema.json) and [`rl_env/specs/frontier_private_coupled_augmentation_packet_set.schema.json`](rl_env/specs/frontier_private_coupled_augmentation_packet_set.schema.json)
+- Payload-free three-arm placebo readiness: [`rl_env/specs/frontier_coupled_placebo_summary.json`](rl_env/specs/frontier_coupled_placebo_summary.json)
+- Placebo contracts: [`rl_env/specs/frontier_coupled_placebo_summary.schema.json`](rl_env/specs/frontier_coupled_placebo_summary.schema.json), [`rl_env/specs/frontier_private_coupled_placebo_packet_set.schema.json`](rl_env/specs/frontier_private_coupled_placebo_packet_set.schema.json), and [`rl_env/specs/frontier_private_coupled_placebo_key_set.schema.json`](rl_env/specs/frontier_private_coupled_placebo_key_set.schema.json)
+- Payload-free five-arm tokenizer control: [`rl_env/specs/frontier_tokenizer_placebo_summary.json`](rl_env/specs/frontier_tokenizer_placebo_summary.json)
+- Tokenizer-control contracts: [`rl_env/specs/frontier_tokenizer_placebo_summary.schema.json`](rl_env/specs/frontier_tokenizer_placebo_summary.schema.json), [`rl_env/specs/frontier_private_tokenizer_placebo_packet_set.schema.json`](rl_env/specs/frontier_private_tokenizer_placebo_packet_set.schema.json), and [`rl_env/specs/frontier_private_tokenizer_placebo_key_set.schema.json`](rl_env/specs/frontier_private_tokenizer_placebo_key_set.schema.json)
+- Locally sealed independent-family protocol and payload-free result: [`rl_env/specs/frontier_tokenizer_independent_evaluation_protocol.json`](rl_env/specs/frontier_tokenizer_independent_evaluation_protocol.json) and [`rl_env/specs/frontier_tokenizer_independent_evaluation_summary.json`](rl_env/specs/frontier_tokenizer_independent_evaluation_summary.json)
+- Independent-family contracts: adjacent public protocol/summary schemas plus [`rl_env/specs/frontier_private_tokenizer_independent_evaluation_report.schema.json`](rl_env/specs/frontier_private_tokenizer_independent_evaluation_report.schema.json); frozen model assets and per-placebo records remain private
+
+```bash
+adds-frontier validate-protocol
+adds-frontier validate-seeds
+adds-frontier validate-development
+adds-frontier validate-board
+adds-frontier validate-calibration
+adds-frontier validate-preflight
+adds-frontier validate-semantic-review
+adds-frontier validate-semantic-workflow
+adds-frontier validate-semantic-resolution
+adds-frontier validate-oracle-challenge
+adds-frontier validate-oracle-fragility
+adds-frontier validate-support-curation
+adds-frontier validate-transition-audit
+adds-frontier validate-coupled-augmentation
+adds-frontier validate-coupled-placebo
+adds-frontier validate-tokenizer-placebo
+adds-frontier validate-tokenizer-independent-evaluation
+```
+
+The five development fixtures exercise all task families and 25 counterfactual mutations, but
+their public oracles and pending independent review make them ineligible for the private 40-task
+pilot board.
+
+The private-board sampling frame allocates 8 disease domains across all 5 task families: 10
+calibration slots in hematology and immune-inflammatory disease, plus 30 sealed slots spanning
+oncology, neurology, metabolic, infectious, cardiovascular, and rare-genetic disease. The frozen
+registry remains an empty preregistration snapshot. A separate public progress manifest records 10
+payload-free authored commitments covering 60 stages and 50 mutations; all independent-review gates
+remain pending, all 30 sealed slots remain unassigned, and board admission remains zero. Task,
+oracle, disease, program, nonce, curator, canary, detailed preflight, stage-level oracle fragility,
+support-curation packets, transition-audit records, matched augmentation records, and three-arm
+placebo or five-arm tokenizer-placebo packets/keys, independent-family per-placebo reports, and
+frozen WordPiece/SentencePiece model assets stay outside Git and Hugging Face.
 
 ## Biohub-Context Research Readiness
 
@@ -775,6 +980,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `agentic_drug_discovery/policy.py` | Developers + agents | Deterministic policy rules, queue-bound replanning, checkpoint integrity, and exact resume orchestration. |
 | `agentic_drug_discovery/sealed_evaluation.py` | Developers + agents | Role-neutral sealed boards, salted label vaults, fingerprint-bound submissions, strict envelope readers, and matched policy metrics. |
 | `agentic_drug_discovery/heldout_evaluation.py` | Developers + agents | Preregistered held-out protocols, opaque independent-curator manifests, stage-stratified Wilson metrics, strict readers, and report integrity. |
+| `agentic_drug_discovery/frontier*.py` | Developers + evaluators | ADDS-Frontier protocol, public development tranche, frozen board allocation, private calibration validation, executable preflight probes, blinded semantic-review compilation, strict reviewer responses, disagreement triage, sealed canonical replay, independent-oracle challenge comparison, oracle fragility diagnostics, support-curation workload compilation, cross-stage coupling audit, matched augmentation, three-arm placebo and five-arm tokenizer controls, private ledgers, and payload-free CLI reporting. |
 | `adapters/pinned_evidence_adapter.py` | Developers + agents | Validates payload-free source records for composite unmet-need and functional-effect gates. |
 | `adapters/clinical_synthesis_adapter.py` | Developers + agents | Normalizes explicit synthesis specs locally without retrieving or supplying source measurements. |
 | `rl_env/specs/pinned_evidence_manifest.schema.json` | Machines + reviewers | JSON Schema for pinned source identity, dates, hashes, contexts, and typed summaries. |
@@ -821,6 +1027,20 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `rl_env/specs/heldout_evaluation_protocol.schema.json` | Machines + reviewers | JSON Schema for preregistered cohort, label, curator-roster, stage, and metric commitments; the adjacent example is synthetic. |
 | `rl_env/specs/heldout_curation_manifest.schema.json` | Evaluators | JSON Schema for opaque curator declarations, votes, consensus, and adjudication; real manifests remain external. |
 | `rl_env/specs/stage_stratified_evaluation_report.schema.json` | Machines + reviewers | JSON Schema for exact counts, Wilson intervals, stage sufficiency, action coverage, selective risk, and aggregate provenance; the adjacent example is synthetic. |
+| `rl_env/specs/frontier_calibration_authoring_progress.schema.json` | Humans + machines | Payload-free ten-slot authoring status, salted commitments, gate states, stage/mutation counts, and strict no-result boundaries; private task and oracle schemas are adjacent. |
+| `rl_env/specs/frontier_calibration_preflight_summary.schema.json` | Humans + machines | Payload-free 60-stage scorer round-trip, 30 machine-decidable probe results, 20 semantic-review-required probes, unchanged human gates, and a commitment to excluded detailed records. |
+| `rl_env/specs/frontier_semantic_review_readiness_summary.schema.json` | Humans + machines | Payload-free commitments for 20 blinded semantic-review drafts, exact minimal-delta counts, zero reviewer/consensus state, and strict no-result boundaries. |
+| `rl_env/specs/frontier_semantic_review_workflow_summary.schema.json` | Humans + machines | Three-independent-response consensus, observed pair-delta equality, pre-access evidence invariance, deterministic disagreement precedence, 20 unassigned packets, and zero live response/adjudication state. |
+| `rl_env/specs/frontier_semantic_review_resolution_summary.schema.json` | Humans + machines | Consensus-gated sealed unblinding, 30-component canonical replay, receipt-before-admission and no-automatic-gate-transition rules, with zero live resolution state. |
+| `rl_env/specs/frontier_oracle_challenge_readiness_summary.schema.json` | Humans + machines | Two-challenger blind solve, reveal-after-agreement, 30-component author-oracle comparison, four-route adjudication/convergence state, and zero live challenge state. |
+| `rl_env/specs/frontier_oracle_fragility_summary.schema.json` | Humans + machines | Payload-free 300-probe scorer localization, witness saturation, lineage redundancy, support-readiness decision, frozen nonclaims, and a private-report commitment. |
+| `rl_env/specs/frontier_oracle_support_curation_summary.schema.json` | Humans + machines | Payload-free leave-one-out workload counts, role and lineage priorities, singleton protection, frozen nonclaims, and a private-packet commitment. |
+| `rl_env/specs/frontier_oracle_transition_audit_summary.schema.json` | Humans + machines | Payload-free action/witness/access/blocker transition classes, coupling coverage, causal nonclaims, and a private-report commitment. |
+| `rl_env/specs/frontier_coupled_augmentation_summary.schema.json` | Humans + machines | Payload-free same-slot evidence-reveal candidate and source-rename control counts, design readiness, zero semantic labels/admissions, strict causal nonclaims, and a private-packet commitment. |
+| `rl_env/specs/frontier_coupled_placebo_summary.schema.json` | Humans + machines | Payload-free counterbalanced canonical/candidate/placebo triplet readiness, structural and whitespace-token matching, zero labels, explicit lexical limitation, and private packet/key commitments. |
+| `rl_env/specs/frontier_tokenizer_placebo_summary.schema.json` | Humans + machines | Payload-free five-arm readiness, frozen tokenizer asset/vocabulary provenance, 60/60 exact count matches, 0/60 exact distribution matches, zero labels, and private packet/key commitments. |
+| `rl_env/specs/frontier_tokenizer_independent_evaluation_protocol.schema.json` | Humans + machines | Locally pre-sealed WordPiece/SentencePiece revisions, asset hashes, package versions, fixed profile metrics, denominators, gates, failure retention, and no-retuning policy; not a public preregistration. |
+| `rl_env/specs/frontier_tokenizer_independent_evaluation_summary.schema.json` | Humans + machines | Payload-free independent-family aggregate results with seven retained placebo regressions, failed profile/token-count gates, private-report commitment, and frozen nonclaims. |
 | `rl_env/specs/source_receipt.schema.json` | Machines + reviewers | JSON Schema for exact source version, locator, SHA-256, size, retrieval time, and transport. |
 | `rl_env/specs/pinned_evidence_ingestion_job.schema.json` | Machines + reviewers | JSON Schema for reviewer-authored summaries linked to captured receipts. |
 | `rl_env/specs/cdc_mmwr_ingestion_job.schema.json` | Machines + reviewers | JSON Schema for reviewer-selected CDC MMWR article, context, value, unit, and excerpt fields. |

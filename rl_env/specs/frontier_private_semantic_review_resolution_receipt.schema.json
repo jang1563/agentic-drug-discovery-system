@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_semantic_review_resolution_receipt.schema.json",
+  "title": "ADDS-Frontier private semantic-review resolution receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "resolution_id", "packet_id", "packet_set_integrity_sha256",
+    "key_set_integrity_sha256", "triage_commitment", "response_commitments",
+    "unblinding_identity_commitment", "canonical_replay_integrity_sha256",
+    "canonical_replay_passed", "decision", "accepted_result_commitment",
+    "replacement_resolution_commitment", "adjudicator_identity_commitment",
+    "adjudicator_affiliation_commitment", "conflict_of_interest_declared",
+    "independence_attested", "completed_on", "rationale_codes",
+    "admission_review_required", "board_gate_changed", "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-semantic-review-resolution-receipt.v1"},
+    "resolution_id": {"const": "adds-frontier-semantic-resolution-v1"},
+    "packet_id": {"type": "string", "pattern": "^semantic-[0-9a-f]{20}$"},
+    "packet_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "key_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "triage_commitment": {"$ref": "#/$defs/sha256"},
+    "response_commitments": {
+      "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/sha256"}
+    },
+    "unblinding_identity_commitment": {"$ref": "#/$defs/sha256"},
+    "canonical_replay_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "canonical_replay_passed": {"type": "boolean"},
+    "decision": {
+      "enum": ["accept_consensus", "override_consensus", "reauthor_packet", "reject_packet"]
+    },
+    "accepted_result_commitment": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "replacement_resolution_commitment": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "adjudicator_identity_commitment": {"$ref": "#/$defs/sha256"},
+    "adjudicator_affiliation_commitment": {"$ref": "#/$defs/sha256"},
+    "conflict_of_interest_declared": {"const": false},
+    "independence_attested": {"const": true},
+    "completed_on": {"type": "string", "format": "date"},
+    "rationale_codes": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "enum": [
+          "canonical_replay_exact", "canonical_replay_failure",
+          "reviewer_consensus_supported", "adjudicator_override", "packet_ambiguity",
+          "oracle_revision_required", "conflict_or_contamination_concern",
+          "other_bounded_reason"
+        ]
+      }
+    },
+    "admission_review_required": {"const": true},
+    "board_gate_changed": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

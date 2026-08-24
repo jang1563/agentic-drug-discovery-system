@@ -1,0 +1,445 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jang1563/agentic-drug-discovery-system/rl_env/specs/frontier_research_protocol.schema.json",
+  "title": "ADDS-Frontier research protocol",
+  "description": "Public preregistered design contract for evidence-authorized frontier evaluation. The Python validator enforces the frozen scientific invariants beyond structural schema validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "version",
+    "status",
+    "registered_on",
+    "research_question",
+    "primary_metric",
+    "frontier_launch_band",
+    "action_ontology",
+    "mandatory_gates",
+    "task_families",
+    "benchmark_tiers",
+    "sampling_policy",
+    "evaluation_policy",
+    "threat_model",
+    "nonclaims",
+    "next_milestone",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.frontier-research-protocol.v1"
+    },
+    "protocol_id": {
+      "const": "adds-frontier-v1"
+    },
+    "version": {
+      "$ref": "#/$defs/text"
+    },
+    "status": {
+      "const": "preregistered_pilot_design"
+    },
+    "registered_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "research_question": {
+      "$ref": "#/$defs/text"
+    },
+    "primary_metric": {
+      "$ref": "#/$defs/primaryMetric"
+    },
+    "frontier_launch_band": {
+      "$ref": "#/$defs/scoreBand"
+    },
+    "action_ontology": {
+      "$ref": "#/$defs/actionOntology"
+    },
+    "mandatory_gates": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/gate"
+      }
+    },
+    "task_families": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "$ref": "#/$defs/taskFamily"
+      }
+    },
+    "benchmark_tiers": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/benchmarkTier"
+      }
+    },
+    "sampling_policy": {
+      "$ref": "#/$defs/samplingPolicy"
+    },
+    "evaluation_policy": {
+      "$ref": "#/$defs/evaluationPolicy"
+    },
+    "threat_model": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {
+        "$ref": "#/$defs/threat"
+      }
+    },
+    "nonclaims": {
+      "type": "array",
+      "minItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "next_milestone": {
+      "$ref": "#/$defs/nextMilestone"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "gate": {
+      "enum": [
+        "evidence_retrieval_complete",
+        "identity_continuity",
+        "cutoff_compliance",
+        "lineage_independence",
+        "endpoint_population_alignment",
+        "uncertainty_handling",
+        "disposition_correct",
+        "next_action_correct",
+        "risk_flags_correct",
+        "witness_valid",
+        "blocker_certificate_valid",
+        "budget_compliance",
+        "exact_replay"
+      ]
+    },
+    "primaryMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_id",
+        "name",
+        "success_rule",
+        "final_answer_override_allowed"
+      ],
+      "properties": {
+        "metric_id": {
+          "const": "fully_authorized_trajectory_success"
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "success_rule": {
+          "const": "all_mandatory_gates_and_zero_unauthorized_commits"
+        },
+        "final_answer_override_allowed": {
+          "const": false
+        }
+      }
+    },
+    "scoreBand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lower",
+        "nominal",
+        "upper",
+        "used_for_task_selection"
+      ],
+      "properties": {
+        "lower": {
+          "const": 0.005
+        },
+        "nominal": {
+          "const": 0.02
+        },
+        "upper": {
+          "const": 0.05
+        },
+        "used_for_task_selection": {
+          "const": false
+        }
+      }
+    },
+    "actionOntology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dispositions",
+        "next_actions",
+        "risk_flags"
+      ],
+      "properties": {
+        "dispositions": {
+          "const": [
+            "advance",
+            "hold",
+            "terminate"
+          ]
+        },
+        "next_actions": {
+          "const": [
+            "retrieve",
+            "verify",
+            "experiment",
+            "human_review",
+            "none"
+          ]
+        },
+        "risk_flags": {
+          "const": [
+            "safety",
+            "contradiction",
+            "provenance",
+            "out_of_distribution",
+            "temporal_leakage"
+          ]
+        }
+      }
+    },
+    "taskFamily": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family_id",
+        "name",
+        "research_question",
+        "required_gates",
+        "seed_artifacts",
+        "pilot_base_tasks"
+      ],
+      "properties": {
+        "family_id": {
+          "enum": [
+            "evidence_lineage_trap",
+            "temporal_reversal",
+            "translational_handoff",
+            "non_exchangeable_replication",
+            "budgeted_evidence_resolution"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "research_question": {
+          "$ref": "#/$defs/text"
+        },
+        "required_gates": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/gate"
+          }
+        },
+        "seed_artifacts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "pilot_base_tasks": {
+          "const": 8
+        }
+      }
+    },
+    "benchmarkTier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tier_id",
+        "primary",
+        "minimum_stages",
+        "maximum_stages",
+        "purpose"
+      ],
+      "properties": {
+        "tier_id": {
+          "enum": [
+            "diagnostic",
+            "frontier"
+          ]
+        },
+        "primary": {
+          "type": "boolean"
+        },
+        "minimum_stages": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maximum_stages": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "purpose": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "samplingPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pilot_base_task_count",
+        "pilot_min_mutations_per_task",
+        "full_base_task_minimum",
+        "full_diagnostic_case_minimum",
+        "baseline_blind_selection",
+        "model_failure_filtering_prohibited",
+        "heldout_split_by_program_disease_time",
+        "rotating_private_test"
+      ],
+      "properties": {
+        "pilot_base_task_count": {
+          "const": 40
+        },
+        "pilot_min_mutations_per_task": {
+          "const": 5
+        },
+        "full_base_task_minimum": {
+          "const": 300
+        },
+        "full_diagnostic_case_minimum": {
+          "const": 1500
+        },
+        "baseline_blind_selection": {
+          "const": true
+        },
+        "model_failure_filtering_prohibited": {
+          "const": true
+        },
+        "heldout_split_by_program_disease_time": {
+          "const": true
+        },
+        "rotating_private_test": {
+          "const": true
+        }
+      }
+    },
+    "evaluationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "structured_oracle_minimum_success",
+        "independent_expert_baseline_required",
+        "common_frozen_environment_required",
+        "cost_and_wall_time_reporting_required",
+        "primary_pass_k",
+        "reported_pass_k",
+        "program_clustered_intervals",
+        "paired_comparisons",
+        "partial_metrics"
+      ],
+      "properties": {
+        "structured_oracle_minimum_success": {
+          "const": 0.95
+        },
+        "independent_expert_baseline_required": {
+          "const": true
+        },
+        "common_frozen_environment_required": {
+          "const": true
+        },
+        "cost_and_wall_time_reporting_required": {
+          "const": true
+        },
+        "primary_pass_k": {
+          "const": 1
+        },
+        "reported_pass_k": {
+          "const": [
+            1,
+            3,
+            8
+          ]
+        },
+        "program_clustered_intervals": {
+          "const": true
+        },
+        "paired_comparisons": {
+          "const": true
+        },
+        "partial_metrics": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "threat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "threat_id",
+        "failure",
+        "required_control"
+      ],
+      "properties": {
+        "threat_id": {
+          "$ref": "#/$defs/text"
+        },
+        "failure": {
+          "$ref": "#/$defs/text"
+        },
+        "required_control": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "nextMilestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "canonical_tasks_per_family",
+        "status",
+        "benchmark_evidence_claimed",
+        "exit_condition"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "canonical_tasks_per_family": {
+          "const": 8
+        },
+        "status": {
+          "const": "not_started"
+        },
+        "benchmark_evidence_claimed": {
+          "const": false
+        },
+        "exit_condition": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_oracle_challenge_readiness_summary.schema.json",
+  "title": "ADDS-Frontier independent-oracle challenge public readiness summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "set_id", "protocol_id", "board_id", "status", "compiled_on", "public_preflight_integrity_sha256", "private_packet_set_commitment", "private_key_set_commitment", "private_ledger_commitment", "challenge_packet_count", "unassigned_packet_count", "response_contract_ready", "oracle_comparison_state_machine_ready", "minimum_independent_challengers_per_packet", "author_oracle_reveal_rule", "comparison_rule", "routing_precedence", "challenger_assignment_count", "challenger_response_count", "oracle_convergence_candidate_count", "adjudication_count", "independent_oracle_challenge_complete", "human_challenge_required", "expert_solve_gate_changed", "admission_gate_changed", "board_admitted_count", "baseline_model_runs_started", "benchmark_evidence_claimed", "private_payload_published", "nonclaims", "integrity_sha256"],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-oracle-challenge-readiness-summary.v1"},
+    "set_id": {"const": "adds-frontier-independent-oracle-challenge-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "status": {"const": "challenge_contract_ready_no_assignments"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "public_preflight_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_packet_set_commitment": {"$ref": "#/$defs/sha256"},
+    "private_key_set_commitment": {"$ref": "#/$defs/sha256"},
+    "private_ledger_commitment": {"$ref": "#/$defs/sha256"},
+    "challenge_packet_count": {"const": 10},
+    "unassigned_packet_count": {"const": 10},
+    "response_contract_ready": {"const": true},
+    "oracle_comparison_state_machine_ready": {"const": true},
+    "minimum_independent_challengers_per_packet": {"const": 2},
+    "author_oracle_reveal_rule": {"const": "open_author_oracle_only_after_two_valid_independent_responses"},
+    "comparison_rule": {"const": "exact_two_challenger_agreement_then_thirty_component_author_oracle_comparison"},
+    "routing_precedence": {"$ref": "#/$defs/routes"},
+    "challenger_assignment_count": {"const": 0},
+    "challenger_response_count": {"const": 0},
+    "oracle_convergence_candidate_count": {"const": 0},
+    "adjudication_count": {"const": 0},
+    "independent_oracle_challenge_complete": {"const": false},
+    "human_challenge_required": {"const": true},
+    "expert_solve_gate_changed": {"const": false},
+    "admission_gate_changed": {"const": false},
+    "board_admitted_count": {"const": 0},
+    "baseline_model_runs_started": {"const": false},
+    "benchmark_evidence_claimed": {"const": false},
+    "private_payload_published": {"const": false},
+    "nonclaims": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "routes": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        {"const": "adjudication_required_challenger_abstention"},
+        {"const": "adjudication_required_challenger_disagreement"},
+        {"const": "adjudication_required_author_oracle_disagreement"},
+        {"const": "oracle_convergence_candidate"}
+      ],
+      "items": false
+    }
+  }
+}

@@ -62,6 +62,12 @@ def main() -> int:
         for requirement in requirements
     ):
         return fail("wheel metadata is missing the bounded pypdf runtime dependency")
+    if not any(
+        requirement.lower().startswith("tiktoken")
+        and "==0.14.0" in requirement
+        for requirement in requirements
+    ):
+        return fail("wheel metadata is missing the frozen tiktoken dependency")
 
     clean_env = os.environ.copy()
     clean_env.pop("PYTHONPATH", None)
@@ -99,6 +105,9 @@ def main() -> int:
             if os.name == "nt"
             else "adds-translational-handoff"
         )
+        frontier = scripts_dir / (
+            "adds-frontier.exe" if os.name == "nt" else "adds-frontier"
+        )
         if os.name == "nt":
             demo_command = (*python_command, "-m", "agentic_drug_discovery.demo")
             bounded_demo_command = (
@@ -126,6 +135,11 @@ def main() -> int:
                 "-m",
                 "agentic_drug_discovery.translational_handoff_cli",
             )
+            frontier_command = (
+                *python_command,
+                "-m",
+                "agentic_drug_discovery.frontier_cli",
+            )
         else:
             demo_command = (*python_command, str(demo))
             bounded_demo_command = (*python_command, str(bounded_demo))
@@ -133,6 +147,7 @@ def main() -> int:
             ingestion_command = (*python_command, str(ingestion))
             readiness_command = (*python_command, str(readiness))
             handoff_command = (*python_command, str(handoff))
+            frontier_command = (*python_command, str(frontier))
 
         burden_source = Path(temp_dir) / "burden.json"
         gap_source = Path(temp_dir) / "gap.json"
@@ -939,6 +954,14 @@ def main() -> int:
                 text=True,
                 env=clean_env,
             )
+            frontier_help = subprocess.run(
+                [*frontier_command, "--help"],
+                cwd=temp_dir,
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            )
             completed = subprocess.run(
                 demo_command,
                 cwd=temp_dir,
@@ -1689,6 +1712,12 @@ def main() -> int:
         return fail("research-readiness console command help was not available")
     if "translational handoff" not in handoff_help.stdout:
         return fail("translational-handoff console command help was not available")
+    if "ADDS-Frontier research contracts" not in frontier_help.stdout:
+        return fail("ADDS-Frontier console command help was not available")
+    if "validate-coupled-placebo" not in frontier_help.stdout:
+        return fail("ADDS-Frontier coupled-placebo command was not available")
+    if "validate-tokenizer-placebo" not in frontier_help.stdout:
+        return fail("ADDS-Frontier tokenizer-placebo command was not available")
 
     print(
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
@@ -1696,7 +1725,7 @@ def main() -> int:
         "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
         "plus sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture/"
         "pattern-mixture-uncertainty/influence/informative-cluster-size/"
-        "cluster-superpopulation, research-readiness, translational-handoff, and "
+        "cluster-superpopulation, research-readiness, translational-handoff, ADDS-Frontier, and "
         "closed-loop API "
         "smoke tests "
         f"completed for {wheels[0].name}"

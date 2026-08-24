@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_tokenizer_independent_evaluation_protocol.schema.json",
+  "title": "ADDS-Frontier independent tokenizer-family evaluation protocol",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "parent_tokenizer_placebo_set_id",
+    "parent_summary_integrity_sha256",
+    "sealed_on",
+    "status",
+    "evaluation_stage",
+    "evaluation_used_for_upstream_selection",
+    "public_preregistration_established",
+    "evaluation_text_accessed_before_seal",
+    "tokenizer_implementations",
+    "profile_definition",
+    "evaluation_units",
+    "gates",
+    "gate_evaluation_order",
+    "retuning_policy",
+    "failure_policy",
+    "payload_policy",
+    "nonclaims",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-tokenizer-independent-evaluation-protocol.v1"},
+    "protocol_id": {"const": "adds-frontier-tokenizer-independent-family-evaluation-v1"},
+    "parent_tokenizer_placebo_set_id": {"const": "adds-frontier-tokenizer-placebo-v1"},
+    "parent_summary_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "sealed_on": {"const": "2026-08-23"},
+    "status": {"const": "local_pre_evaluation_seal_no_results"},
+    "evaluation_stage": {"const": "post_selection_second_stage"},
+    "evaluation_used_for_upstream_selection": {"const": false},
+    "public_preregistration_established": {"const": false},
+    "evaluation_text_accessed_before_seal": {"const": false},
+    "tokenizer_implementations": {"const": [
+      {
+        "evaluation_id": "bert_wordpiece_uncased",
+        "algorithm_family": "wordpiece",
+        "package": "tokenizers",
+        "package_version": "0.23.1",
+        "model_repository": "google-bert/bert-base-uncased",
+        "model_revision": "86b5e0934494bd15c9632b12f734a8a67f723594",
+        "license": "apache-2.0",
+        "asset_path": "vocab.txt",
+        "source_asset_url": "https://huggingface.co/google-bert/bert-base-uncased/resolve/86b5e0934494bd15c9632b12f734a8a67f723594/vocab.txt",
+        "source_asset_sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+        "source_asset_size_bytes": 231508,
+        "normalization_policy": "bert_clean_lowercase_handle_chinese_strip_accents_default",
+        "special_token_policy": "no_cls_sep_or_padding",
+        "continuation_prefix": "##"
+      },
+      {
+        "evaluation_id": "t5_sentencepiece_unigram",
+        "algorithm_family": "sentencepiece_unigram",
+        "package": "sentencepiece",
+        "package_version": "0.2.2",
+        "model_repository": "google-t5/t5-base",
+        "model_revision": "a9723ea7f1b39c1eae772870f3b547bf6ef7e6c1",
+        "license": "apache-2.0",
+        "asset_path": "spiece.model",
+        "source_asset_url": "https://huggingface.co/google-t5/t5-base/resolve/a9723ea7f1b39c1eae772870f3b547bf6ef7e6c1/spiece.model",
+        "source_asset_sha256": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86",
+        "source_asset_size_bytes": 791656,
+        "normalization_policy": "sentencepiece_model_embedded",
+        "special_token_policy": "no_bos_eos_or_padding",
+        "word_start_marker": "\u2581"
+      }
+    ]},
+    "profile_definition": {"const": {
+      "piece_byte_length_bins": [1, 2, 3, 4, 5, 6, 7, 8],
+      "piece_byte_length_overflow_bin": 8,
+      "boundary_class_order": ["word_start", "continuation", "unknown"],
+      "wordpiece_surface_rule": "remove_continuation_prefix_before_utf8_byte_count",
+      "sentencepiece_surface_rule": "replace_word_start_marker_with_one_ascii_space_before_utf8_byte_count",
+      "profile_l1_distance_rule": "piece_byte_length_histogram_l1_plus_boundary_class_histogram_l1",
+      "token_count_absolute_gap_rule": "absolute_candidate_minus_placebo_token_count"
+    }},
+    "evaluation_units": {"const": {
+      "placebo_count": 30,
+      "tokenizer_comparison_count": 60,
+      "profile_component_comparison_count": 120,
+      "token_count_gap_comparison_count": 60,
+      "vocabulary_family_count": 3
+    }},
+    "gates": {"const": {
+      "profile_encoding_nonregression_required": 60,
+      "profile_component_nonregression_required": 120,
+      "all_profile_nonregression_placebo_required": 30,
+      "any_profile_strict_improvement_placebo_required": 30,
+      "token_count_gap_nonregression_required": 60,
+      "tokenizer_aggregate_strict_improvement_required": 2,
+      "vocabulary_family_aggregate_strict_improvement_required": 3,
+      "exact_token_count_match_required_for_confound_control": 60
+    }},
+    "gate_evaluation_order": {"const": [
+      "asset_and_implementation_provenance",
+      "upstream_selection_noninterference",
+      "profile_component_nonregression",
+      "profile_encoding_nonregression",
+      "placebo_level_nonregression_and_strict_improvement",
+      "token_count_gap_nonregression",
+      "tokenizer_and_vocabulary_family_aggregate_improvement",
+      "exact_token_count_confound_control"
+    ]},
+    "retuning_policy": {"const": "evaluation_results_must_not_change_upstream_search_selection_or_this_protocol"},
+    "failure_policy": {"const": "retain_all_failures_and_keep_readiness_false_without_threshold_revision"},
+    "payload_policy": {"const": "publish_only_aggregate_results_and_commit_private_per_placebo_diagnostics"},
+    "nonclaims": {
+      "type": "array",
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

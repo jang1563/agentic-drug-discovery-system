@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_private_coupled_augmentation_packet_set.schema.json",
+  "title": "ADDS-Frontier private coupled augmentation packet set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "design_id", "protocol_id", "board_id", "compiled_on", "task_set_integrity_sha256", "oracle_set_integrity_sha256", "private_preflight_integrity_sha256", "private_semantic_packet_set_integrity_sha256", "private_semantic_key_set_integrity_sha256", "private_transition_audit_report_integrity_sha256", "pairing_rule", "records", "matched_design_unit_count", "evidence_reveal_candidate_count", "nuisance_invariance_control_count", "exact_structural_delta_candidate_count", "machine_invariance_control_pass_count", "action_witness_coupling_candidate_count", "semantic_label_recorded_count", "coupled_transition_admitted_count", "coupled_augmentation_design_ready", "scientific_coupling_established", "oracle_revision_applied", "challenge_assignment_authorized", "expert_solve_gate_changed", "admission_gate_changed", "integrity_sha256"],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-private-coupled-augmentation-packet-set.v1"},
+    "design_id": {"const": "adds-frontier-coupled-augmentation-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "task_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "oracle_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_preflight_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_semantic_packet_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_semantic_key_set_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_transition_audit_report_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "pairing_rule": {"const": "pair_each_bounded_evidence_reveal_candidate_with_its_same_slot_source_id_rename_invariance_control"},
+    "records": {"type": "array", "minItems": 10, "maxItems": 10, "items": {"$ref": "#/$defs/record"}},
+    "matched_design_unit_count": {"const": 10},
+    "evidence_reveal_candidate_count": {"const": 10},
+    "nuisance_invariance_control_count": {"const": 10},
+    "exact_structural_delta_candidate_count": {"const": 10},
+    "machine_invariance_control_pass_count": {"const": 10},
+    "action_witness_coupling_candidate_count": {"const": 10},
+    "semantic_label_recorded_count": {"const": 0},
+    "coupled_transition_admitted_count": {"const": 0},
+    "coupled_augmentation_design_ready": {"const": true},
+    "scientific_coupling_established": {"const": false},
+    "oracle_revision_applied": {"const": false},
+    "challenge_assignment_authorized": {"const": false},
+    "expert_solve_gate_changed": {"const": false},
+    "admission_gate_changed": {"const": false},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonempty": {"type": "string", "minLength": 1},
+    "certificate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["probe_kind", "changed_top_level_fields", "added_evidence_node_count", "removed_evidence_node_count", "modified_existing_evidence_node_count", "changed_stage_access_count", "non_access_stage_field_change_count", "lineage_edge_change_count", "exact_delta_passed"],
+      "properties": {
+        "probe_kind": {"const": "bounded_evidence_reveal"},
+        "changed_top_level_fields": {"const": ["evidence_nodes", "stages"]},
+        "added_evidence_node_count": {"const": 1},
+        "removed_evidence_node_count": {"const": 0},
+        "modified_existing_evidence_node_count": {"const": 0},
+        "changed_stage_access_count": {"const": 3},
+        "non_access_stage_field_change_count": {"const": 0},
+        "lineage_edge_change_count": {"const": 0},
+        "exact_delta_passed": {"const": true}
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["design_unit_id", "slot_id", "canonical_task_commitment", "author_oracle_commitment", "candidate_packet_id", "candidate_packet_commitment", "candidate_key_commitment", "candidate_preflight_probe_commitment", "control_preflight_probe_commitment", "candidate_mutation_id", "control_mutation_id", "candidate_probe_kind", "control_probe_kind", "candidate_assessment_lane", "control_assessment_lane", "candidate_structural_delta_certificate", "candidate_exact_structural_delta_passed", "control_expected_contract_outcome", "control_observed_contract_outcome", "control_expected_outcome_matched", "author_expected_changed_components", "candidate_action_witness_coupling_targeted", "semantic_label_status", "scientific_coupling_established", "coupled_transition_admitted", "automatic_oracle_edit_authorized"],
+      "properties": {
+        "design_unit_id": {"type": "string", "pattern": "^coupled-[0-9a-f]{20}$"},
+        "slot_id": {"type": "string", "pattern": "^slot-[a-z]+-[0-9]{2}$"},
+        "canonical_task_commitment": {"$ref": "#/$defs/sha256"},
+        "author_oracle_commitment": {"$ref": "#/$defs/sha256"},
+        "candidate_packet_id": {"type": "string", "pattern": "^semantic-[0-9a-f]{20}$"},
+        "candidate_packet_commitment": {"$ref": "#/$defs/sha256"},
+        "candidate_key_commitment": {"$ref": "#/$defs/sha256"},
+        "candidate_preflight_probe_commitment": {"$ref": "#/$defs/sha256"},
+        "control_preflight_probe_commitment": {"$ref": "#/$defs/sha256"},
+        "candidate_mutation_id": {"$ref": "#/$defs/nonempty"},
+        "control_mutation_id": {"$ref": "#/$defs/nonempty"},
+        "candidate_probe_kind": {"const": "bounded_evidence_reveal"},
+        "control_probe_kind": {"const": "source_id_rename"},
+        "candidate_assessment_lane": {"const": "semantic_review_required"},
+        "control_assessment_lane": {"const": "machine_decidable"},
+        "candidate_structural_delta_certificate": {"$ref": "#/$defs/certificate"},
+        "candidate_exact_structural_delta_passed": {"const": true},
+        "control_expected_contract_outcome": {"const": "valid_invariant"},
+        "control_observed_contract_outcome": {"const": "valid_invariant"},
+        "control_expected_outcome_matched": {"const": true},
+        "author_expected_changed_components": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {"enum": ["disposition", "next_action", "risk_flags", "witness", "blockers"]},
+          "allOf": [
+            {"contains": {"const": "next_action"}},
+            {"contains": {"const": "witness"}}
+          ]
+        },
+        "candidate_action_witness_coupling_targeted": {"const": true},
+        "semantic_label_status": {"const": "pending_human_review"},
+        "scientific_coupling_established": {"const": false},
+        "coupled_transition_admitted": {"const": false},
+        "automatic_oracle_edit_authorized": {"const": false}
+      }
+    }
+  }
+}

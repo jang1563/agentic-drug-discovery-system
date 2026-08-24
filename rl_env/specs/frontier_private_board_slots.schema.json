@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/frontier_private_board_slots.schema.json",
+  "title": "ADDS-Frontier Unpopulated Private Board Slots",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "board_id",
+    "status",
+    "board_protocol_integrity_sha256",
+    "task_selection_blinded_to_models",
+    "baseline_model_runs_started",
+    "benchmark_evidence_claimed",
+    "slots",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-board-slot-manifest.v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "status": {"const": "unpopulated_preregistered"},
+    "board_protocol_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "task_selection_blinded_to_models": {"const": true},
+    "baseline_model_runs_started": {"const": false},
+    "benchmark_evidence_claimed": {"const": false},
+    "slots": {
+      "type": "array",
+      "minItems": 40,
+      "maxItems": 40,
+      "items": {"$ref": "#/$defs/slot"}
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot_id",
+        "family_id",
+        "disease_domain",
+        "temporal_regime",
+        "partition",
+        "status",
+        "task_commitment",
+        "oracle_commitment",
+        "program_commitment",
+        "disease_identity_commitment",
+        "curator_roster_commitment",
+        "independent_curator_count",
+        "admission_gate_results",
+        "board_admitted",
+        "nonclaim"
+      ],
+      "properties": {
+        "slot_id": {"type": "string", "pattern": "^slot-[a-z0-9-]+-[0-9]{2}$"},
+        "family_id": {
+          "enum": [
+            "evidence_lineage_trap",
+            "temporal_reversal",
+            "translational_handoff",
+            "non_exchangeable_replication",
+            "budgeted_evidence_resolution"
+          ]
+        },
+        "disease_domain": {
+          "enum": [
+            "hematology",
+            "immune_inflammatory",
+            "oncology",
+            "neurology",
+            "metabolic",
+            "infectious_disease",
+            "cardiovascular",
+            "rare_genetic"
+          ]
+        },
+        "temporal_regime": {
+          "enum": ["historical_pre_2024", "historical_2024_2025", "contemporary_2026"]
+        },
+        "partition": {"enum": ["calibration", "sealed_evaluation"]},
+        "status": {"const": "unassigned"},
+        "task_commitment": {"type": "null"},
+        "oracle_commitment": {"type": "null"},
+        "program_commitment": {"type": "null"},
+        "disease_identity_commitment": {"type": "null"},
+        "curator_roster_commitment": {"type": "null"},
+        "independent_curator_count": {"const": 0},
+        "admission_gate_results": {"type": "object", "maxProperties": 0},
+        "board_admitted": {"const": false},
+        "nonclaim": {"const": "This slot contains no private task content or benchmark result."}
+      }
+    }
+  }
+}

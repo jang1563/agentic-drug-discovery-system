@@ -23,12 +23,19 @@ classifiers = [
 ]
 dependencies = [
   "pypdf>=6.14,<7",
+  "tiktoken==0.14.0",
 ]
 
 [project.optional-dependencies]
+frontier-tokenizer-eval = [
+  "sentencepiece==0.2.2",
+  "tokenizers==0.23.1",
+]
 test = [
   "jsonschema>=4.23,<5",
   "pytest>=8,<10",
+  "sentencepiece==0.2.2",
+  "tokenizers==0.23.1",
 ]
 
 [project.scripts]
@@ -39,6 +46,7 @@ adds-replay-bundle = "agentic_drug_discovery.replay_cli:main"
 adds-pinned-ingestion = "agentic_drug_discovery.ingestion_cli:main"
 adds-research-readiness = "agentic_drug_discovery.research_readiness_cli:main"
 adds-translational-handoff = "agentic_drug_discovery.translational_handoff_cli:main"
+adds-frontier = "agentic_drug_discovery.frontier_cli:main"
 
 [tool.setuptools.packages.find]
 include = ["agentic_drug_discovery*"]

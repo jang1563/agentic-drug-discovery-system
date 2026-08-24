@@ -1,0 +1,77 @@
+{
+  "schema_version": "adds.frontier-curation-tranche.v1",
+  "protocol_id": "adds-frontier-v1",
+  "set_id": "adds-frontier-development-tranche-v1",
+  "status": "development_curation_in_progress",
+  "canonical_task_target": 40,
+  "development_fixture_count": 5,
+  "independent_review_complete": false,
+  "baseline_model_runs_started": false,
+  "benchmark_evidence_claimed": false,
+  "task_set_integrity_sha256": "6ce258b44c8d4c0b4b8c43dd1b48d0add9677df518e26d2ec841064012ac8242",
+  "oracle_set_integrity_sha256": "be0c48a18f095c058190b9612c2cb9dc791c0435087a8a4c67232588502baa02",
+  "records": [
+    {
+      "task_id": "frontier-dev-lineage-001",
+      "family_id": "evidence_lineage_trap",
+      "authoring_blinded_to_baseline": true,
+      "scientific_review_status": "pending",
+      "lineage_review_status": "pending",
+      "leakage_review_status": "pending",
+      "mutation_review_status": "pending",
+      "independent_curator_count": 0,
+      "curator_roster_commitment": null,
+      "board_admitted": false
+    },
+    {
+      "task_id": "frontier-dev-temporal-001",
+      "family_id": "temporal_reversal",
+      "authoring_blinded_to_baseline": true,
+      "scientific_review_status": "pending",
+      "lineage_review_status": "pending",
+      "leakage_review_status": "pending",
+      "mutation_review_status": "pending",
+      "independent_curator_count": 0,
+      "curator_roster_commitment": null,
+      "board_admitted": false
+    },
+    {
+      "task_id": "frontier-dev-handoff-001",
+      "family_id": "translational_handoff",
+      "authoring_blinded_to_baseline": true,
+      "scientific_review_status": "pending",
+      "lineage_review_status": "pending",
+      "leakage_review_status": "pending",
+      "mutation_review_status": "pending",
+      "independent_curator_count": 0,
+      "curator_roster_commitment": null,
+      "board_admitted": false
+    },
+    {
+      "task_id": "frontier-dev-exchangeability-001",
+      "family_id": "non_exchangeable_replication",
+      "authoring_blinded_to_baseline": true,
+      "scientific_review_status": "pending",
+      "lineage_review_status": "pending",
+      "leakage_review_status": "pending",
+      "mutation_review_status": "pending",
+      "independent_curator_count": 0,
+      "curator_roster_commitment": null,
+      "board_admitted": false
+    },
+    {
+      "task_id": "frontier-dev-budget-001",
+      "family_id": "budgeted_evidence_resolution",
+      "authoring_blinded_to_baseline": true,
+      "scientific_review_status": "pending",
+      "lineage_review_status": "pending",
+      "leakage_review_status": "pending",
+      "mutation_review_status": "pending",
+      "independent_curator_count": 0,
+      "curator_roster_commitment": null,
+      "board_admitted": false
+    }
+  ],
+  "nonclaim": "Development fixtures do not count toward the independently curated 40-task pilot board.",
+  "integrity_sha256": "dd7964465c507c02f732f2b9c6606489f00c3aea7565811ecd9031061d7e5021"
+}

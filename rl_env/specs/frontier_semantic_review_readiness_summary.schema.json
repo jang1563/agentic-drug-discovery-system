@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_semantic_review_readiness_summary.schema.json",
+  "title": "ADDS-Frontier payload-free semantic review readiness",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "set_id", "protocol_id", "board_id", "status", "compiled_on",
+    "public_preflight_integrity_sha256", "private_packet_set_commitment",
+    "private_key_set_commitment", "semantic_probe_count", "machine_compiled_packet_count",
+    "exact_structural_delta_count", "probe_kind_counts",
+    "minimum_independent_curators_per_packet", "reviewer_assignment_count",
+    "reviewer_response_count", "consensus_label_count", "adjudication_count",
+    "admission_gate_results", "independent_review_complete", "human_review_required",
+    "board_admitted_count", "baseline_model_runs_started", "benchmark_evidence_claimed",
+    "private_payload_published", "nonclaims", "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-semantic-review-readiness-summary.v1"},
+    "set_id": {"const": "adds-frontier-semantic-review-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "status": {"const": "semantic_review_packets_compiled_review_not_started"},
+    "compiled_on": {"type": "string", "format": "date"},
+    "public_preflight_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_packet_set_commitment": {"$ref": "#/$defs/sha256"},
+    "private_key_set_commitment": {"$ref": "#/$defs/sha256"},
+    "semantic_probe_count": {"const": 20},
+    "machine_compiled_packet_count": {"const": 20},
+    "exact_structural_delta_count": {"const": 20},
+    "probe_kind_counts": {"$ref": "#/$defs/probeCounts"},
+    "minimum_independent_curators_per_packet": {"const": 3},
+    "reviewer_assignment_count": {"const": 0},
+    "reviewer_response_count": {"const": 0},
+    "consensus_label_count": {"const": 0},
+    "adjudication_count": {"const": 0},
+    "admission_gate_results": {"$ref": "#/$defs/gateResults"},
+    "independent_review_complete": {"const": false},
+    "human_review_required": {"const": true},
+    "board_admitted_count": {"const": 0},
+    "baseline_model_runs_started": {"const": false},
+    "benchmark_evidence_claimed": {"const": false},
+    "private_payload_published": {"const": false},
+    "nonclaims": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "probeCounts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bounded_evidence_reveal", "identity_rebind"],
+      "properties": {
+        "bounded_evidence_reveal": {"const": 10},
+        "identity_rebind": {"const": 10}
+      }
+    },
+    "gateResults": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "task_packet_integrity", "oracle_commitment_sealed", "independent_scientific_review",
+        "evidence_lineage_review", "temporal_leakage_review", "counterfactual_mutation_review",
+        "expert_solvability", "structured_oracle_replay", "conflict_of_interest_clear",
+        "contamination_canary_clear"
+      ],
+      "properties": {
+        "task_packet_integrity": {"const": "pass"},
+        "oracle_commitment_sealed": {"const": "pass"},
+        "independent_scientific_review": {"const": "pending"},
+        "evidence_lineage_review": {"const": "pending"},
+        "temporal_leakage_review": {"const": "pending"},
+        "counterfactual_mutation_review": {"const": "pending"},
+        "expert_solvability": {"const": "pending"},
+        "structured_oracle_replay": {"const": "pending"},
+        "conflict_of_interest_clear": {"const": "pending"},
+        "contamination_canary_clear": {"const": "pending"}
+      }
+    }
+  }
+}

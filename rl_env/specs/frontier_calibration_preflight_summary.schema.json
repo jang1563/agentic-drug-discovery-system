@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jihunni/Agentic-Drug-Discovery-System/blob/main/rl_env/specs/frontier_calibration_preflight_summary.schema.json",
+  "title": "ADDS-Frontier payload-free calibration preflight summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "preflight_id",
+    "protocol_id",
+    "board_id",
+    "status",
+    "run_on",
+    "progress_integrity_sha256",
+    "private_preflight_report_commitment",
+    "task_count",
+    "canonical_stage_count",
+    "canonical_stage_pass_count",
+    "mutation_probe_count",
+    "machine_decidable_probe_count",
+    "machine_expected_outcome_match_count",
+    "semantic_review_required_probe_count",
+    "structurally_accepted_semantic_probe_count",
+    "probe_kind_counts",
+    "admission_gate_results",
+    "independent_review_complete",
+    "human_review_required",
+    "board_admitted_count",
+    "baseline_model_runs_started",
+    "benchmark_evidence_claimed",
+    "private_payload_published",
+    "nonclaims",
+    "integrity_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "adds.frontier-calibration-preflight-summary.v1"},
+    "preflight_id": {"const": "adds-frontier-calibration-preflight-v1"},
+    "protocol_id": {"const": "adds-frontier-v1"},
+    "board_id": {"const": "adds-frontier-private-pilot-v1"},
+    "status": {"const": "automated_preflight_complete_semantic_review_pending"},
+    "run_on": {"type": "string", "format": "date"},
+    "progress_integrity_sha256": {"$ref": "#/$defs/sha256"},
+    "private_preflight_report_commitment": {"$ref": "#/$defs/sha256"},
+    "task_count": {"const": 10},
+    "canonical_stage_count": {"const": 60},
+    "canonical_stage_pass_count": {"const": 60},
+    "mutation_probe_count": {"const": 50},
+    "machine_decidable_probe_count": {"const": 30},
+    "machine_expected_outcome_match_count": {"const": 30},
+    "semantic_review_required_probe_count": {"const": 20},
+    "structurally_accepted_semantic_probe_count": {"const": 20},
+    "probe_kind_counts": {"$ref": "#/$defs/probeKindCounts"},
+    "admission_gate_results": {"$ref": "#/$defs/gateResults"},
+    "independent_review_complete": {"const": false},
+    "human_review_required": {"const": true},
+    "board_admitted_count": {"const": 0},
+    "baseline_model_runs_started": {"const": false},
+    "benchmark_evidence_claimed": {"const": false},
+    "private_payload_published": {"const": false},
+    "nonclaims": {
+      "type": "array",
+      "minItems": 5,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "integrity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "probeKindCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id_rename",
+        "critical_evidence_removal",
+        "temporal_access_rebind",
+        "bounded_evidence_reveal",
+        "identity_rebind"
+      ],
+      "properties": {
+        "source_id_rename": {"const": 10},
+        "critical_evidence_removal": {"const": 10},
+        "temporal_access_rebind": {"const": 10},
+        "bounded_evidence_reveal": {"const": 10},
+        "identity_rebind": {"const": 10}
+      }
+    },
+    "gateResults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_packet_integrity",
+        "oracle_commitment_sealed",
+        "independent_scientific_review",
+        "evidence_lineage_review",
+        "temporal_leakage_review",
+        "counterfactual_mutation_review",
+        "expert_solvability",
+        "structured_oracle_replay",
+        "conflict_of_interest_clear",
+        "contamination_canary_clear"
+      ],
+      "properties": {
+        "task_packet_integrity": {"const": "pass"},
+        "oracle_commitment_sealed": {"const": "pass"},
+        "independent_scientific_review": {"const": "pending"},
+        "evidence_lineage_review": {"const": "pending"},
+        "temporal_leakage_review": {"const": "pending"},
+        "counterfactual_mutation_review": {"const": "pending"},
+        "expert_solvability": {"const": "pending"},
+        "structured_oracle_replay": {"const": "pending"},
+        "conflict_of_interest_clear": {"const": "pending"},
+        "contamination_canary_clear": {"const": "pending"}
+      }
+    }
+  }
+}
