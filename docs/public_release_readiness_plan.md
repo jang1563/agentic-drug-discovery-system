@@ -78,7 +78,8 @@ The following stay outside Git unless a separate audited release package explici
 
 - Full case banks, raw source snapshots, locked episodes, hidden gold, evaluator-only labels, and generated reward/verifier outputs.
 - Raw source bundles, real provider review jobs, ingestion runs, multi-trial portfolio selections,
-  endpoint-family reviewer approvals, ontology-authority resolutions, and reviewer working files.
+  endpoint-family reviewer approvals, ontology-authority resolutions, provenance-bound real
+  endpoint candidate packets, endpoint-safety adjudications, and reviewer working files.
 - Real policy checkpoints and policy-run artifacts containing complete state or tool ledgers.
 - Real sealed boards, cached episode packets, label vaults, commitment nonces, policy submissions,
   and per-episode evaluation outputs.

@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a provenance-bound pre-review endpoint candidate layer. An exact design-set compiler now
+  retains every population, endpoint, and safety record in explicit candidate or mechanically
+  excluded partitions, including posted secondary endpoints. It enumerates every eligible
+  same-design endpoint pair and endpoint-by-serious-safety link with exact source evidence,
+  record/content hashes, population/phase/window/arm diagnostics, raw safety counts, strict JSON
+  schemas/readers, integrity envelopes, and full-state recompilation. Synthetic omission,
+  exclusion, heterogeneity, phase-rebinding, source-rebinding, and rehashed-tamper controls pass;
+  endpoint family, ontology mapping, estimand equivalence, comparability, safety relationship,
+  benefit-risk synthesis, and treatment-choice claims remain fixed to false.
 - Added a project-internal, outcome-specific risk-of-bias contract and real two-trial olokizumab
   MTX-IR execution. Exact ClinicalTrials.gov fields and registry-labeled protocol/SAP PDF hashes,
   pages, sections, excerpts, and dates now support five canonical domain judgments per Week-12

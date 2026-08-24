@@ -50,6 +50,7 @@
       "docs/22_clinical_benefit_risk_synthesis.md",
       "docs/51_multi_endpoint_benefit_risk_portfolio.md",
       "docs/52_same_trial_multi_endpoint_stress.md",
+      "docs/53_provenance_bound_endpoint_review_candidates.md",
       "docs/23_clinical_portfolio_endpoint_mapping.md",
       "docs/24_policy_replanning_and_resume.md",
       "docs/25_cutoff_safe_policy_evaluation.md",

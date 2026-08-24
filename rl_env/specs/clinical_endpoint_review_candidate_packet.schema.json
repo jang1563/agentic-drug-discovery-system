@@ -1,0 +1,587 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinical_endpoint_review_candidate_packet.schema.json",
+  "title": "ADDS Provenance-Bound Clinical Endpoint Review Candidate Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "packet"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-endpoint-review-candidate-packet.v1"
+    },
+    "integrity_sha256": { "$ref": "#/$defs/sha256" },
+    "packet": { "$ref": "#/$defs/packet" }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "textArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/text" }
+    },
+    "sha256Array": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/sha256" }
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "nullableText": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/text" }
+      ]
+    },
+    "treatmentPhase": {
+      "oneOf": [
+        { "type": "null" },
+        { "enum": ["induction", "maintenance", "not_applicable"] }
+      ]
+    },
+    "nullableSha256": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/sha256" }
+      ]
+    },
+    "eligibilityStatus": {
+      "enum": ["review_candidate", "mechanically_excluded"]
+    },
+    "exclusionReasons": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "reporting_status_not_posted",
+          "event_category_not_serious",
+          "not_referenced_by_posted_endpoint"
+        ]
+      }
+    },
+    "sourceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "source_id",
+        "source_version",
+        "locator",
+        "content_hash_sha256",
+        "observed_at",
+        "available_at"
+      ],
+      "properties": {
+        "evidence_id": { "$ref": "#/$defs/text" },
+        "source_id": { "$ref": "#/$defs/text" },
+        "source_version": { "$ref": "#/$defs/text" },
+        "locator": { "$ref": "#/$defs/text" },
+        "content_hash_sha256": { "$ref": "#/$defs/sha256" },
+        "observed_at": { "type": "string", "format": "date" },
+        "available_at": { "type": "string", "format": "date" }
+      }
+    },
+    "population": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "population_id",
+        "trial_id",
+        "design_id",
+        "disease_id",
+        "description",
+        "description_sha256",
+        "enrollment_count",
+        "enrollment_type",
+        "sex",
+        "minimum_age",
+        "maximum_age",
+        "healthy_volunteers",
+        "record_sha256",
+        "referenced_endpoint_ids",
+        "source_evidence_ids",
+        "source_content_hashes",
+        "treatment_phase",
+        "population_alignment_sha256",
+        "eligibility_status",
+        "exclusion_reasons"
+      ],
+      "properties": {
+        "population_id": { "$ref": "#/$defs/text" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "design_id": { "$ref": "#/$defs/text" },
+        "disease_id": { "$ref": "#/$defs/text" },
+        "description": { "$ref": "#/$defs/text" },
+        "description_sha256": { "$ref": "#/$defs/sha256" },
+        "enrollment_count": { "type": "integer", "minimum": 1 },
+        "enrollment_type": { "$ref": "#/$defs/text" },
+        "sex": { "$ref": "#/$defs/text" },
+        "minimum_age": { "$ref": "#/$defs/text" },
+        "maximum_age": { "$ref": "#/$defs/nullableText" },
+        "healthy_volunteers": { "type": "boolean" },
+        "record_sha256": { "$ref": "#/$defs/sha256" },
+        "referenced_endpoint_ids": { "$ref": "#/$defs/textArray" },
+        "source_evidence_ids": {
+          "allOf": [
+            { "$ref": "#/$defs/textArray" },
+            { "minItems": 1 }
+          ]
+        },
+        "source_content_hashes": {
+          "allOf": [
+            { "$ref": "#/$defs/sha256Array" },
+            { "minItems": 1 }
+          ]
+        },
+        "treatment_phase": { "$ref": "#/$defs/treatmentPhase" },
+        "population_alignment_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "eligibility_status": { "$ref": "#/$defs/eligibilityStatus" },
+        "exclusion_reasons": { "$ref": "#/$defs/exclusionReasons" }
+      }
+    },
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "endpoint_id",
+        "trial_id",
+        "design_id",
+        "population_id",
+        "population_record_sha256",
+        "name",
+        "outcome_type",
+        "time_frame",
+        "parameter_type",
+        "unit",
+        "reporting_status",
+        "arm_ids",
+        "record_sha256",
+        "source_evidence_ids",
+        "source_content_hashes",
+        "treatment_phase",
+        "population_alignment_sha256",
+        "eligibility_status",
+        "exclusion_reasons",
+        "endpoint_family_assigned",
+        "estimand_equivalence_inferred"
+      ],
+      "properties": {
+        "endpoint_id": { "$ref": "#/$defs/text" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "design_id": { "$ref": "#/$defs/text" },
+        "population_id": { "$ref": "#/$defs/text" },
+        "population_record_sha256": { "$ref": "#/$defs/sha256" },
+        "name": { "$ref": "#/$defs/text" },
+        "outcome_type": { "$ref": "#/$defs/text" },
+        "time_frame": { "$ref": "#/$defs/text" },
+        "parameter_type": { "$ref": "#/$defs/text" },
+        "unit": { "$ref": "#/$defs/text" },
+        "reporting_status": { "$ref": "#/$defs/text" },
+        "arm_ids": {
+          "allOf": [
+            { "$ref": "#/$defs/textArray" },
+            { "minItems": 2 }
+          ]
+        },
+        "record_sha256": { "$ref": "#/$defs/sha256" },
+        "source_evidence_ids": {
+          "allOf": [
+            { "$ref": "#/$defs/textArray" },
+            { "minItems": 1 }
+          ]
+        },
+        "source_content_hashes": {
+          "allOf": [
+            { "$ref": "#/$defs/sha256Array" },
+            { "minItems": 1 }
+          ]
+        },
+        "treatment_phase": { "$ref": "#/$defs/treatmentPhase" },
+        "population_alignment_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "eligibility_status": { "$ref": "#/$defs/eligibilityStatus" },
+        "exclusion_reasons": { "$ref": "#/$defs/exclusionReasons" },
+        "endpoint_family_assigned": { "const": false },
+        "estimand_equivalence_inferred": { "const": false }
+      }
+    },
+    "safetyArm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "safety_arm_id",
+        "arm_id",
+        "role",
+        "source_group_id",
+        "source_group_title",
+        "serious_num_affected",
+        "serious_num_at_risk"
+      ],
+      "properties": {
+        "safety_arm_id": { "$ref": "#/$defs/text" },
+        "arm_id": { "$ref": "#/$defs/text" },
+        "role": { "enum": ["candidate", "comparator"] },
+        "source_group_id": { "$ref": "#/$defs/text" },
+        "source_group_title": { "$ref": "#/$defs/text" },
+        "serious_num_affected": { "$ref": "#/$defs/nonNegativeInteger" },
+        "serious_num_at_risk": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "safety_id",
+        "trial_id",
+        "design_id",
+        "event_category",
+        "reporting_status",
+        "time_frame",
+        "event_term_count",
+        "description",
+        "arm_summaries",
+        "record_sha256",
+        "source_evidence_ids",
+        "source_content_hashes",
+        "treatment_phase",
+        "population_alignment_sha256",
+        "eligibility_status",
+        "exclusion_reasons",
+        "endpoint_relationship_approved",
+        "comparative_safety_inferred"
+      ],
+      "properties": {
+        "safety_id": { "$ref": "#/$defs/text" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "design_id": { "$ref": "#/$defs/text" },
+        "event_category": { "$ref": "#/$defs/text" },
+        "reporting_status": { "$ref": "#/$defs/text" },
+        "time_frame": { "$ref": "#/$defs/text" },
+        "event_term_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "description": { "$ref": "#/$defs/nullableText" },
+        "arm_summaries": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/safetyArm" }
+        },
+        "record_sha256": { "$ref": "#/$defs/sha256" },
+        "source_evidence_ids": {
+          "allOf": [
+            { "$ref": "#/$defs/textArray" },
+            { "minItems": 1 }
+          ]
+        },
+        "source_content_hashes": {
+          "allOf": [
+            { "$ref": "#/$defs/sha256Array" },
+            { "minItems": 1 }
+          ]
+        },
+        "treatment_phase": { "$ref": "#/$defs/treatmentPhase" },
+        "population_alignment_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "eligibility_status": { "$ref": "#/$defs/eligibilityStatus" },
+        "exclusion_reasons": { "$ref": "#/$defs/exclusionReasons" },
+        "endpoint_relationship_approved": { "const": false },
+        "comparative_safety_inferred": { "const": false }
+      }
+    },
+    "endpointPair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pair_id",
+        "trial_id",
+        "design_id",
+        "left_endpoint_id",
+        "right_endpoint_id",
+        "left_population_id",
+        "right_population_id",
+        "left_population_record_sha256",
+        "right_population_record_sha256",
+        "left_endpoint_time_frame",
+        "right_endpoint_time_frame",
+        "left_treatment_phase",
+        "right_treatment_phase",
+        "left_population_alignment_sha256",
+        "right_population_alignment_sha256",
+        "left_source_content_hashes",
+        "right_source_content_hashes",
+        "shared_population_identity",
+        "shared_population_record",
+        "endpoint_time_frames_equal",
+        "treatment_phases_equal",
+        "shared_population_alignment",
+        "shared_source_content_hashes",
+        "diagnostic_codes",
+        "structural_status",
+        "endpoint_equivalence_approved",
+        "estimand_equivalence_inferred",
+        "clinical_comparability_inferred"
+      ],
+      "properties": {
+        "pair_id": { "$ref": "#/$defs/sha256" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "design_id": { "$ref": "#/$defs/text" },
+        "left_endpoint_id": { "$ref": "#/$defs/text" },
+        "right_endpoint_id": { "$ref": "#/$defs/text" },
+        "left_population_id": { "$ref": "#/$defs/text" },
+        "right_population_id": { "$ref": "#/$defs/text" },
+        "left_population_record_sha256": { "$ref": "#/$defs/sha256" },
+        "right_population_record_sha256": { "$ref": "#/$defs/sha256" },
+        "left_endpoint_time_frame": { "$ref": "#/$defs/text" },
+        "right_endpoint_time_frame": { "$ref": "#/$defs/text" },
+        "left_treatment_phase": { "$ref": "#/$defs/treatmentPhase" },
+        "right_treatment_phase": { "$ref": "#/$defs/treatmentPhase" },
+        "left_population_alignment_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "right_population_alignment_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "left_source_content_hashes": {
+          "allOf": [
+            { "$ref": "#/$defs/sha256Array" },
+            { "minItems": 1 }
+          ]
+        },
+        "right_source_content_hashes": {
+          "allOf": [
+            { "$ref": "#/$defs/sha256Array" },
+            { "minItems": 1 }
+          ]
+        },
+        "shared_population_identity": { "type": "boolean" },
+        "shared_population_record": { "type": "boolean" },
+        "endpoint_time_frames_equal": { "type": "boolean" },
+        "treatment_phases_equal": { "type": "boolean" },
+        "shared_population_alignment": { "type": "boolean" },
+        "shared_source_content_hashes": { "$ref": "#/$defs/sha256Array" },
+        "diagnostic_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "analysis_population_identity_mismatch",
+              "analysis_population_record_mismatch",
+              "endpoint_timeframe_mismatch",
+              "treatment_phase_not_declared",
+              "treatment_phase_partial_declaration",
+              "treatment_phase_mismatch",
+              "population_alignment_record_mismatch"
+            ]
+          }
+        },
+        "structural_status": {
+          "enum": [
+            "matched_structure",
+            "phase_undeclared",
+            "heterogeneous_structure"
+          ]
+        },
+        "endpoint_equivalence_approved": { "const": false },
+        "estimand_equivalence_inferred": { "const": false },
+        "clinical_comparability_inferred": { "const": false }
+      }
+    },
+    "endpointSafetyLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "link_id",
+        "trial_id",
+        "design_id",
+        "endpoint_id",
+        "safety_id",
+        "population_id",
+        "endpoint_time_frame",
+        "safety_time_frame",
+        "endpoint_arm_ids",
+        "safety_arm_ids",
+        "endpoint_treatment_phase",
+        "safety_treatment_phase",
+        "endpoint_population_alignment_sha256",
+        "safety_population_alignment_sha256",
+        "alignment_status",
+        "endpoint_arms_covered_by_safety",
+        "source_content_hashes",
+        "endpoint_relationship_approved",
+        "common_safety_risk_window_inferred",
+        "comparative_safety_inferred"
+      ],
+      "properties": {
+        "link_id": { "$ref": "#/$defs/sha256" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "design_id": { "$ref": "#/$defs/text" },
+        "endpoint_id": { "$ref": "#/$defs/text" },
+        "safety_id": { "$ref": "#/$defs/text" },
+        "population_id": { "$ref": "#/$defs/text" },
+        "endpoint_time_frame": { "$ref": "#/$defs/text" },
+        "safety_time_frame": { "$ref": "#/$defs/text" },
+        "endpoint_arm_ids": {
+          "allOf": [
+            { "$ref": "#/$defs/textArray" },
+            { "minItems": 2 }
+          ]
+        },
+        "safety_arm_ids": {
+          "allOf": [
+            { "$ref": "#/$defs/textArray" },
+            { "minItems": 2 }
+          ]
+        },
+        "endpoint_treatment_phase": { "$ref": "#/$defs/treatmentPhase" },
+        "safety_treatment_phase": { "$ref": "#/$defs/treatmentPhase" },
+        "endpoint_population_alignment_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "safety_population_alignment_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "alignment_status": {
+          "enum": [
+            "phase_bound_alignment_valid",
+            "legacy_phase_undeclared",
+            "population_alignment_invalid"
+          ]
+        },
+        "endpoint_arms_covered_by_safety": { "type": "boolean" },
+        "source_content_hashes": {
+          "allOf": [
+            { "$ref": "#/$defs/sha256Array" },
+            { "minItems": 1 }
+          ]
+        },
+        "endpoint_relationship_approved": { "const": false },
+        "common_safety_risk_window_inferred": { "const": false },
+        "comparative_safety_inferred": { "const": false }
+      }
+    },
+    "packet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packet_id",
+        "program_id",
+        "candidate_id",
+        "intervention_id",
+        "disease_id",
+        "policy_id",
+        "spec_sha256",
+        "state_sha256",
+        "design_ids",
+        "source_evidence",
+        "populations",
+        "endpoints",
+        "safety_records",
+        "endpoint_pairs",
+        "endpoint_safety_links",
+        "design_count",
+        "source_evidence_count",
+        "population_record_count",
+        "population_candidate_count",
+        "population_excluded_count",
+        "endpoint_record_count",
+        "endpoint_candidate_count",
+        "endpoint_excluded_count",
+        "safety_record_count",
+        "safety_candidate_count",
+        "safety_excluded_count",
+        "endpoint_pair_count",
+        "endpoint_safety_link_count",
+        "full_record_enumeration_performed",
+        "full_state_replay_required",
+        "reviewer_approval_performed",
+        "endpoint_family_assigned",
+        "ontology_mapping_approved",
+        "estimand_equivalence_inferred",
+        "clinical_comparability_inferred",
+        "comparative_safety_inferred",
+        "benefit_risk_synthesis_performed",
+        "treatment_choice_inferred",
+        "limitations"
+      ],
+      "properties": {
+        "packet_id": { "$ref": "#/$defs/text" },
+        "program_id": { "$ref": "#/$defs/text" },
+        "candidate_id": { "$ref": "#/$defs/text" },
+        "intervention_id": { "$ref": "#/$defs/text" },
+        "disease_id": { "$ref": "#/$defs/text" },
+        "policy_id": {
+          "const": "adds.provenance-bound-endpoint-review-candidates.v1"
+        },
+        "spec_sha256": { "$ref": "#/$defs/sha256" },
+        "state_sha256": { "$ref": "#/$defs/sha256" },
+        "design_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/text" }
+        },
+        "source_evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sourceEvidence" }
+        },
+        "populations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/population" }
+        },
+        "endpoints": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/endpoint" }
+        },
+        "safety_records": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/safety" }
+        },
+        "endpoint_pairs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/endpointPair" }
+        },
+        "endpoint_safety_links": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/endpointSafetyLink" }
+        },
+        "design_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_evidence_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "population_record_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "population_candidate_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "population_excluded_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_record_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_candidate_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_excluded_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_record_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_candidate_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_excluded_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_safety_link_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "full_record_enumeration_performed": { "const": true },
+        "full_state_replay_required": { "const": true },
+        "reviewer_approval_performed": { "const": false },
+        "endpoint_family_assigned": { "const": false },
+        "ontology_mapping_approved": { "const": false },
+        "estimand_equivalence_inferred": { "const": false },
+        "clinical_comparability_inferred": { "const": false },
+        "comparative_safety_inferred": { "const": false },
+        "benefit_risk_synthesis_performed": { "const": false },
+        "treatment_choice_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "prefixItems": [
+            { "const": "The packet is exhaustive only within the selected committed TrialDesignRecord scope and cannot recover upstream registry omissions." },
+            { "const": "Candidate enumeration does not approve an endpoint family, ontology mapping, estimand, or endpoint equivalence." },
+            { "const": "Structural endpoint-safety alignment does not approve a causal safety relationship, common risk window, or comparative safety claim." },
+            { "const": "Matching population identifiers, hashes, or aggregate counts do not establish participant identity or exchangeability." },
+            { "const": "The packet performs no pooling, utility weighting, treatment choice, regulatory inference, or benefit-risk conclusion." }
+          ],
+          "items": false
+        }
+      }
+    }
+  }
+}

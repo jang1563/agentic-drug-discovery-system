@@ -609,6 +609,13 @@ system or full trajectory atlas described in the roadmap. Honest status:
   rebinding, endpoint/safety-support removal, partial design projection, namespace collisions, and
   source mismatch fail closed. EMA can extend the accepted intervention only after a source asset
   or INN match.
+- **Provenance-bound endpoint review candidates:** Before endpoint-family approval, an exact
+  design-set compiler retains every population, endpoint, and safety record in explicit candidate
+  or mechanically excluded partitions. It enumerates every same-design endpoint pair and every
+  endpoint-by-serious-safety candidate link, preserves record/source hashes and phase/population
+  diagnostics, and fixes mapping, estimand, comparability, safety, synthesis, and treatment-choice
+  claims to false. Completeness is relative to committed design records, not raw registry-wide
+  outcomes. Full-state recompilation rejects omission, rebinding, and derived-count tampering.
 - **Multi-trial portfolio and endpoint mapping:** A portfolio extractor verifies the complete set of
   independently reviewed single-trial jobs and external ClinicalTrials.gov bundles before emitting
   one payload-free ingestion job. Job, receipt, NCT, design, endpoint, safety, candidate,
@@ -950,6 +957,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/22_clinical_benefit_risk_synthesis.md` | Humans + agents | Explicit cross-trial selection, retained trial values, source-disjoint provenance, non-pooling boundary, and fail-closed behavior. |
 | `docs/51_multi_endpoint_benefit_risk_portfolio.md` | Humans + agents | Replay-bound multi-endpoint domains, deduplicated safety/source units, reuse denominators, strict relabeling rejection, and no-score boundary. |
 | `docs/52_same_trial_multi_endpoint_stress.md` | Humans + agents | Complete same-trial endpoint-pair enumeration, population/phase/window replay, shared-safety diagnostics, structural statuses, and fixed nonclaims. |
+| `docs/53_provenance_bound_endpoint_review_candidates.md` | Humans + agents | Exhaustive pre-review endpoint/population/safety partitions, pair/link enumeration, exact provenance, strict replay, and reviewer-only semantic boundary. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
 | `docs/25_cutoff_safe_policy_evaluation.md` | Humans + agents | Cutoff-safe cached packets, role-neutral pair sealing, external label commitments, policy scoring, and claim boundaries. |
@@ -979,6 +987,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinical_synthesis.py` | Developers + agents | Deterministic reviewed-selection compiler for source-disjoint, non-pooled trial-level benefit-risk records. |
 | `agentic_drug_discovery/clinical_benefit_risk_portfolio.py` | Developers + agents | Full-state-replayed endpoint portfolios with exact safety/source deduplication, reuse accounting, strict JSON envelopes, and no cross-endpoint score. |
 | `agentic_drug_discovery/clinical_benefit_risk_portfolio_stress.py` | Developers + agents | Pairwise same-trial population/phase/time-frame/safety/source replay with structural heterogeneity codes and no comparability inference. |
+| `agentic_drug_discovery/clinical_endpoint_review_candidates.py` | Developers + agents | High-recall design-scoped endpoint/population/safety candidates with complete provenance, mechanical exclusions, strict readers, and no semantic approval. |
 | `agentic_drug_discovery/clinical_decision.py` | Developers + agents | Committed-synthesis tensor compiler, typed evidence gaps, deterministic budget-aware VOI planner, strict integrity readers, and state replay. |
 | `agentic_drug_discovery/clinical_workflow.py` | Users + agents | Stable config parser, accepted-packet provenance checks, compiler wrapper, validation report, and compact decision summary. |
 | `agentic_drug_discovery/clinical_cohort.py` | Developers + agents | State-bindable package rosters, deterministic cohort aggregation, matched policy comparisons, strict integrity readers, and cross-unit provenance overlap. |
@@ -1032,6 +1041,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `rl_env/specs/clinical_outcome_pattern_mixture_uncertainty_summary.schema.json` | Humans + machines | JSON Schema for compact all-grid calibration, truth-aligned coverage, dependence-closure response, and claim-boundary diagnostics. |
 | `rl_env/specs/clinical_evidence_closed_loop_transition.schema.json` | Machines + agents | JSON Schema for integrity-bound execution batches, compact provider/reviewer receipts, exact source rejoin, costs, gap transitions, and nested before/after decision packages; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_endpoint_mapping.schema.json` | Machines + agents | JSON Schema for approved reviewer, ontology identity, and exact endpoint/safety bindings without measurements. |
+| `rl_env/specs/clinical_endpoint_review_candidate_spec.schema.json` | Machines + reviewers | JSON Schema for the exact candidate/intervention/disease/design scope of pre-review enumeration. |
+| `rl_env/specs/clinical_endpoint_review_candidate_packet.schema.json` | Machines + reviewers | JSON Schema for provenance-bound record partitions, endpoint pairs, endpoint-safety links, counts, integrity, and fixed nonclaims. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machines + reviewers | JSON Schema for the exact set of single-trial jobs, receipts, and mapping-bound identities. |
 | `rl_env/specs/policy_checkpoint.schema.json` | Machines + reviewers | JSON Schema for hash-bound policy checkpoints, typed pending plans, observations, directives, and replan history. |
 | `rl_env/specs/sealed_evaluation_board.schema.json` | Machines + reviewers | JSON Schema for cutoff-safe role-neutral observations and cached policy-visible packets. |
@@ -1068,6 +1079,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `tests/test_clinical_cohort.py` | Users + CI | State-bound roster replay, matched policy sensitivity, provenance overlap, strict schema/readers, tamper rejection, and atomic cohort CLI coverage. |
 | `tests/test_clinical_benefit_risk_portfolio.py` | Users + CI | Sequential two-domain commits, strict endpoint distinctness, diagnostic reuse accounting, full-state replay, schema round-trip, and tamper rejection. |
 | `tests/test_clinical_benefit_risk_portfolio_stress.py` | Users + CI | Identity-closed same-trial endpoint commits, matched and heterogeneous structures, relabeling, shared safety, schema replay, and adversarial tamper controls. |
+| `tests/test_clinical_endpoint_review_candidates.py` | Users + CI | Exhaustive secondary-endpoint retention, exclusion partitions, phase/population diagnostics, source rebinding, strict schemas/readers, and rehashed tamper controls. |
 | `tests/test_clinical_outcome_evaluation.py` | Users + evaluators + CI | Cutoff leakage, source novelty, package/policy/roster binding, attrition, Brier/calibration math, paired comparisons, strict schemas/readers, and atomic outcome CLI coverage. |
 | `tests/test_clinical_outcome_uncertainty.py` | Users + evaluators + CI | CR1 math, paired covariance, fixed strata, chronology, known-overlap closure, small/dominant/zero-variance cluster states, strict readers, privacy, and atomic CLI coverage. |
 | `tests/test_clinical_outcome_design_simulation.py` | Users + evaluators + CI | Analytic truths, exact seeded replay, ICC undercoverage stress, floor/dominance/attrition states, strict bounds/readers, privacy, schemas, and atomic simulation CLI coverage. |

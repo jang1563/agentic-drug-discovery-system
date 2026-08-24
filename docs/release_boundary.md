@@ -237,6 +237,16 @@ states, endpoint/population review declarations, and estimand or safety-window a
 outside Git and Hugging Face until separate scientific, privacy, governance, and release-boundary
 review. Structural matching is never released as a clinical comparability claim.
 
+The provenance-bound endpoint review-candidate layer ships an exhaustive design-scoped compiler,
+strict spec/packet schemas and readers, documentation, and identity-closed synthetic omission,
+exclusion, heterogeneity, and tamper controls. A real packet can expose endpoint and population
+text, exact trial/design identities, safety aggregates, source locators and hashes, phase/window
+diagnostics, and the complete candidate relationship graph. Real specs, packets, source states,
+reviewer assignments, semantic endpoint-family decisions, and endpoint-safety adjudications remain
+outside Git and Hugging Face until separate scientific, privacy, governance, and release-boundary
+review. Public implementation fixes approval, ontology, estimand, comparability, safety,
+benefit-risk, and treatment-choice claims to false.
+
 The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
 schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
 synthetic matched-policy report. Real manifests can disclose selected programs and policy
