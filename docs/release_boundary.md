@@ -229,6 +229,14 @@ program-state fingerprints. Real specifications, reports, source states, and end
 materials remain outside Git and Hugging Face until separate scientific, privacy, governance, and
 release-boundary review. The synthetic controls establish accounting behavior only.
 
+The same-trial multi-endpoint stress layer ships a deterministic compiler, strict report schema and
+reader, documentation, and identity-closed synthetic matched/heterogeneous/relabeling controls. A
+real report can expose endpoint-pair population identities, population hashes, treatment phase,
+endpoint and safety windows, shared safety units, and source overlap. Real pairwise reports, source
+states, endpoint/population review declarations, and estimand or safety-window adjudications remain
+outside Git and Hugging Face until separate scientific, privacy, governance, and release-boundary
+review. Structural matching is never released as a clinical comparability claim.
+
 The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
 schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
 synthetic matched-policy report. Real manifests can disclose selected programs and policy

@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinical_benefit_risk_portfolio_stress_report.schema.json",
+  "title": "ADDS Clinical Benefit-Risk Portfolio Structural Stress Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "report"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-benefit-risk-portfolio-stress-report.v1"
+    },
+    "integrity_sha256": { "$ref": "#/$defs/sha256" },
+    "report": { "$ref": "#/$defs/report" }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sha256Array": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/sha256" }
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "synthesis_id",
+        "endpoint_family",
+        "trial_id",
+        "design_id",
+        "endpoint_id",
+        "endpoint_fingerprint_sha256",
+        "population_id",
+        "population_record_sha256",
+        "endpoint_time_frame",
+        "treatment_phase",
+        "population_alignment_sha256",
+        "safety_unit_id",
+        "safety_id",
+        "safety_fingerprint_sha256",
+        "safety_time_frame",
+        "source_content_hashes"
+      ],
+      "properties": {
+        "synthesis_id": { "$ref": "#/$defs/text" },
+        "endpoint_family": { "$ref": "#/$defs/text" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "design_id": { "$ref": "#/$defs/text" },
+        "endpoint_id": { "$ref": "#/$defs/text" },
+        "endpoint_fingerprint_sha256": { "$ref": "#/$defs/sha256" },
+        "population_id": { "$ref": "#/$defs/text" },
+        "population_record_sha256": { "$ref": "#/$defs/sha256" },
+        "endpoint_time_frame": { "$ref": "#/$defs/text" },
+        "treatment_phase": {
+          "oneOf": [
+            { "type": "null" },
+            { "enum": ["induction", "maintenance", "not_applicable"] }
+          ]
+        },
+        "population_alignment_sha256": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/sha256" }
+          ]
+        },
+        "safety_unit_id": { "$ref": "#/$defs/sha256" },
+        "safety_id": { "$ref": "#/$defs/text" },
+        "safety_fingerprint_sha256": { "$ref": "#/$defs/sha256" },
+        "safety_time_frame": { "$ref": "#/$defs/text" },
+        "source_content_hashes": {
+          "allOf": [
+            { "$ref": "#/$defs/sha256Array" },
+            { "minItems": 1 }
+          ]
+        }
+      }
+    },
+    "pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pair_id",
+        "trial_id",
+        "left",
+        "right",
+        "shared_endpoint_record",
+        "shared_population_identity",
+        "shared_population_record",
+        "shared_population_alignment",
+        "endpoint_time_frames_equal",
+        "treatment_phases_equal",
+        "shared_safety_unit",
+        "safety_time_frames_equal",
+        "shared_source_content_hashes",
+        "source_overlap_status",
+        "diagnostic_codes",
+        "structural_status",
+        "clinical_comparability_inferred",
+        "safety_independence_inferred"
+      ],
+      "properties": {
+        "pair_id": { "$ref": "#/$defs/sha256" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "left": { "$ref": "#/$defs/context" },
+        "right": { "$ref": "#/$defs/context" },
+        "shared_endpoint_record": { "type": "boolean" },
+        "shared_population_identity": { "type": "boolean" },
+        "shared_population_record": { "type": "boolean" },
+        "shared_population_alignment": { "type": "boolean" },
+        "endpoint_time_frames_equal": { "type": "boolean" },
+        "treatment_phases_equal": { "type": "boolean" },
+        "shared_safety_unit": { "type": "boolean" },
+        "safety_time_frames_equal": { "type": "boolean" },
+        "shared_source_content_hashes": { "$ref": "#/$defs/sha256Array" },
+        "source_overlap_status": {
+          "enum": ["exact", "partial", "disjoint"]
+        },
+        "diagnostic_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "endpoint_record_reused",
+              "analysis_population_identity_mismatch",
+              "analysis_population_record_mismatch",
+              "population_alignment_record_mismatch",
+              "endpoint_timeframe_mismatch",
+              "treatment_phase_not_declared",
+              "treatment_phase_partial_declaration",
+              "treatment_phase_mismatch",
+              "safety_record_identity_mismatch",
+              "safety_timeframe_mismatch"
+            ]
+          }
+        },
+        "structural_status": {
+          "enum": [
+            "matched_structure",
+            "phase_undeclared",
+            "heterogeneous_structure"
+          ]
+        },
+        "clinical_comparability_inferred": { "const": false },
+        "safety_independence_inferred": { "const": false }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stress_report_id",
+        "portfolio_id",
+        "program_id",
+        "candidate_id",
+        "intervention_id",
+        "disease_id",
+        "policy_id",
+        "portfolio_spec_sha256",
+        "portfolio_report_sha256",
+        "state_sha256",
+        "pairwise_cells",
+        "same_trial_pair_count",
+        "matched_structure_pair_count",
+        "phase_undeclared_pair_count",
+        "heterogeneous_structure_pair_count",
+        "endpoint_record_reuse_pair_count",
+        "population_identity_mismatch_pair_count",
+        "population_record_mismatch_pair_count",
+        "population_alignment_mismatch_pair_count",
+        "endpoint_timeframe_mismatch_pair_count",
+        "treatment_phase_partial_pair_count",
+        "treatment_phase_mismatch_pair_count",
+        "safety_unit_reuse_pair_count",
+        "safety_identity_mismatch_pair_count",
+        "safety_timeframe_mismatch_pair_count",
+        "exact_source_overlap_pair_count",
+        "partial_source_overlap_pair_count",
+        "disjoint_source_pair_count",
+        "full_state_replay_performed",
+        "shared_safety_counted_as_independent",
+        "clinical_comparability_inferred",
+        "endpoint_exchangeability_inferred",
+        "safety_independence_inferred",
+        "treatment_choice_inferred",
+        "limitations"
+      ],
+      "properties": {
+        "stress_report_id": { "$ref": "#/$defs/text" },
+        "portfolio_id": { "$ref": "#/$defs/text" },
+        "program_id": { "$ref": "#/$defs/text" },
+        "candidate_id": { "$ref": "#/$defs/text" },
+        "intervention_id": { "$ref": "#/$defs/text" },
+        "disease_id": { "$ref": "#/$defs/text" },
+        "policy_id": {
+          "const": "adds.same-trial-multi-endpoint-structural-stress.v1"
+        },
+        "portfolio_spec_sha256": { "$ref": "#/$defs/sha256" },
+        "portfolio_report_sha256": { "$ref": "#/$defs/sha256" },
+        "state_sha256": { "$ref": "#/$defs/sha256" },
+        "pairwise_cells": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/pair" }
+        },
+        "same_trial_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "matched_structure_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "phase_undeclared_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "heterogeneous_structure_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_record_reuse_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "population_identity_mismatch_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "population_record_mismatch_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "population_alignment_mismatch_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_timeframe_mismatch_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "treatment_phase_partial_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "treatment_phase_mismatch_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_unit_reuse_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_identity_mismatch_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_timeframe_mismatch_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "exact_source_overlap_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "partial_source_overlap_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "disjoint_source_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "full_state_replay_performed": { "const": true },
+        "shared_safety_counted_as_independent": { "const": false },
+        "clinical_comparability_inferred": { "const": false },
+        "endpoint_exchangeability_inferred": { "const": false },
+        "safety_independence_inferred": { "const": false },
+        "treatment_choice_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "prefixItems": [
+            { "const": "Pairwise structural matches do not establish endpoint exchangeability, clinical comparability, or a shared estimand." },
+            { "const": "Shared safety units and source artifacts are provenance reuse, not new independent evidence." },
+            { "const": "Exact population identifiers and hashes do not establish that endpoint analysis sets contain the same participants." },
+            { "const": "Time-frame text equality does not establish equal follow-up, censoring, assessment schedules, or risk windows." },
+            { "const": "The diagnostic performs no pooling, utility weighting, clinical acceptability judgment, treatment choice, or regulatory inference." }
+          ],
+          "items": false
+        }
+      }
+    }
+  }
+}
