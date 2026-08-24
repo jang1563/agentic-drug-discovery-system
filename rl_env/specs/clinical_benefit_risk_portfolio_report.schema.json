@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinical_benefit_risk_portfolio_report.schema.json",
+  "title": "ADDS Clinical Benefit-Risk Portfolio Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "report"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-benefit-risk-portfolio-report.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "report": {
+      "$ref": "#/$defs/report"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sha256Array": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/sha256" }
+    },
+    "textArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/text" }
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "endpointCell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "study_record_id",
+        "trial_id",
+        "design_id",
+        "endpoint_id",
+        "endpoint_fingerprint_sha256",
+        "safety_unit_id",
+        "effect_estimate",
+        "confidence_interval_percent",
+        "confidence_interval_lower",
+        "confidence_interval_upper",
+        "measurement_unit",
+        "endpoint_time_frame",
+        "benefit_direction",
+        "source_content_hashes"
+      ],
+      "properties": {
+        "study_record_id": { "$ref": "#/$defs/text" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "design_id": { "$ref": "#/$defs/text" },
+        "endpoint_id": { "$ref": "#/$defs/text" },
+        "endpoint_fingerprint_sha256": { "$ref": "#/$defs/sha256" },
+        "safety_unit_id": { "$ref": "#/$defs/sha256" },
+        "effect_estimate": { "type": "number" },
+        "confidence_interval_percent": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        },
+        "confidence_interval_lower": { "type": "number" },
+        "confidence_interval_upper": { "type": "number" },
+        "measurement_unit": { "$ref": "#/$defs/text" },
+        "endpoint_time_frame": { "$ref": "#/$defs/text" },
+        "benefit_direction": {
+          "enum": ["benefit", "harm", "null_or_uncertain"]
+        },
+        "source_content_hashes": { "$ref": "#/$defs/sha256Array" }
+      }
+    },
+    "endpointDomain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "synthesis_id",
+        "synthesis_sha256",
+        "endpoint_mapping_id",
+        "endpoint_family",
+        "effect_measure",
+        "favorable_direction",
+        "safety_measure",
+        "harmonization_policy_id",
+        "cells",
+        "benefit_direction_consistent",
+        "safety_direction_consistent",
+        "source_disjoint_within_domain",
+        "pooling_performed"
+      ],
+      "properties": {
+        "synthesis_id": { "$ref": "#/$defs/text" },
+        "synthesis_sha256": { "$ref": "#/$defs/sha256" },
+        "endpoint_mapping_id": { "$ref": "#/$defs/text" },
+        "endpoint_family": { "$ref": "#/$defs/text" },
+        "effect_measure": { "$ref": "#/$defs/text" },
+        "favorable_direction": {
+          "enum": ["lower_is_better", "higher_is_better"]
+        },
+        "safety_measure": { "$ref": "#/$defs/text" },
+        "harmonization_policy_id": { "$ref": "#/$defs/text" },
+        "cells": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/endpointCell" }
+        },
+        "benefit_direction_consistent": { "type": "boolean" },
+        "safety_direction_consistent": { "type": "boolean" },
+        "source_disjoint_within_domain": { "const": true },
+        "pooling_performed": { "const": false }
+      }
+    },
+    "safetyUnit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "safety_unit_id",
+        "trial_id",
+        "design_id",
+        "safety_id",
+        "safety_fingerprint_sha256",
+        "safety_time_frame",
+        "candidate_serious_num_affected",
+        "candidate_serious_num_at_risk",
+        "comparator_serious_num_affected",
+        "comparator_serious_num_at_risk",
+        "candidate_serious_event_risk",
+        "comparator_serious_event_risk",
+        "serious_event_risk_difference",
+        "safety_direction",
+        "source_content_hashes",
+        "referenced_by_synthesis_ids",
+        "referenced_by_endpoint_families",
+        "reference_count"
+      ],
+      "properties": {
+        "safety_unit_id": { "$ref": "#/$defs/sha256" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "design_id": { "$ref": "#/$defs/text" },
+        "safety_id": { "$ref": "#/$defs/text" },
+        "safety_fingerprint_sha256": { "$ref": "#/$defs/sha256" },
+        "safety_time_frame": { "$ref": "#/$defs/text" },
+        "candidate_serious_num_affected": { "$ref": "#/$defs/nonNegativeInteger" },
+        "candidate_serious_num_at_risk": { "type": "integer", "minimum": 1 },
+        "comparator_serious_num_affected": { "$ref": "#/$defs/nonNegativeInteger" },
+        "comparator_serious_num_at_risk": { "type": "integer", "minimum": 1 },
+        "candidate_serious_event_risk": { "type": "number" },
+        "comparator_serious_event_risk": { "type": "number" },
+        "serious_event_risk_difference": { "type": "number" },
+        "safety_direction": {
+          "enum": [
+            "lower_observed_serious_event_risk",
+            "higher_observed_serious_event_risk",
+            "equal_observed_serious_event_risk"
+          ]
+        },
+        "source_content_hashes": { "$ref": "#/$defs/sha256Array" },
+        "referenced_by_synthesis_ids": { "$ref": "#/$defs/textArray" },
+        "referenced_by_endpoint_families": { "$ref": "#/$defs/textArray" },
+        "reference_count": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "sourceUnit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_content_hash",
+        "trial_id",
+        "synthesis_ids",
+        "endpoint_families",
+        "safety_unit_ids",
+        "reference_count"
+      ],
+      "properties": {
+        "source_content_hash": { "$ref": "#/$defs/sha256" },
+        "trial_id": { "$ref": "#/$defs/text" },
+        "synthesis_ids": { "$ref": "#/$defs/textArray" },
+        "endpoint_families": { "$ref": "#/$defs/textArray" },
+        "safety_unit_ids": { "$ref": "#/$defs/sha256Array" },
+        "reference_count": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "portfolio_id",
+        "program_id",
+        "candidate_id",
+        "intervention_id",
+        "disease_id",
+        "policy_id",
+        "spec_sha256",
+        "state_sha256",
+        "endpoint_domains",
+        "safety_units",
+        "source_units",
+        "synthesis_count",
+        "endpoint_family_count",
+        "endpoint_reference_count",
+        "unique_endpoint_count",
+        "endpoint_reuse_count",
+        "trial_reference_count",
+        "unique_trial_count",
+        "trial_reuse_count",
+        "safety_reference_count",
+        "unique_safety_unit_count",
+        "safety_reuse_count",
+        "source_reference_count",
+        "unique_source_count",
+        "source_reuse_count",
+        "distinct_endpoint_records_across_domains",
+        "full_state_replay_performed",
+        "pooling_performed",
+        "benefit_risk_score_computed",
+        "cross_endpoint_comparability_inferred",
+        "safety_independence_inferred",
+        "clinical_acceptability_inferred",
+        "limitations",
+        "metadata"
+      ],
+      "properties": {
+        "portfolio_id": { "$ref": "#/$defs/text" },
+        "program_id": { "$ref": "#/$defs/text" },
+        "candidate_id": { "$ref": "#/$defs/text" },
+        "intervention_id": { "$ref": "#/$defs/text" },
+        "disease_id": { "$ref": "#/$defs/text" },
+        "policy_id": {
+          "const": "adds.provenance-preserving-multi-endpoint-benefit-risk.v1"
+        },
+        "spec_sha256": { "$ref": "#/$defs/sha256" },
+        "state_sha256": { "$ref": "#/$defs/sha256" },
+        "endpoint_domains": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/endpointDomain" }
+        },
+        "safety_units": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/safetyUnit" }
+        },
+        "source_units": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sourceUnit" }
+        },
+        "synthesis_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_family_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_reference_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "unique_endpoint_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_reuse_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "trial_reference_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "unique_trial_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "trial_reuse_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_reference_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "unique_safety_unit_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_reuse_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_reference_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "unique_source_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_reuse_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "distinct_endpoint_records_across_domains": { "type": "boolean" },
+        "full_state_replay_performed": { "const": true },
+        "pooling_performed": { "const": false },
+        "benefit_risk_score_computed": { "const": false },
+        "cross_endpoint_comparability_inferred": { "const": false },
+        "safety_independence_inferred": { "const": false },
+        "clinical_acceptability_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "prefixItems": [
+            { "const": "Endpoint domains remain separate descriptive syntheses; no cross-endpoint pooling or scalar benefit-risk score is computed." },
+            { "const": "Repeated trial, endpoint, safety, and source references are counted as reuse and never treated as independent evidence." },
+            { "const": "Distinct endpoint-family labels do not establish distinct endpoint records, clinical importance, ontology validity, or population comparability." },
+            { "const": "Source hashes establish artifact identity, not source truth, causal validity, absence of bias, or scientific independence." },
+            { "const": "The report does not infer clinical acceptability, treatment choice, utility, transportability, or regulatory sufficiency." }
+          ],
+          "items": false
+        },
+        "metadata": { "type": "object" }
+      }
+    }
+  }
+}

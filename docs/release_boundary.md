@@ -222,6 +222,13 @@ program thresholds, priorities, costs, source identities, and planned operations
 package can retain trial-level evidence lineage. Those artifacts remain outside Git and Hugging
 Face until a separate scientific, privacy, and release-boundary review approves them.
 
+The multi-endpoint benefit-risk portfolio layer ships implementation, strict specification/report
+schemas and readers, documentation, and synthetic strict/overlap tests. A real portfolio can expose
+selected endpoint domains, exact trial and source reuse, safety numerators and denominators, and
+program-state fingerprints. Real specifications, reports, source states, and endpoint-review
+materials remain outside Git and Hugging Face until separate scientific, privacy, governance, and
+release-boundary review. The synthetic controls establish accounting behavior only.
+
 The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
 schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
 synthetic matched-policy report. Real manifests can disclose selected programs and policy

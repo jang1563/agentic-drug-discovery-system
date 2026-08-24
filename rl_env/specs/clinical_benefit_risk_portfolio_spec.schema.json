@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinical_benefit_risk_portfolio_spec.schema.json",
+  "title": "ADDS Clinical Benefit-Risk Portfolio Specification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "integrity_sha256",
+    "spec"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinical-benefit-risk-portfolio-spec.v1"
+    },
+    "integrity_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "portfolio_id",
+        "candidate_id",
+        "intervention_id",
+        "disease_id",
+        "synthesis_ids",
+        "require_distinct_endpoint_records",
+        "require_full_state_replay",
+        "policy_id",
+        "metadata"
+      ],
+      "properties": {
+        "portfolio_id": { "$ref": "#/$defs/text" },
+        "candidate_id": { "$ref": "#/$defs/text" },
+        "intervention_id": { "$ref": "#/$defs/text" },
+        "disease_id": { "$ref": "#/$defs/text" },
+        "synthesis_ids": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/text" }
+        },
+        "require_distinct_endpoint_records": { "type": "boolean" },
+        "require_full_state_replay": { "const": true },
+        "policy_id": {
+          "const": "adds.provenance-preserving-multi-endpoint-benefit-risk.v1"
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
