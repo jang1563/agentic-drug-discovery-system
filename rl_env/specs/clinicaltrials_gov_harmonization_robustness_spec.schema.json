@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_harmonization_robustness_spec.schema.json",
+  "title": "ADDS ClinicalTrials.gov Harmonization Robustness Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "benchmark_id", "report_bindings", "policy_id"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-harmonization-robustness-spec.v1"
+    },
+    "benchmark_id": { "$ref": "#/$defs/text" },
+    "report_bindings": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 64,
+      "items": { "$ref": "#/$defs/binding" }
+    },
+    "policy_id": {
+      "const": "adds.source-disjoint-harmonization-robustness.v1"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cohort_id",
+        "diagnostic_report_id",
+        "diagnostic_report_sha256"
+      ],
+      "properties": {
+        "cohort_id": { "$ref": "#/$defs/text" },
+        "diagnostic_report_id": { "$ref": "#/$defs/text" },
+        "diagnostic_report_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_harmonization_robustness_report.schema.json",
+  "title": "ADDS ClinicalTrials.gov Harmonization Robustness Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "report"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-harmonization-robustness-report.v1"
+    },
+    "integrity_sha256": { "$ref": "#/$defs/sha256" },
+    "report": { "$ref": "#/$defs/report" }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "routeCode": {
+      "enum": [
+        "semantic_endpoint_review_required",
+        "source_field_completion_required",
+        "within_trial_reconciliation_review_required",
+        "title_identity_review_required",
+        "time_frame_review_required",
+        "outcome_type_review_required",
+        "reporting_status_review_required",
+        "estimand_structure_review_required",
+        "population_review_required",
+        "safety_window_review_required"
+      ]
+    },
+    "pairFieldCode": {
+      "enum": [
+        "title",
+        "time_frame",
+        "outcome_type",
+        "reporting_status",
+        "parameter_type",
+        "dispersion_type",
+        "unit_of_measure",
+        "population_description_sha256",
+        "safety_time_frame"
+      ]
+    },
+    "structuralCode": {
+      "enum": [
+        "group_count",
+        "denominator_count",
+        "class_count",
+        "category_count",
+        "measurement_count",
+        "analysis_count",
+        "analysis_group_id_sets"
+      ]
+    },
+    "status": {
+      "enum": [
+        "saturated_all",
+        "absent_all",
+        "stable_non_boundary",
+        "heterogeneous"
+      ]
+    },
+    "rateProperties": {
+      "numerator": { "$ref": "#/$defs/nonNegativeInteger" },
+      "denominator": { "type": "integer", "minimum": 1 }
+    },
+    "routeRate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "numerator", "denominator"],
+      "properties": {
+        "code": { "$ref": "#/$defs/routeCode" },
+        "numerator": { "$ref": "#/$defs/nonNegativeInteger" },
+        "denominator": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "pairFieldRate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "numerator", "denominator"],
+      "properties": {
+        "code": { "$ref": "#/$defs/pairFieldCode" },
+        "numerator": { "$ref": "#/$defs/nonNegativeInteger" },
+        "denominator": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "structuralRate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "numerator", "denominator"],
+      "properties": {
+        "code": { "$ref": "#/$defs/structuralCode" },
+        "numerator": { "$ref": "#/$defs/nonNegativeInteger" },
+        "denominator": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "routeStability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "status"],
+      "properties": {
+        "code": { "$ref": "#/$defs/routeCode" },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "pairFieldStability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "status"],
+      "properties": {
+        "code": { "$ref": "#/$defs/pairFieldCode" },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "structuralStability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "status"],
+      "properties": {
+        "code": { "$ref": "#/$defs/structuralCode" },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "trialSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nct_id", "source_content_hash_sha256"],
+      "properties": {
+        "nct_id": { "type": "string", "pattern": "^NCT[0-9]{8}$" },
+        "source_content_hash_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "cohortProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cohort_id",
+        "diagnostic_report_id",
+        "diagnostic_report_sha256",
+        "trial_sources",
+        "trial_count",
+        "endpoint_candidate_count",
+        "pair_candidate_count",
+        "unique_difficulty_signature_count",
+        "review_route_rates",
+        "pair_field_missing_rates",
+        "structural_disagreement_rates"
+      ],
+      "properties": {
+        "cohort_id": { "$ref": "#/$defs/text" },
+        "diagnostic_report_id": { "$ref": "#/$defs/text" },
+        "diagnostic_report_sha256": { "$ref": "#/$defs/sha256" },
+        "trial_sources": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/trialSource" }
+        },
+        "trial_count": { "type": "integer", "minimum": 2, "maximum": 256 },
+        "endpoint_candidate_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "pair_candidate_count": { "type": "integer", "minimum": 1 },
+        "unique_difficulty_signature_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "review_route_rates": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": { "$ref": "#/$defs/routeRate" }
+        },
+        "pair_field_missing_rates": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": { "$ref": "#/$defs/pairFieldRate" }
+        },
+        "structural_disagreement_rates": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": { "$ref": "#/$defs/structuralRate" }
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "benchmark_id",
+        "policy_id",
+        "spec_sha256",
+        "cohort_profiles",
+        "review_route_stability",
+        "pair_field_missing_stability",
+        "structural_disagreement_stability",
+        "cohort_count",
+        "source_disjoint",
+        "payload_free_aggregate_only",
+        "count_pooling_performed",
+        "cohort_weighting_performed",
+        "difficulty_ranking_performed",
+        "disease_generalization_inferred",
+        "semantic_accuracy_inferred",
+        "clinical_comparability_inferred",
+        "benefit_risk_synthesis_performed",
+        "treatment_choice_inferred",
+        "limitations"
+      ],
+      "properties": {
+        "benchmark_id": { "$ref": "#/$defs/text" },
+        "policy_id": { "const": "adds.source-disjoint-harmonization-robustness.v1" },
+        "spec_sha256": { "$ref": "#/$defs/sha256" },
+        "cohort_profiles": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/cohortProfile" }
+        },
+        "review_route_stability": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": { "$ref": "#/$defs/routeStability" }
+        },
+        "pair_field_missing_stability": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": { "$ref": "#/$defs/pairFieldStability" }
+        },
+        "structural_disagreement_stability": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": { "$ref": "#/$defs/structuralStability" }
+        },
+        "cohort_count": { "type": "integer", "minimum": 2, "maximum": 64 },
+        "source_disjoint": { "const": true },
+        "payload_free_aggregate_only": { "const": true },
+        "count_pooling_performed": { "const": false },
+        "cohort_weighting_performed": { "const": false },
+        "difficulty_ranking_performed": { "const": false },
+        "disease_generalization_inferred": { "const": false },
+        "semantic_accuracy_inferred": { "const": false },
+        "clinical_comparability_inferred": { "const": false },
+        "benefit_risk_synthesis_performed": { "const": false },
+        "treatment_choice_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/text" }
+        }
+      }
+    }
+  }
+}

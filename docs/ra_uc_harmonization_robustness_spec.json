@@ -1,0 +1,17 @@
+{
+  "benchmark_id": "ra-uc-harmonization-robustness:2026-08-25",
+  "policy_id": "adds.source-disjoint-harmonization-robustness.v1",
+  "report_bindings": [
+    {
+      "cohort_id": "ra-olokizumab-mtx-ir",
+      "diagnostic_report_id": "olokizumab-mtx-ir-harmonization-difficulty:2026-08-25",
+      "diagnostic_report_sha256": "6a0d2aa20eafe670d6509fc4154558c10a783d5851ff476314b2d7dc86a0b089"
+    },
+    {
+      "cohort_id": "uc-ozanimod",
+      "diagnostic_report_id": "ozanimod-uc-harmonization-difficulty:2026-08-25",
+      "diagnostic_report_sha256": "2edf2956e0f4fdf0b2de97bd1db95bd9b15b210910af812709181f9a74d13156"
+    }
+  ],
+  "schema_version": "adds.clinicaltrials-gov-harmonization-robustness-spec.v1"
+}

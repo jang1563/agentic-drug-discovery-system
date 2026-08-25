@@ -1,0 +1,369 @@
+{
+  "integrity_sha256": "2edf2956e0f4fdf0b2de97bd1db95bd9b15b210910af812709181f9a74d13156",
+  "report": {
+    "automatic_pair_approval_performed": false,
+    "automatic_pair_exclusion_performed": false,
+    "benefit_risk_synthesis_performed": false,
+    "candidate_packet_id": "ozanimod-uc-cross-trial-candidates:2026-08-25",
+    "candidate_packet_sha256": "aaefafba4d1c4bfa10c5589ceb102fe866fc5ebe89530f7fc2580aed49245b22",
+    "clinical_comparability_inferred": false,
+    "comparative_safety_inferred": false,
+    "difficulty_signatures": [
+      {
+        "pair_count": 83,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "title_identity_review_required",
+          "time_frame_review_required",
+          "estimand_structure_review_required",
+          "population_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "1f217035b77d71f0d7c9f0e0fa50312d92d708aead0a756ee550282197bdb47a"
+      },
+      {
+        "pair_count": 27,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "title_identity_review_required",
+          "time_frame_review_required",
+          "outcome_type_review_required",
+          "estimand_structure_review_required",
+          "population_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "b770b0a354a10e4695cdeba27c7a57f7b8de63db4cdc28f2569ce5509b52b6a1"
+      }
+    ],
+    "endpoint_candidate_count": 21,
+    "endpoint_family_assigned": false,
+    "estimand_equivalence_inferred": false,
+    "every_pair_requires_semantic_review": true,
+    "limitations": [
+      "Diagnostics are complete only for the exact input candidate packet and cannot recover registry fields or trials absent upstream.",
+      "Counts describe mechanical disagreement and review workload; they do not measure semantic endpoint equivalence or model accuracy.",
+      "Difficulty signatures are overlapping blocker routes, not independent errors, clinical outcomes, or validated adjudication labels.",
+      "Safety-window diagnostics do not establish common risk windows, event causality, comparative safety, or acceptability.",
+      "No pair is automatically approved or excluded, and no pooling, synthesis, regulatory inference, or treatment choice is performed."
+    ],
+    "mechanical_status_counts": [
+      {
+        "code": "incomplete_source_fields",
+        "count": 110
+      },
+      {
+        "code": "all_mechanical_fields_equal",
+        "count": 0
+      },
+      {
+        "code": "mixed_mechanical_fields",
+        "count": 0
+      }
+    ],
+    "pair_candidate_count": 110,
+    "pair_field_diagnostics": [
+      {
+        "disagreement_count": 110,
+        "exact_count": 0,
+        "field_name": "title",
+        "missing_pair_count": 0,
+        "observed_both_count": 110,
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 110,
+        "exact_count": 0,
+        "field_name": "time_frame",
+        "missing_pair_count": 0,
+        "observed_both_count": 110,
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 27,
+        "exact_count": 83,
+        "field_name": "outcome_type",
+        "missing_pair_count": 0,
+        "observed_both_count": 110,
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 0,
+        "exact_count": 110,
+        "field_name": "reporting_status",
+        "missing_pair_count": 0,
+        "observed_both_count": 110,
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 44,
+        "exact_count": 66,
+        "field_name": "parameter_type",
+        "missing_pair_count": 0,
+        "observed_both_count": 110,
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 0,
+        "exact_count": 0,
+        "field_name": "dispersion_type",
+        "missing_pair_count": 110,
+        "observed_both_count": 0,
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 110,
+        "exact_count": 0,
+        "field_name": "unit_of_measure",
+        "missing_pair_count": 0,
+        "observed_both_count": 110,
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 110,
+        "exact_count": 0,
+        "field_name": "population_description_sha256",
+        "missing_pair_count": 0,
+        "observed_both_count": 110,
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 110,
+        "exact_count": 0,
+        "field_name": "safety_time_frame",
+        "missing_pair_count": 0,
+        "observed_both_count": 110,
+        "pair_count": 110
+      }
+    ],
+    "pairs_with_multiple_additional_blockers_count": 110,
+    "pairs_with_no_additional_mechanical_blocker_count": 0,
+    "payload_free_aggregate_only": true,
+    "policy_id": "adds.payload-free-harmonization-difficulty-diagnostics.v1",
+    "report_id": "ozanimod-uc-harmonization-difficulty:2026-08-25",
+    "review_route_counts": [
+      {
+        "code": "semantic_endpoint_review_required",
+        "count": 110
+      },
+      {
+        "code": "source_field_completion_required",
+        "count": 110
+      },
+      {
+        "code": "within_trial_reconciliation_review_required",
+        "count": 0
+      },
+      {
+        "code": "title_identity_review_required",
+        "count": 110
+      },
+      {
+        "code": "time_frame_review_required",
+        "count": 110
+      },
+      {
+        "code": "outcome_type_review_required",
+        "count": 27
+      },
+      {
+        "code": "reporting_status_review_required",
+        "count": 0
+      },
+      {
+        "code": "estimand_structure_review_required",
+        "count": 110
+      },
+      {
+        "code": "population_review_required",
+        "count": 110
+      },
+      {
+        "code": "safety_window_review_required",
+        "count": 110
+      }
+    ],
+    "spec_sha256": "a0ee8d5f93cbc1548c9c6f9584ab4aad0520e85e4f7eb4729f541f55dff65c4c",
+    "structural_diagnostics": [
+      {
+        "disagreement_count": 110,
+        "exact_count": 0,
+        "field_name": "group_count",
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 0,
+        "exact_count": 110,
+        "field_name": "denominator_count",
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 33,
+        "exact_count": 77,
+        "field_name": "class_count",
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 33,
+        "exact_count": 77,
+        "field_name": "category_count",
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 33,
+        "exact_count": 77,
+        "field_name": "measurement_count",
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 83,
+        "exact_count": 27,
+        "field_name": "analysis_count",
+        "pair_count": 110
+      },
+      {
+        "disagreement_count": 83,
+        "exact_count": 27,
+        "field_name": "analysis_group_id_sets",
+        "pair_count": 110
+      }
+    ],
+    "treatment_choice_inferred": false,
+    "trial_count": 2,
+    "trial_diagnostics": [
+      {
+        "adverse_event_module_present": true,
+        "endpoint_field_missing_counts": [
+          {
+            "code": "title",
+            "count": 0
+          },
+          {
+            "code": "time_frame",
+            "count": 0
+          },
+          {
+            "code": "outcome_type",
+            "count": 0
+          },
+          {
+            "code": "reporting_status",
+            "count": 0
+          },
+          {
+            "code": "parameter_type",
+            "count": 0
+          },
+          {
+            "code": "dispersion_type",
+            "count": 9
+          },
+          {
+            "code": "unit_of_measure",
+            "count": 0
+          },
+          {
+            "code": "population_description_sha256",
+            "count": 0
+          }
+        ],
+        "inventory_sha256": "5e72cff3475938547c5e6edbf608458dadba027811960a5fd76797825bb6ad2a",
+        "lexical_link_candidate_count": 10,
+        "nct_id": "NCT01647516",
+        "other_event_count": 12,
+        "posted_outcome_count": 10,
+        "posted_outcome_module_present": true,
+        "protocol_outcome_count": 10,
+        "protocol_outcome_module_present": true,
+        "reconciliation_status_counts": [
+          {
+            "code": "unmatched",
+            "count": 0
+          },
+          {
+            "code": "unique_exact_candidate",
+            "count": 10
+          },
+          {
+            "code": "ambiguous_exact_candidates",
+            "count": 0
+          }
+        ],
+        "registry_version": "2026-08-25",
+        "safety_event_stat_count": 450,
+        "safety_group_count": 9,
+        "serious_event_count": 38,
+        "source_content_hash_sha256": "71ed6feb2d11e4c8d8cd82ca1bbfa7baf619d0b2f403763d38bfadeed07c4d89",
+        "source_has_results": true
+      },
+      {
+        "adverse_event_module_present": true,
+        "endpoint_field_missing_counts": [
+          {
+            "code": "title",
+            "count": 0
+          },
+          {
+            "code": "time_frame",
+            "count": 0
+          },
+          {
+            "code": "outcome_type",
+            "count": 0
+          },
+          {
+            "code": "reporting_status",
+            "count": 0
+          },
+          {
+            "code": "parameter_type",
+            "count": 0
+          },
+          {
+            "code": "dispersion_type",
+            "count": 11
+          },
+          {
+            "code": "unit_of_measure",
+            "count": 0
+          },
+          {
+            "code": "population_description_sha256",
+            "count": 0
+          }
+        ],
+        "inventory_sha256": "07ef6bbb32be00708f27671c453f9fad7bee58076abd1052b681cce9b96d254a",
+        "lexical_link_candidate_count": 11,
+        "nct_id": "NCT02435992",
+        "other_event_count": 1,
+        "posted_outcome_count": 11,
+        "posted_outcome_module_present": true,
+        "protocol_outcome_count": 11,
+        "protocol_outcome_module_present": true,
+        "reconciliation_status_counts": [
+          {
+            "code": "unmatched",
+            "count": 0
+          },
+          {
+            "code": "unique_exact_candidate",
+            "count": 11
+          },
+          {
+            "code": "ambiguous_exact_candidates",
+            "count": 0
+          }
+        ],
+        "registry_version": "2026-08-25",
+        "safety_event_stat_count": 280,
+        "safety_group_count": 5,
+        "serious_event_count": 55,
+        "source_content_hash_sha256": "5cfb559f2b89bfefa4004b8a8ab7ca5561389a882ff70f205fda5ce34d3faf07",
+        "source_has_results": true
+      }
+    ],
+    "unique_difficulty_signature_count": 2
+  },
+  "schema_version": "adds.clinicaltrials-gov-harmonization-diagnostic-report.v1"
+}

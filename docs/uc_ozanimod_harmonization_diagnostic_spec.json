@@ -1,0 +1,6 @@
+{
+  "candidate_packet_sha256": "aaefafba4d1c4bfa10c5589ceb102fe866fc5ebe89530f7fc2580aed49245b22",
+  "policy_id": "adds.payload-free-harmonization-difficulty-diagnostics.v1",
+  "report_id": "ozanimod-uc-harmonization-difficulty:2026-08-25",
+  "schema_version": "adds.clinicaltrials-gov-harmonization-diagnostic-spec.v1"
+}

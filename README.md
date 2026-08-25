@@ -646,7 +646,9 @@ system or full trajectory atlas described in the roadmap. Honest status:
   review routes, and mutually exclusive blocker signatures without retaining endpoint titles,
   pair IDs, or safety terms. An exact two-trial olokizumab run covers all 35 posted-outcome pairs:
   all require semantic, estimand-structure, and safety-window review, while no pair is approved,
-  excluded, mapped, pooled, or synthesized.
+  excluded, mapped, pooled, or synthesized. A source-disjoint RA/UC robustness profile adds an
+  exact 110-pair ozanimod replication and classifies per-cohort rational rates as saturated,
+  absent, stable non-boundary, or heterogeneous without pooling, weighting, or ranking.
 - **Clinical evidence tensor and bounded VOI planning:** A committed synthesis can be recompiled
   into exact per-trial endpoint/safety cells, ten policy-relative evidence dimensions, and
   provenance-linked gap records. A preregistered action catalog supplies gap-resolution
@@ -981,6 +983,11 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/56_cross_trial_harmonization_difficulty_diagnostics.md` | Humans + agents | Payload-free blocker ontology, explicit pairwise denominators, exact olokizumab 35-pair workload result, replay hashes, and fixed semantic nonclaims. |
 | `docs/ra_olokizumab_mtx_ir_harmonization_diagnostic_spec.json` | Machines + reviewers | Exact candidate-graph fingerprint and fixed aggregate diagnostic policy for the public-source execution. |
 | `docs/ra_olokizumab_mtx_ir_harmonization_diagnostic_report.json` | Machines + reviewers | Integrity-bound NCT/source/inventory hashes, field and structure counts, overlapping review routes, blocker signatures, and prohibited-inference flags. |
+| `docs/57_cross_disease_harmonization_robustness.md` | Humans + agents | Exact ozanimod UC 110-pair replication, RA/UC rational-rate comparison, stable/heterogeneous routing, structural confounding warning, and next research priority. |
+| `docs/uc_ozanimod_harmonization_diagnostic_spec.json` | Machines + reviewers | Exact UC candidate-graph fingerprint and fixed payload-free diagnostic policy. |
+| `docs/uc_ozanimod_harmonization_diagnostic_report.json` | Machines + reviewers | Integrity-bound UC source/inventory hashes, 110-pair field/structure counts, routes, signatures, and nonclaims. |
+| `docs/ra_uc_harmonization_robustness_spec.json` | Machines + reviewers | Canonical source-disjoint RA/UC report bindings with exact internal report hashes. |
+| `docs/ra_uc_harmonization_robustness_report.json` | Machines + reviewers | Cohort-specific exact rates, cross-cohort stability labels, source-disjointness, and fixed no-pooling/no-ranking flags. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
 | `docs/25_cutoff_safe_policy_evaluation.md` | Humans + agents | Cutoff-safe cached packets, role-neutral pair sealing, external label commitments, policy scoring, and claim boundaries. |
@@ -1008,6 +1015,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinicaltrials_gov_inventory.py` | Developers + agents | Registry-record-wide protocol/result/safety inventory with source pointers, hashes, structural counts, two-sided exact lexical candidates, strict readers, and fixed nonclaims. |
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_candidates.py` | Developers + agents | Exact-inventory-bound cross-trial endpoint pairs, source-disjoint safety contexts, independent trial/endpoint/pair work bounds, mechanical diagnostics, strict readers, and fixed nonclaims. |
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_diagnostics.py` | Developers + agents | Payload-free complete-graph workload aggregation, explicit denominators, blocker signatures, strict Cartesian invariants, replay, and fixed semantic nonclaims. |
+| `agentic_drug_discovery/clinicaltrials_gov_harmonization_robustness.py` | Developers + agents | Source-disjoint diagnostic-report binding, exact rational cohort rates, cross-cohort stability classification, strict replay, and fixed no-pooling/no-ranking semantics. |
 | `agentic_drug_discovery/clinical_portfolio.py` | Developers + agents | Atomic exact-set verification and payload-free extraction for multiple ClinicalTrials.gov jobs and bundles. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Developers + agents | Strict reviewer-approved mapping parser, exact ledger compiler, fingerprints, and continuity recompilation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Developers + agents | Deterministic reviewed-selection compiler for source-disjoint, non-pooled trial-level benefit-risk records. |
@@ -1076,6 +1084,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `rl_env/specs/clinicaltrials_gov_harmonization_candidate_packet.schema.json` | Machines + reviewers | JSON Schema for trial safety contexts, every posted endpoint, full cross-trial pairs, missingness, mechanical diagnostics, integrity, and fixed nonclaims. |
 | `rl_env/specs/clinicaltrials_gov_harmonization_diagnostic_spec.schema.json` | Machines + reviewers | JSON Schema for exact candidate-packet binding and the fixed payload-free diagnostic policy; the adjacent example is synthetic. |
 | `rl_env/specs/clinicaltrials_gov_harmonization_diagnostic_report.schema.json` | Machines + reviewers | JSON Schema for aggregate trial, field, structure, route, signature, Cartesian-count, integrity, and fixed nonclaim diagnostics. |
+| `rl_env/specs/clinicaltrials_gov_harmonization_robustness_spec.schema.json` | Machines + reviewers | JSON Schema for canonical source-disjoint cohort/report bindings and exact report hashes. |
+| `rl_env/specs/clinicaltrials_gov_harmonization_robustness_report.schema.json` | Machines + reviewers | JSON Schema for exact cohort rates, stability labels, source-disjointness, integrity, and fixed no-pooling/no-ranking flags. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machines + reviewers | JSON Schema for the exact set of single-trial jobs, receipts, and mapping-bound identities. |
 | `rl_env/specs/policy_checkpoint.schema.json` | Machines + reviewers | JSON Schema for hash-bound policy checkpoints, typed pending plans, observations, directives, and replan history. |
 | `rl_env/specs/sealed_evaluation_board.schema.json` | Machines + reviewers | JSON Schema for cutoff-safe role-neutral observations and cached policy-visible packets. |
@@ -1116,6 +1126,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `tests/test_clinicaltrials_gov_inventory.py` | Users + CI | Registry-record-wide secondary/unmatched/ambiguous outcome retention, serious/other safety arrays, module absence, source drift, strict schemas/readers, CLI, and tamper controls. |
 | `tests/test_clinicaltrials_gov_harmonization_candidates.py` | Users + CI | Complete 2x3 cross-trial enumeration, zero-result trial retention, ambiguity/missingness/safety diagnostics, pair bounds, source-disjointness, strict schemas/readers, CLI, and tamper controls. |
 | `tests/test_clinicaltrials_gov_harmonization_diagnostics.py` | Users + CI | Aggregate partitions, explicit denominators, overlapping routes, Cartesian invariants, payload exclusion, strict schemas/readers, exact public artifact, CLI, replay, and tamper controls. |
+| `tests/test_clinicaltrials_gov_harmonization_robustness.py` | Users + CI | Exact RA/UC rates, order-independent replay, source overlap/hash rejection, strict schemas/readers, public artifact identity, CLI, and payload exclusion. |
 | `tests/test_clinical_outcome_evaluation.py` | Users + evaluators + CI | Cutoff leakage, source novelty, package/policy/roster binding, attrition, Brier/calibration math, paired comparisons, strict schemas/readers, and atomic outcome CLI coverage. |
 | `tests/test_clinical_outcome_uncertainty.py` | Users + evaluators + CI | CR1 math, paired covariance, fixed strata, chronology, known-overlap closure, small/dominant/zero-variance cluster states, strict readers, privacy, and atomic CLI coverage. |
 | `tests/test_clinical_outcome_design_simulation.py` | Users + evaluators + CI | Analytic truths, exact seeded replay, ICC undercoverage stress, floor/dominance/attrition states, strict bounds/readers, privacy, schemas, and atomic simulation CLI coverage. |

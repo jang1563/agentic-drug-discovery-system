@@ -35,9 +35,16 @@ from .clinicaltrials_gov_harmonization_candidates import (
 )
 from .clinicaltrials_gov_harmonization_diagnostics import (
     clinicaltrials_gov_harmonization_diagnostic_report_envelope,
+    clinicaltrials_gov_harmonization_diagnostic_report_from_json,
     clinicaltrials_gov_harmonization_diagnostic_spec_from_json,
     clinicaltrials_gov_harmonization_diagnostic_summary,
     compile_clinicaltrials_gov_harmonization_diagnostic,
+)
+from .clinicaltrials_gov_harmonization_robustness import (
+    clinicaltrials_gov_harmonization_robustness_report_envelope,
+    clinicaltrials_gov_harmonization_robustness_spec_from_json,
+    clinicaltrials_gov_harmonization_robustness_summary,
+    compile_clinicaltrials_gov_harmonization_robustness,
 )
 from .ncbi_pubmed import (
     extract_ncbi_pubmed_disease_model_ingestion_job,
@@ -359,6 +366,52 @@ def _diagnose_clinicaltrials_gov_harmonization(
     return {
         "status": "cross_trial_harmonization_diagnostic_compiled",
         **clinicaltrials_gov_harmonization_diagnostic_summary(report),
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
+    }
+
+
+def _benchmark_clinicaltrials_gov_harmonization_robustness(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    try:
+        spec_text = Path(args.spec).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(
+            "ClinicalTrials.gov harmonization robustness spec is unreadable"
+        ) from exc
+    spec = clinicaltrials_gov_harmonization_robustness_spec_from_json(spec_text)
+    if args.max_bytes <= 0:
+        raise ValueError("max-bytes must be positive")
+    reports = []
+    total_bytes = 0
+    for path in args.diagnostic_report:
+        try:
+            report_bytes = Path(path).read_bytes()
+        except OSError as exc:
+            raise ValueError(
+                f"harmonization diagnostic report is unreadable: {path}"
+            ) from exc
+        total_bytes += len(report_bytes)
+        if total_bytes > args.max_bytes:
+            raise ValueError("harmonization diagnostic reports exceed max-bytes")
+        try:
+            report_text = report_bytes.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(
+                f"harmonization diagnostic report is not UTF-8: {path}"
+            ) from exc
+        reports.append(
+            clinicaltrials_gov_harmonization_diagnostic_report_from_json(
+                report_text
+            )
+        )
+    report = compile_clinicaltrials_gov_harmonization_robustness(spec, reports)
+    envelope = clinicaltrials_gov_harmonization_robustness_report_envelope(report)
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    return {
+        "status": "cross_cohort_harmonization_robustness_compiled",
+        **clinicaltrials_gov_harmonization_robustness_summary(report),
         "output": str(output),
         "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
     }
@@ -692,6 +745,35 @@ def _parser() -> argparse.ArgumentParser:
     )
     harmonization_diagnostic.set_defaults(
         handler=_diagnose_clinicaltrials_gov_harmonization
+    )
+
+    harmonization_robustness = subparsers.add_parser(
+        "benchmark-clinicaltrials-gov-harmonization-robustness",
+        help=(
+            "Compare exact per-cohort harmonization diagnostic rates without "
+            "pooling, weighting, ranking, or semantic inference."
+        ),
+    )
+    harmonization_robustness.add_argument("--spec", required=True)
+    harmonization_robustness.add_argument(
+        "--diagnostic-report",
+        action="append",
+        required=True,
+        help="Exact payload-free diagnostic report; repeat once per cohort.",
+    )
+    harmonization_robustness.add_argument("--output", required=True)
+    harmonization_robustness.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+    )
+    harmonization_robustness.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing harmonization robustness report.",
+    )
+    harmonization_robustness.set_defaults(
+        handler=_benchmark_clinicaltrials_gov_harmonization_robustness
     )
 
     disposition = subparsers.add_parser(

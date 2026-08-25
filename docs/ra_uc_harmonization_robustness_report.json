@@ -1,0 +1,449 @@
+{
+  "integrity_sha256": "53a0d589d745502e4a657937f9ab359b78302dc6b2887a2743962fffacca3af4",
+  "report": {
+    "benchmark_id": "ra-uc-harmonization-robustness:2026-08-25",
+    "benefit_risk_synthesis_performed": false,
+    "clinical_comparability_inferred": false,
+    "cohort_count": 2,
+    "cohort_profiles": [
+      {
+        "cohort_id": "ra-olokizumab-mtx-ir",
+        "diagnostic_report_id": "olokizumab-mtx-ir-harmonization-difficulty:2026-08-25",
+        "diagnostic_report_sha256": "6a0d2aa20eafe670d6509fc4154558c10a783d5851ff476314b2d7dc86a0b089",
+        "endpoint_candidate_count": 12,
+        "pair_candidate_count": 35,
+        "pair_field_missing_rates": [
+          {
+            "code": "title",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "time_frame",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "outcome_type",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "reporting_status",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "parameter_type",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "dispersion_type",
+            "denominator": 35,
+            "numerator": 34
+          },
+          {
+            "code": "unit_of_measure",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "population_description_sha256",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "safety_time_frame",
+            "denominator": 35,
+            "numerator": 0
+          }
+        ],
+        "review_route_rates": [
+          {
+            "code": "semantic_endpoint_review_required",
+            "denominator": 35,
+            "numerator": 35
+          },
+          {
+            "code": "source_field_completion_required",
+            "denominator": 35,
+            "numerator": 34
+          },
+          {
+            "code": "within_trial_reconciliation_review_required",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "title_identity_review_required",
+            "denominator": 35,
+            "numerator": 31
+          },
+          {
+            "code": "time_frame_review_required",
+            "denominator": 35,
+            "numerator": 22
+          },
+          {
+            "code": "outcome_type_review_required",
+            "denominator": 35,
+            "numerator": 10
+          },
+          {
+            "code": "reporting_status_review_required",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "estimand_structure_review_required",
+            "denominator": 35,
+            "numerator": 35
+          },
+          {
+            "code": "population_review_required",
+            "denominator": 35,
+            "numerator": 10
+          },
+          {
+            "code": "safety_window_review_required",
+            "denominator": 35,
+            "numerator": 35
+          }
+        ],
+        "structural_disagreement_rates": [
+          {
+            "code": "group_count",
+            "denominator": 35,
+            "numerator": 35
+          },
+          {
+            "code": "denominator_count",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "class_count",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "category_count",
+            "denominator": 35,
+            "numerator": 0
+          },
+          {
+            "code": "measurement_count",
+            "denominator": 35,
+            "numerator": 35
+          },
+          {
+            "code": "analysis_count",
+            "denominator": 35,
+            "numerator": 25
+          },
+          {
+            "code": "analysis_group_id_sets",
+            "denominator": 35,
+            "numerator": 35
+          }
+        ],
+        "trial_count": 2,
+        "trial_sources": [
+          {
+            "nct_id": "NCT02760368",
+            "source_content_hash_sha256": "72cd2ce3bb7a7b1dbd9a115b24e273959571a52187759528d8b05005a9dd299b"
+          },
+          {
+            "nct_id": "NCT02760407",
+            "source_content_hash_sha256": "854689f2a761cd428f05597b71594b28a7fa073db06991586aa560a6b4cf1a57"
+          }
+        ],
+        "unique_difficulty_signature_count": 8
+      },
+      {
+        "cohort_id": "uc-ozanimod",
+        "diagnostic_report_id": "ozanimod-uc-harmonization-difficulty:2026-08-25",
+        "diagnostic_report_sha256": "2edf2956e0f4fdf0b2de97bd1db95bd9b15b210910af812709181f9a74d13156",
+        "endpoint_candidate_count": 21,
+        "pair_candidate_count": 110,
+        "pair_field_missing_rates": [
+          {
+            "code": "title",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "time_frame",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "outcome_type",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "reporting_status",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "parameter_type",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "dispersion_type",
+            "denominator": 110,
+            "numerator": 110
+          },
+          {
+            "code": "unit_of_measure",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "population_description_sha256",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "safety_time_frame",
+            "denominator": 110,
+            "numerator": 0
+          }
+        ],
+        "review_route_rates": [
+          {
+            "code": "semantic_endpoint_review_required",
+            "denominator": 110,
+            "numerator": 110
+          },
+          {
+            "code": "source_field_completion_required",
+            "denominator": 110,
+            "numerator": 110
+          },
+          {
+            "code": "within_trial_reconciliation_review_required",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "title_identity_review_required",
+            "denominator": 110,
+            "numerator": 110
+          },
+          {
+            "code": "time_frame_review_required",
+            "denominator": 110,
+            "numerator": 110
+          },
+          {
+            "code": "outcome_type_review_required",
+            "denominator": 110,
+            "numerator": 27
+          },
+          {
+            "code": "reporting_status_review_required",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "estimand_structure_review_required",
+            "denominator": 110,
+            "numerator": 110
+          },
+          {
+            "code": "population_review_required",
+            "denominator": 110,
+            "numerator": 110
+          },
+          {
+            "code": "safety_window_review_required",
+            "denominator": 110,
+            "numerator": 110
+          }
+        ],
+        "structural_disagreement_rates": [
+          {
+            "code": "group_count",
+            "denominator": 110,
+            "numerator": 110
+          },
+          {
+            "code": "denominator_count",
+            "denominator": 110,
+            "numerator": 0
+          },
+          {
+            "code": "class_count",
+            "denominator": 110,
+            "numerator": 33
+          },
+          {
+            "code": "category_count",
+            "denominator": 110,
+            "numerator": 33
+          },
+          {
+            "code": "measurement_count",
+            "denominator": 110,
+            "numerator": 33
+          },
+          {
+            "code": "analysis_count",
+            "denominator": 110,
+            "numerator": 83
+          },
+          {
+            "code": "analysis_group_id_sets",
+            "denominator": 110,
+            "numerator": 83
+          }
+        ],
+        "trial_count": 2,
+        "trial_sources": [
+          {
+            "nct_id": "NCT01647516",
+            "source_content_hash_sha256": "71ed6feb2d11e4c8d8cd82ca1bbfa7baf619d0b2f403763d38bfadeed07c4d89"
+          },
+          {
+            "nct_id": "NCT02435992",
+            "source_content_hash_sha256": "5cfb559f2b89bfefa4004b8a8ab7ca5561389a882ff70f205fda5ce34d3faf07"
+          }
+        ],
+        "unique_difficulty_signature_count": 2
+      }
+    ],
+    "cohort_weighting_performed": false,
+    "count_pooling_performed": false,
+    "difficulty_ranking_performed": false,
+    "disease_generalization_inferred": false,
+    "limitations": [
+      "The profile is complete only for the exact source-disjoint diagnostic reports bound by hash in the benchmark spec.",
+      "Every rate retains its report-specific numerator and denominator; counts are not pooled, weighted, averaged, or converted into a difficulty rank.",
+      "Stability labels describe mechanical prevalence across the supplied cohorts and do not establish disease-level or out-of-sample generalization.",
+      "Saturation can reflect policy invariants, source missingness, or trial-global structure and is not evidence of semantic task accuracy.",
+      "No endpoint equivalence, clinical comparability, comparative safety, benefit-risk synthesis, regulatory inference, or treatment choice is made."
+    ],
+    "pair_field_missing_stability": [
+      {
+        "code": "title",
+        "status": "absent_all"
+      },
+      {
+        "code": "time_frame",
+        "status": "absent_all"
+      },
+      {
+        "code": "outcome_type",
+        "status": "absent_all"
+      },
+      {
+        "code": "reporting_status",
+        "status": "absent_all"
+      },
+      {
+        "code": "parameter_type",
+        "status": "absent_all"
+      },
+      {
+        "code": "dispersion_type",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "unit_of_measure",
+        "status": "absent_all"
+      },
+      {
+        "code": "population_description_sha256",
+        "status": "absent_all"
+      },
+      {
+        "code": "safety_time_frame",
+        "status": "absent_all"
+      }
+    ],
+    "payload_free_aggregate_only": true,
+    "policy_id": "adds.source-disjoint-harmonization-robustness.v1",
+    "review_route_stability": [
+      {
+        "code": "semantic_endpoint_review_required",
+        "status": "saturated_all"
+      },
+      {
+        "code": "source_field_completion_required",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "within_trial_reconciliation_review_required",
+        "status": "absent_all"
+      },
+      {
+        "code": "title_identity_review_required",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "time_frame_review_required",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "outcome_type_review_required",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "reporting_status_review_required",
+        "status": "absent_all"
+      },
+      {
+        "code": "estimand_structure_review_required",
+        "status": "saturated_all"
+      },
+      {
+        "code": "population_review_required",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "safety_window_review_required",
+        "status": "saturated_all"
+      }
+    ],
+    "semantic_accuracy_inferred": false,
+    "source_disjoint": true,
+    "spec_sha256": "72db69f9488e1aaf9b5b916dbdd43e6f94f0cbbb6257547e8a46fca015d198e6",
+    "structural_disagreement_stability": [
+      {
+        "code": "group_count",
+        "status": "saturated_all"
+      },
+      {
+        "code": "denominator_count",
+        "status": "absent_all"
+      },
+      {
+        "code": "class_count",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "category_count",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "measurement_count",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "analysis_count",
+        "status": "heterogeneous"
+      },
+      {
+        "code": "analysis_group_id_sets",
+        "status": "heterogeneous"
+      }
+    ],
+    "treatment_choice_inferred": false
+  },
+  "schema_version": "adds.clinicaltrials-gov-harmonization-robustness-report.v1"
+}
