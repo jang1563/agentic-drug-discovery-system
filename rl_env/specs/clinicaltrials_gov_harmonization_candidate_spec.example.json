@@ -1,0 +1,19 @@
+{
+  "schema_version": "adds.clinicaltrials-gov-harmonization-candidate-spec.v1",
+  "packet_id": "synthetic-cross-trial-harmonization-review:v1",
+  "inventory_bindings": [
+    {
+      "inventory_id": "NCT00000001:registry-record-wide-inventory:v1",
+      "nct_id": "NCT00000001",
+      "inventory_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    {
+      "inventory_id": "NCT00000002:registry-record-wide-inventory:v1",
+      "nct_id": "NCT00000002",
+      "inventory_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  ],
+  "max_endpoint_candidate_count": 1000,
+  "max_pair_count": 10000,
+  "policy_id": "adds.clinicaltrials-gov-cross-trial-harmonization-candidates.v1"
+}

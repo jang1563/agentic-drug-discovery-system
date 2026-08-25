@@ -98,6 +98,13 @@ claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
   arms, population, endpoint, and safety records only under one bounded supportive rule. It does
   not infer safety acceptability. One exact public NCT snapshot passes externally; source bytes and
   the reviewer job remain outside Git.
+- A registry-record-wide pre-review layer independently enumerates every protocol outcome, posted
+  outcome, safety group, serious/other event, and event statistic from one exact study snapshot.
+  A second exact-inventory-bound layer computes the complete bounded Cartesian set of posted
+  endpoint pairs across distinct trials, retains present-empty versus absent result modules,
+  within-trial lexical ambiguity, explicit field missingness, and source-disjoint trial-level
+  safety contexts. Both layers stop before endpoint identity, estimand, comparability, safety, or
+  synthesis approval.
 - A ClinicalTrials.gov portfolio layer verifies the complete set of independently reviewed
   single-trial jobs and external bundles before emitting one payload-free generic job. It requires
   exact job/receipt/trial/design/endpoint/safety and candidate/intervention/disease agreement plus

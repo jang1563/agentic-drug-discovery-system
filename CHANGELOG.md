@@ -4,6 +4,16 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a cross-trial ClinicalTrials.gov harmonization candidate graph. Exact inventory packet
+  fingerprints, distinct source receipts/content hashes, and a fixed policy bind the complete
+  trial set. A bounded-work preflight computes the full posted-outcome Cartesian size before any
+  allocation; compilation retains every endpoint pair, explicit left/right missingness,
+  within-trial lexical ambiguity, source pointers/record hashes, and trial-level serious/other
+  safety references, including inventories with zero posted outcomes. Strict schemas,
+  duplicate-safe readers, full recompilation, CLI execution, source-reuse rejection, pair/count
+  rebinding, and rehashed diagnostic-tamper controls pass. Mechanical equality, endpoint identity,
+  estimand equivalence, clinical/safety comparability, synthesis, and treatment-choice claims
+  remain unapproved.
 - Added a registry-record-wide ClinicalTrials.gov pre-review inventory. One exact API v2 source
   bundle now yields every protocol primary/secondary/other outcome, posted outcome, safety group,
   serious event, other event, and group-level event statistic with source-order indices, JSON

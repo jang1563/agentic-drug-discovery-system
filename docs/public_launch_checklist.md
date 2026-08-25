@@ -120,6 +120,11 @@ validated.
   outcomes, safety groups, serious/other events, exact lexical candidate partitions, source
   pointers/hashes, strict schemas/readers, CLI and wheel checks; no real bundle, inventory,
   endpoint selection, mapping, or safety adjudication is included.
+- [x] Cross-trial harmonization candidates bind exact inventory fingerprints, distinct source
+  receipts/hashes, full bounded posted-outcome Cartesian enumeration, present-empty versus absent
+  modules, explicit missingness, and trial-level safety provenance. Strict schemas/readers, CLI,
+  replay, source-reuse, bound, and tamper controls pass; no real inventory set, candidate packet,
+  reviewer assignment, comparability decision, or synthesis is included.
 - [x] Source receipt, ingestion job, and review-report contracts are mirrored in machine schemas;
   raw bundles, real provider review jobs, and ingestion runs remain outside both release surfaces.
 - [x] The CDC MMWR provider schema, synthetic example, extractor, and matched controls are mirrored;

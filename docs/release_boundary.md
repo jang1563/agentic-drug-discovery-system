@@ -257,6 +257,17 @@ states remain outside Git and Hugging Face until separate scientific, privacy, g
 release-boundary review. Public implementation performs no endpoint selection, equivalence,
 comparability, causal safety inference, synthesis, or treatment choice.
 
+The cross-trial harmonization candidate layer ships an exact-inventory-bound compiler, strict
+spec/packet schemas and readers, a repeated-inventory CLI, documentation, and synthetic
+full-Cartesian, zero-result, module-presence, ambiguity, missingness, safety-window, source-reuse,
+bound, replay, and tamper controls. A real packet can expose trial and source identities, endpoint
+titles and result structure, protocol-link candidates, safety record identities, and reviewer
+workload. Real inventory sets, candidate packets, reviewer assignments, endpoint-family or
+estimand decisions, safety-window adjudications, and comparability decisions remain outside Git and
+Hugging Face until separate scientific, privacy, governance, and release-boundary review. Public
+implementation performs no semantic approval, pooling, benefit-risk synthesis, regulatory
+inference, or treatment choice.
+
 The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
 schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
 synthetic matched-policy report. Real manifests can disclose selected programs and policy

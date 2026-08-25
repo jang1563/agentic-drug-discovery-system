@@ -21,9 +21,16 @@ from .clinical_disposition import extract_clinical_disposition_ingestion_job
 from .clinicaltrials_gov import extract_clinicaltrials_gov_ingestion_job
 from .clinicaltrials_gov_inventory import (
     clinicaltrials_gov_inventory_packet_envelope,
+    clinicaltrials_gov_inventory_packet_from_json,
     clinicaltrials_gov_inventory_spec_from_json,
     clinicaltrials_gov_inventory_summary,
     compile_clinicaltrials_gov_inventory,
+)
+from .clinicaltrials_gov_harmonization_candidates import (
+    clinicaltrials_gov_harmonization_packet_envelope,
+    clinicaltrials_gov_harmonization_spec_from_json,
+    clinicaltrials_gov_harmonization_summary,
+    compile_clinicaltrials_gov_harmonization_candidates,
 )
 from .ncbi_pubmed import (
     extract_ncbi_pubmed_disease_model_ingestion_job,
@@ -267,6 +274,50 @@ def _extract_clinicaltrials_gov_inventory(
         "status": "registry_inventory_compiled",
         **clinicaltrials_gov_inventory_summary(packet),
         "source_content_hash": bundle.receipt.content_hash,
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
+    }
+
+
+def _compile_clinicaltrials_gov_harmonization_candidates(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    try:
+        spec_text = Path(args.spec).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError("ClinicalTrials.gov harmonization spec is unreadable") from exc
+    spec = clinicaltrials_gov_harmonization_spec_from_json(spec_text)
+    inventories = []
+    if args.max_bytes <= 0:
+        raise ValueError("max-bytes must be positive")
+    total_bytes = 0
+    for path in args.inventory:
+        try:
+            inventory_bytes = Path(path).read_bytes()
+        except OSError as exc:
+            raise ValueError(
+                f"ClinicalTrials.gov inventory packet is unreadable: {path}"
+            ) from exc
+        total_bytes += len(inventory_bytes)
+        if total_bytes > args.max_bytes:
+            raise ValueError(
+                "ClinicalTrials.gov inventory packet bytes exceed max-bytes"
+            )
+        try:
+            inventory_text = inventory_bytes.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(
+                f"ClinicalTrials.gov inventory packet is not UTF-8: {path}"
+            ) from exc
+        inventories.append(
+            clinicaltrials_gov_inventory_packet_from_json(inventory_text)
+        )
+    packet = compile_clinicaltrials_gov_harmonization_candidates(spec, inventories)
+    envelope = clinicaltrials_gov_harmonization_packet_envelope(packet)
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    return {
+        "status": "cross_trial_harmonization_candidates_compiled",
+        **clinicaltrials_gov_harmonization_summary(packet),
         "output": str(output),
         "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
     }
@@ -546,6 +597,37 @@ def _parser() -> argparse.ArgumentParser:
         help="Atomically replace an existing inventory packet.",
     )
     inventory.set_defaults(handler=_extract_clinicaltrials_gov_inventory)
+
+    harmonization = subparsers.add_parser(
+        "compile-clinicaltrials-gov-harmonization-candidates",
+        help=(
+            "Enumerate every posted-outcome pair across exact ClinicalTrials.gov "
+            "inventory packets while retaining trial-level safety provenance and "
+            "without semantic approval."
+        ),
+    )
+    harmonization.add_argument("--spec", required=True)
+    harmonization.add_argument(
+        "--inventory",
+        action="append",
+        required=True,
+        help="Exact registry inventory packet; repeat once per trial.",
+    )
+    harmonization.add_argument("--output", required=True)
+    harmonization.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+        help="Maximum total bytes across all input inventory packets.",
+    )
+    harmonization.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing harmonization candidate packet.",
+    )
+    harmonization.set_defaults(
+        handler=_compile_clinicaltrials_gov_harmonization_candidates
+    )
 
     disposition = subparsers.add_parser(
         "extract-clinical-trial-disposition",

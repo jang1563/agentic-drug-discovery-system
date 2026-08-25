@@ -288,6 +288,10 @@ model assets and per-placebo diagnostics remain excluded.
   primary/secondary/other outcomes, posted outcomes, serious/other events, source pointers/hashes,
   two-sided unmatched/ambiguous lexical candidates, strict replay, CLI, and no-selection
   boundaries.
+- Inspect `docs/55_cross_trial_harmonization_candidates.md` and
+  `tests/test_clinicaltrials_gov_harmonization_candidates.py` for bounded full-Cartesian
+  posted-outcome review across exact trial inventories, zero-result trial retention, source-bound
+  safety contexts, explicit field missingness, strict replay, CLI, and no-comparability boundaries.
 - Inspect `docs/45_ra_acr20_risk_difference_hold_replication.md` and
   `docs/ra_acr20_risk_difference_validation_snapshot.json` for the payload-free public-source RA
   ACR20 replication, source and artifact hashes, uncertain interval, and HOLD outcome.
@@ -463,6 +467,7 @@ outside both public release surfaces.
 | `docs/52_same_trial_multi_endpoint_stress.md` | Same-trial endpoint-pair population/phase/window stress, shared-safety reuse, structural statuses, and fixed nonclaims. |
 | `docs/53_provenance_bound_endpoint_review_candidates.md` | Exhaustive endpoint/population/safety candidate and exclusion partitions with exact provenance, pair/link enumeration, and no semantic approval. |
 | `docs/54_clinicaltrials_gov_registry_record_inventory.md` | Registry-record-wide protocol/result/safety enumeration, exact lexical candidate partitions, source pointers/hashes, replay, and no-selection boundary. |
+| `docs/55_cross_trial_harmonization_candidates.md` | Complete bounded cross-trial posted-outcome Cartesian review graph, source-disjoint safety contexts, missingness diagnostics, replay, and no-comparability boundary. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Exact multi-bundle portfolio transaction, reviewer-approved endpoint mapping ledger, synthesis dependency, and release boundary. |
 | `docs/24_policy_replanning_and_resume.md` | Typed policy observations, bounded replans, checkpoint integrity, and deterministic resume. |
 | `docs/25_cutoff_safe_policy_evaluation.md` | Cutoff-safe sealing, submission, scoring, real aggregate results, and interpretation limits. |
@@ -511,6 +516,7 @@ outside both public release surfaces.
 | `agentic_drug_discovery/chembl_activity.py` | ChEMBL release/resource reconciliation and typed functional-activity verification with assay-text removal. |
 | `agentic_drug_discovery/clinicaltrials_gov.py` | ClinicalTrials.gov study, arm, population, endpoint, statistical-analysis, serious-adverse-event, and day/month/year chronology verification with payload removal. |
 | `agentic_drug_discovery/clinicaltrials_gov_inventory.py` | Exact protocol/result/safety array inventory with source order, pointers, hashes, two-sided lexical candidates, strict readers, and fixed nonclaims. |
+| `agentic_drug_discovery/clinicaltrials_gov_harmonization_candidates.py` | Exact-inventory-bound cross-trial endpoint pairs, source-disjoint safety contexts, independent trial/endpoint/pair work bounds, mechanical diagnostics, strict readers, and fixed nonclaims. |
 | `agentic_drug_discovery/clinical_portfolio.py` | Atomic exact-set multi-trial extraction with source-hash disjointness and payload-free output. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Strict approved-mapping parser, endpoint/safety fingerprint compiler, approval chronology, and replay validation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Deterministic source-ledger compiler for supported trial-level ratio or percentage-point effects and serious-event risk differences without pooling. |
@@ -543,6 +549,8 @@ outside both public release surfaces.
 | `rl_env/specs/clinicaltrials_gov_inventory_spec.schema.json` | Exact source receipt, NCT, registry version, inventory identity, and fixed record-wide policy. |
 | `rl_env/specs/clinicaltrials_gov_inventory_spec.example.json` | Synthetic exact-study inventory declaration without source bytes or a clinical claim. |
 | `rl_env/specs/clinicaltrials_gov_inventory_packet.schema.json` | Complete source-array records, module presence, lexical links, pointers, hashes, counts, integrity, and no-selection fields. |
+| `rl_env/specs/clinicaltrials_gov_harmonization_candidate_spec.schema.json` | Exact inventory fingerprints, canonical multi-trial scope, fixed policy, and pair-count bound; the adjacent example is synthetic. |
+| `rl_env/specs/clinicaltrials_gov_harmonization_candidate_packet.schema.json` | Trial safety contexts, every posted endpoint, full cross-trial pairs, missingness, mechanical diagnostics, integrity, and fixed nonclaims. |
 | `rl_env/specs/clinical_benefit_risk_synthesis.schema.json` | Machine-readable reviewed multi-trial selection contract; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_evidence_decision_package.schema.json` | Integrity-bound policy, exact tensor, gaps, action catalog, budget, and bounded-VOI plan contract; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_evidence_decision_package.relaxed.example.json` | Compiler-generated synthetic `ADVANCE` package over the same evidence unit for reproducible matched-policy sensitivity. |
@@ -627,6 +635,7 @@ outside both public release surfaces.
 | `tests/test_clinical_benefit_risk_portfolio_stress.py` | Identity-closed same-trial endpoint commits, population/window heterogeneity, relabeling, shared safety, strict schema replay, and tamper rejection. |
 | `tests/test_clinical_endpoint_review_candidates.py` | Complete secondary-endpoint retention, exclusion partitions, phase/population diagnostics, provenance rebound, strict reader, and rehashed tamper controls. |
 | `tests/test_clinicaltrials_gov_inventory.py` | Secondary/unmatched/ambiguous outcome retention, serious/other safety arrays, absent modules, strict schemas/readers, source/tamper controls, CLI, and wheel coverage. |
+| `tests/test_clinicaltrials_gov_harmonization_candidates.py` | Complete 2x3 cross-trial enumeration, zero-result retention, ambiguity/missingness/safety diagnostics, pair bounds, source-disjointness, strict readers, CLI, and tamper controls. |
 | `tests/test_clinical_outcome_evaluation.py` | Cutoff/source/package/roster controls, attrition, calibration math, paired comparison, strict schemas/readers, and atomic outcome CLI coverage. |
 | `tests/test_clinical_outcome_uncertainty.py` | CR1 math, paired covariance, fixed strata, chronology, known-overlap closure, non-estimable states, privacy, strict readers, and atomic CLI coverage. |
 | `tests/test_clinical_outcome_design_simulation.py` | Analytic truths, seeded replay, ICC undercoverage stress, floor/dominance/attrition states, strict bounds/readers, privacy, schemas, and atomic CLI coverage. |

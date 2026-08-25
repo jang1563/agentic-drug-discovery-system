@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_harmonization_candidate_spec.schema.json",
+  "title": "ADDS ClinicalTrials.gov Cross-Trial Harmonization Candidate Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "packet_id",
+    "inventory_bindings",
+    "max_endpoint_candidate_count",
+    "max_pair_count",
+    "policy_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-harmonization-candidate-spec.v1"
+    },
+    "packet_id": { "$ref": "#/$defs/text" },
+    "inventory_bindings": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/inventoryBinding" }
+    },
+    "max_endpoint_candidate_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000
+    },
+    "max_pair_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000
+    },
+    "policy_id": {
+      "const": "adds.clinicaltrials-gov-cross-trial-harmonization-candidates.v1"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "inventoryBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inventory_id", "nct_id", "inventory_sha256"],
+      "properties": {
+        "inventory_id": { "$ref": "#/$defs/text" },
+        "nct_id": {
+          "type": "string",
+          "pattern": "^NCT[0-9]{8}$"
+        },
+        "inventory_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}
