@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_harmonization_diagnostic_spec.schema.json",
+  "title": "ADDS ClinicalTrials.gov Harmonization Diagnostic Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "report_id",
+    "candidate_packet_sha256",
+    "policy_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-harmonization-diagnostic-spec.v1"
+    },
+    "report_id": { "$ref": "#/$defs/text" },
+    "candidate_packet_sha256": { "$ref": "#/$defs/sha256" },
+    "policy_id": {
+      "const": "adds.payload-free-harmonization-difficulty-diagnostics.v1"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

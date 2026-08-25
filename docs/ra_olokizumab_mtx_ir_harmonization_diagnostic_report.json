@@ -1,0 +1,437 @@
+{
+  "integrity_sha256": "6a0d2aa20eafe670d6509fc4154558c10a783d5851ff476314b2d7dc86a0b089",
+  "report": {
+    "automatic_pair_approval_performed": false,
+    "automatic_pair_exclusion_performed": false,
+    "benefit_risk_synthesis_performed": false,
+    "candidate_packet_id": "olokizumab-mtx-ir-cross-trial-candidates:2026-08-25",
+    "candidate_packet_sha256": "cabb2ac6c2321483072c210dbfb677acbf6dad4ddd237181ecc0846d6f7ac004",
+    "clinical_comparability_inferred": false,
+    "comparative_safety_inferred": false,
+    "difficulty_signatures": [
+      {
+        "pair_count": 4,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "estimand_structure_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "641f954ce82a9b6bad952ab49eec0f78ae625b9ada5254018df711ad2e05f6fe"
+      },
+      {
+        "pair_count": 4,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "title_identity_review_required",
+          "estimand_structure_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "527207516a6bd140c5f41f4caa960eef502e54dc9b2e2356698294b672c16981"
+      },
+      {
+        "pair_count": 4,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "title_identity_review_required",
+          "outcome_type_review_required",
+          "estimand_structure_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "0d201b90fb2165ebc3674f3d6c2e587bfe6c1455c34d1b1fa5a10fbc7bc8b91d"
+      },
+      {
+        "pair_count": 8,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "title_identity_review_required",
+          "time_frame_review_required",
+          "estimand_structure_review_required",
+          "population_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "1f217035b77d71f0d7c9f0e0fa50312d92d708aead0a756ee550282197bdb47a"
+      },
+      {
+        "pair_count": 8,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "title_identity_review_required",
+          "time_frame_review_required",
+          "estimand_structure_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "eff3650f02a05860e483c005a5beb6588edf2e44ae61a23c4986ca423b434ece"
+      },
+      {
+        "pair_count": 2,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "title_identity_review_required",
+          "time_frame_review_required",
+          "outcome_type_review_required",
+          "estimand_structure_review_required",
+          "population_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "b770b0a354a10e4695cdeba27c7a57f7b8de63db4cdc28f2569ce5509b52b6a1"
+      },
+      {
+        "pair_count": 4,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "source_field_completion_required",
+          "title_identity_review_required",
+          "time_frame_review_required",
+          "outcome_type_review_required",
+          "estimand_structure_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "0087de813ad7ee0e4b1e5ac402e2ab0d43cfa005d9f84749e0b44261ce408f6a"
+      },
+      {
+        "pair_count": 1,
+        "route_codes": [
+          "semantic_endpoint_review_required",
+          "title_identity_review_required",
+          "estimand_structure_review_required",
+          "safety_window_review_required"
+        ],
+        "signature_sha256": "b5aab8dddd2f6577aff78ecf11d372b2d60f08772474cfd845ef9f1e422800ec"
+      }
+    ],
+    "endpoint_candidate_count": 12,
+    "endpoint_family_assigned": false,
+    "estimand_equivalence_inferred": false,
+    "every_pair_requires_semantic_review": true,
+    "limitations": [
+      "Diagnostics are complete only for the exact input candidate packet and cannot recover registry fields or trials absent upstream.",
+      "Counts describe mechanical disagreement and review workload; they do not measure semantic endpoint equivalence or model accuracy.",
+      "Difficulty signatures are overlapping blocker routes, not independent errors, clinical outcomes, or validated adjudication labels.",
+      "Safety-window diagnostics do not establish common risk windows, event causality, comparative safety, or acceptability.",
+      "No pair is automatically approved or excluded, and no pooling, synthesis, regulatory inference, or treatment choice is performed."
+    ],
+    "mechanical_status_counts": [
+      {
+        "code": "incomplete_source_fields",
+        "count": 34
+      },
+      {
+        "code": "all_mechanical_fields_equal",
+        "count": 0
+      },
+      {
+        "code": "mixed_mechanical_fields",
+        "count": 1
+      }
+    ],
+    "pair_candidate_count": 35,
+    "pair_field_diagnostics": [
+      {
+        "disagreement_count": 31,
+        "exact_count": 4,
+        "field_name": "title",
+        "missing_pair_count": 0,
+        "observed_both_count": 35,
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 22,
+        "exact_count": 13,
+        "field_name": "time_frame",
+        "missing_pair_count": 0,
+        "observed_both_count": 35,
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 10,
+        "exact_count": 25,
+        "field_name": "outcome_type",
+        "missing_pair_count": 0,
+        "observed_both_count": 35,
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 0,
+        "exact_count": 35,
+        "field_name": "reporting_status",
+        "missing_pair_count": 0,
+        "observed_both_count": 35,
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 10,
+        "exact_count": 25,
+        "field_name": "parameter_type",
+        "missing_pair_count": 0,
+        "observed_both_count": 35,
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 0,
+        "exact_count": 1,
+        "field_name": "dispersion_type",
+        "missing_pair_count": 34,
+        "observed_both_count": 1,
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 10,
+        "exact_count": 25,
+        "field_name": "unit_of_measure",
+        "missing_pair_count": 0,
+        "observed_both_count": 35,
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 10,
+        "exact_count": 25,
+        "field_name": "population_description_sha256",
+        "missing_pair_count": 0,
+        "observed_both_count": 35,
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 35,
+        "exact_count": 0,
+        "field_name": "safety_time_frame",
+        "missing_pair_count": 0,
+        "observed_both_count": 35,
+        "pair_count": 35
+      }
+    ],
+    "pairs_with_multiple_additional_blockers_count": 35,
+    "pairs_with_no_additional_mechanical_blocker_count": 0,
+    "payload_free_aggregate_only": true,
+    "policy_id": "adds.payload-free-harmonization-difficulty-diagnostics.v1",
+    "report_id": "olokizumab-mtx-ir-harmonization-difficulty:2026-08-25",
+    "review_route_counts": [
+      {
+        "code": "semantic_endpoint_review_required",
+        "count": 35
+      },
+      {
+        "code": "source_field_completion_required",
+        "count": 34
+      },
+      {
+        "code": "within_trial_reconciliation_review_required",
+        "count": 0
+      },
+      {
+        "code": "title_identity_review_required",
+        "count": 31
+      },
+      {
+        "code": "time_frame_review_required",
+        "count": 22
+      },
+      {
+        "code": "outcome_type_review_required",
+        "count": 10
+      },
+      {
+        "code": "reporting_status_review_required",
+        "count": 0
+      },
+      {
+        "code": "estimand_structure_review_required",
+        "count": 35
+      },
+      {
+        "code": "population_review_required",
+        "count": 10
+      },
+      {
+        "code": "safety_window_review_required",
+        "count": 35
+      }
+    ],
+    "spec_sha256": "f5ed3bf3433ec90b0ba62d6f7924b5fda352d05c311d4df28af24839e00f43cf",
+    "structural_diagnostics": [
+      {
+        "disagreement_count": 35,
+        "exact_count": 0,
+        "field_name": "group_count",
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 0,
+        "exact_count": 35,
+        "field_name": "denominator_count",
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 0,
+        "exact_count": 35,
+        "field_name": "class_count",
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 0,
+        "exact_count": 35,
+        "field_name": "category_count",
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 35,
+        "exact_count": 0,
+        "field_name": "measurement_count",
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 25,
+        "exact_count": 10,
+        "field_name": "analysis_count",
+        "pair_count": 35
+      },
+      {
+        "disagreement_count": 35,
+        "exact_count": 0,
+        "field_name": "analysis_group_id_sets",
+        "pair_count": 35
+      }
+    ],
+    "treatment_choice_inferred": false,
+    "trial_count": 2,
+    "trial_diagnostics": [
+      {
+        "adverse_event_module_present": true,
+        "endpoint_field_missing_counts": [
+          {
+            "code": "title",
+            "count": 0
+          },
+          {
+            "code": "time_frame",
+            "count": 0
+          },
+          {
+            "code": "outcome_type",
+            "count": 0
+          },
+          {
+            "code": "reporting_status",
+            "count": 0
+          },
+          {
+            "code": "parameter_type",
+            "count": 0
+          },
+          {
+            "code": "dispersion_type",
+            "count": 4
+          },
+          {
+            "code": "unit_of_measure",
+            "count": 0
+          },
+          {
+            "code": "population_description_sha256",
+            "count": 0
+          }
+        ],
+        "inventory_sha256": "8efb7b7d753d67d682cdf69fed755cb522730ccd56c0b26b8d5f6bc5813eebad",
+        "lexical_link_candidate_count": 5,
+        "nct_id": "NCT02760368",
+        "other_event_count": 11,
+        "posted_outcome_count": 5,
+        "posted_outcome_module_present": true,
+        "protocol_outcome_count": 5,
+        "protocol_outcome_module_present": true,
+        "reconciliation_status_counts": [
+          {
+            "code": "unmatched",
+            "count": 0
+          },
+          {
+            "code": "unique_exact_candidate",
+            "count": 5
+          },
+          {
+            "code": "ambiguous_exact_candidates",
+            "count": 0
+          }
+        ],
+        "registry_version": "2026-08-25",
+        "safety_event_stat_count": 81,
+        "safety_group_count": 3,
+        "serious_event_count": 16,
+        "source_content_hash_sha256": "72cd2ce3bb7a7b1dbd9a115b24e273959571a52187759528d8b05005a9dd299b",
+        "source_has_results": true
+      },
+      {
+        "adverse_event_module_present": true,
+        "endpoint_field_missing_counts": [
+          {
+            "code": "title",
+            "count": 0
+          },
+          {
+            "code": "time_frame",
+            "count": 0
+          },
+          {
+            "code": "outcome_type",
+            "count": 0
+          },
+          {
+            "code": "reporting_status",
+            "count": 0
+          },
+          {
+            "code": "parameter_type",
+            "count": 0
+          },
+          {
+            "code": "dispersion_type",
+            "count": 6
+          },
+          {
+            "code": "unit_of_measure",
+            "count": 0
+          },
+          {
+            "code": "population_description_sha256",
+            "count": 0
+          }
+        ],
+        "inventory_sha256": "484a4b5238dc8a0669e66c16e06dd549b3777faf1563ff484fb3703aafab071b",
+        "lexical_link_candidate_count": 7,
+        "nct_id": "NCT02760407",
+        "other_event_count": 12,
+        "posted_outcome_count": 7,
+        "posted_outcome_module_present": true,
+        "protocol_outcome_count": 7,
+        "protocol_outcome_module_present": true,
+        "reconciliation_status_counts": [
+          {
+            "code": "unmatched",
+            "count": 0
+          },
+          {
+            "code": "unique_exact_candidate",
+            "count": 7
+          },
+          {
+            "code": "ambiguous_exact_candidates",
+            "count": 0
+          }
+        ],
+        "registry_version": "2026-08-25",
+        "safety_event_stat_count": 340,
+        "safety_group_count": 4,
+        "serious_event_count": 73,
+        "source_content_hash_sha256": "854689f2a761cd428f05597b71594b28a7fa073db06991586aa560a6b4cf1a57",
+        "source_has_results": true
+      }
+    ],
+    "unique_difficulty_signature_count": 8
+  },
+  "schema_version": "adds.clinicaltrials-gov-harmonization-diagnostic-report.v1"
+}

@@ -125,6 +125,11 @@ validated.
   modules, explicit missingness, and trial-level safety provenance. Strict schemas/readers, CLI,
   replay, source-reuse, bound, and tamper controls pass; no real inventory set, candidate packet,
   reviewer assignment, comparability decision, or synthesis is included.
+- [x] Payload-free harmonization diagnostics preserve explicit observed/missing denominators,
+  complete-Cartesian counts, overlapping reviewer routes, blocker signatures, source/inventory
+  hashes, strict replay, and fixed nonclaims. The exact olokizumab report covers all 35 pairs while
+  raw sources, inventories, pair records, endpoint titles, safety terms, and semantic decisions
+  remain excluded.
 - [x] Source receipt, ingestion job, and review-report contracts are mirrored in machine schemas;
   raw bundles, real provider review jobs, and ingestion runs remain outside both release surfaces.
 - [x] The CDC MMWR provider schema, synthetic example, extractor, and matched controls are mirrored;

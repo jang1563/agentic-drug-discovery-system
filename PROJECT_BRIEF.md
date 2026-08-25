@@ -105,6 +105,11 @@ claimed. See `docs/39_biohub_translational_evidence_bridge.md` and
   within-trial lexical ambiguity, explicit field missingness, and source-disjoint trial-level
   safety contexts. Both layers stop before endpoint identity, estimand, comparability, safety, or
   synthesis approval.
+- A payload-free diagnostic layer converts that complete graph into explicit field denominators,
+  structural disagreements, overlapping reviewer routes, and blocker signatures. The exact
+  NCT02760368/NCT02760407 execution covers all 35 posted-outcome pairs while keeping raw records,
+  pair identities, endpoint text, and safety terms external. It measures review workload and does
+  not approve endpoint equivalence or perform benefit-risk synthesis.
 - A ClinicalTrials.gov portfolio layer verifies the complete set of independently reviewed
   single-trial jobs and external bundles before emitting one payload-free generic job. It requires
   exact job/receipt/trial/design/endpoint/safety and candidate/intervention/disease agreement plus

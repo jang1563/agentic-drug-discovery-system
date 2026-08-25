@@ -28,9 +28,16 @@ from .clinicaltrials_gov_inventory import (
 )
 from .clinicaltrials_gov_harmonization_candidates import (
     clinicaltrials_gov_harmonization_packet_envelope,
+    clinicaltrials_gov_harmonization_packet_from_json,
     clinicaltrials_gov_harmonization_spec_from_json,
     clinicaltrials_gov_harmonization_summary,
     compile_clinicaltrials_gov_harmonization_candidates,
+)
+from .clinicaltrials_gov_harmonization_diagnostics import (
+    clinicaltrials_gov_harmonization_diagnostic_report_envelope,
+    clinicaltrials_gov_harmonization_diagnostic_spec_from_json,
+    clinicaltrials_gov_harmonization_diagnostic_summary,
+    compile_clinicaltrials_gov_harmonization_diagnostic,
 )
 from .ncbi_pubmed import (
     extract_ncbi_pubmed_disease_model_ingestion_job,
@@ -318,6 +325,40 @@ def _compile_clinicaltrials_gov_harmonization_candidates(
     return {
         "status": "cross_trial_harmonization_candidates_compiled",
         **clinicaltrials_gov_harmonization_summary(packet),
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
+    }
+
+
+def _diagnose_clinicaltrials_gov_harmonization(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    try:
+        spec_text = Path(args.spec).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(
+            "ClinicalTrials.gov harmonization diagnostic spec is unreadable"
+        ) from exc
+    spec = clinicaltrials_gov_harmonization_diagnostic_spec_from_json(spec_text)
+    if args.max_bytes <= 0:
+        raise ValueError("max-bytes must be positive")
+    try:
+        packet_bytes = Path(args.candidate_packet).read_bytes()
+    except OSError as exc:
+        raise ValueError("harmonization candidate packet is unreadable") from exc
+    if len(packet_bytes) > args.max_bytes:
+        raise ValueError("harmonization candidate packet exceeds max-bytes")
+    try:
+        packet_text = packet_bytes.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError("harmonization candidate packet is not UTF-8") from exc
+    candidate_packet = clinicaltrials_gov_harmonization_packet_from_json(packet_text)
+    report = compile_clinicaltrials_gov_harmonization_diagnostic(spec, candidate_packet)
+    envelope = clinicaltrials_gov_harmonization_diagnostic_report_envelope(report)
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    return {
+        "status": "cross_trial_harmonization_diagnostic_compiled",
+        **clinicaltrials_gov_harmonization_diagnostic_summary(report),
         "output": str(output),
         "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
     }
@@ -627,6 +668,30 @@ def _parser() -> argparse.ArgumentParser:
     )
     harmonization.set_defaults(
         handler=_compile_clinicaltrials_gov_harmonization_candidates
+    )
+
+    harmonization_diagnostic = subparsers.add_parser(
+        "diagnose-clinicaltrials-gov-harmonization",
+        help=(
+            "Aggregate cross-trial endpoint and safety review blockers without "
+            "retaining endpoint titles, pair identities, safety terms, or approval."
+        ),
+    )
+    harmonization_diagnostic.add_argument("--spec", required=True)
+    harmonization_diagnostic.add_argument("--candidate-packet", required=True)
+    harmonization_diagnostic.add_argument("--output", required=True)
+    harmonization_diagnostic.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+    )
+    harmonization_diagnostic.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing harmonization diagnostic report.",
+    )
+    harmonization_diagnostic.set_defaults(
+        handler=_diagnose_clinicaltrials_gov_harmonization
     )
 
     disposition = subparsers.add_parser(

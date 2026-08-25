@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added payload-free cross-trial harmonization difficulty diagnostics over the complete candidate
+  graph. Explicit observed/missing denominators, field and structural disagreement, overlapping
+  review routes, mutually exclusive blocker signatures, complete-Cartesian invariants, strict
+  schemas/readers, CLI, replay, and payload-exclusion controls pass. An exact public-source
+  olokizumab MTX-IR execution covers all 35 posted-outcome pairs from NCT02760368 and NCT02760407;
+  the raw snapshots, inventories, and pair graph remain external while the aggregate report and
+  exact replay hashes are public. Every pair still requires semantic review and no mapping,
+  approval, exclusion, pooling, synthesis, safety inference, or treatment claim is produced.
 - Added a cross-trial ClinicalTrials.gov harmonization candidate graph. Exact inventory packet
   fingerprints, distinct source receipts/content hashes, and a fixed policy bind the complete
   trial set. A bounded-work preflight computes the full posted-outcome Cartesian size before any

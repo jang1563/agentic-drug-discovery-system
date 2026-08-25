@@ -1,0 +1,6 @@
+{
+  "schema_version": "adds.clinicaltrials-gov-harmonization-diagnostic-spec.v1",
+  "report_id": "synthetic-harmonization-difficulty:v1",
+  "candidate_packet_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "policy_id": "adds.payload-free-harmonization-difficulty-diagnostics.v1"
+}

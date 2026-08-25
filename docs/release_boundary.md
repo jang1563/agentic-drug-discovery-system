@@ -268,6 +268,15 @@ Hugging Face until separate scientific, privacy, governance, and release-boundar
 implementation performs no semantic approval, pooling, benefit-risk synthesis, regulatory
 inference, or treatment choice.
 
+The harmonization-difficulty layer ships a payload-free aggregate compiler, strict spec/report
+schemas and readers, CLI, documentation, synthetic adversarial tests, and one exact public-source
+olokizumab MTX-IR aggregate. That report retains NCT IDs, source and inventory hashes, counts,
+review routes, signatures, and fixed nonclaims. Raw snapshots, source bundles, real inventory
+packets, the pair-level candidate graph, endpoint titles, pair IDs, safety terms, reviewer
+assignments, and semantic decisions remain outside Git and Hugging Face. Aggregate blocker counts
+describe review workload only; they do not establish endpoint equivalence, model accuracy,
+comparability, efficacy, safety, benefit-risk, or treatment choice.
+
 The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
 schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
 synthetic matched-policy report. Real manifests can disclose selected programs and policy
@@ -377,8 +386,10 @@ review reports contain no raw bundle path and still require explicit human revie
 The CDC MMWR, NCBI PubMed treatment-gap, ChEMBL functional-activity, NCBI PubMed disease-model, and
 ClinicalTrials.gov inventory and endpoint/safety trial-design provider paths ship only their
 verifiers, schemas, synthetic examples, tests, and payload-free validation documentation. Real article/API bundles,
-reviewer-selected excerpts/jobs, external run artifacts, and any real compiled manifest remain
-external until separate scientific and release-boundary approval.
+reviewer-selected excerpts/jobs, real inventory/candidate packets, and any real compiled manifest
+remain external until separate scientific and release-boundary approval. The sole bounded
+harmonization exception is the explicitly reviewed payload-free aggregate described above; its raw
+and pair-level inputs remain external.
 
 ## GitHub and Hugging Face Split
 
