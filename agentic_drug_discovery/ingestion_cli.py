@@ -19,6 +19,12 @@ from .clinical_portfolio import (
 )
 from .clinical_disposition import extract_clinical_disposition_ingestion_job
 from .clinicaltrials_gov import extract_clinicaltrials_gov_ingestion_job
+from .clinicaltrials_gov_inventory import (
+    clinicaltrials_gov_inventory_packet_envelope,
+    clinicaltrials_gov_inventory_spec_from_json,
+    clinicaltrials_gov_inventory_summary,
+    compile_clinicaltrials_gov_inventory,
+)
 from .ncbi_pubmed import (
     extract_ncbi_pubmed_disease_model_ingestion_job,
     extract_ncbi_pubmed_ingestion_job,
@@ -242,6 +248,27 @@ def _extract_clinicaltrials_gov(args: argparse.Namespace) -> dict[str, Any]:
         "record_count": len(extracted["records"]),
         "output": str(output),
         "output_sha256": hashlib.sha256(canonical_json_bytes(extracted)).hexdigest(),
+    }
+
+
+def _extract_clinicaltrials_gov_inventory(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    try:
+        spec_text = Path(args.spec).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError("ClinicalTrials.gov inventory spec is unreadable") from exc
+    spec = clinicaltrials_gov_inventory_spec_from_json(spec_text)
+    bundle = read_source_bundle(args.bundle, max_bytes=args.max_bytes)
+    packet = compile_clinicaltrials_gov_inventory(spec, bundle)
+    envelope = clinicaltrials_gov_inventory_packet_envelope(packet)
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    return {
+        "status": "registry_inventory_compiled",
+        **clinicaltrials_gov_inventory_summary(packet),
+        "source_content_hash": bundle.receipt.content_hash,
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
     }
 
 
@@ -496,6 +523,29 @@ def _parser() -> argparse.ArgumentParser:
         help="Atomically replace an existing extracted job.",
     )
     clinical.set_defaults(handler=_extract_clinicaltrials_gov)
+
+    inventory = subparsers.add_parser(
+        "extract-clinicaltrials-gov-inventory",
+        help=(
+            "Enumerate every protocol outcome, posted outcome, and adverse-event "
+            "record in one exact ClinicalTrials.gov study snapshot without "
+            "semantic approval."
+        ),
+    )
+    inventory.add_argument("--spec", required=True)
+    inventory.add_argument("--bundle", required=True)
+    inventory.add_argument("--output", required=True)
+    inventory.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+    )
+    inventory.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing inventory packet.",
+    )
+    inventory.set_defaults(handler=_extract_clinicaltrials_gov_inventory)
 
     disposition = subparsers.add_parser(
         "extract-clinical-trial-disposition",

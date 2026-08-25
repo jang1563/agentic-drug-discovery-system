@@ -1,0 +1,415 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_inventory_packet.schema.json",
+  "title": "ADDS ClinicalTrials.gov Registry-Record-Wide Inventory Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "packet"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-inventory-packet.v1"
+    },
+    "integrity_sha256": { "$ref": "#/$defs/sha256" },
+    "packet": { "$ref": "#/$defs/packet" }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sourceText": { "type": "string" },
+    "nullableSourceText": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/sourceText" }
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullableSha256": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/sha256" }
+      ]
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "nullableNonNegativeInteger": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/nonNegativeInteger" }
+      ]
+    },
+    "sourceTextArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sourceText" }
+    },
+    "matchStatus": {
+      "enum": [
+        "unmatched",
+        "unique_exact_candidate",
+        "ambiguous_exact_candidates"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "receipt_id",
+        "source_id",
+        "source_version",
+        "locator",
+        "content_hash_sha256",
+        "byte_size",
+        "retrieved_at"
+      ],
+      "properties": {
+        "receipt_id": { "$ref": "#/$defs/text" },
+        "source_id": { "$ref": "#/$defs/text" },
+        "source_version": { "$ref": "#/$defs/text" },
+        "locator": { "$ref": "#/$defs/text" },
+        "content_hash_sha256": { "$ref": "#/$defs/sha256" },
+        "byte_size": { "type": "integer", "minimum": 1 },
+        "retrieved_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "protocolOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_outcome_id",
+        "outcome_type",
+        "source_index",
+        "source_json_pointer",
+        "measure",
+        "time_frame",
+        "description_sha256",
+        "source_record_sha256",
+        "exact_candidate_count",
+        "reconciliation_status",
+        "endpoint_selected",
+        "endpoint_family_assigned",
+        "semantic_equivalence_approved"
+      ],
+      "properties": {
+        "protocol_outcome_id": { "$ref": "#/$defs/text" },
+        "outcome_type": { "enum": ["PRIMARY", "SECONDARY", "OTHER"] },
+        "source_index": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_json_pointer": { "type": "string", "pattern": "^/" },
+        "measure": { "$ref": "#/$defs/nullableSourceText" },
+        "time_frame": { "$ref": "#/$defs/nullableSourceText" },
+        "description_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "source_record_sha256": { "$ref": "#/$defs/sha256" },
+        "exact_candidate_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "reconciliation_status": { "$ref": "#/$defs/matchStatus" },
+        "endpoint_selected": { "const": false },
+        "endpoint_family_assigned": { "const": false },
+        "semantic_equivalence_approved": { "const": false }
+      }
+    },
+    "postedOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "posted_outcome_id",
+        "source_index",
+        "source_json_pointer",
+        "outcome_type",
+        "title",
+        "time_frame",
+        "reporting_status",
+        "parameter_type",
+        "dispersion_type",
+        "unit_of_measure",
+        "description_sha256",
+        "population_description_sha256",
+        "group_ids",
+        "denominator_group_ids",
+        "measurement_group_ids",
+        "analysis_group_id_sets",
+        "group_count",
+        "denominator_count",
+        "class_count",
+        "category_count",
+        "measurement_count",
+        "analysis_count",
+        "source_record_sha256",
+        "exact_candidate_count",
+        "reconciliation_status",
+        "endpoint_selected",
+        "endpoint_family_assigned",
+        "semantic_equivalence_approved"
+      ],
+      "properties": {
+        "posted_outcome_id": { "$ref": "#/$defs/text" },
+        "source_index": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_json_pointer": { "type": "string", "pattern": "^/" },
+        "outcome_type": { "$ref": "#/$defs/nullableSourceText" },
+        "title": { "$ref": "#/$defs/nullableSourceText" },
+        "time_frame": { "$ref": "#/$defs/nullableSourceText" },
+        "reporting_status": { "$ref": "#/$defs/nullableSourceText" },
+        "parameter_type": { "$ref": "#/$defs/nullableSourceText" },
+        "dispersion_type": { "$ref": "#/$defs/nullableSourceText" },
+        "unit_of_measure": { "$ref": "#/$defs/nullableSourceText" },
+        "description_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "population_description_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "group_ids": { "$ref": "#/$defs/sourceTextArray" },
+        "denominator_group_ids": { "$ref": "#/$defs/sourceTextArray" },
+        "measurement_group_ids": { "$ref": "#/$defs/sourceTextArray" },
+        "analysis_group_id_sets": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/sourceTextArray" }
+        },
+        "group_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "denominator_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "class_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "category_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "measurement_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "analysis_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_record_sha256": { "$ref": "#/$defs/sha256" },
+        "exact_candidate_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "reconciliation_status": { "$ref": "#/$defs/matchStatus" },
+        "endpoint_selected": { "const": false },
+        "endpoint_family_assigned": { "const": false },
+        "semantic_equivalence_approved": { "const": false }
+      }
+    },
+    "lexicalLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "link_id",
+        "protocol_outcome_id",
+        "posted_outcome_id",
+        "lexical_key_sha256",
+        "outcome_type_exact_match",
+        "endpoint_identity_approved",
+        "semantic_equivalence_approved",
+        "clinical_comparability_inferred"
+      ],
+      "properties": {
+        "link_id": { "$ref": "#/$defs/text" },
+        "protocol_outcome_id": { "$ref": "#/$defs/text" },
+        "posted_outcome_id": { "$ref": "#/$defs/text" },
+        "lexical_key_sha256": { "$ref": "#/$defs/sha256" },
+        "outcome_type_exact_match": { "type": "boolean" },
+        "endpoint_identity_approved": { "const": false },
+        "semantic_equivalence_approved": { "const": false },
+        "clinical_comparability_inferred": { "const": false }
+      }
+    },
+    "safetyGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "safety_group_record_id",
+        "source_index",
+        "source_json_pointer",
+        "source_group_id",
+        "title",
+        "description_sha256",
+        "serious_num_affected",
+        "serious_num_at_risk",
+        "other_num_affected",
+        "other_num_at_risk",
+        "source_record_sha256"
+      ],
+      "properties": {
+        "safety_group_record_id": { "$ref": "#/$defs/text" },
+        "source_index": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_json_pointer": { "type": "string", "pattern": "^/" },
+        "source_group_id": { "$ref": "#/$defs/nullableSourceText" },
+        "title": { "$ref": "#/$defs/nullableSourceText" },
+        "description_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "serious_num_affected": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "serious_num_at_risk": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "other_num_affected": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "other_num_at_risk": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "source_record_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "safetyStat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stat_id",
+        "source_index",
+        "source_json_pointer",
+        "source_group_id",
+        "num_affected",
+        "num_at_risk",
+        "num_events",
+        "source_record_sha256"
+      ],
+      "properties": {
+        "stat_id": { "$ref": "#/$defs/text" },
+        "source_index": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_json_pointer": { "type": "string", "pattern": "^/" },
+        "source_group_id": { "$ref": "#/$defs/nullableSourceText" },
+        "num_affected": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "num_at_risk": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "num_events": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "source_record_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "safetyEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "safety_event_id",
+        "event_category",
+        "source_index",
+        "source_json_pointer",
+        "term",
+        "organ_system",
+        "assessment_type",
+        "notes_sha256",
+        "stats",
+        "source_record_sha256",
+        "causal_relationship_inferred",
+        "comparative_safety_inferred"
+      ],
+      "properties": {
+        "safety_event_id": { "$ref": "#/$defs/text" },
+        "event_category": { "enum": ["SERIOUS", "OTHER"] },
+        "source_index": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_json_pointer": { "type": "string", "pattern": "^/" },
+        "term": { "$ref": "#/$defs/nullableSourceText" },
+        "organ_system": { "$ref": "#/$defs/nullableSourceText" },
+        "assessment_type": { "$ref": "#/$defs/nullableSourceText" },
+        "notes_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "stats": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/safetyStat" }
+        },
+        "source_record_sha256": { "$ref": "#/$defs/sha256" },
+        "causal_relationship_inferred": { "const": false },
+        "comparative_safety_inferred": { "const": false }
+      }
+    },
+    "packet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inventory_id",
+        "policy_id",
+        "spec_sha256",
+        "source",
+        "nct_id",
+        "registry_version",
+        "source_has_results",
+        "protocol_outcome_module_present",
+        "posted_outcome_module_present",
+        "adverse_event_module_present",
+        "adverse_event_time_frame",
+        "adverse_event_description_sha256",
+        "adverse_event_frequency_threshold",
+        "source_scope_sha256",
+        "protocol_outcomes",
+        "posted_outcomes",
+        "lexical_link_candidates",
+        "safety_groups",
+        "serious_events",
+        "other_events",
+        "protocol_outcome_count",
+        "posted_outcome_count",
+        "lexical_link_candidate_count",
+        "unmatched_protocol_outcome_count",
+        "unmatched_posted_outcome_count",
+        "ambiguous_protocol_outcome_count",
+        "ambiguous_posted_outcome_count",
+        "safety_group_count",
+        "serious_event_count",
+        "other_event_count",
+        "safety_event_stat_count",
+        "full_source_array_enumeration_performed",
+        "exact_lexical_reconciliation_only",
+        "reviewer_approval_performed",
+        "endpoint_selected",
+        "endpoint_family_assigned",
+        "ontology_mapping_approved",
+        "estimand_equivalence_inferred",
+        "clinical_comparability_inferred",
+        "comparative_safety_inferred",
+        "benefit_risk_synthesis_performed",
+        "treatment_choice_inferred",
+        "limitations"
+      ],
+      "properties": {
+        "inventory_id": { "$ref": "#/$defs/text" },
+        "policy_id": {
+          "const": "adds.clinicaltrials-gov-registry-record-wide-inventory.v1"
+        },
+        "spec_sha256": { "$ref": "#/$defs/sha256" },
+        "source": { "$ref": "#/$defs/source" },
+        "nct_id": { "type": "string", "pattern": "^NCT[0-9]{8}$" },
+        "registry_version": { "type": "string", "format": "date" },
+        "source_has_results": { "type": "boolean" },
+        "protocol_outcome_module_present": { "type": "boolean" },
+        "posted_outcome_module_present": { "type": "boolean" },
+        "adverse_event_module_present": { "type": "boolean" },
+        "adverse_event_time_frame": { "$ref": "#/$defs/nullableSourceText" },
+        "adverse_event_description_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "adverse_event_frequency_threshold": { "$ref": "#/$defs/nullableSourceText" },
+        "source_scope_sha256": { "$ref": "#/$defs/sha256" },
+        "protocol_outcomes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/protocolOutcome" }
+        },
+        "posted_outcomes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/postedOutcome" }
+        },
+        "lexical_link_candidates": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/lexicalLink" }
+        },
+        "safety_groups": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/safetyGroup" }
+        },
+        "serious_events": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/safetyEvent" }
+        },
+        "other_events": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/safetyEvent" }
+        },
+        "protocol_outcome_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "posted_outcome_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "lexical_link_candidate_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "unmatched_protocol_outcome_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "unmatched_posted_outcome_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "ambiguous_protocol_outcome_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "ambiguous_posted_outcome_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_group_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "serious_event_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "other_event_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "safety_event_stat_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "full_source_array_enumeration_performed": { "const": true },
+        "exact_lexical_reconciliation_only": { "const": true },
+        "reviewer_approval_performed": { "const": false },
+        "endpoint_selected": { "const": false },
+        "endpoint_family_assigned": { "const": false },
+        "ontology_mapping_approved": { "const": false },
+        "estimand_equivalence_inferred": { "const": false },
+        "clinical_comparability_inferred": { "const": false },
+        "comparative_safety_inferred": { "const": false },
+        "benefit_risk_synthesis_performed": { "const": false },
+        "treatment_choice_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/text" }
+        }
+      }
+    }
+  }
+}

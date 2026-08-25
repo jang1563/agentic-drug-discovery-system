@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_inventory_spec.schema.json",
+  "title": "ADDS ClinicalTrials.gov Registry-Record-Wide Inventory Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "inventory_id",
+    "source_receipt_id",
+    "nct_id",
+    "registry_version",
+    "policy_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-inventory-spec.v1"
+    },
+    "inventory_id": { "$ref": "#/$defs/text" },
+    "source_receipt_id": { "$ref": "#/$defs/text" },
+    "nct_id": {
+      "type": "string",
+      "pattern": "^NCT[0-9]{8}$"
+    },
+    "registry_version": {
+      "type": "string",
+      "format": "date"
+    },
+    "policy_id": {
+      "const": "adds.clinicaltrials-gov-registry-record-wide-inventory.v1"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    }
+  }
+}

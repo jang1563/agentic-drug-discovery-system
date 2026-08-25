@@ -16,9 +16,11 @@ record in that scope, including mechanically excluded records, and binds every r
 its visible source evidence and source-content SHA-256 values.
 
 Completeness is relative to those committed design records. This module does not reopen raw
-ClinicalTrials.gov bytes or recover outcomes omitted by upstream ingestion. Registry-wide
-high-recall extraction is a separate provider milestone; an upstream omission remains visible only
-as an absent design record, not something this packet can reconstruct.
+ClinicalTrials.gov bytes or recover outcomes omitted by upstream ingestion. The implemented
+registry-record-wide inventory in `docs/54_clinicaltrials_gov_registry_record_inventory.md`
+enumerates protocol, posted-result, and safety arrays before endpoint selection. This downstream
+packet still cannot reconstruct an upstream omission and must be interpreted relative to its
+committed design set.
 
 ## Boundary
 

@@ -1,0 +1,8 @@
+{
+  "schema_version": "adds.clinicaltrials-gov-inventory-spec.v1",
+  "inventory_id": "NCT00000001:registry-record-wide-inventory:v1",
+  "source_receipt_id": "ctgov-test-trial",
+  "nct_id": "NCT00000001",
+  "registry_version": "2025-01-01",
+  "policy_id": "adds.clinicaltrials-gov-registry-record-wide-inventory.v1"
+}

@@ -701,6 +701,26 @@ def main() -> int:
         clinical_source_hash = hashlib.sha256(clinical_source.read_bytes()).hexdigest()
         clinical_bundle = Path(temp_dir) / "clinicaltrials-gov-bundle"
         clinical_output = Path(temp_dir) / "clinicaltrials-gov-extracted.json"
+        clinical_inventory_spec = Path(temp_dir) / "clinicaltrials-gov-inventory-spec.json"
+        clinical_inventory_spec.write_text(
+            json.dumps(
+                {
+                    "schema_version": "adds.clinicaltrials-gov-inventory-spec.v1",
+                    "inventory_id": "NCT00000001:registry-record-wide-inventory:v1",
+                    "source_receipt_id": "ctgov-test-trial",
+                    "nct_id": "NCT00000001",
+                    "registry_version": "2025-01-01",
+                    "policy_id": (
+                        "adds.clinicaltrials-gov-registry-record-wide-inventory.v1"
+                    ),
+                },
+                sort_keys=True,
+            ),
+            encoding="utf-8",
+        )
+        clinical_inventory_output = (
+            Path(temp_dir) / "clinicaltrials-gov-inventory.json"
+        )
         clinical_source_two = Path(temp_dir) / "clinicaltrials-gov-study-two.json"
         clinical_source_two.write_text(
             clinical_source.read_text(encoding="utf-8").replace(
@@ -769,6 +789,8 @@ def main() -> int:
                         "CLINICAL_BENEFIT_RISK_PORTFOLIO_STRESS_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_ENDPOINT_REVIEW_CANDIDATE_PACKET_SCHEMA_VERSION, "
                         "CLINICAL_ENDPOINT_REVIEW_CANDIDATE_SPEC_SCHEMA_VERSION, "
+                        "CLINICALTRIALS_GOV_INVENTORY_PACKET_SCHEMA_VERSION, "
+                        "CLINICALTRIALS_GOV_INVENTORY_SPEC_SCHEMA_VERSION, "
                         "CLINICAL_COHORT_REPORT_SCHEMA_VERSION, "
                         "CLINICAL_CLOSED_LOOP_SCHEMA_VERSION, "
                         "CLINICAL_OUTCOME_REPORT_SCHEMA_VERSION, "
@@ -793,6 +815,8 @@ def main() -> int:
                         "clinical_benefit_risk_portfolio_stress_report_from_json, "
                         "clinical_endpoint_review_candidate_packet_from_json, "
                         "clinical_endpoint_review_candidate_spec_from_json, "
+                        "clinicaltrials_gov_inventory_packet_from_json, "
+                        "clinicaltrials_gov_inventory_spec_from_json, "
                         "clinical_outcome_dependence_manifest_from_json, "
                         "clinical_outcome_design_protocol_from_json, "
                         "clinical_outcome_design_report_from_json, "
@@ -816,6 +840,7 @@ def main() -> int:
                         "compile_clinical_benefit_risk_portfolio, "
                         "compile_clinical_benefit_risk_portfolio_stress_report, "
                         "compile_clinical_endpoint_review_candidate_packet, "
+                        "compile_clinicaltrials_gov_inventory, "
                         "compile_clinical_cohort_report, "
                         "compile_clinical_execution_batch, "
                         "compile_clinical_risk_of_bias_report, "
@@ -844,6 +869,7 @@ def main() -> int:
                         "validate_clinical_benefit_risk_portfolio, "
                         "validate_clinical_benefit_risk_portfolio_stress_report, "
                         "validate_clinical_endpoint_review_candidate_packet, "
+                        "validate_clinicaltrials_gov_inventory, "
                         "validate_clinical_outcome_uncertainty_report, "
                         "validate_clinical_outcome_design_simulation_report, "
                         "validate_clinical_outcome_pattern_mixture_report, "
@@ -863,6 +889,10 @@ def main() -> int:
                         "'adds.clinical-endpoint-review-candidate-packet.v1'; "
                         "assert CLINICAL_ENDPOINT_REVIEW_CANDIDATE_SPEC_SCHEMA_VERSION == "
                         "'adds.clinical-endpoint-review-candidate-spec.v1'; "
+                        "assert CLINICALTRIALS_GOV_INVENTORY_PACKET_SCHEMA_VERSION == "
+                        "'adds.clinicaltrials-gov-inventory-packet.v1'; "
+                        "assert CLINICALTRIALS_GOV_INVENTORY_SPEC_SCHEMA_VERSION == "
+                        "'adds.clinicaltrials-gov-inventory-spec.v1'; "
                         "assert CLINICAL_CLOSED_LOOP_SCHEMA_VERSION == "
                         "'adds.clinical-evidence-closed-loop-transition.v1'; "
                         "assert CLINICAL_COHORT_REPORT_SCHEMA_VERSION == "
@@ -907,6 +937,8 @@ def main() -> int:
                         "clinical_benefit_risk_portfolio_stress_report_from_json, "
                         "clinical_endpoint_review_candidate_packet_from_json, "
                         "clinical_endpoint_review_candidate_spec_from_json, "
+                        "clinicaltrials_gov_inventory_packet_from_json, "
+                        "clinicaltrials_gov_inventory_spec_from_json, "
                         "clinical_outcome_dependence_manifest_from_json, "
                         "clinical_outcome_design_protocol_from_json, "
                         "clinical_outcome_design_report_from_json, "
@@ -930,6 +962,7 @@ def main() -> int:
                         "compile_clinical_benefit_risk_portfolio, "
                         "compile_clinical_benefit_risk_portfolio_stress_report, "
                         "compile_clinical_endpoint_review_candidate_packet, "
+                        "compile_clinicaltrials_gov_inventory, "
                         "compile_clinical_evidence_transition, "
                         "compile_clinical_execution_batch, "
                         "compile_clinical_risk_of_bias_report, "
@@ -957,6 +990,7 @@ def main() -> int:
                         "validate_clinical_benefit_risk_portfolio, "
                         "validate_clinical_benefit_risk_portfolio_stress_report, "
                         "validate_clinical_endpoint_review_candidate_packet, "
+                        "validate_clinicaltrials_gov_inventory, "
                         "validate_clinical_outcome_uncertainty_report, "
                         "validate_clinical_outcome_design_simulation_report, "
                         "validate_clinical_outcome_pattern_mixture_report, "
@@ -1360,6 +1394,23 @@ def main() -> int:
                 text=True,
                 env=clean_env,
             )
+            clinical_inventory_extracted = subprocess.run(
+                [
+                    *ingestion_command,
+                    "extract-clinicaltrials-gov-inventory",
+                    "--spec",
+                    str(clinical_inventory_spec),
+                    "--bundle",
+                    str(clinical_bundle),
+                    "--output",
+                    str(clinical_inventory_output),
+                ],
+                cwd=temp_dir,
+                check=True,
+                capture_output=True,
+                text=True,
+                env=clean_env,
+            )
             clinical_portfolio_extracted = subprocess.run(
                 [
                     *ingestion_command,
@@ -1414,6 +1465,12 @@ def main() -> int:
             clinical_report = json.loads(clinical_extracted.stdout)
             clinical_output_text = clinical_output.read_text(encoding="utf-8")
             clinical_extracted_job = json.loads(clinical_output_text)
+            clinical_inventory_report = json.loads(
+                clinical_inventory_extracted.stdout
+            )
+            clinical_inventory_packet = json.loads(
+                clinical_inventory_output.read_text(encoding="utf-8")
+            )
             clinical_portfolio_report = json.loads(
                 clinical_portfolio_extracted.stdout
             )
@@ -1690,6 +1747,36 @@ def main() -> int:
     ]:
         return fail("ClinicalTrials.gov extraction lost safety-arm continuity")
 
+    expected_inventory = {
+        "status": "registry_inventory_compiled",
+        "nct_id": "NCT00000001",
+        "protocol_outcome_count": 1,
+        "posted_outcome_count": 1,
+        "lexical_link_candidate_count": 1,
+        "safety_group_count": 2,
+        "serious_event_count": 2,
+        "other_event_count": 0,
+        "reviewer_approval_performed": False,
+        "benefit_risk_synthesis_performed": False,
+    }
+    for key, value in expected_inventory.items():
+        if clinical_inventory_report.get(key) != value:
+            return fail(
+                f"ClinicalTrials.gov inventory field {key!r} must be {value!r}"
+            )
+    if clinical_inventory_report.get("source_content_hash") != clinical_source_hash:
+        return fail("ClinicalTrials.gov inventory lost the source content hash")
+    if (
+        clinical_inventory_packet.get("schema_version")
+        != "adds.clinicaltrials-gov-inventory-packet.v1"
+    ):
+        return fail("ClinicalTrials.gov inventory packet schema was not emitted")
+    inventory_payload = clinical_inventory_packet.get("packet", {})
+    if inventory_payload.get("full_source_array_enumeration_performed") is not True:
+        return fail("ClinicalTrials.gov inventory lost full-array enumeration")
+    if inventory_payload.get("endpoint_selected") is not False:
+        return fail("ClinicalTrials.gov inventory claimed endpoint selection")
+
     expected_portfolio = {
         "status": "provider_portfolio_extracted_requires_human_review",
         "provider_id": "clinicaltrials_gov",
@@ -1759,7 +1846,8 @@ def main() -> int:
     print(
         "PASS: isolated core wheel demo, bounded agent, replay, generic ingestion, and "
         "CDC MMWR, NCBI PubMed, ChEMBL activity, PubMed disease-model, and "
-        "ClinicalTrials.gov endpoint/safety design and multi-trial portfolio extraction, "
+        "ClinicalTrials.gov registry-record-wide inventory, endpoint/safety design, and "
+        "multi-trial portfolio extraction, "
         "plus sealed evaluation, clinical cohort/outcome/uncertainty/design/stress/pattern-mixture/"
         "pattern-mixture-uncertainty/influence/informative-cluster-size/"
         "cluster-superpopulation, research-readiness, translational-handoff, ADDS-Frontier, and "

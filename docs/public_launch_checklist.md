@@ -116,6 +116,10 @@ validated.
 - [x] Provenance-bound endpoint review candidates retain complete synthetic record partitions,
   pair/link enumeration, strict readers, and fixed no-approval fields; no real packet, source state,
   reviewer assignment, semantic mapping, or safety adjudication is included.
+- [x] The registry-record-wide ClinicalTrials.gov inventory retains all synthetic protocol/result
+  outcomes, safety groups, serious/other events, exact lexical candidate partitions, source
+  pointers/hashes, strict schemas/readers, CLI and wheel checks; no real bundle, inventory,
+  endpoint selection, mapping, or safety adjudication is included.
 - [x] Source receipt, ingestion job, and review-report contracts are mirrored in machine schemas;
   raw bundles, real provider review jobs, and ingestion runs remain outside both release surfaces.
 - [x] The CDC MMWR provider schema, synthetic example, extractor, and matched controls are mirrored;

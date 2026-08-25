@@ -4,6 +4,15 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a registry-record-wide ClinicalTrials.gov pre-review inventory. One exact API v2 source
+  bundle now yields every protocol primary/secondary/other outcome, posted outcome, safety group,
+  serious event, other event, and group-level event statistic with source-order indices, JSON
+  pointers, record/scope hashes, structural counts, and explicit module-presence flags. Protocol
+  and posted arrays are never joined by index; all exact normalized title/time-frame candidates are
+  retained with unmatched and ambiguous two-sided states. Strict schemas, duplicate-safe readers,
+  CLI/wheel execution, full-bundle replay, source-drift, pointer-rebinding, count-tamper, missing
+  module, and non-finite JSON controls pass. Endpoint selection, semantic equivalence, clinical
+  comparability, safety inference, synthesis, and treatment-choice flags remain false.
 - Added a provenance-bound pre-review endpoint candidate layer. An exact design-set compiler now
   retains every population, endpoint, and safety record in explicit candidate or mechanically
   excluded partitions, including posted secondary endpoints. It enumerates every eligible

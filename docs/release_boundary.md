@@ -247,6 +247,16 @@ outside Git and Hugging Face until separate scientific, privacy, governance, and
 review. Public implementation fixes approval, ontology, estimand, comparability, safety,
 benefit-risk, and treatment-choice claims to false.
 
+The ClinicalTrials.gov registry-record inventory ships a study-scoped compiler, strict spec/packet
+schemas and readers, CLI and isolated-wheel coverage, documentation, and synthetic
+secondary/unmatched/ambiguous outcome plus serious/other event controls. A real packet can expose
+NCT/version identities, endpoint titles and windows, safety terms and aggregate counts, source
+pointers and hashes, and exact lexical candidate relationships. Raw bundles and real specs,
+inventories, reviewer decisions, endpoint mappings, safety adjudications, and downstream promoted
+states remain outside Git and Hugging Face until separate scientific, privacy, governance, and
+release-boundary review. Public implementation performs no endpoint selection, equivalence,
+comparability, causal safety inference, synthesis, or treatment choice.
+
 The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
 schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
 synthetic matched-policy report. Real manifests can disclose selected programs and policy
@@ -354,8 +364,8 @@ privacy, security, and release-boundary review approves them.
 contain exact bytes plus a receipt, and are refused inside any Git worktree. Compiled manifests and
 review reports contain no raw bundle path and still require explicit human review before promotion.
 The CDC MMWR, NCBI PubMed treatment-gap, ChEMBL functional-activity, NCBI PubMed disease-model, and
-ClinicalTrials.gov endpoint/safety trial-design provider paths ship only their verifiers, schemas,
-synthetic examples, tests, and payload-free validation documentation. Real article/API bundles,
+ClinicalTrials.gov inventory and endpoint/safety trial-design provider paths ship only their
+verifiers, schemas, synthetic examples, tests, and payload-free validation documentation. Real article/API bundles,
 reviewer-selected excerpts/jobs, external run artifacts, and any real compiled manifest remain
 external until separate scientific and release-boundary approval.
 
