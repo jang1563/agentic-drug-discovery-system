@@ -1,0 +1,237 @@
+{
+  "integrity_sha256": "7f6a071ffc4e83f46b0f6d1d7cf237a3f22f3a39defa355f594e6dd99e910169",
+  "report": {
+    "benefit_risk_synthesis_performed": false,
+    "candidate_packet_id": "olokizumab-mtx-ir-cross-trial-candidates:2026-08-25",
+    "candidate_packet_sha256": "cabb2ac6c2321483072c210dbfb677acbf6dad4ddd237181ecc0846d6f7ac004",
+    "clinical_comparability_inferred": false,
+    "diagnostic_report_id": "olokizumab-mtx-ir-harmonization-difficulty:2026-08-25",
+    "diagnostic_report_sha256": "6a0d2aa20eafe670d6509fc4154558c10a783d5851ff476314b2d7dc86a0b089",
+    "endpoint_candidate_count": 12,
+    "endpoint_local_present_field_count": 2,
+    "endpoint_semantic_equivalence_inferred": false,
+    "estimand_equivalence_inferred": false,
+    "field_decompositions": [
+      {
+        "endpoint_local_disagreement_count": 0,
+        "exact_count": 0,
+        "field_name": "group_count",
+        "pair_count": 35,
+        "source_presence_non_identifiable_pair_count": 0,
+        "trial_global_disagreement_count": 35
+      },
+      {
+        "endpoint_local_disagreement_count": 0,
+        "exact_count": 35,
+        "field_name": "denominator_count",
+        "pair_count": 35,
+        "source_presence_non_identifiable_pair_count": 0,
+        "trial_global_disagreement_count": 0
+      },
+      {
+        "endpoint_local_disagreement_count": 0,
+        "exact_count": 35,
+        "field_name": "class_count",
+        "pair_count": 35,
+        "source_presence_non_identifiable_pair_count": 0,
+        "trial_global_disagreement_count": 0
+      },
+      {
+        "endpoint_local_disagreement_count": 0,
+        "exact_count": 35,
+        "field_name": "category_count",
+        "pair_count": 35,
+        "source_presence_non_identifiable_pair_count": 0,
+        "trial_global_disagreement_count": 0
+      },
+      {
+        "endpoint_local_disagreement_count": 0,
+        "exact_count": 0,
+        "field_name": "measurement_count",
+        "pair_count": 35,
+        "source_presence_non_identifiable_pair_count": 0,
+        "trial_global_disagreement_count": 35
+      },
+      {
+        "endpoint_local_disagreement_count": 25,
+        "exact_count": 10,
+        "field_name": "analysis_count",
+        "pair_count": 35,
+        "source_presence_non_identifiable_pair_count": 0,
+        "trial_global_disagreement_count": 0
+      },
+      {
+        "endpoint_local_disagreement_count": 35,
+        "exact_count": 0,
+        "field_name": "analysis_group_id_sets",
+        "pair_count": 35,
+        "source_presence_non_identifiable_pair_count": 0,
+        "trial_global_disagreement_count": 0
+      }
+    ],
+    "limitations": [
+      "The decomposition is complete only for the exact candidate packet and diagnostic report bound by hash in the spec.",
+      "Trial-global and endpoint-local labels are roster-relative mechanical classifications and can change when the endpoint universe changes.",
+      "Endpoint-local disagreement means structural values vary within at least one trial; it does not establish semantic or estimand nonequivalence.",
+      "Upstream optional-array presence provenance is not retained; positive values establish present nonempty arrays mechanically, while zero or empty values remain absent-versus-empty non-identifiable.",
+      "No structural disagreement is discounted, and no endpoint approval, clinical comparability, synthesis, regulatory inference, or treatment choice is performed."
+    ],
+    "pair_candidate_count": 35,
+    "pair_category_counts": [
+      {
+        "code": "all_structural_fields_exact",
+        "count": 0
+      },
+      {
+        "code": "trial_global_disagreement_only",
+        "count": 0
+      },
+      {
+        "code": "endpoint_local_disagreement_present",
+        "count": 35
+      }
+    ],
+    "payload_free_aggregate_only": true,
+    "policy_id": "adds.payload-free-structural-disagreement-decomposition.v1",
+    "report_id": "olokizumab-mtx-ir-structure-decomposition:2026-08-25",
+    "source_presence_identifiable": true,
+    "source_presence_provenance_retained": false,
+    "spec_sha256": "23f20be9b5312537304e9adf19ad6e40e3a7007a6d5c7d9ed69b020eb103d252",
+    "structural_value_payloads_retained": false,
+    "treatment_choice_inferred": false,
+    "trial_count": 2,
+    "trial_global_disagreement_discounted": false,
+    "trial_global_saturated_field_count": 2,
+    "trial_profiles": [
+      {
+        "endpoint_count": 5,
+        "field_profiles": [
+          {
+            "endpoint_count": 5,
+            "field_name": "group_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 5,
+            "field_name": "denominator_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 5,
+            "field_name": "class_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 5,
+            "field_name": "category_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 5,
+            "field_name": "measurement_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 5,
+            "field_name": "analysis_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 5,
+            "field_name": "analysis_group_id_sets",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          }
+        ],
+        "inventory_sha256": "8efb7b7d753d67d682cdf69fed755cb522730ccd56c0b26b8d5f6bc5813eebad",
+        "nct_id": "NCT02760368",
+        "source_content_hash_sha256": "72cd2ce3bb7a7b1dbd9a115b24e273959571a52187759528d8b05005a9dd299b"
+      },
+      {
+        "endpoint_count": 7,
+        "field_profiles": [
+          {
+            "endpoint_count": 7,
+            "field_name": "group_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 7,
+            "field_name": "denominator_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 7,
+            "field_name": "class_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 7,
+            "field_name": "category_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 7,
+            "field_name": "measurement_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 1,
+            "within_trial_constant": true,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 7,
+            "field_name": "analysis_count",
+            "source_presence_identifiable": true,
+            "unique_value_count": 2,
+            "within_trial_constant": false,
+            "zero_or_empty_value_count": 0
+          },
+          {
+            "endpoint_count": 7,
+            "field_name": "analysis_group_id_sets",
+            "source_presence_identifiable": true,
+            "unique_value_count": 3,
+            "within_trial_constant": false,
+            "zero_or_empty_value_count": 0
+          }
+        ],
+        "inventory_sha256": "484a4b5238dc8a0669e66c16e06dd549b3777faf1563ff484fb3703aafab071b",
+        "nct_id": "NCT02760407",
+        "source_content_hash_sha256": "854689f2a761cd428f05597b71594b28a7fa073db06991586aa560a6b4cf1a57"
+      }
+    ]
+  },
+  "schema_version": "adds.clinicaltrials-gov-harmonization-structure-report.v1"
+}

@@ -105,6 +105,9 @@ difference can keep the estimand route at 100% and obscure whether the system ha
 about endpoint-local harmonization. A third disease cohort is most informative after this
 decomposition is executable and preregistered.
 
+Follow-up status: this priority is now implemented in
+`docs/58_structural_disagreement_decomposition.md` for both exact RA and UC graphs.
+
 ## Machine contract and replay
 
 - UC diagnostic spec: `docs/uc_ozanimod_harmonization_diagnostic_spec.json`

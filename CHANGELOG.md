@@ -4,6 +4,16 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added source-disjoint RA/UC harmonization robustness and a payload-free structural-cause
+  decomposition. The exact 35-pair olokizumab and 110-pair ozanimod cohorts preserve separate
+  rational denominators; every structural field now partitions into exact, trial-global, and
+  endpoint-local counts while refining the prior diagnostic exactly. The execution shows that
+  saturated group-count disagreement has different causes across cohorts: trial-global in RA and
+  endpoint-local in UC. Candidate and diagnostic hashes, strict schemas/readers, CLI/replay,
+  synthetic boundary controls, and four public machine artifacts fail closed. Source-array
+  presence for zero/empty structures remains explicitly non-identifiable in v1 and presence
+  provenance remains unretained; no disagreement is discounted and no
+  endpoint equivalence, generalization, efficacy, safety, benefit-risk, or treatment claim is made.
 - Added payload-free cross-trial harmonization difficulty diagnostics over the complete candidate
   graph. Explicit observed/missing denominators, field and structural disagreement, overlapping
   review routes, mutually exclusive blocker signatures, complete-Cartesian invariants, strict

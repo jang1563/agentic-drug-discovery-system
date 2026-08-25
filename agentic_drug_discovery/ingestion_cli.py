@@ -46,6 +46,12 @@ from .clinicaltrials_gov_harmonization_robustness import (
     clinicaltrials_gov_harmonization_robustness_summary,
     compile_clinicaltrials_gov_harmonization_robustness,
 )
+from .clinicaltrials_gov_harmonization_structure import (
+    clinicaltrials_gov_harmonization_structure_report_envelope,
+    clinicaltrials_gov_harmonization_structure_spec_from_json,
+    clinicaltrials_gov_harmonization_structure_summary,
+    compile_clinicaltrials_gov_harmonization_structure,
+)
 from .ncbi_pubmed import (
     extract_ncbi_pubmed_disease_model_ingestion_job,
     extract_ncbi_pubmed_ingestion_job,
@@ -417,6 +423,58 @@ def _benchmark_clinicaltrials_gov_harmonization_robustness(
     }
 
 
+def _decompose_clinicaltrials_gov_harmonization_structure(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    try:
+        spec_text = Path(args.spec).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(
+            "ClinicalTrials.gov harmonization structure spec is unreadable"
+        ) from exc
+    spec = clinicaltrials_gov_harmonization_structure_spec_from_json(spec_text)
+    if args.max_bytes <= 0:
+        raise ValueError("max-bytes must be positive")
+    inputs = []
+    total_bytes = 0
+    for path, label, parser in (
+        (
+            args.candidate_packet,
+            "harmonization candidate packet",
+            clinicaltrials_gov_harmonization_packet_from_json,
+        ),
+        (
+            args.diagnostic_report,
+            "harmonization diagnostic report",
+            clinicaltrials_gov_harmonization_diagnostic_report_from_json,
+        ),
+    ):
+        try:
+            payload = Path(path).read_bytes()
+        except OSError as exc:
+            raise ValueError(f"{label} is unreadable") from exc
+        total_bytes += len(payload)
+        if total_bytes > args.max_bytes:
+            raise ValueError("harmonization structure inputs exceed max-bytes")
+        try:
+            text = payload.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(f"{label} is not UTF-8") from exc
+        inputs.append(parser(text))
+    candidate_packet, diagnostic_report = inputs
+    report = compile_clinicaltrials_gov_harmonization_structure(
+        spec, candidate_packet, diagnostic_report
+    )
+    envelope = clinicaltrials_gov_harmonization_structure_report_envelope(report)
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    return {
+        "status": "cross_trial_harmonization_structure_decomposed",
+        **clinicaltrials_gov_harmonization_structure_summary(report),
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
+    }
+
+
 def _extract_clinical_trial_disposition(
     args: argparse.Namespace,
 ) -> dict[str, Any]:
@@ -774,6 +832,33 @@ def _parser() -> argparse.ArgumentParser:
     )
     harmonization_robustness.set_defaults(
         handler=_benchmark_clinicaltrials_gov_harmonization_robustness
+    )
+
+    harmonization_structure = subparsers.add_parser(
+        "decompose-clinicaltrials-gov-harmonization-structure",
+        help=(
+            "Partition structural endpoint disagreement into trial-global and "
+            "endpoint-local causes without retaining structural values or "
+            "inferring endpoint equivalence."
+        ),
+    )
+    harmonization_structure.add_argument("--spec", required=True)
+    harmonization_structure.add_argument("--candidate-packet", required=True)
+    harmonization_structure.add_argument("--diagnostic-report", required=True)
+    harmonization_structure.add_argument("--output", required=True)
+    harmonization_structure.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+        help="Maximum total bytes across packet and diagnostic inputs.",
+    )
+    harmonization_structure.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing structure report.",
+    )
+    harmonization_structure.set_defaults(
+        handler=_decompose_clinicaltrials_gov_harmonization_structure
     )
 
     disposition = subparsers.add_parser(

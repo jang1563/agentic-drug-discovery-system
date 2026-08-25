@@ -1,0 +1,7 @@
+{
+  "schema_version": "adds.clinicaltrials-gov-harmonization-structure-spec.v1",
+  "report_id": "synthetic-cross-trial-structure-decomposition:v1",
+  "candidate_packet_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "diagnostic_report_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "policy_id": "adds.payload-free-structural-disagreement-decomposition.v1"
+}

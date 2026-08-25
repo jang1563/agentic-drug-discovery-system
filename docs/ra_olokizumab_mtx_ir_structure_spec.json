@@ -1,0 +1,7 @@
+{
+  "candidate_packet_sha256": "cabb2ac6c2321483072c210dbfb677acbf6dad4ddd237181ecc0846d6f7ac004",
+  "diagnostic_report_sha256": "6a0d2aa20eafe670d6509fc4154558c10a783d5851ff476314b2d7dc86a0b089",
+  "policy_id": "adds.payload-free-structural-disagreement-decomposition.v1",
+  "report_id": "olokizumab-mtx-ir-structure-decomposition:2026-08-25",
+  "schema_version": "adds.clinicaltrials-gov-harmonization-structure-spec.v1"
+}

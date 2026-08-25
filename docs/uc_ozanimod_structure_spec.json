@@ -1,0 +1,7 @@
+{
+  "candidate_packet_sha256": "aaefafba4d1c4bfa10c5589ceb102fe866fc5ebe89530f7fc2580aed49245b22",
+  "diagnostic_report_sha256": "2edf2956e0f4fdf0b2de97bd1db95bd9b15b210910af812709181f9a74d13156",
+  "policy_id": "adds.payload-free-structural-disagreement-decomposition.v1",
+  "report_id": "ozanimod-uc-structure-decomposition:2026-08-25",
+  "schema_version": "adds.clinicaltrials-gov-harmonization-structure-spec.v1"
+}

@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_harmonization_structure_report.schema.json",
+  "title": "ADDS ClinicalTrials.gov Harmonization Structure Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "report"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-harmonization-structure-report.v1"
+    },
+    "integrity_sha256": { "$ref": "#/$defs/sha256" },
+    "report": { "$ref": "#/$defs/report" }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "structuralField": {
+      "enum": [
+        "group_count",
+        "denominator_count",
+        "class_count",
+        "category_count",
+        "measurement_count",
+        "analysis_count",
+        "analysis_group_id_sets"
+      ]
+    },
+    "fieldProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_name",
+        "endpoint_count",
+        "unique_value_count",
+        "zero_or_empty_value_count",
+        "within_trial_constant",
+        "source_presence_identifiable"
+      ],
+      "properties": {
+        "field_name": { "$ref": "#/$defs/structuralField" },
+        "endpoint_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "unique_value_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "zero_or_empty_value_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "within_trial_constant": { "type": "boolean" },
+        "source_presence_identifiable": { "type": "boolean" }
+      }
+    },
+    "trialProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nct_id",
+        "inventory_sha256",
+        "source_content_hash_sha256",
+        "endpoint_count",
+        "field_profiles"
+      ],
+      "properties": {
+        "nct_id": {
+          "type": "string",
+          "pattern": "^NCT[0-9]{8}$"
+        },
+        "inventory_sha256": { "$ref": "#/$defs/sha256" },
+        "source_content_hash_sha256": { "$ref": "#/$defs/sha256" },
+        "endpoint_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "field_profiles": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": { "$ref": "#/$defs/fieldProfile" }
+        }
+      }
+    },
+    "fieldDecomposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_name",
+        "pair_count",
+        "exact_count",
+        "trial_global_disagreement_count",
+        "endpoint_local_disagreement_count",
+        "source_presence_non_identifiable_pair_count"
+      ],
+      "properties": {
+        "field_name": { "$ref": "#/$defs/structuralField" },
+        "pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "exact_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "trial_global_disagreement_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "endpoint_local_disagreement_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_presence_non_identifiable_pair_count": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    },
+    "pairCategory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "count"],
+      "properties": {
+        "code": {
+          "enum": [
+            "all_structural_fields_exact",
+            "trial_global_disagreement_only",
+            "endpoint_local_disagreement_present"
+          ]
+        },
+        "count": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "report_id",
+        "policy_id",
+        "spec_sha256",
+        "candidate_packet_id",
+        "candidate_packet_sha256",
+        "diagnostic_report_id",
+        "diagnostic_report_sha256",
+        "trial_profiles",
+        "field_decompositions",
+        "pair_category_counts",
+        "trial_count",
+        "endpoint_candidate_count",
+        "pair_candidate_count",
+        "trial_global_saturated_field_count",
+        "endpoint_local_present_field_count",
+        "payload_free_aggregate_only",
+        "structural_value_payloads_retained",
+        "source_presence_identifiable",
+        "source_presence_provenance_retained",
+        "trial_global_disagreement_discounted",
+        "endpoint_semantic_equivalence_inferred",
+        "estimand_equivalence_inferred",
+        "clinical_comparability_inferred",
+        "benefit_risk_synthesis_performed",
+        "treatment_choice_inferred",
+        "limitations"
+      ],
+      "properties": {
+        "report_id": { "$ref": "#/$defs/text" },
+        "policy_id": {
+          "const": "adds.payload-free-structural-disagreement-decomposition.v1"
+        },
+        "spec_sha256": { "$ref": "#/$defs/sha256" },
+        "candidate_packet_id": { "$ref": "#/$defs/text" },
+        "candidate_packet_sha256": { "$ref": "#/$defs/sha256" },
+        "diagnostic_report_id": { "$ref": "#/$defs/text" },
+        "diagnostic_report_sha256": { "$ref": "#/$defs/sha256" },
+        "trial_profiles": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/trialProfile" }
+        },
+        "field_decompositions": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": { "$ref": "#/$defs/fieldDecomposition" }
+        },
+        "pair_category_counts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "$ref": "#/$defs/pairCategory" }
+        },
+        "trial_count": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 256
+        },
+        "endpoint_candidate_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "pair_candidate_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "trial_global_saturated_field_count": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "endpoint_local_present_field_count": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "payload_free_aggregate_only": { "const": true },
+        "structural_value_payloads_retained": { "const": false },
+        "source_presence_identifiable": { "type": "boolean" },
+        "source_presence_provenance_retained": { "const": false },
+        "trial_global_disagreement_discounted": { "const": false },
+        "endpoint_semantic_equivalence_inferred": { "const": false },
+        "estimand_equivalence_inferred": { "const": false },
+        "clinical_comparability_inferred": { "const": false },
+        "benefit_risk_synthesis_performed": { "const": false },
+        "treatment_choice_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/text" }
+        }
+      }
+    }
+  }
+}

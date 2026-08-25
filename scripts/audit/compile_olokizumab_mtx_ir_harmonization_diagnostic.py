@@ -23,6 +23,14 @@ from agentic_drug_discovery.clinicaltrials_gov_harmonization_diagnostics import 
     compile_clinicaltrials_gov_harmonization_diagnostic,
     validate_clinicaltrials_gov_harmonization_diagnostic,
 )
+from agentic_drug_discovery.clinicaltrials_gov_harmonization_structure import (
+    ClinicalTrialsGovHarmonizationStructureSpec,
+    clinicaltrials_gov_harmonization_structure_report_envelope,
+    clinicaltrials_gov_harmonization_structure_spec_to_dict,
+    clinicaltrials_gov_harmonization_structure_summary,
+    compile_clinicaltrials_gov_harmonization_structure,
+    validate_clinicaltrials_gov_harmonization_structure,
+)
 from agentic_drug_discovery.clinicaltrials_gov_inventory import (
     ClinicalTrialsGovInventorySpec,
     compile_clinicaltrials_gov_inventory,
@@ -134,7 +142,7 @@ def compile_report(
     )
     if diagnostic_failures:
         raise ValueError(f"diagnostic replay failed: {diagnostic_failures}")
-    return diagnostic_spec, report
+    return diagnostic_spec, report, candidate_packet
 
 
 def main() -> int:
@@ -148,10 +156,18 @@ def main() -> int:
     )
     parser.add_argument("--spec-output", required=True, type=Path)
     parser.add_argument("--report-output", required=True, type=Path)
+    parser.add_argument("--structure-spec-output", type=Path)
+    parser.add_argument("--structure-report-output", type=Path)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
+    if (args.structure_spec_output is None) != (
+        args.structure_report_output is None
+    ):
+        parser.error(
+            "--structure-spec-output and --structure-report-output must be used together"
+        )
 
-    spec, report = compile_report(
+    spec, report, candidate_packet = compile_report(
         args.nct02760368_source,
         args.nct02760407_source,
         args.retrieved_at,
@@ -166,7 +182,39 @@ def main() -> int:
         clinicaltrials_gov_harmonization_diagnostic_report_envelope(report),
         force=args.force,
     )
-    print(json.dumps(clinicaltrials_gov_harmonization_diagnostic_summary(report)))
+    summary = clinicaltrials_gov_harmonization_diagnostic_summary(report)
+    if args.structure_spec_output is not None:
+        structure_spec = ClinicalTrialsGovHarmonizationStructureSpec(
+            report_id=(
+                f"olokizumab-mtx-ir-structure-decomposition:{REGISTRY_VERSION}"
+            ),
+            candidate_packet_sha256=candidate_packet.fingerprint,
+            diagnostic_report_sha256=report.fingerprint,
+        )
+        structure_report = compile_clinicaltrials_gov_harmonization_structure(
+            structure_spec, candidate_packet, report
+        )
+        failures = validate_clinicaltrials_gov_harmonization_structure(
+            structure_spec, candidate_packet, report, structure_report
+        )
+        if failures:
+            raise ValueError(f"structure replay failed: {failures}")
+        write_json_artifact(
+            args.structure_spec_output,
+            clinicaltrials_gov_harmonization_structure_spec_to_dict(structure_spec),
+            force=args.force,
+        )
+        write_json_artifact(
+            args.structure_report_output,
+            clinicaltrials_gov_harmonization_structure_report_envelope(
+                structure_report
+            ),
+            force=args.force,
+        )
+        summary["structure"] = (
+            clinicaltrials_gov_harmonization_structure_summary(structure_report)
+        )
+    print(json.dumps(summary))
     return 0
 
 
