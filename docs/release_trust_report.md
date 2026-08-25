@@ -213,6 +213,11 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | `docs/ra_olokizumab_mtx_ir_structure_report.json` | Integrity-bound RA trial profiles, pair partitions, and fixed prohibited-inference flags. |
 | `docs/uc_ozanimod_structure_spec.json` | Exact UC candidate/diagnostic hashes and fixed structural-decomposition policy. |
 | `docs/uc_ozanimod_structure_report.json` | Integrity-bound UC trial profiles, pair partitions, and source-presence non-identifiability. |
+| `docs/59_presence_preserving_structural_arrays.md` | Human-readable source-array state model, v1 migration proof, exact RA/UC results, and interpretation boundary. |
+| `docs/ra_olokizumab_mtx_ir_presence_spec.json` | Exact RA candidate, structure, inventory, and sidecar hash bindings. |
+| `docs/ra_olokizumab_mtx_ir_presence_report.json` | Aggregate RA array-role profiles and zero legacy ambiguity confirmation. |
+| `docs/uc_ozanimod_presence_spec.json` | Exact UC candidate, structure, inventory, and sidecar hash bindings. |
+| `docs/uc_ozanimod_presence_report.json` | Aggregate UC source-presence resolution for 192 legacy ambiguous field-pairs. |
 | `docs/retrospective_policy_evaluation_snapshot.json` | Aggregate real matched-board policy metrics, payload-free hashes, real gate outcomes, and explicit limitations. |
 | `agentic_drug_discovery/models.py` | Immutable, JSON-serializable evidence, claim, disease, target, candidate, assay, model-system, intervention, trial, arm, population, endpoint, safety, safety-arm, atomic design, endpoint binding/mapping, study benefit-risk, synthesis, accepted-packet, action, decision, verifier, and state records. |
 | `agentic_drug_discovery/planning.py` | Declarative stage plans and fail-closed bounded request compilation. |
@@ -236,6 +241,7 @@ This report summarizes what the public GitHub repository and Hugging Face Datase
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_diagnostics.py` | Payload-free complete-graph aggregation, explicit denominators, blocker routes/signatures, Cartesian invariants, strict replay, and fixed semantic nonclaims. |
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_robustness.py` | Source-disjoint report binding, exact rational cohort rates, cross-cohort stability classification, strict replay, and fixed no-pooling/no-ranking semantics. |
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_structure.py` | Exact candidate/diagnostic binding, trial-global/local cause partitions, aggregate-only profiles, strict replay, and fixed nonclaims. |
+| `agentic_drug_discovery/clinicaltrials_gov_structural_presence.py` | Exact v1/source replay, ten-role absent/null/empty/non-empty sidecars, aggregate resolution, strict readers, and fixed nonclaims. |
 | `agentic_drug_discovery/clinical_effects.py` | Canonical hazard-, odds-, risk-ratio, and percentage-point risk-difference aliases, null values, measure/unit/direction contracts, and interval-level benefit classification shared by ingestion, promotion, mapping, synthesis, and bounded decision validation. |
 | `agentic_drug_discovery/clinical_portfolio.py` | Exact-set multi-job/bundle preflight and payload-free portfolio extraction. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Approved reviewer/ontology declaration parsing, exact endpoint/safety fingerprint binding, and replay validation. |

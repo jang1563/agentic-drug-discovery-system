@@ -154,9 +154,7 @@ class TrialStructuralFieldProfile(SerializableRecord):
         if self.field_name not in _STRUCTURAL_FIELDS:
             raise ValueError("unsupported structural field_name")
         _require_bool(self.within_trial_constant, "within_trial_constant")
-        _require_bool(
-            self.source_presence_identifiable, "source_presence_identifiable"
-        )
+        _require_bool(self.source_presence_identifiable, "source_presence_identifiable")
         for field_name in (
             "endpoint_count",
             "unique_value_count",
@@ -199,9 +197,7 @@ class TrialStructuralProfile(SerializableRecord):
         if _NCT_ID.fullmatch(self.nct_id) is None:
             raise ValueError("nct_id must use canonical NCT######## form")
         _require_sha256(self.inventory_sha256, "inventory_sha256")
-        _require_sha256(
-            self.source_content_hash_sha256, "source_content_hash_sha256"
-        )
+        _require_sha256(self.source_content_hash_sha256, "source_content_hash_sha256")
         _require_non_negative_int(self.endpoint_count, "endpoint_count")
         profiles = _tuple(self.field_profiles, "field_profiles")
         if any(not isinstance(item, TrialStructuralFieldProfile) for item in profiles):
@@ -317,7 +313,9 @@ class ClinicalTrialsGovHarmonizationStructureReport(SerializableRecord):
         if tuple(item.field_name for item in decompositions) != _STRUCTURAL_FIELDS:
             raise ValueError("field_decompositions were reordered or omitted")
         categories = _tuple(self.pair_category_counts, "pair_category_counts")
-        if any(not isinstance(item, PairStructuralCategoryCount) for item in categories):
+        if any(
+            not isinstance(item, PairStructuralCategoryCount) for item in categories
+        ):
             raise TypeError("pair_category_counts contains an invalid count")
         if tuple(item.code for item in categories) != _PAIR_CATEGORY_CODES:
             raise ValueError("pair_category_counts were reordered or omitted")
@@ -380,9 +378,7 @@ class ClinicalTrialsGovHarmonizationStructureReport(SerializableRecord):
             raise ValueError("required payload-free flag is false")
         if any(getattr(self, field_name) for field_name in false_fields):
             raise ValueError("a forbidden payload, discount, or inference was enabled")
-        _require_bool(
-            self.source_presence_identifiable, "source_presence_identifiable"
-        )
+        _require_bool(self.source_presence_identifiable, "source_presence_identifiable")
         expected_presence_identifiable = all(
             item.source_presence_non_identifiable_pair_count == 0
             for item in decompositions
@@ -403,7 +399,11 @@ class ClinicalTrialsGovHarmonizationStructureReport(SerializableRecord):
 
 
 def _zero_or_empty(value: Any) -> bool:
-    return value == 0 or value == ()
+    if value == 0:
+        return True
+    if isinstance(value, tuple):
+        return not value or all(_zero_or_empty(item) for item in value)
+    return False
 
 
 def _field_profile(
@@ -483,8 +483,7 @@ def compile_clinicaltrials_gov_harmonization_structure(
             )
         endpoints = endpoints_by_nct[nct_id]
         field_profiles = tuple(
-            _field_profile(field_name, endpoints)
-            for field_name in _STRUCTURAL_FIELDS
+            _field_profile(field_name, endpoints) for field_name in _STRUCTURAL_FIELDS
         )
         for item in field_profiles:
             constant[(nct_id, item.field_name)] = item.within_trial_constant
@@ -512,9 +511,10 @@ def compile_clinicaltrials_gov_harmonization_structure(
             right_value = getattr(right, field_name)
             if left_value == right_value:
                 category = "exact"
-            elif constant[(left.nct_id, field_name)] and constant[
-                (right.nct_id, field_name)
-            ]:
+            elif (
+                constant[(left.nct_id, field_name)]
+                and constant[(right.nct_id, field_name)]
+            ):
                 category = "trial_global"
                 disagreement_present = True
             else:
@@ -537,9 +537,7 @@ def compile_clinicaltrials_gov_harmonization_structure(
             field_name=field_name,
             pair_count=pair_count,
             exact_count=field_counts[field_name]["exact"],
-            trial_global_disagreement_count=(
-                field_counts[field_name]["trial_global"]
-            ),
+            trial_global_disagreement_count=(field_counts[field_name]["trial_global"]),
             endpoint_local_disagreement_count=(
                 field_counts[field_name]["endpoint_local"]
             ),
@@ -653,9 +651,7 @@ def _load_json(text: str, label: str) -> dict[str, Any]:
             f"invalid {label} JSON: {exc}"
         ) from exc
     if not isinstance(value, Mapping):
-        raise ClinicalTrialsGovHarmonizationStructureError(
-            f"{label} must be an object"
-        )
+        raise ClinicalTrialsGovHarmonizationStructureError(f"{label} must be an object")
     return dict(value)
 
 
@@ -665,9 +661,7 @@ def _field_names(record_type: type[Any]) -> set[str]:
 
 def _record(value: Any, path: str, expected_fields: set[str]) -> dict[str, Any]:
     if not isinstance(value, Mapping):
-        raise ClinicalTrialsGovHarmonizationStructureError(
-            f"{path} must be an object"
-        )
+        raise ClinicalTrialsGovHarmonizationStructureError(f"{path} must be an object")
     data = dict(value)
     if set(data) != expected_fields:
         raise ClinicalTrialsGovHarmonizationStructureError(
@@ -734,9 +728,7 @@ def clinicaltrials_gov_harmonization_structure_report_envelope(
     }
 
 
-def _field_profile_from_dict(
-    value: Any, path: str
-) -> TrialStructuralFieldProfile:
+def _field_profile_from_dict(value: Any, path: str) -> TrialStructuralFieldProfile:
     return TrialStructuralFieldProfile(
         **_record(value, path, _field_names(TrialStructuralFieldProfile))
     )
@@ -751,9 +743,7 @@ def _trial_profile_from_dict(value: Any, path: str) -> TrialStructuralProfile:
     return TrialStructuralProfile(**data)
 
 
-def _decomposition_from_dict(
-    value: Any, path: str
-) -> StructuralFieldDecomposition:
+def _decomposition_from_dict(value: Any, path: str) -> StructuralFieldDecomposition:
     return StructuralFieldDecomposition(
         **_record(value, path, _field_names(StructuralFieldDecomposition))
     )
@@ -835,9 +825,7 @@ def clinicaltrials_gov_harmonization_structure_summary(
         "endpoint_local_present_field_count": (
             report.endpoint_local_present_field_count
         ),
-        "trial_global_only_pair_count": categories[
-            TRIAL_GLOBAL_DISAGREEMENT_ONLY
-        ],
+        "trial_global_only_pair_count": categories[TRIAL_GLOBAL_DISAGREEMENT_ONLY],
         "endpoint_local_present_pair_count": categories[
             ENDPOINT_LOCAL_DISAGREEMENT_PRESENT
         ],

@@ -270,6 +270,7 @@ evidence hashes:
 - Real source-disjoint RA additive tensor: `docs/46_ra_olokizumab_source_disjoint_additive_tensor.md`
 - Fail-closed RA population transport diagnostic: `docs/47_ra_olokizumab_population_stratified_transport.md`
 - Same-stratum RA MTX-IR replication: `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`
+- Presence-preserving structural-array analysis: `docs/59_presence_preserving_structural_arrays.md`
 
 ```bash
 adds-research-readiness validate \
@@ -651,9 +652,12 @@ system or full trajectory atlas described in the roadmap. Honest status:
   absent, stable non-boundary, or heterogeneous without pooling, weighting, or ranking. A second
   payload-free compiler decomposes all seven structural fields into exact, trial-global, and
   endpoint-local causes. It shows that 100% group-count disagreement is trial-global in RA but
-  endpoint-local in UC, while marking zero/empty source-array presence non-identifiable and its
-  explicit provenance unretained under the v1 representation. Trial-global differences are never
-  discounted.
+  endpoint-local in UC. An additive source-bound sidecar now distinguishes absent, null, empty,
+  and non-empty states for all ten nested arrays used by the v1 parser after requiring exact v1
+  inventory replay. RA confirms zero ambiguous field-pairs; UC resolves all 192 legacy ambiguous
+  field-pairs to absent `analyses` arrays. Public aggregate reports retain inventory, source,
+  sidecar, candidate, and structure hashes without source arrays, endpoint titles, or pair IDs.
+  Trial-global differences are never discounted.
 - **Clinical evidence tensor and bounded VOI planning:** A committed synthesis can be recompiled
   into exact per-trial endpoint/safety cells, ten policy-relative evidence dimensions, and
   provenance-linked gap records. A preregistered action catalog supplies gap-resolution
@@ -937,6 +941,13 @@ system or full trajectory atlas described in the roadmap. Honest status:
 - `rl_env/specs/clinicaltrials_gov_ingestion_job.schema.json`: exact ClinicalTrials.gov study,
   candidate/comparator arm, population, posted endpoint, and analysis contract; the adjacent
   example and source fixture are synthetic.
+- `rl_env/specs/clinicaltrials_gov_structural_presence_spec.schema.json` and
+  `rl_env/specs/clinicaltrials_gov_structural_presence_packet.schema.json`: source-bound structural
+  array-presence replay and payload-free sidecar contracts; the adjacent spec example is synthetic.
+- `rl_env/specs/clinicaltrials_gov_harmonization_presence_spec.schema.json` and
+  `rl_env/specs/clinicaltrials_gov_harmonization_presence_report.schema.json`: exact sidecar,
+  candidate, and structure binding plus aggregate source-presence resolution; the adjacent spec
+  example is synthetic.
 - `adapters/`, `chains/`: callable adapters and flow orchestrators are implemented;
   `adapters/execution_registry.py` maps explicitly supplied adapter instances into typed contracts,
   and `adapters/pinned_evidence_adapter.py` validates public evidence manifests.
@@ -998,6 +1009,11 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/ra_olokizumab_mtx_ir_structure_report.json` | Machines + reviewers | RA trial profiles, seven complete pair partitions, integrity, and prohibited-inference flags without structural values. |
 | `docs/uc_ozanimod_structure_spec.json` | Machines + reviewers | Exact UC candidate/diagnostic hash binding and fixed payload-free structural-decomposition policy. |
 | `docs/uc_ozanimod_structure_report.json` | Machines + reviewers | UC trial profiles, seven complete pair partitions, integrity, and source-presence non-identifiability. |
+| `docs/59_presence_preserving_structural_arrays.md` | Humans + agents | Exact source-array presence model, v1 migration proof, RA/UC results, replay path, and interpretation boundary. |
+| `docs/ra_olokizumab_mtx_ir_presence_spec.json` | Machines + reviewers | Exact RA candidate, structure, inventory, and sidecar hash bindings under the fixed presence-resolution policy. |
+| `docs/ra_olokizumab_mtx_ir_presence_report.json` | Machines + reviewers | RA aggregate structural-array profiles and confirmation that the v1 cohort had no ambiguous field-pairs. |
+| `docs/uc_ozanimod_presence_spec.json` | Machines + reviewers | Exact UC candidate, structure, inventory, and sidecar hash bindings under the fixed presence-resolution policy. |
+| `docs/uc_ozanimod_presence_report.json` | Machines + reviewers | UC aggregate array-role profiles and exact resolution of 192 legacy ambiguous field-pairs without source values. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
 | `docs/25_cutoff_safe_policy_evaluation.md` | Humans + agents | Cutoff-safe cached packets, role-neutral pair sealing, external label commitments, policy scoring, and claim boundaries. |

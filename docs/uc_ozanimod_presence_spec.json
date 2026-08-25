@@ -1,0 +1,19 @@
+{
+  "candidate_packet_sha256": "aaefafba4d1c4bfa10c5589ceb102fe866fc5ebe89530f7fc2580aed49245b22",
+  "policy_id": "adds.payload-free-source-presence-resolution.v1",
+  "report_id": "ozanimod-uc-presence-resolution:2026-08-25",
+  "schema_version": "adds.clinicaltrials-gov-harmonization-presence-spec.v1",
+  "sidecar_bindings": [
+    {
+      "inventory_sha256": "5e72cff3475938547c5e6edbf608458dadba027811960a5fd76797825bb6ad2a",
+      "nct_id": "NCT01647516",
+      "sidecar_sha256": "6608267d6ec9f85262ce1a8ccc50e53ad91a0bfae02e01f42a24c35914ed78bb"
+    },
+    {
+      "inventory_sha256": "07ef6bbb32be00708f27671c453f9fad7bee58076abd1052b681cce9b96d254a",
+      "nct_id": "NCT02435992",
+      "sidecar_sha256": "875357c4b733166039e2e6ab5236c12884d11e04e76ed03240b4b671c30f0977"
+    }
+  ],
+  "structure_report_sha256": "68f64745cc9db1ce98506970834822f64f0e502e35ecacb35c944ac2b8ca5b1b"
+}

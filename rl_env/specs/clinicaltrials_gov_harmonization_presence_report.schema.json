@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_harmonization_presence_report.schema.json",
+  "title": "ADDS ClinicalTrials.gov Harmonization Presence Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "report"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-harmonization-presence-report.v1"
+    },
+    "integrity_sha256": { "$ref": "#/$defs/sha256" },
+    "report": { "$ref": "#/$defs/report" }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nctId": {
+      "type": "string",
+      "pattern": "^NCT[0-9]{8}$"
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "boundedCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "structuralField": {
+      "enum": [
+        "group_count",
+        "denominator_count",
+        "class_count",
+        "category_count",
+        "measurement_count",
+        "analysis_count",
+        "analysis_group_id_sets"
+      ]
+    },
+    "arrayRole": {
+      "enum": [
+        "outcome_groups",
+        "outcome_denominators",
+        "outcome_denominator_counts",
+        "outcome_classes",
+        "class_denominators",
+        "class_denominator_counts",
+        "class_categories",
+        "category_measurements",
+        "outcome_analyses",
+        "analysis_group_ids"
+      ]
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nct_id", "inventory_sha256", "sidecar_sha256"],
+      "properties": {
+        "nct_id": { "$ref": "#/$defs/nctId" },
+        "inventory_sha256": { "$ref": "#/$defs/sha256" },
+        "sidecar_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "roleCount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "array_role",
+        "record_count",
+        "absent_count",
+        "present_null_count",
+        "present_empty_count",
+        "present_nonempty_count"
+      ],
+      "properties": {
+        "array_role": { "$ref": "#/$defs/arrayRole" },
+        "record_count": { "$ref": "#/$defs/boundedCount" },
+        "absent_count": { "$ref": "#/$defs/boundedCount" },
+        "present_null_count": { "$ref": "#/$defs/boundedCount" },
+        "present_empty_count": { "$ref": "#/$defs/boundedCount" },
+        "present_nonempty_count": { "$ref": "#/$defs/boundedCount" }
+      }
+    },
+    "zeroCauseProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_name",
+        "endpoint_count",
+        "positive_value_endpoint_count",
+        "zero_or_empty_value_endpoint_count",
+        "zero_with_absent_array_count",
+        "zero_with_present_null_array_count",
+        "zero_with_present_empty_array_count"
+      ],
+      "properties": {
+        "field_name": { "$ref": "#/$defs/structuralField" },
+        "endpoint_count": { "$ref": "#/$defs/boundedCount" },
+        "positive_value_endpoint_count": { "$ref": "#/$defs/boundedCount" },
+        "zero_or_empty_value_endpoint_count": { "$ref": "#/$defs/boundedCount" },
+        "zero_with_absent_array_count": { "$ref": "#/$defs/boundedCount" },
+        "zero_with_present_null_array_count": { "$ref": "#/$defs/boundedCount" },
+        "zero_with_present_empty_array_count": { "$ref": "#/$defs/boundedCount" }
+      }
+    },
+    "trialProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nct_id",
+        "inventory_sha256",
+        "source_content_hash_sha256",
+        "sidecar_sha256",
+        "endpoint_count",
+        "structural_array_record_count",
+        "role_counts",
+        "zero_cause_profiles"
+      ],
+      "properties": {
+        "nct_id": { "$ref": "#/$defs/nctId" },
+        "inventory_sha256": { "$ref": "#/$defs/sha256" },
+        "source_content_hash_sha256": { "$ref": "#/$defs/sha256" },
+        "sidecar_sha256": { "$ref": "#/$defs/sha256" },
+        "endpoint_count": { "$ref": "#/$defs/boundedCount" },
+        "structural_array_record_count": { "$ref": "#/$defs/boundedCount" },
+        "role_counts": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": { "$ref": "#/$defs/roleCount" }
+        },
+        "zero_cause_profiles": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": { "$ref": "#/$defs/zeroCauseProfile" }
+        }
+      }
+    },
+    "fieldResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_name",
+        "pair_count",
+        "legacy_non_identifiable_pair_count",
+        "resolved_pair_count",
+        "absent_array_involved_pair_count",
+        "present_null_array_involved_pair_count",
+        "present_empty_array_involved_pair_count",
+        "zero_cause_signature_exact_count",
+        "zero_cause_signature_disagreement_count"
+      ],
+      "properties": {
+        "field_name": { "$ref": "#/$defs/structuralField" },
+        "pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "legacy_non_identifiable_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "resolved_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "absent_array_involved_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "present_null_array_involved_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "present_empty_array_involved_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "zero_cause_signature_exact_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "zero_cause_signature_disagreement_count": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "report_id",
+        "policy_id",
+        "spec_sha256",
+        "candidate_packet_id",
+        "candidate_packet_sha256",
+        "structure_report_id",
+        "structure_report_sha256",
+        "sidecar_bindings",
+        "trial_profiles",
+        "field_resolutions",
+        "trial_count",
+        "endpoint_candidate_count",
+        "pair_candidate_count",
+        "legacy_non_identifiable_field_pair_count",
+        "resolved_field_pair_count",
+        "source_presence_provenance_retained",
+        "v1_artifacts_mutated",
+        "structural_array_values_retained",
+        "endpoint_semantic_equivalence_inferred",
+        "estimand_equivalence_inferred",
+        "clinical_comparability_inferred",
+        "benefit_risk_synthesis_performed",
+        "treatment_choice_inferred",
+        "limitations"
+      ],
+      "properties": {
+        "report_id": { "$ref": "#/$defs/text" },
+        "policy_id": {
+          "const": "adds.payload-free-source-presence-resolution.v1"
+        },
+        "spec_sha256": { "$ref": "#/$defs/sha256" },
+        "candidate_packet_id": { "$ref": "#/$defs/text" },
+        "candidate_packet_sha256": { "$ref": "#/$defs/sha256" },
+        "structure_report_id": { "$ref": "#/$defs/text" },
+        "structure_report_sha256": { "$ref": "#/$defs/sha256" },
+        "sidecar_bindings": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/binding" }
+        },
+        "trial_profiles": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/trialProfile" }
+        },
+        "field_resolutions": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": { "$ref": "#/$defs/fieldResolution" }
+        },
+        "trial_count": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 256
+        },
+        "endpoint_candidate_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "pair_candidate_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "legacy_non_identifiable_field_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "resolved_field_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_presence_provenance_retained": { "const": true },
+        "v1_artifacts_mutated": { "const": false },
+        "structural_array_values_retained": { "const": false },
+        "endpoint_semantic_equivalence_inferred": { "const": false },
+        "estimand_equivalence_inferred": { "const": false },
+        "clinical_comparability_inferred": { "const": false },
+        "benefit_risk_synthesis_performed": { "const": false },
+        "treatment_choice_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/text" }
+        }
+      }
+    }
+  }
+}

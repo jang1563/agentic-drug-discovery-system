@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_structural_presence_packet.schema.json",
+  "title": "ADDS ClinicalTrials.gov Structural Presence Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "packet"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-structural-presence-packet.v1"
+    },
+    "integrity_sha256": { "$ref": "#/$defs/sha256" },
+    "packet": { "$ref": "#/$defs/packet" }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nctId": {
+      "type": "string",
+      "pattern": "^NCT[0-9]{8}$"
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "structuralField": {
+      "enum": [
+        "group_count",
+        "denominator_count",
+        "class_count",
+        "category_count",
+        "measurement_count",
+        "analysis_count",
+        "analysis_group_id_sets"
+      ]
+    },
+    "arrayRole": {
+      "enum": [
+        "outcome_groups",
+        "outcome_denominators",
+        "outcome_denominator_counts",
+        "outcome_classes",
+        "class_denominators",
+        "class_denominator_counts",
+        "class_categories",
+        "category_measurements",
+        "outcome_analyses",
+        "analysis_group_ids"
+      ]
+    },
+    "presenceState": {
+      "enum": [
+        "absent",
+        "present_null",
+        "present_empty",
+        "present_nonempty"
+      ]
+    },
+    "arrayRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "posted_outcome_id",
+        "posted_outcome_source_index",
+        "posted_outcome_source_record_sha256",
+        "field_name",
+        "array_role",
+        "parent_source_json_pointer",
+        "parent_source_record_sha256",
+        "source_json_pointer",
+        "presence_state",
+        "item_count",
+        "source_value_sha256"
+      ],
+      "properties": {
+        "record_id": { "$ref": "#/$defs/text" },
+        "posted_outcome_id": { "$ref": "#/$defs/text" },
+        "posted_outcome_source_index": { "$ref": "#/$defs/nonNegativeInteger" },
+        "posted_outcome_source_record_sha256": { "$ref": "#/$defs/sha256" },
+        "field_name": { "$ref": "#/$defs/structuralField" },
+        "array_role": { "$ref": "#/$defs/arrayRole" },
+        "parent_source_json_pointer": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "parent_source_record_sha256": { "$ref": "#/$defs/sha256" },
+        "source_json_pointer": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "presence_state": { "$ref": "#/$defs/presenceState" },
+        "item_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_value_sha256": {
+          "oneOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "packet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sidecar_id",
+        "policy_id",
+        "spec_sha256",
+        "inventory_id",
+        "inventory_sha256",
+        "source_receipt_id",
+        "source_content_hash_sha256",
+        "source_scope_sha256",
+        "nct_id",
+        "registry_version",
+        "array_records",
+        "posted_outcome_count",
+        "structural_array_record_count",
+        "absent_count",
+        "present_null_count",
+        "present_empty_count",
+        "present_nonempty_count",
+        "bounded_work_preflight_performed",
+        "v1_inventory_replay_verified",
+        "source_presence_provenance_retained",
+        "structural_array_values_retained",
+        "endpoint_semantic_equivalence_inferred",
+        "estimand_equivalence_inferred",
+        "clinical_comparability_inferred",
+        "benefit_risk_synthesis_performed",
+        "treatment_choice_inferred",
+        "limitations"
+      ],
+      "properties": {
+        "sidecar_id": { "$ref": "#/$defs/text" },
+        "policy_id": {
+          "const": "adds.source-bound-structural-array-presence.v1"
+        },
+        "spec_sha256": { "$ref": "#/$defs/sha256" },
+        "inventory_id": { "$ref": "#/$defs/text" },
+        "inventory_sha256": { "$ref": "#/$defs/sha256" },
+        "source_receipt_id": { "$ref": "#/$defs/text" },
+        "source_content_hash_sha256": { "$ref": "#/$defs/sha256" },
+        "source_scope_sha256": { "$ref": "#/$defs/sha256" },
+        "nct_id": { "$ref": "#/$defs/nctId" },
+        "registry_version": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "array_records": {
+          "type": "array",
+          "maxItems": 1000000,
+          "items": { "$ref": "#/$defs/arrayRecord" }
+        },
+        "posted_outcome_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "structural_array_record_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "absent_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "present_null_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "present_empty_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "present_nonempty_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "bounded_work_preflight_performed": { "const": true },
+        "v1_inventory_replay_verified": { "const": true },
+        "source_presence_provenance_retained": { "const": true },
+        "structural_array_values_retained": { "const": false },
+        "endpoint_semantic_equivalence_inferred": { "const": false },
+        "estimand_equivalence_inferred": { "const": false },
+        "clinical_comparability_inferred": { "const": false },
+        "benefit_risk_synthesis_performed": { "const": false },
+        "treatment_choice_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/text" }
+        }
+      }
+    }
+  }
+}

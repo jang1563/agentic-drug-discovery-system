@@ -31,6 +31,18 @@ from agentic_drug_discovery.clinicaltrials_gov_harmonization_structure import (
     compile_clinicaltrials_gov_harmonization_structure,
     validate_clinicaltrials_gov_harmonization_structure,
 )
+from agentic_drug_discovery.clinicaltrials_gov_structural_presence import (
+    ClinicalTrialsGovHarmonizationPresenceSpec,
+    ClinicalTrialsGovStructuralPresenceSpec,
+    StructuralPresenceSidecarBinding,
+    clinicaltrials_gov_harmonization_presence_report_envelope,
+    clinicaltrials_gov_harmonization_presence_spec_to_dict,
+    clinicaltrials_gov_harmonization_presence_summary,
+    compile_clinicaltrials_gov_harmonization_presence,
+    compile_clinicaltrials_gov_structural_presence,
+    validate_clinicaltrials_gov_harmonization_presence,
+    validate_clinicaltrials_gov_structural_presence,
+)
 from agentic_drug_discovery.clinicaltrials_gov_inventory import (
     ClinicalTrialsGovInventorySpec,
     compile_clinicaltrials_gov_inventory,
@@ -92,7 +104,7 @@ def _inventory(nct_id: str, source_path: Path, retrieved_at: datetime):
     failures = validate_clinicaltrials_gov_inventory(spec, bundle, packet)
     if failures:
         raise ValueError(f"{nct_id} inventory replay failed: {failures}")
-    return packet
+    return packet, bundle
 
 
 def compile_report(
@@ -100,15 +112,17 @@ def compile_report(
     nct02760407_source: Path,
     retrieved_at: datetime,
 ):
-    packets = tuple(
+    inventory_bundles = tuple(
         sorted(
             (
                 _inventory("NCT02760368", nct02760368_source, retrieved_at),
                 _inventory("NCT02760407", nct02760407_source, retrieved_at),
             ),
-            key=lambda item: item.nct_id,
+            key=lambda item: item[0].nct_id,
         )
     )
+    packets = tuple(item[0] for item in inventory_bundles)
+    bundles = tuple(item[1] for item in inventory_bundles)
     candidate_spec = ClinicalTrialsGovHarmonizationCandidateSpec(
         packet_id=(f"olokizumab-mtx-ir-cross-trial-candidates:{REGISTRY_VERSION}"),
         inventory_bindings=tuple(
@@ -142,7 +156,7 @@ def compile_report(
     )
     if diagnostic_failures:
         raise ValueError(f"diagnostic replay failed: {diagnostic_failures}")
-    return diagnostic_spec, report, candidate_packet
+    return diagnostic_spec, report, candidate_packet, packets, bundles
 
 
 def main() -> int:
@@ -158,16 +172,20 @@ def main() -> int:
     parser.add_argument("--report-output", required=True, type=Path)
     parser.add_argument("--structure-spec-output", type=Path)
     parser.add_argument("--structure-report-output", type=Path)
+    parser.add_argument("--presence-spec-output", type=Path)
+    parser.add_argument("--presence-report-output", type=Path)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
-    if (args.structure_spec_output is None) != (
-        args.structure_report_output is None
-    ):
+    if (args.structure_spec_output is None) != (args.structure_report_output is None):
         parser.error(
             "--structure-spec-output and --structure-report-output must be used together"
         )
+    if (args.presence_spec_output is None) != (args.presence_report_output is None):
+        parser.error(
+            "--presence-spec-output and --presence-report-output must be used together"
+        )
 
-    spec, report, candidate_packet = compile_report(
+    spec, report, candidate_packet, packets, bundles = compile_report(
         args.nct02760368_source,
         args.nct02760407_source,
         args.retrieved_at,
@@ -183,11 +201,11 @@ def main() -> int:
         force=args.force,
     )
     summary = clinicaltrials_gov_harmonization_diagnostic_summary(report)
-    if args.structure_spec_output is not None:
+    structure_requested = args.structure_spec_output is not None
+    presence_requested = args.presence_spec_output is not None
+    if structure_requested or presence_requested:
         structure_spec = ClinicalTrialsGovHarmonizationStructureSpec(
-            report_id=(
-                f"olokizumab-mtx-ir-structure-decomposition:{REGISTRY_VERSION}"
-            ),
+            report_id=(f"olokizumab-mtx-ir-structure-decomposition:{REGISTRY_VERSION}"),
             candidate_packet_sha256=candidate_packet.fingerprint,
             diagnostic_report_sha256=report.fingerprint,
         )
@@ -199,21 +217,87 @@ def main() -> int:
         )
         if failures:
             raise ValueError(f"structure replay failed: {failures}")
-        write_json_artifact(
-            args.structure_spec_output,
-            clinicaltrials_gov_harmonization_structure_spec_to_dict(structure_spec),
-            force=args.force,
-        )
-        write_json_artifact(
-            args.structure_report_output,
-            clinicaltrials_gov_harmonization_structure_report_envelope(
+        if structure_requested:
+            write_json_artifact(
+                args.structure_spec_output,
+                clinicaltrials_gov_harmonization_structure_spec_to_dict(structure_spec),
+                force=args.force,
+            )
+            write_json_artifact(
+                args.structure_report_output,
+                clinicaltrials_gov_harmonization_structure_report_envelope(
+                    structure_report
+                ),
+                force=args.force,
+            )
+            summary["structure"] = clinicaltrials_gov_harmonization_structure_summary(
                 structure_report
-            ),
-            force=args.force,
-        )
-        summary["structure"] = (
-            clinicaltrials_gov_harmonization_structure_summary(structure_report)
-        )
+            )
+        if presence_requested:
+            sidecars = []
+            for packet, bundle in zip(packets, bundles, strict=True):
+                sidecar_spec = ClinicalTrialsGovStructuralPresenceSpec(
+                    sidecar_id=(
+                        f"{packet.nct_id}:structural-array-presence:{REGISTRY_VERSION}"
+                    ),
+                    inventory_sha256=packet.fingerprint,
+                    source_content_hash_sha256=bundle.receipt.content_hash,
+                    max_structural_array_record_count=10_000,
+                )
+                sidecar = compile_clinicaltrials_gov_structural_presence(
+                    sidecar_spec, bundle, packet
+                )
+                sidecar_failures = validate_clinicaltrials_gov_structural_presence(
+                    sidecar_spec, bundle, packet, sidecar
+                )
+                if sidecar_failures:
+                    raise ValueError(
+                        f"{packet.nct_id} presence sidecar replay failed: "
+                        f"{sidecar_failures}"
+                    )
+                sidecars.append(sidecar)
+            presence_spec = ClinicalTrialsGovHarmonizationPresenceSpec(
+                report_id=(f"olokizumab-mtx-ir-presence-resolution:{REGISTRY_VERSION}"),
+                candidate_packet_sha256=candidate_packet.fingerprint,
+                structure_report_sha256=structure_report.fingerprint,
+                sidecar_bindings=tuple(
+                    StructuralPresenceSidecarBinding(
+                        nct_id=sidecar.nct_id,
+                        inventory_sha256=sidecar.inventory_sha256,
+                        sidecar_sha256=sidecar.fingerprint,
+                    )
+                    for sidecar in sidecars
+                ),
+            )
+            presence_report = compile_clinicaltrials_gov_harmonization_presence(
+                presence_spec, candidate_packet, structure_report, sidecars
+            )
+            presence_failures = validate_clinicaltrials_gov_harmonization_presence(
+                presence_spec,
+                candidate_packet,
+                structure_report,
+                sidecars,
+                presence_report,
+            )
+            if presence_failures:
+                raise ValueError(
+                    f"presence resolution replay failed: {presence_failures}"
+                )
+            write_json_artifact(
+                args.presence_spec_output,
+                clinicaltrials_gov_harmonization_presence_spec_to_dict(presence_spec),
+                force=args.force,
+            )
+            write_json_artifact(
+                args.presence_report_output,
+                clinicaltrials_gov_harmonization_presence_report_envelope(
+                    presence_report
+                ),
+                force=args.force,
+            )
+            summary["presence"] = clinicaltrials_gov_harmonization_presence_summary(
+                presence_report
+            )
     print(json.dumps(summary))
     return 0
 

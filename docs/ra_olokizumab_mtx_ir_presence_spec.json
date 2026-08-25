@@ -1,0 +1,19 @@
+{
+  "candidate_packet_sha256": "cabb2ac6c2321483072c210dbfb677acbf6dad4ddd237181ecc0846d6f7ac004",
+  "policy_id": "adds.payload-free-source-presence-resolution.v1",
+  "report_id": "olokizumab-mtx-ir-presence-resolution:2026-08-25",
+  "schema_version": "adds.clinicaltrials-gov-harmonization-presence-spec.v1",
+  "sidecar_bindings": [
+    {
+      "inventory_sha256": "8efb7b7d753d67d682cdf69fed755cb522730ccd56c0b26b8d5f6bc5813eebad",
+      "nct_id": "NCT02760368",
+      "sidecar_sha256": "11c0043a4af25c8de4897f213f0541fbaa774375003b3214f837534db10102f6"
+    },
+    {
+      "inventory_sha256": "484a4b5238dc8a0669e66c16e06dd549b3777faf1563ff484fb3703aafab071b",
+      "nct_id": "NCT02760407",
+      "sidecar_sha256": "0d71c1d879405d2b9c3c6dcb754eb491a40ce616ded0637e9a26e82aa7c78f83"
+    }
+  ],
+  "structure_report_sha256": "7f6a071ffc4e83f46b0f6d1d7cf237a3f22f3a39defa355f594e6dd99e910169"
+}

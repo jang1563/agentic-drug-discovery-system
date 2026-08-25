@@ -305,6 +305,11 @@ model assets and per-placebo diagnostics remain excluded.
   artifacts, and `tests/test_clinicaltrials_gov_harmonization_structure.py` for exact
   trial-global/endpoint-local pair partitions, the source-presence non-identifiability boundary,
   strict replay, and the finding that identical saturated group-count rates have different causes.
+- Inspect `docs/59_presence_preserving_structural_arrays.md`, its four adjacent RA/UC aggregate
+  artifacts, and `tests/test_clinicaltrials_gov_structural_presence.py` for exact v1 migration,
+  absent/null/empty/non-empty sidecars, strict source and inventory binding, CLI replay, and the UC
+  resolution of all 192 legacy ambiguous field-pairs to absent `analyses` arrays. Source array
+  values, endpoint titles, pair identities, and per-pointer sidecars remain outside the mirror.
 - Inspect `docs/45_ra_acr20_risk_difference_hold_replication.md` and
   `docs/ra_acr20_risk_difference_validation_snapshot.json` for the payload-free public-source RA
   ACR20 replication, source and artifact hashes, uncertain interval, and HOLD outcome.
@@ -494,6 +499,11 @@ outside both public release surfaces.
 | `docs/ra_olokizumab_mtx_ir_structure_report.json` | Payload-free RA trial profiles and complete structural-cause partitions. |
 | `docs/uc_ozanimod_structure_spec.json` | Exact UC candidate/diagnostic binding and fixed decomposition policy. |
 | `docs/uc_ozanimod_structure_report.json` | Payload-free UC trial profiles and complete structural-cause partitions. |
+| `docs/59_presence_preserving_structural_arrays.md` | Source-bound structural-array states, v1 migration proof, exact RA/UC results, replay, and interpretation boundary. |
+| `docs/ra_olokizumab_mtx_ir_presence_spec.json` | Exact RA candidate, structure, inventory, and sidecar hash bindings. |
+| `docs/ra_olokizumab_mtx_ir_presence_report.json` | Aggregate RA array-role profiles and zero legacy ambiguity confirmation. |
+| `docs/uc_ozanimod_presence_spec.json` | Exact UC candidate, structure, inventory, and sidecar hash bindings. |
+| `docs/uc_ozanimod_presence_report.json` | Aggregate UC array-role profiles and exact 192 field-pair source-presence resolution. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Exact multi-bundle portfolio transaction, reviewer-approved endpoint mapping ledger, synthesis dependency, and release boundary. |
 | `docs/24_policy_replanning_and_resume.md` | Typed policy observations, bounded replans, checkpoint integrity, and deterministic resume. |
 | `docs/25_cutoff_safe_policy_evaluation.md` | Cutoff-safe sealing, submission, scoring, real aggregate results, and interpretation limits. |
@@ -546,6 +556,7 @@ outside both public release surfaces.
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_diagnostics.py` | Payload-free complete-graph workload aggregation, explicit denominators, blocker signatures, strict Cartesian invariants, and fixed semantic nonclaims. |
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_robustness.py` | Source-disjoint report binding, exact rational cohort rates, stability classification, strict replay, and fixed no-pooling/no-ranking semantics. |
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_structure.py` | Exact candidate/diagnostic binding, trial-global/local structural partitions, source-presence limits, strict replay, and fixed nonclaims. |
+| `agentic_drug_discovery/clinicaltrials_gov_structural_presence.py` | Exact v1/source replay, ten-role structural-array sidecars, payload-free ambiguity resolution, strict readers, and fixed nonclaims. |
 | `agentic_drug_discovery/clinical_portfolio.py` | Atomic exact-set multi-trial extraction with source-hash disjointness and payload-free output. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Strict approved-mapping parser, endpoint/safety fingerprint compiler, approval chronology, and replay validation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Deterministic source-ledger compiler for supported trial-level ratio or percentage-point effects and serious-event risk differences without pooling. |
@@ -586,6 +597,10 @@ outside both public release surfaces.
 | `rl_env/specs/clinicaltrials_gov_harmonization_robustness_report.schema.json` | Exact cohort rates, stability labels, source-disjointness, integrity, and fixed no-pooling/no-ranking flags. |
 | `rl_env/specs/clinicaltrials_gov_harmonization_structure_spec.schema.json` | Exact candidate and diagnostic hashes under the fixed structural-decomposition policy; the adjacent example is synthetic. |
 | `rl_env/specs/clinicaltrials_gov_harmonization_structure_report.schema.json` | Aggregate trial profiles, cause partitions, source-presence limits, integrity, and fixed nonclaims. |
+| `rl_env/specs/clinicaltrials_gov_structural_presence_spec.schema.json` | Exact inventory/source binding and bounded pointer-record preflight; the adjacent example is synthetic. |
+| `rl_env/specs/clinicaltrials_gov_structural_presence_packet.schema.json` | Array-role pointers, hashes, four presence states, v1 replay proof, integrity, and fixed nonclaims. |
+| `rl_env/specs/clinicaltrials_gov_harmonization_presence_spec.schema.json` | Exact candidate, structure, inventory, and sidecar bindings; the adjacent example is synthetic. |
+| `rl_env/specs/clinicaltrials_gov_harmonization_presence_report.schema.json` | Aggregate role/cause profiles, complete legacy ambiguity resolution, integrity, and fixed nonclaims. |
 | `rl_env/specs/clinical_benefit_risk_synthesis.schema.json` | Machine-readable reviewed multi-trial selection contract; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_evidence_decision_package.schema.json` | Integrity-bound policy, exact tensor, gaps, action catalog, budget, and bounded-VOI plan contract; the adjacent example is synthetic. |
 | `rl_env/specs/clinical_evidence_decision_package.relaxed.example.json` | Compiler-generated synthetic `ADVANCE` package over the same evidence unit for reproducible matched-policy sensitivity. |

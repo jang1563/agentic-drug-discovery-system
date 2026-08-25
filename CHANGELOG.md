@@ -4,6 +4,16 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added source-bound structural-array presence sidecars as a non-mutating v2 refinement of the v1
+  ClinicalTrials.gov inventory. Exact v1 replay now precedes pointer-level preservation of absent,
+  null, empty, and non-empty states across all ten nested arrays used by the posted-outcome parser;
+  source values and endpoint titles are not retained. The payload-free harmonization report binds
+  candidate, structure, inventory, source, and sidecar hashes. Exact RA replay confirms zero legacy
+  ambiguous field-pairs, while UC resolves all 192 ambiguity instances for `analysis_count` and
+  `analysis_group_id_sets` to absent `analyses` arrays (27 equal-cause and 69 different-cause pairs
+  per field). Nested-empty normalization, migration, tamper, bound, payload, schema, CLI, and public
+  artifact controls pass; no endpoint equivalence, exclusion, pooling, efficacy, safety,
+  benefit-risk, or treatment claim is made.
 - Added source-disjoint RA/UC harmonization robustness and a payload-free structural-cause
   decomposition. The exact 35-pair olokizumab and 110-pair ozanimod cohorts preserve separate
   rational denominators; every structural field now partitions into exact, trial-global, and

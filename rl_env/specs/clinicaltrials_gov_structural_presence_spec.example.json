@@ -1,0 +1,8 @@
+{
+  "schema_version": "adds.clinicaltrials-gov-structural-presence-spec.v1",
+  "sidecar_id": "NCT00000001:structural-array-presence:2026-08-25",
+  "inventory_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "source_content_hash_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "max_structural_array_record_count": 10000,
+  "policy_id": "adds.source-bound-structural-array-presence.v1"
+}

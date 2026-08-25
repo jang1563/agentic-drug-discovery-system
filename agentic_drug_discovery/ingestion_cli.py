@@ -48,9 +48,21 @@ from .clinicaltrials_gov_harmonization_robustness import (
 )
 from .clinicaltrials_gov_harmonization_structure import (
     clinicaltrials_gov_harmonization_structure_report_envelope,
+    clinicaltrials_gov_harmonization_structure_report_from_json,
     clinicaltrials_gov_harmonization_structure_spec_from_json,
     clinicaltrials_gov_harmonization_structure_summary,
     compile_clinicaltrials_gov_harmonization_structure,
+)
+from .clinicaltrials_gov_structural_presence import (
+    clinicaltrials_gov_harmonization_presence_report_envelope,
+    clinicaltrials_gov_harmonization_presence_spec_from_json,
+    clinicaltrials_gov_harmonization_presence_summary,
+    clinicaltrials_gov_structural_presence_packet_envelope,
+    clinicaltrials_gov_structural_presence_packet_from_json,
+    clinicaltrials_gov_structural_presence_spec_from_json,
+    clinicaltrials_gov_structural_presence_summary,
+    compile_clinicaltrials_gov_harmonization_presence,
+    compile_clinicaltrials_gov_structural_presence,
 )
 from .ncbi_pubmed import (
     extract_ncbi_pubmed_disease_model_ingestion_job,
@@ -299,6 +311,41 @@ def _extract_clinicaltrials_gov_inventory(
     }
 
 
+def _compile_clinicaltrials_gov_structural_presence(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    try:
+        spec_text = Path(args.spec).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(
+            "ClinicalTrials.gov structural presence spec is unreadable"
+        ) from exc
+    spec = clinicaltrials_gov_structural_presence_spec_from_json(spec_text)
+    if args.max_bytes <= 0:
+        raise ValueError("max-bytes must be positive")
+    bundle = read_source_bundle(args.bundle, max_bytes=args.max_bytes)
+    try:
+        inventory_bytes = Path(args.inventory).read_bytes()
+    except OSError as exc:
+        raise ValueError("ClinicalTrials.gov inventory packet is unreadable") from exc
+    if len(inventory_bytes) > args.max_bytes:
+        raise ValueError("ClinicalTrials.gov inventory packet exceeds max-bytes")
+    try:
+        inventory_text = inventory_bytes.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError("ClinicalTrials.gov inventory packet is not UTF-8") from exc
+    inventory = clinicaltrials_gov_inventory_packet_from_json(inventory_text)
+    packet = compile_clinicaltrials_gov_structural_presence(spec, bundle, inventory)
+    envelope = clinicaltrials_gov_structural_presence_packet_envelope(packet)
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    return {
+        "status": "clinicaltrials_gov_structural_presence_compiled",
+        **clinicaltrials_gov_structural_presence_summary(packet),
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
+    }
+
+
 def _compile_clinicaltrials_gov_harmonization_candidates(
     args: argparse.Namespace,
 ) -> dict[str, Any]:
@@ -408,9 +455,7 @@ def _benchmark_clinicaltrials_gov_harmonization_robustness(
                 f"harmonization diagnostic report is not UTF-8: {path}"
             ) from exc
         reports.append(
-            clinicaltrials_gov_harmonization_diagnostic_report_from_json(
-                report_text
-            )
+            clinicaltrials_gov_harmonization_diagnostic_report_from_json(report_text)
         )
     report = compile_clinicaltrials_gov_harmonization_robustness(spec, reports)
     envelope = clinicaltrials_gov_harmonization_robustness_report_envelope(report)
@@ -475,14 +520,73 @@ def _decompose_clinicaltrials_gov_harmonization_structure(
     }
 
 
+def _resolve_clinicaltrials_gov_harmonization_presence(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    try:
+        spec_text = Path(args.spec).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(
+            "ClinicalTrials.gov harmonization presence spec is unreadable"
+        ) from exc
+    spec = clinicaltrials_gov_harmonization_presence_spec_from_json(spec_text)
+    if args.max_bytes <= 0:
+        raise ValueError("max-bytes must be positive")
+    inputs = []
+    total_bytes = 0
+    input_specs = (
+        (
+            args.candidate_packet,
+            "harmonization candidate packet",
+            clinicaltrials_gov_harmonization_packet_from_json,
+        ),
+        (
+            args.structure_report,
+            "harmonization structure report",
+            clinicaltrials_gov_harmonization_structure_report_from_json,
+        ),
+        *(
+            (
+                path,
+                f"structural presence sidecar {path}",
+                clinicaltrials_gov_structural_presence_packet_from_json,
+            )
+            for path in args.sidecar
+        ),
+    )
+    for path, label, parser in input_specs:
+        try:
+            payload = Path(path).read_bytes()
+        except OSError as exc:
+            raise ValueError(f"{label} is unreadable") from exc
+        total_bytes += len(payload)
+        if total_bytes > args.max_bytes:
+            raise ValueError("harmonization presence inputs exceed max-bytes")
+        try:
+            text = payload.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(f"{label} is not UTF-8") from exc
+        inputs.append(parser(text))
+    candidate_packet, structure_report, *sidecars = inputs
+    report = compile_clinicaltrials_gov_harmonization_presence(
+        spec, candidate_packet, structure_report, sidecars
+    )
+    envelope = clinicaltrials_gov_harmonization_presence_report_envelope(report)
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    return {
+        "status": "cross_trial_harmonization_source_presence_resolved",
+        **clinicaltrials_gov_harmonization_presence_summary(report),
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
+    }
+
+
 def _extract_clinical_trial_disposition(
     args: argparse.Namespace,
 ) -> dict[str, Any]:
     job = _load_json(args.job, "clinical trial disposition ingestion job")
     bundles = {
-        "registry": read_source_bundle(
-            args.registry_bundle, max_bytes=args.max_bytes
-        ),
+        "registry": read_source_bundle(args.registry_bundle, max_bytes=args.max_bytes),
         "publication": read_source_bundle(
             args.publication_bundle, max_bytes=args.max_bytes
         ),
@@ -750,6 +854,32 @@ def _parser() -> argparse.ArgumentParser:
     )
     inventory.set_defaults(handler=_extract_clinicaltrials_gov_inventory)
 
+    structural_presence = subparsers.add_parser(
+        "compile-clinicaltrials-gov-structural-presence",
+        help=(
+            "Replay an immutable registry inventory from its exact source bundle "
+            "and preserve absent, null, empty, and non-empty structural-array "
+            "states without retaining array values."
+        ),
+    )
+    structural_presence.add_argument("--spec", required=True)
+    structural_presence.add_argument("--bundle", required=True)
+    structural_presence.add_argument("--inventory", required=True)
+    structural_presence.add_argument("--output", required=True)
+    structural_presence.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+    )
+    structural_presence.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing structural presence sidecar.",
+    )
+    structural_presence.set_defaults(
+        handler=_compile_clinicaltrials_gov_structural_presence
+    )
+
     harmonization = subparsers.add_parser(
         "compile-clinicaltrials-gov-harmonization-candidates",
         help=(
@@ -859,6 +989,38 @@ def _parser() -> argparse.ArgumentParser:
     )
     harmonization_structure.set_defaults(
         handler=_decompose_clinicaltrials_gov_harmonization_structure
+    )
+
+    harmonization_presence = subparsers.add_parser(
+        "resolve-clinicaltrials-gov-harmonization-presence",
+        help=(
+            "Resolve legacy zero-versus-missing structural ambiguity against "
+            "exact source-bound sidecars without publishing source arrays."
+        ),
+    )
+    harmonization_presence.add_argument("--spec", required=True)
+    harmonization_presence.add_argument("--candidate-packet", required=True)
+    harmonization_presence.add_argument("--structure-report", required=True)
+    harmonization_presence.add_argument(
+        "--sidecar",
+        action="append",
+        required=True,
+        help="Exact structural presence sidecar; repeat once per trial.",
+    )
+    harmonization_presence.add_argument("--output", required=True)
+    harmonization_presence.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+        help="Maximum total bytes across packet, report, and sidecars.",
+    )
+    harmonization_presence.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing presence resolution report.",
+    )
+    harmonization_presence.set_defaults(
+        handler=_resolve_clinicaltrials_gov_harmonization_presence
     )
 
     disposition = subparsers.add_parser(

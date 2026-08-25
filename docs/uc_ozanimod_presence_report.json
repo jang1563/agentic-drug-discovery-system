@@ -1,0 +1,435 @@
+{
+  "integrity_sha256": "b616abe93c94d76d0b2be0dd592416993f1e6ccdbc1da42dc5cc5b9b1398c4fc",
+  "report": {
+    "benefit_risk_synthesis_performed": false,
+    "candidate_packet_id": "ozanimod-uc-cross-trial-candidates:2026-08-25",
+    "candidate_packet_sha256": "aaefafba4d1c4bfa10c5589ceb102fe866fc5ebe89530f7fc2580aed49245b22",
+    "clinical_comparability_inferred": false,
+    "endpoint_candidate_count": 21,
+    "endpoint_semantic_equivalence_inferred": false,
+    "estimand_equivalence_inferred": false,
+    "field_resolutions": [
+      {
+        "absent_array_involved_pair_count": 0,
+        "field_name": "group_count",
+        "legacy_non_identifiable_pair_count": 0,
+        "pair_count": 110,
+        "present_empty_array_involved_pair_count": 0,
+        "present_null_array_involved_pair_count": 0,
+        "resolved_pair_count": 0,
+        "zero_cause_signature_disagreement_count": 0,
+        "zero_cause_signature_exact_count": 0
+      },
+      {
+        "absent_array_involved_pair_count": 0,
+        "field_name": "denominator_count",
+        "legacy_non_identifiable_pair_count": 0,
+        "pair_count": 110,
+        "present_empty_array_involved_pair_count": 0,
+        "present_null_array_involved_pair_count": 0,
+        "resolved_pair_count": 0,
+        "zero_cause_signature_disagreement_count": 0,
+        "zero_cause_signature_exact_count": 0
+      },
+      {
+        "absent_array_involved_pair_count": 0,
+        "field_name": "class_count",
+        "legacy_non_identifiable_pair_count": 0,
+        "pair_count": 110,
+        "present_empty_array_involved_pair_count": 0,
+        "present_null_array_involved_pair_count": 0,
+        "resolved_pair_count": 0,
+        "zero_cause_signature_disagreement_count": 0,
+        "zero_cause_signature_exact_count": 0
+      },
+      {
+        "absent_array_involved_pair_count": 0,
+        "field_name": "category_count",
+        "legacy_non_identifiable_pair_count": 0,
+        "pair_count": 110,
+        "present_empty_array_involved_pair_count": 0,
+        "present_null_array_involved_pair_count": 0,
+        "resolved_pair_count": 0,
+        "zero_cause_signature_disagreement_count": 0,
+        "zero_cause_signature_exact_count": 0
+      },
+      {
+        "absent_array_involved_pair_count": 0,
+        "field_name": "measurement_count",
+        "legacy_non_identifiable_pair_count": 0,
+        "pair_count": 110,
+        "present_empty_array_involved_pair_count": 0,
+        "present_null_array_involved_pair_count": 0,
+        "resolved_pair_count": 0,
+        "zero_cause_signature_disagreement_count": 0,
+        "zero_cause_signature_exact_count": 0
+      },
+      {
+        "absent_array_involved_pair_count": 96,
+        "field_name": "analysis_count",
+        "legacy_non_identifiable_pair_count": 96,
+        "pair_count": 110,
+        "present_empty_array_involved_pair_count": 0,
+        "present_null_array_involved_pair_count": 0,
+        "resolved_pair_count": 96,
+        "zero_cause_signature_disagreement_count": 69,
+        "zero_cause_signature_exact_count": 27
+      },
+      {
+        "absent_array_involved_pair_count": 96,
+        "field_name": "analysis_group_id_sets",
+        "legacy_non_identifiable_pair_count": 96,
+        "pair_count": 110,
+        "present_empty_array_involved_pair_count": 0,
+        "present_null_array_involved_pair_count": 0,
+        "resolved_pair_count": 96,
+        "zero_cause_signature_disagreement_count": 69,
+        "zero_cause_signature_exact_count": 27
+      }
+    ],
+    "legacy_non_identifiable_field_pair_count": 192,
+    "limitations": [
+      "The report resolves source presence only for the exact candidate packet, structure report, and sidecars bound by SHA-256.",
+      "Absent, null, and empty involvement counts may overlap when an endpoint contains multiple relevant nested arrays.",
+      "Presence signatures describe registry representation, not semantic or estimand equivalence and not whether a difference matters clinically.",
+      "No endpoint approval, exclusion, pooling, ranking, efficacy or safety inference, benefit-risk synthesis, or treatment choice is performed."
+    ],
+    "pair_candidate_count": 110,
+    "policy_id": "adds.payload-free-source-presence-resolution.v1",
+    "report_id": "ozanimod-uc-presence-resolution:2026-08-25",
+    "resolved_field_pair_count": 192,
+    "sidecar_bindings": [
+      {
+        "inventory_sha256": "5e72cff3475938547c5e6edbf608458dadba027811960a5fd76797825bb6ad2a",
+        "nct_id": "NCT01647516",
+        "sidecar_sha256": "6608267d6ec9f85262ce1a8ccc50e53ad91a0bfae02e01f42a24c35914ed78bb"
+      },
+      {
+        "inventory_sha256": "07ef6bbb32be00708f27671c453f9fad7bee58076abd1052b681cce9b96d254a",
+        "nct_id": "NCT02435992",
+        "sidecar_sha256": "875357c4b733166039e2e6ab5236c12884d11e04e76ed03240b4b671c30f0977"
+      }
+    ],
+    "source_presence_provenance_retained": true,
+    "spec_sha256": "2be0a5b6cfd025bb6c74607ca5e7d0e7edda657d7a333bb523076173b7394c2f",
+    "structural_array_values_retained": false,
+    "structure_report_id": "ozanimod-uc-structure-decomposition:2026-08-25",
+    "structure_report_sha256": "68f64745cc9db1ce98506970834822f64f0e502e35ecacb35c944ac2b8ca5b1b",
+    "treatment_choice_inferred": false,
+    "trial_count": 2,
+    "trial_profiles": [
+      {
+        "endpoint_count": 10,
+        "inventory_sha256": "5e72cff3475938547c5e6edbf608458dadba027811960a5fd76797825bb6ad2a",
+        "nct_id": "NCT01647516",
+        "role_counts": [
+          {
+            "absent_count": 0,
+            "array_role": "outcome_groups",
+            "present_empty_count": 0,
+            "present_nonempty_count": 10,
+            "present_null_count": 0,
+            "record_count": 10
+          },
+          {
+            "absent_count": 0,
+            "array_role": "outcome_denominators",
+            "present_empty_count": 0,
+            "present_nonempty_count": 10,
+            "present_null_count": 0,
+            "record_count": 10
+          },
+          {
+            "absent_count": 0,
+            "array_role": "outcome_denominator_counts",
+            "present_empty_count": 0,
+            "present_nonempty_count": 10,
+            "present_null_count": 0,
+            "record_count": 10
+          },
+          {
+            "absent_count": 0,
+            "array_role": "outcome_classes",
+            "present_empty_count": 0,
+            "present_nonempty_count": 10,
+            "present_null_count": 0,
+            "record_count": 10
+          },
+          {
+            "absent_count": 35,
+            "array_role": "class_denominators",
+            "present_empty_count": 0,
+            "present_nonempty_count": 0,
+            "present_null_count": 0,
+            "record_count": 35
+          },
+          {
+            "absent_count": 0,
+            "array_role": "class_denominator_counts",
+            "present_empty_count": 0,
+            "present_nonempty_count": 0,
+            "present_null_count": 0,
+            "record_count": 0
+          },
+          {
+            "absent_count": 0,
+            "array_role": "class_categories",
+            "present_empty_count": 0,
+            "present_nonempty_count": 35,
+            "present_null_count": 0,
+            "record_count": 35
+          },
+          {
+            "absent_count": 0,
+            "array_role": "category_measurements",
+            "present_empty_count": 0,
+            "present_nonempty_count": 35,
+            "present_null_count": 0,
+            "record_count": 35
+          },
+          {
+            "absent_count": 3,
+            "array_role": "outcome_analyses",
+            "present_empty_count": 0,
+            "present_nonempty_count": 7,
+            "present_null_count": 0,
+            "record_count": 10
+          },
+          {
+            "absent_count": 0,
+            "array_role": "analysis_group_ids",
+            "present_empty_count": 0,
+            "present_nonempty_count": 14,
+            "present_null_count": 0,
+            "record_count": 14
+          }
+        ],
+        "sidecar_sha256": "6608267d6ec9f85262ce1a8ccc50e53ad91a0bfae02e01f42a24c35914ed78bb",
+        "source_content_hash_sha256": "71ed6feb2d11e4c8d8cd82ca1bbfa7baf619d0b2f403763d38bfadeed07c4d89",
+        "structural_array_record_count": 169,
+        "zero_cause_profiles": [
+          {
+            "endpoint_count": 10,
+            "field_name": "group_count",
+            "positive_value_endpoint_count": 10,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 10,
+            "field_name": "denominator_count",
+            "positive_value_endpoint_count": 10,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 10,
+            "field_name": "class_count",
+            "positive_value_endpoint_count": 10,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 10,
+            "field_name": "category_count",
+            "positive_value_endpoint_count": 10,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 10,
+            "field_name": "measurement_count",
+            "positive_value_endpoint_count": 10,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 10,
+            "field_name": "analysis_count",
+            "positive_value_endpoint_count": 7,
+            "zero_or_empty_value_endpoint_count": 3,
+            "zero_with_absent_array_count": 3,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 10,
+            "field_name": "analysis_group_id_sets",
+            "positive_value_endpoint_count": 7,
+            "zero_or_empty_value_endpoint_count": 3,
+            "zero_with_absent_array_count": 3,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          }
+        ]
+      },
+      {
+        "endpoint_count": 11,
+        "inventory_sha256": "07ef6bbb32be00708f27671c453f9fad7bee58076abd1052b681cce9b96d254a",
+        "nct_id": "NCT02435992",
+        "role_counts": [
+          {
+            "absent_count": 0,
+            "array_role": "outcome_groups",
+            "present_empty_count": 0,
+            "present_nonempty_count": 11,
+            "present_null_count": 0,
+            "record_count": 11
+          },
+          {
+            "absent_count": 0,
+            "array_role": "outcome_denominators",
+            "present_empty_count": 0,
+            "present_nonempty_count": 11,
+            "present_null_count": 0,
+            "record_count": 11
+          },
+          {
+            "absent_count": 0,
+            "array_role": "outcome_denominator_counts",
+            "present_empty_count": 0,
+            "present_nonempty_count": 11,
+            "present_null_count": 0,
+            "record_count": 11
+          },
+          {
+            "absent_count": 0,
+            "array_role": "outcome_classes",
+            "present_empty_count": 0,
+            "present_nonempty_count": 11,
+            "present_null_count": 0,
+            "record_count": 11
+          },
+          {
+            "absent_count": 11,
+            "array_role": "class_denominators",
+            "present_empty_count": 0,
+            "present_nonempty_count": 0,
+            "present_null_count": 0,
+            "record_count": 11
+          },
+          {
+            "absent_count": 0,
+            "array_role": "class_denominator_counts",
+            "present_empty_count": 0,
+            "present_nonempty_count": 0,
+            "present_null_count": 0,
+            "record_count": 0
+          },
+          {
+            "absent_count": 0,
+            "array_role": "class_categories",
+            "present_empty_count": 0,
+            "present_nonempty_count": 11,
+            "present_null_count": 0,
+            "record_count": 11
+          },
+          {
+            "absent_count": 0,
+            "array_role": "category_measurements",
+            "present_empty_count": 0,
+            "present_nonempty_count": 11,
+            "present_null_count": 0,
+            "record_count": 11
+          },
+          {
+            "absent_count": 9,
+            "array_role": "outcome_analyses",
+            "present_empty_count": 0,
+            "present_nonempty_count": 2,
+            "present_null_count": 0,
+            "record_count": 11
+          },
+          {
+            "absent_count": 0,
+            "array_role": "analysis_group_ids",
+            "present_empty_count": 0,
+            "present_nonempty_count": 2,
+            "present_null_count": 0,
+            "record_count": 2
+          }
+        ],
+        "sidecar_sha256": "875357c4b733166039e2e6ab5236c12884d11e04e76ed03240b4b671c30f0977",
+        "source_content_hash_sha256": "5cfb559f2b89bfefa4004b8a8ab7ca5561389a882ff70f205fda5ce34d3faf07",
+        "structural_array_record_count": 90,
+        "zero_cause_profiles": [
+          {
+            "endpoint_count": 11,
+            "field_name": "group_count",
+            "positive_value_endpoint_count": 11,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 11,
+            "field_name": "denominator_count",
+            "positive_value_endpoint_count": 11,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 11,
+            "field_name": "class_count",
+            "positive_value_endpoint_count": 11,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 11,
+            "field_name": "category_count",
+            "positive_value_endpoint_count": 11,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 11,
+            "field_name": "measurement_count",
+            "positive_value_endpoint_count": 11,
+            "zero_or_empty_value_endpoint_count": 0,
+            "zero_with_absent_array_count": 0,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 11,
+            "field_name": "analysis_count",
+            "positive_value_endpoint_count": 2,
+            "zero_or_empty_value_endpoint_count": 9,
+            "zero_with_absent_array_count": 9,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          },
+          {
+            "endpoint_count": 11,
+            "field_name": "analysis_group_id_sets",
+            "positive_value_endpoint_count": 2,
+            "zero_or_empty_value_endpoint_count": 9,
+            "zero_with_absent_array_count": 9,
+            "zero_with_present_empty_array_count": 0,
+            "zero_with_present_null_array_count": 0
+          }
+        ]
+      }
+    ],
+    "v1_artifacts_mutated": false
+  },
+  "schema_version": "adds.clinicaltrials-gov-harmonization-presence-report.v1"
+}

@@ -107,15 +107,16 @@ not an adjudication of whether a disagreement matters clinically.
 
 ## Next research priority
 
-The next implementation priority is a presence-preserving inventory/candidate contract that
-retains `absent`, `present_empty`, and `present_nonempty` separately for every structural array.
-That upgrade should be additive and versioned, with a migration test proving that current v1
-artifacts remain replayable. The decomposition can then separate source-presence disagreement from
-reported-value disagreement instead of marking it non-identifiable.
+The presence-preserving priority is now implemented as an additive source-bound sidecar. It retains
+`absent`, `present_null`, `present_empty`, and `present_nonempty` for all ten nested array roles,
+requires exact v1 inventory replay, and leaves current artifacts unchanged. Exact UC replay resolves
+all 192 legacy ambiguous field-pairs to absent `analyses` arrays. See
+`docs/59_presence_preserving_structural_arrays.md` and the adjacent RA/UC presence artifacts.
 
-After that contract exists, add a third disease cohort selected before inspecting pair outcomes to
-stress a different trial architecture. The preregistered test should ask whether the RA/UC cause
-shift repeats, rather than merely whether another route reaches 100%.
+The next research priority is a preregistered endpoint/estimand review protocol that consumes these
+identified representation causes as typed blockers. After that contract, add a third disease cohort
+selected before inspecting pair outcomes to test whether the RA/UC cause shift repeats, rather than
+merely whether another route reaches 100%.
 
 ## Machine contract and replay
 

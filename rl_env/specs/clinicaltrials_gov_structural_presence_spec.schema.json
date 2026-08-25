@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_structural_presence_spec.schema.json",
+  "title": "ADDS ClinicalTrials.gov Structural Presence Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "sidecar_id",
+    "inventory_sha256",
+    "source_content_hash_sha256",
+    "max_structural_array_record_count",
+    "policy_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-structural-presence-spec.v1"
+    },
+    "sidecar_id": { "$ref": "#/$defs/text" },
+    "inventory_sha256": { "$ref": "#/$defs/sha256" },
+    "source_content_hash_sha256": { "$ref": "#/$defs/sha256" },
+    "max_structural_array_record_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000
+    },
+    "policy_id": {
+      "const": "adds.source-bound-structural-array-presence.v1"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

@@ -30,12 +30,10 @@ def main() -> int:
         repo_root / "tests/fixtures/clinicaltrials_gov_study.synthetic.json"
     )
     clinical_job_path = (
-        repo_root
-        / "rl_env/specs/clinicaltrials_gov_ingestion_job.example.json"
+        repo_root / "rl_env/specs/clinicaltrials_gov_ingestion_job.example.json"
     )
     clinical_portfolio_path = (
-        repo_root
-        / "rl_env/specs/clinicaltrials_gov_portfolio_job.example.json"
+        repo_root / "rl_env/specs/clinicaltrials_gov_portfolio_job.example.json"
     )
     for fixture in (clinical_source, clinical_job_path, clinical_portfolio_path):
         if not fixture.is_file():
@@ -63,8 +61,7 @@ def main() -> int:
     ):
         return fail("wheel metadata is missing the bounded pypdf runtime dependency")
     if not any(
-        requirement.lower().startswith("tiktoken")
-        and "==0.14.0" in requirement
+        requirement.lower().startswith("tiktoken") and "==0.14.0" in requirement
         for requirement in requirements
     ):
         return fail("wheel metadata is missing the frozen tiktoken dependency")
@@ -91,9 +88,7 @@ def main() -> int:
             "adds-replay-bundle.exe" if os.name == "nt" else "adds-replay-bundle"
         )
         ingestion = scripts_dir / (
-            "adds-pinned-ingestion.exe"
-            if os.name == "nt"
-            else "adds-pinned-ingestion"
+            "adds-pinned-ingestion.exe" if os.name == "nt" else "adds-pinned-ingestion"
         )
         readiness = scripts_dir / (
             "adds-research-readiness.exe"
@@ -309,8 +304,8 @@ def main() -> int:
 <ArticleTitle>{pubmed_title}</ArticleTitle>
 <ELocationID EIdType="doi">{pubmed_doi}</ELocationID>
 <Abstract>
-<AbstractText Label="METHODS">{pubmed_context.replace('<', '&lt;').replace('>', '&gt;')}</AbstractText>
-<AbstractText Label="RESULTS">{pubmed_result.replace('<', '&lt;')}</AbstractText>
+<AbstractText Label="METHODS">{pubmed_context.replace("<", "&lt;").replace(">", "&gt;")}</AbstractText>
+<AbstractText Label="RESULTS">{pubmed_result.replace("<", "&lt;")}</AbstractText>
 </Abstract>
 <PublicationTypeList><PublicationType>Journal Article</PublicationType></PublicationTypeList>
 <ArticleDate DateType="Electronic"><Year>2020</Year><Month>03</Month><Day>08</Day></ArticleDate>
@@ -562,7 +557,9 @@ def main() -> int:
         chembl_bundle_paths = {}
         for resource, payload in chembl_resources.items():
             source_path = Path(temp_dir) / f"chembl-{resource}.json"
-            source_path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+            source_path.write_text(
+                json.dumps(payload, sort_keys=True), encoding="utf-8"
+            )
             chembl_source_paths[resource] = source_path
             chembl_bundle_paths[resource] = Path(temp_dir) / f"chembl-{resource}-bundle"
         chembl_source_hashes = {
@@ -574,9 +571,7 @@ def main() -> int:
         disease_model_pmid = "99999992"
         disease_model_doi = "10.1000/synthetic.disease-model"
         disease_model_title = "Synthetic in-vivo disease-model contract fixture."
-        disease_model_url = (
-            f"https://pubmed.ncbi.nlm.nih.gov/{disease_model_pmid}/"
-        )
+        disease_model_url = f"https://pubmed.ncbi.nlm.nih.gov/{disease_model_pmid}/"
         disease_model_efetch_url = (
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
             f"?db=pubmed&id={disease_model_pmid}&retmode=xml"
@@ -603,7 +598,7 @@ def main() -> int:
 <Journal><JournalIssue><PubDate><Year>2003</Year></PubDate></JournalIssue></Journal>
 <ArticleTitle>{disease_model_title}</ArticleTitle>
 <ELocationID EIdType="doi">{disease_model_doi}</ELocationID>
-<Abstract><AbstractText>{disease_model_abstract.replace('<', '&lt;')}</AbstractText></Abstract>
+<Abstract><AbstractText>{disease_model_abstract.replace("<", "&lt;")}</AbstractText></Abstract>
 <PublicationTypeList><PublicationType>Journal Article</PublicationType></PublicationTypeList>
 <ArticleDate DateType="Electronic"><Year>2002</Year><Month>11</Month><Day>14</Day></ArticleDate>
 </Article></MedlineCitation><PubmedData><ArticleIdList>
@@ -644,9 +639,7 @@ def main() -> int:
                         "model_system_id": "SYNTHETIC_MOUSE_MODEL",
                     },
                     "metadata": {
-                        "model_system": (
-                            "Synthetic transgenic mouse disease model"
-                        ),
+                        "model_system": ("Synthetic transgenic mouse disease model"),
                         "model_type": "transgenic animal model",
                         "endpoint": "synthetic channel activity inhibition",
                         "endpoint_relation": "eq",
@@ -672,9 +665,7 @@ def main() -> int:
                         "result_excerpt": disease_model_result,
                         "conclusion_excerpt": disease_model_conclusion,
                         "candidate_anchor": "SYNTH-CODE-1",
-                        "model_anchor": (
-                            "synthetic transgenic mouse disease model"
-                        ),
+                        "model_anchor": ("synthetic transgenic mouse disease model"),
                         "dose_text": "10 mg/kg",
                         "route_anchor": "orally",
                         "frequency_anchor": "twice a day",
@@ -701,7 +692,9 @@ def main() -> int:
         clinical_source_hash = hashlib.sha256(clinical_source.read_bytes()).hexdigest()
         clinical_bundle = Path(temp_dir) / "clinicaltrials-gov-bundle"
         clinical_output = Path(temp_dir) / "clinicaltrials-gov-extracted.json"
-        clinical_inventory_spec = Path(temp_dir) / "clinicaltrials-gov-inventory-spec.json"
+        clinical_inventory_spec = (
+            Path(temp_dir) / "clinicaltrials-gov-inventory-spec.json"
+        )
         clinical_inventory_spec.write_text(
             json.dumps(
                 {
@@ -718,9 +711,7 @@ def main() -> int:
             ),
             encoding="utf-8",
         )
-        clinical_inventory_output = (
-            Path(temp_dir) / "clinicaltrials-gov-inventory.json"
-        )
+        clinical_inventory_output = Path(temp_dir) / "clinicaltrials-gov-inventory.json"
         clinical_source_two = Path(temp_dir) / "clinicaltrials-gov-study-two.json"
         clinical_source_two.write_text(
             clinical_source.read_text(encoding="utf-8").replace(
@@ -795,6 +786,10 @@ def main() -> int:
                         "CLINICALTRIALS_GOV_HARMONIZATION_DIAGNOSTIC_SPEC_SCHEMA_VERSION, "
                         "CLINICALTRIALS_GOV_HARMONIZATION_STRUCTURE_REPORT_SCHEMA_VERSION, "
                         "CLINICALTRIALS_GOV_HARMONIZATION_STRUCTURE_SPEC_SCHEMA_VERSION, "
+                        "CLINICALTRIALS_GOV_STRUCTURAL_PRESENCE_PACKET_SCHEMA_VERSION, "
+                        "CLINICALTRIALS_GOV_STRUCTURAL_PRESENCE_SPEC_SCHEMA_VERSION, "
+                        "CLINICALTRIALS_GOV_HARMONIZATION_PRESENCE_REPORT_SCHEMA_VERSION, "
+                        "CLINICALTRIALS_GOV_HARMONIZATION_PRESENCE_SPEC_SCHEMA_VERSION, "
                         "CLINICALTRIALS_GOV_HARMONIZATION_ROBUSTNESS_REPORT_SCHEMA_VERSION, "
                         "CLINICALTRIALS_GOV_HARMONIZATION_ROBUSTNESS_SPEC_SCHEMA_VERSION, "
                         "CLINICAL_COHORT_REPORT_SCHEMA_VERSION, "
@@ -828,6 +823,10 @@ def main() -> int:
                         "clinicaltrials_gov_harmonization_diagnostic_spec_from_json, "
                         "clinicaltrials_gov_harmonization_structure_report_from_json, "
                         "clinicaltrials_gov_harmonization_structure_spec_from_json, "
+                        "clinicaltrials_gov_structural_presence_packet_from_json, "
+                        "clinicaltrials_gov_structural_presence_spec_from_json, "
+                        "clinicaltrials_gov_harmonization_presence_report_from_json, "
+                        "clinicaltrials_gov_harmonization_presence_spec_from_json, "
                         "clinicaltrials_gov_harmonization_robustness_report_from_json, "
                         "clinicaltrials_gov_harmonization_robustness_spec_from_json, "
                         "clinical_outcome_dependence_manifest_from_json, "
@@ -855,6 +854,8 @@ def main() -> int:
                         "compile_clinical_endpoint_review_candidate_packet, "
                         "compile_clinicaltrials_gov_inventory, "
                         "compile_clinicaltrials_gov_harmonization_structure, "
+                        "compile_clinicaltrials_gov_structural_presence, "
+                        "compile_clinicaltrials_gov_harmonization_presence, "
                         "compile_clinicaltrials_gov_harmonization_robustness, "
                         "compile_clinical_cohort_report, "
                         "compile_clinical_execution_batch, "
@@ -886,6 +887,8 @@ def main() -> int:
                         "validate_clinical_endpoint_review_candidate_packet, "
                         "validate_clinicaltrials_gov_inventory, "
                         "validate_clinicaltrials_gov_harmonization_structure, "
+                        "validate_clinicaltrials_gov_structural_presence, "
+                        "validate_clinicaltrials_gov_harmonization_presence, "
                         "validate_clinicaltrials_gov_harmonization_robustness, "
                         "validate_clinical_outcome_uncertainty_report, "
                         "validate_clinical_outcome_design_simulation_report, "
@@ -918,6 +921,14 @@ def main() -> int:
                         "'adds.clinicaltrials-gov-harmonization-structure-report.v1'; "
                         "assert CLINICALTRIALS_GOV_HARMONIZATION_STRUCTURE_SPEC_SCHEMA_VERSION == "
                         "'adds.clinicaltrials-gov-harmonization-structure-spec.v1'; "
+                        "assert CLINICALTRIALS_GOV_STRUCTURAL_PRESENCE_PACKET_SCHEMA_VERSION == "
+                        "'adds.clinicaltrials-gov-structural-presence-packet.v1'; "
+                        "assert CLINICALTRIALS_GOV_STRUCTURAL_PRESENCE_SPEC_SCHEMA_VERSION == "
+                        "'adds.clinicaltrials-gov-structural-presence-spec.v1'; "
+                        "assert CLINICALTRIALS_GOV_HARMONIZATION_PRESENCE_REPORT_SCHEMA_VERSION == "
+                        "'adds.clinicaltrials-gov-harmonization-presence-report.v1'; "
+                        "assert CLINICALTRIALS_GOV_HARMONIZATION_PRESENCE_SPEC_SCHEMA_VERSION == "
+                        "'adds.clinicaltrials-gov-harmonization-presence-spec.v1'; "
                         "assert CLINICALTRIALS_GOV_HARMONIZATION_ROBUSTNESS_REPORT_SCHEMA_VERSION == "
                         "'adds.clinicaltrials-gov-harmonization-robustness-report.v1'; "
                         "assert CLINICALTRIALS_GOV_HARMONIZATION_ROBUSTNESS_SPEC_SCHEMA_VERSION == "
@@ -971,6 +982,10 @@ def main() -> int:
                         "clinicaltrials_gov_inventory_spec_from_json, "
                         "clinicaltrials_gov_harmonization_structure_report_from_json, "
                         "clinicaltrials_gov_harmonization_structure_spec_from_json, "
+                        "clinicaltrials_gov_structural_presence_packet_from_json, "
+                        "clinicaltrials_gov_structural_presence_spec_from_json, "
+                        "clinicaltrials_gov_harmonization_presence_report_from_json, "
+                        "clinicaltrials_gov_harmonization_presence_spec_from_json, "
                         "clinicaltrials_gov_harmonization_robustness_report_from_json, "
                         "clinicaltrials_gov_harmonization_robustness_spec_from_json, "
                         "clinical_outcome_dependence_manifest_from_json, "
@@ -998,6 +1013,8 @@ def main() -> int:
                         "compile_clinical_endpoint_review_candidate_packet, "
                         "compile_clinicaltrials_gov_inventory, "
                         "compile_clinicaltrials_gov_harmonization_structure, "
+                        "compile_clinicaltrials_gov_structural_presence, "
+                        "compile_clinicaltrials_gov_harmonization_presence, "
                         "compile_clinicaltrials_gov_harmonization_robustness, "
                         "compile_clinical_evidence_transition, "
                         "compile_clinical_execution_batch, "
@@ -1028,6 +1045,8 @@ def main() -> int:
                         "validate_clinical_endpoint_review_candidate_packet, "
                         "validate_clinicaltrials_gov_inventory, "
                         "validate_clinicaltrials_gov_harmonization_structure, "
+                        "validate_clinicaltrials_gov_structural_presence, "
+                        "validate_clinicaltrials_gov_harmonization_presence, "
                         "validate_clinicaltrials_gov_harmonization_robustness, "
                         "validate_clinical_outcome_uncertainty_report, "
                         "validate_clinical_outcome_design_simulation_report, "
@@ -1496,22 +1515,16 @@ def main() -> int:
             chembl_output_text = chembl_output.read_text(encoding="utf-8")
             chembl_extracted_job = json.loads(chembl_output_text)
             disease_model_report = json.loads(disease_model_extracted.stdout)
-            disease_model_output_text = disease_model_output.read_text(
-                encoding="utf-8"
-            )
+            disease_model_output_text = disease_model_output.read_text(encoding="utf-8")
             disease_model_extracted_job = json.loads(disease_model_output_text)
             clinical_report = json.loads(clinical_extracted.stdout)
             clinical_output_text = clinical_output.read_text(encoding="utf-8")
             clinical_extracted_job = json.loads(clinical_output_text)
-            clinical_inventory_report = json.loads(
-                clinical_inventory_extracted.stdout
-            )
+            clinical_inventory_report = json.loads(clinical_inventory_extracted.stdout)
             clinical_inventory_packet = json.loads(
                 clinical_inventory_output.read_text(encoding="utf-8")
             )
-            clinical_portfolio_report = json.loads(
-                clinical_portfolio_extracted.stdout
-            )
+            clinical_portfolio_report = json.loads(clinical_portfolio_extracted.stdout)
             clinical_portfolio_output_text = clinical_portfolio_output.read_text(
                 encoding="utf-8"
             )
@@ -1621,9 +1634,10 @@ def main() -> int:
         return fail("CDC MMWR extraction did not emit a generic ingestion job")
     if mmwr_report.get("source_content_hash") != mmwr_source_hash:
         return fail("CDC MMWR extraction did not report the source content hash")
-    if mmwr_report.get("output_sha256") != hashlib.sha256(
-        mmwr_output_text.encode()
-    ).hexdigest():
+    if (
+        mmwr_report.get("output_sha256")
+        != hashlib.sha256(mmwr_output_text.encode()).hexdigest()
+    ):
         return fail("CDC MMWR extraction did not report the output hash")
     if mmwr_excerpt in mmwr_output_text or '"evidence"' in mmwr_output_text:
         return fail("CDC MMWR extraction retained reviewer evidence text")
@@ -1645,9 +1659,10 @@ def main() -> int:
         return fail("NCBI PubMed extraction did not emit a generic ingestion job")
     if pubmed_report.get("source_content_hash") != pubmed_source_hash:
         return fail("NCBI PubMed extraction did not report the source content hash")
-    if pubmed_report.get("output_sha256") != hashlib.sha256(
-        pubmed_output_text.encode()
-    ).hexdigest():
+    if (
+        pubmed_report.get("output_sha256")
+        != hashlib.sha256(pubmed_output_text.encode()).hexdigest()
+    ):
         return fail("NCBI PubMed extraction did not report the output hash")
     if (
         pubmed_result in pubmed_output_text
@@ -1683,9 +1698,10 @@ def main() -> int:
         return fail("ChEMBL extraction did not emit a generic ingestion job")
     if chembl_report.get("source_content_hashes") != chembl_source_hashes:
         return fail("ChEMBL extraction did not report all source content hashes")
-    if chembl_report.get("output_sha256") != hashlib.sha256(
-        chembl_output_text.encode()
-    ).hexdigest():
+    if (
+        chembl_report.get("output_sha256")
+        != hashlib.sha256(chembl_output_text.encode()).hexdigest()
+    ):
         return fail("ChEMBL extraction did not report the output hash")
     if (
         chembl_assay_description in chembl_output_text
@@ -1711,9 +1727,7 @@ def main() -> int:
     }
     for key, value in expected_disease_model.items():
         if disease_model_report.get(key) != value:
-            return fail(
-                f"NCBI PubMed disease-model field {key!r} must be {value!r}"
-            )
+            return fail(f"NCBI PubMed disease-model field {key!r} must be {value!r}")
     if (
         disease_model_extracted_job.get("schema_version")
         != "adds.pinned-ingestion-job.v1"
@@ -1721,9 +1735,10 @@ def main() -> int:
         return fail("disease-model extraction did not emit a generic ingestion job")
     if disease_model_report.get("source_content_hash") != disease_model_source_hash:
         return fail("disease-model extraction lost the source content hash")
-    if disease_model_report.get("output_sha256") != hashlib.sha256(
-        disease_model_output_text.encode()
-    ).hexdigest():
+    if (
+        disease_model_report.get("output_sha256")
+        != hashlib.sha256(disease_model_output_text.encode()).hexdigest()
+    ):
         return fail("disease-model extraction did not report the output hash")
     if (
         disease_model_result in disease_model_output_text
@@ -1751,12 +1766,15 @@ def main() -> int:
         if clinical_report.get(key) != value:
             return fail(f"ClinicalTrials.gov field {key!r} must be {value!r}")
     if clinical_extracted_job.get("schema_version") != "adds.pinned-ingestion-job.v1":
-        return fail("ClinicalTrials.gov extraction did not emit a generic ingestion job")
+        return fail(
+            "ClinicalTrials.gov extraction did not emit a generic ingestion job"
+        )
     if clinical_report.get("source_content_hash") != clinical_source_hash:
         return fail("ClinicalTrials.gov extraction lost the source content hash")
-    if clinical_report.get("output_sha256") != hashlib.sha256(
-        clinical_output_text.encode()
-    ).hexdigest():
+    if (
+        clinical_report.get("output_sha256")
+        != hashlib.sha256(clinical_output_text.encode()).hexdigest()
+    ):
         return fail("ClinicalTrials.gov extraction did not report the output hash")
     if any(
         forbidden in clinical_output_text.casefold()
@@ -1799,9 +1817,7 @@ def main() -> int:
     }
     for key, value in expected_inventory.items():
         if clinical_inventory_report.get(key) != value:
-            return fail(
-                f"ClinicalTrials.gov inventory field {key!r} must be {value!r}"
-            )
+            return fail(f"ClinicalTrials.gov inventory field {key!r} must be {value!r}")
     if clinical_inventory_report.get("source_content_hash") != clinical_source_hash:
         return fail("ClinicalTrials.gov inventory lost the source content hash")
     if (
@@ -1824,9 +1840,7 @@ def main() -> int:
     }
     for key, value in expected_portfolio.items():
         if clinical_portfolio_report.get(key) != value:
-            return fail(
-                f"ClinicalTrials.gov portfolio field {key!r} must be {value!r}"
-            )
+            return fail(f"ClinicalTrials.gov portfolio field {key!r} must be {value!r}")
     if clinical_portfolio_report.get("source_receipt_ids") != [
         "ctgov-test-trial",
         "ctgov-test-trial-2",
@@ -1836,9 +1850,10 @@ def main() -> int:
         [clinical_source_hash, clinical_source_two_hash]
     ):
         return fail("ClinicalTrials.gov portfolio lost source content hashes")
-    if clinical_portfolio_report.get("output_sha256") != hashlib.sha256(
-        clinical_portfolio_output_text.encode()
-    ).hexdigest():
+    if (
+        clinical_portfolio_report.get("output_sha256")
+        != hashlib.sha256(clinical_portfolio_output_text.encode()).hexdigest()
+    ):
         return fail("ClinicalTrials.gov portfolio did not report the output hash")
     if clinical_portfolio_job.get("schema_version") != "adds.pinned-ingestion-job.v1":
         return fail("ClinicalTrials.gov portfolio did not emit a generic ingestion job")
@@ -1853,8 +1868,13 @@ def main() -> int:
         if portfolio_metadata.get("trial_count") != 2:
             return fail("ClinicalTrials.gov portfolio lost the exact trial count")
         if portfolio_metadata.get("automatic_endpoint_mapping_performed") is not False:
-            return fail("ClinicalTrials.gov portfolio claimed automatic endpoint mapping")
-        if record.get("biological_context", {}).get("trial_id") != expected_trial_ids[index]:
+            return fail(
+                "ClinicalTrials.gov portfolio claimed automatic endpoint mapping"
+            )
+        if (
+            record.get("biological_context", {}).get("trial_id")
+            != expected_trial_ids[index]
+        ):
             return fail("ClinicalTrials.gov portfolio lost trial identity")
     if any(
         forbidden in clinical_portfolio_output_text.casefold()
