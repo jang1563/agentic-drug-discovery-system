@@ -577,9 +577,10 @@ class ToolRegistry:
                 else f"{request.tool_id}.{request.operation}@unregistered"
             ),
             status=ToolStatus.FAILED,
-            action_type=contract.action_type
-            if contract is not None
-            else request.action_type,
+            # Failure outcomes describe the attempted request.  A registered
+            # contract may disagree with that request precisely because
+            # action_type_mismatch is the preflight failure being recorded.
+            action_type=request.action_type,
             payload=details or {},
             cost=cost,
             execution_mode=ExecutionMode.UNKNOWN,

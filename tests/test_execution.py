@@ -418,6 +418,39 @@ class ToolExecutionTests(unittest.TestCase):
         self.assertIn("cost_limit_exceeded", outcome.payload["failures"])
         self.assertEqual(outcome.cost, 0.0)
 
+    def test_action_type_mismatch_returns_failed_outcome(self) -> None:
+        state = make_state()
+        request = ToolRequest(
+            request_id="tool-request-action-mismatch",
+            program_id=state.program_id,
+            expected_state_version=state.version,
+            stage=state.current_stage,
+            tool_id="testdb",
+            operation="association",
+            action_type=ActionType.RETRIEVE_EVIDENCE,
+            purpose="Attempt a request with the wrong action type.",
+            arguments={"target": "TEST1", "disease": "test disease"},
+            max_cost=1.0,
+            created_at=REQUEST_AT,
+        )
+        called = False
+        registry = ToolRegistry(clock=lambda: COMPLETED_AT)
+
+        def handler(arguments):
+            nonlocal called
+            called = True
+            return ToolResponse(status=ToolStatus.SUCCEEDED, payload={})
+
+        registry.register(make_contract(), handler)
+        outcome = registry.execute(state, request)
+
+        self.assertFalse(called)
+        self.assertEqual(outcome.status, ToolStatus.FAILED)
+        self.assertEqual(outcome.error_code, "tool_request_contract_invalid")
+        self.assertEqual(outcome.action_type, request.action_type)
+        self.assertIn("action_type_mismatch", outcome.payload["failures"])
+        self.assertEqual(outcome.cost, 0.0)
+
     def test_execution_ledger_replay_is_exact_and_rejects_mutated_request(self) -> None:
         state = make_state()
         request = make_request(state)
