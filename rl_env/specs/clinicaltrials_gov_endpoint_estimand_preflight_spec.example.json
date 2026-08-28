@@ -1,0 +1,27 @@
+{
+  "schema_version": "adds.clinicaltrials-gov-endpoint-estimand-preflight-spec.v1",
+  "packet_id": "synthetic-endpoint-estimand-review-preflight:v1",
+  "candidate_packet_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "presence_report_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "sidecar_bindings": [
+    {
+      "nct_id": "NCT00000001",
+      "inventory_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "sidecar_sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+    },
+    {
+      "nct_id": "NCT00000002",
+      "inventory_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+      "sidecar_sha256": "6666666666666666666666666666666666666666666666666666666666666666"
+    }
+  ],
+  "max_pair_count": 100,
+  "required_estimand_dimensions": [
+    "treatment_condition",
+    "population",
+    "variable",
+    "intercurrent_event_strategy",
+    "population_level_summary"
+  ],
+  "policy_id": "adds.preregistered-endpoint-estimand-review-preflight.v1"
+}

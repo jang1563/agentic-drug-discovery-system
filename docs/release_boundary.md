@@ -14,6 +14,8 @@ This repository uses a conservative boundary so that future public or collaborat
 
 - Full case banks and raw source snapshots.
 - Source capture bundles, real provider review jobs, ingestion runs, and reviewer working files.
+- Raw ClinicalTrials.gov candidate packets, structural-presence sidecars and per-pointer values,
+  endpoint/estimand source excerpts, and human review decisions or responses.
 - Evaluator-only labels and locked episode data.
 - Generated reward and verifier results.
 - Run logs and machine-specific execution outputs.
@@ -226,7 +228,7 @@ The multi-endpoint benefit-risk portfolio layer ships implementation, strict spe
 schemas and readers, documentation, and synthetic strict/overlap tests. A real portfolio can expose
 selected endpoint domains, exact trial and source reuse, safety numerators and denominators, and
 program-state fingerprints. Real specifications, reports, source states, and endpoint-review
-materials remain outside Git and Hugging Face until separate scientific, privacy, governance, and
+decisions or responses remain outside Git and Hugging Face until separate scientific, privacy, governance, and
 release-boundary review. The synthetic controls establish accounting behavior only.
 
 The same-trial multi-endpoint stress layer ships a deterministic compiler, strict report schema and
@@ -276,6 +278,22 @@ packets, the pair-level candidate graph, endpoint titles, pair IDs, safety terms
 assignments, and semantic decisions remain outside Git and Hugging Face. Aggregate blocker counts
 describe review workload only; they do not establish endpoint equivalence, model accuracy,
 comparability, efficacy, safety, benefit-risk, or treatment choice.
+
+The structural-presence layer ships exact-source replay code, strict schemas/readers, synthetic
+tests, and payload-free aggregate RA/UC presence reports. Raw registry snapshots and sidecars,
+per-pointer array states, endpoint text, analysis arrays, group identifiers, and source values
+remain outside Git and Hugging Face. Aggregate absent/null/empty/non-empty counts resolve a
+representation ambiguity only; they do not establish source completeness, endpoint identity,
+estimand equivalence, comparability, efficacy, safety, benefit-risk, or treatment choice.
+
+The preregistered endpoint/estimand preflight layer ships a fixed five-dimension policy, exact
+source/inventory/sidecar hash bindings, payload-free pair IDs and routes, typed blocker/context-gap
+counts, strict schemas/readers, tests, and exact 2026-08-27 RA/UC packets. Raw registry snapshots,
+inventories, candidate graphs, structural-presence sidecars, endpoint/population text, analysis
+arrays, group identifiers, protocol/SAP excerpts, reviewer identities, and human decisions remain
+external. A review-ready route means only that required registry structure is available for human
+review; all five estimand dimensions remain unresolved, and no pair is automatically excluded or
+approved as identical, equivalent, comparable, poolable, efficacious, safe, or clinically useful.
 
 The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
 schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
@@ -387,9 +405,10 @@ The CDC MMWR, NCBI PubMed treatment-gap, ChEMBL functional-activity, NCBI PubMed
 ClinicalTrials.gov inventory and endpoint/safety trial-design provider paths ship only their
 verifiers, schemas, synthetic examples, tests, and payload-free validation documentation. Real article/API bundles,
 reviewer-selected excerpts/jobs, real inventory/candidate packets, and any real compiled manifest
-remain external until separate scientific and release-boundary approval. The sole bounded
-harmonization exception is the explicitly reviewed payload-free aggregate described above; its raw
-and pair-level inputs remain external.
+remain external until separate scientific and release-boundary approval. The bounded harmonization
+exceptions are the explicitly reviewed aggregate diagnostics/presence reports and payload-free
+pair-route preflight described above. Their raw candidate graphs, source records,
+structural-presence sidecars, endpoint/analysis values, and human review decisions remain external.
 
 ## GitHub and Hugging Face Split
 

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_endpoint_estimand_preflight_spec.schema.json",
+  "title": "ClinicalTrials.gov endpoint/estimand review preflight spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "packet_id",
+    "candidate_packet_sha256",
+    "presence_report_sha256",
+    "sidecar_bindings",
+    "max_pair_count",
+    "required_estimand_dimensions",
+    "policy_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-endpoint-estimand-preflight-spec.v1"
+    },
+    "packet_id": { "$ref": "#/$defs/nonEmptyString" },
+    "candidate_packet_sha256": { "$ref": "#/$defs/sha256" },
+    "presence_report_sha256": { "$ref": "#/$defs/sha256" },
+    "sidecar_bindings": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/sidecarBinding" }
+    },
+    "max_pair_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100000
+    },
+    "required_estimand_dimensions": {
+      "$ref": "#/$defs/estimandDimensions"
+    },
+    "policy_id": {
+      "const": "adds.preregistered-endpoint-estimand-review-preflight.v1"
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nctId": { "type": "string", "pattern": "^NCT[0-9]{8}$" },
+    "sidecarBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nct_id", "inventory_sha256", "sidecar_sha256"],
+      "properties": {
+        "nct_id": { "$ref": "#/$defs/nctId" },
+        "inventory_sha256": { "$ref": "#/$defs/sha256" },
+        "sidecar_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "estimandDimensions": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "treatment_condition" },
+        { "const": "population" },
+        { "const": "variable" },
+        { "const": "intercurrent_event_strategy" },
+        { "const": "population_level_summary" }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    }
+  }
+}

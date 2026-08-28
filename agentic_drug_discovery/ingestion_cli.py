@@ -40,6 +40,12 @@ from .clinicaltrials_gov_harmonization_diagnostics import (
     clinicaltrials_gov_harmonization_diagnostic_summary,
     compile_clinicaltrials_gov_harmonization_diagnostic,
 )
+from .clinicaltrials_gov_endpoint_estimand_preflight import (
+    clinicaltrials_gov_endpoint_estimand_preflight_packet_envelope,
+    clinicaltrials_gov_endpoint_estimand_preflight_spec_from_json,
+    clinicaltrials_gov_endpoint_estimand_preflight_summary,
+    compile_clinicaltrials_gov_endpoint_estimand_preflight,
+)
 from .clinicaltrials_gov_harmonization_robustness import (
     clinicaltrials_gov_harmonization_robustness_report_envelope,
     clinicaltrials_gov_harmonization_robustness_spec_from_json,
@@ -55,6 +61,7 @@ from .clinicaltrials_gov_harmonization_structure import (
 )
 from .clinicaltrials_gov_structural_presence import (
     clinicaltrials_gov_harmonization_presence_report_envelope,
+    clinicaltrials_gov_harmonization_presence_report_from_json,
     clinicaltrials_gov_harmonization_presence_spec_from_json,
     clinicaltrials_gov_harmonization_presence_summary,
     clinicaltrials_gov_structural_presence_packet_envelope,
@@ -581,6 +588,67 @@ def _resolve_clinicaltrials_gov_harmonization_presence(
     }
 
 
+def _compile_clinicaltrials_gov_endpoint_estimand_preflight(
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    try:
+        spec_text = Path(args.spec).read_text(encoding="utf-8")
+    except OSError as exc:
+        raise ValueError(
+            "ClinicalTrials.gov endpoint/estimand preflight spec is unreadable"
+        ) from exc
+    spec = clinicaltrials_gov_endpoint_estimand_preflight_spec_from_json(spec_text)
+    if args.max_bytes <= 0:
+        raise ValueError("max-bytes must be positive")
+    inputs = []
+    total_bytes = 0
+    input_specs = (
+        (
+            args.candidate_packet,
+            "harmonization candidate packet",
+            clinicaltrials_gov_harmonization_packet_from_json,
+        ),
+        (
+            args.presence_report,
+            "harmonization presence report",
+            clinicaltrials_gov_harmonization_presence_report_from_json,
+        ),
+        *(
+            (
+                path,
+                f"structural presence sidecar {path}",
+                clinicaltrials_gov_structural_presence_packet_from_json,
+            )
+            for path in args.sidecar
+        ),
+    )
+    for path, label, parser in input_specs:
+        try:
+            payload = Path(path).read_bytes()
+        except OSError as exc:
+            raise ValueError(f"{label} is unreadable") from exc
+        total_bytes += len(payload)
+        if total_bytes > args.max_bytes:
+            raise ValueError("endpoint/estimand preflight inputs exceed max-bytes")
+        try:
+            text = payload.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(f"{label} is not UTF-8") from exc
+        inputs.append(parser(text))
+    candidate_packet, presence_report, *sidecars = inputs
+    packet = compile_clinicaltrials_gov_endpoint_estimand_preflight(
+        spec, candidate_packet, presence_report, sidecars
+    )
+    envelope = clinicaltrials_gov_endpoint_estimand_preflight_packet_envelope(packet)
+    output = write_json_artifact(args.output, envelope, force=args.force)
+    return {
+        "status": "endpoint_estimand_review_preflight_compiled",
+        **clinicaltrials_gov_endpoint_estimand_preflight_summary(packet),
+        "output": str(output),
+        "output_sha256": hashlib.sha256(canonical_json_bytes(envelope)).hexdigest(),
+    }
+
+
 def _extract_clinical_trial_disposition(
     args: argparse.Namespace,
 ) -> dict[str, Any]:
@@ -1021,6 +1089,39 @@ def _parser() -> argparse.ArgumentParser:
     )
     harmonization_presence.set_defaults(
         handler=_resolve_clinicaltrials_gov_harmonization_presence
+    )
+
+    endpoint_estimand_preflight = subparsers.add_parser(
+        "compile-clinicaltrials-gov-endpoint-estimand-preflight",
+        help=(
+            "Route source-completeness and endpoint-identity blockers for every "
+            "cross-trial pair under a fixed five-dimension estimand review "
+            "protocol without automatic exclusion or semantic approval."
+        ),
+    )
+    endpoint_estimand_preflight.add_argument("--spec", required=True)
+    endpoint_estimand_preflight.add_argument("--candidate-packet", required=True)
+    endpoint_estimand_preflight.add_argument("--presence-report", required=True)
+    endpoint_estimand_preflight.add_argument(
+        "--sidecar",
+        action="append",
+        required=True,
+        help="Exact structural presence sidecar; repeat once per trial.",
+    )
+    endpoint_estimand_preflight.add_argument("--output", required=True)
+    endpoint_estimand_preflight.add_argument(
+        "--max-bytes",
+        type=int,
+        default=DEFAULT_MAX_SOURCE_BYTES,
+        help="Maximum total bytes across packet, report, and sidecars.",
+    )
+    endpoint_estimand_preflight.add_argument(
+        "--force",
+        action="store_true",
+        help="Atomically replace an existing endpoint/estimand preflight packet.",
+    )
+    endpoint_estimand_preflight.set_defaults(
+        handler=_compile_clinicaltrials_gov_endpoint_estimand_preflight
     )
 
     disposition = subparsers.add_parser(

@@ -106,6 +106,7 @@ not retain endpoint titles or array values, approve or exclude endpoint pairs, i
 identity, identify an estimand, establish population or safety comparability, pool effects, rank
 trials, synthesize benefit-risk, or choose a treatment.
 
-The next scientific priority is to use these now-identifiable representation causes as explicit
-inputs to a preregistered endpoint/estimand review protocol. Missing analyses should become a typed
-review blocker, not a numerical proxy for incompatibility and not an automatic exclusion rule.
+That priority is implemented in `docs/60_preregistered_endpoint_estimand_review_preflight.md`.
+The preregistered compiler turns these now-identifiable representation causes into typed review
+routes. Missing analyses are source-completion blockers, not numerical incompatibility proxies and
+not automatic exclusion rules; all five estimand dimensions remain unresolved until review.

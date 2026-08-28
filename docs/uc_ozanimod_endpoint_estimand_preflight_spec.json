@@ -1,0 +1,27 @@
+{
+  "candidate_packet_sha256": "990bb464523d4bf7cd2c9f1cc9d4a27d603cce9994cec4bb518f666b15e3cd17",
+  "max_pair_count": 5000,
+  "packet_id": "ozanimod-uc-endpoint-estimand-preflight:2026-08-27",
+  "policy_id": "adds.preregistered-endpoint-estimand-review-preflight.v1",
+  "presence_report_sha256": "260bb97614c5cf101ea3662164a8736f70f821f3a647cbb5d90971de95a5470f",
+  "required_estimand_dimensions": [
+    "treatment_condition",
+    "population",
+    "variable",
+    "intercurrent_event_strategy",
+    "population_level_summary"
+  ],
+  "schema_version": "adds.clinicaltrials-gov-endpoint-estimand-preflight-spec.v1",
+  "sidecar_bindings": [
+    {
+      "inventory_sha256": "9b819a41061e1c8d0db904f9cdfa3ece7e52cda61c526e5e19be29a92614c5be",
+      "nct_id": "NCT01647516",
+      "sidecar_sha256": "075598c2fa6d83ff7b268c9b7c797e803fb08e3e3ef1770a80d134d2a580f3c6"
+    },
+    {
+      "inventory_sha256": "82278b127c8c676037c6aa0af190b451ab82eb633dbb87ef494fff4791178d5b",
+      "nct_id": "NCT02435992",
+      "sidecar_sha256": "1aac5720c99ffbf89756879910ff5bef3783d48b73a158b1b6ac665cc4768152"
+    }
+  ]
+}

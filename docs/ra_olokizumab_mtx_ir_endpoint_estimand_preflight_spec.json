@@ -1,0 +1,27 @@
+{
+  "candidate_packet_sha256": "1b41194742a849f6435072c74461344cae9814d923cf996098fced91a4ba40a0",
+  "max_pair_count": 1000,
+  "packet_id": "olokizumab-mtx-ir-endpoint-estimand-preflight:2026-08-27",
+  "policy_id": "adds.preregistered-endpoint-estimand-review-preflight.v1",
+  "presence_report_sha256": "36fd6f0f3643f86912faeafc4d1fa7fa15f40dc2d4516706c68e23d25b1c86f6",
+  "required_estimand_dimensions": [
+    "treatment_condition",
+    "population",
+    "variable",
+    "intercurrent_event_strategy",
+    "population_level_summary"
+  ],
+  "schema_version": "adds.clinicaltrials-gov-endpoint-estimand-preflight-spec.v1",
+  "sidecar_bindings": [
+    {
+      "inventory_sha256": "70e868c4c48fcbebccc40aea32d3eee0bb78a0fb873cad8b7c71432c61699f26",
+      "nct_id": "NCT02760368",
+      "sidecar_sha256": "b5b50dfcf544e52e5852a700ba9b2d91a612d8868bd0f37d34580b9d89d58aaa"
+    },
+    {
+      "inventory_sha256": "86af8409471348510201895a46fddd28fb6168cc9deab3871ccaa650f8ac55d9",
+      "nct_id": "NCT02760407",
+      "sidecar_sha256": "0bbd84da1b3f46f38646ee23a03a9ab2556a6195f2bbbb0f343cfdbec82ef716"
+    }
+  ]
+}

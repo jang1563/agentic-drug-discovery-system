@@ -4,6 +4,18 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added a preregistered endpoint/estimand review preflight over exact ClinicalTrials.gov candidate,
+  aggregate presence, and source-bound sidecar fingerprints. Every pair retains source-record
+  hashes, typed source/identity blockers, nonblocking context gaps, one deterministic route, and
+  five unresolved ICH E9(R1)-aligned estimand dimensions. Missing dispersion is preserved without
+  controlling the route; absent/null/empty analyses and analysis group IDs fail closed without
+  automatic exclusion. Exact 2026-08-27 replay routes all 35 RA pairs to review-ready and routes 96
+  of 110 UC pairs to source completion, leaving 14 review-ready. The four refreshed raw source
+  hashes are kept temporally distinct from the prior 2026-08-25 snapshots. Strict schemas/readers,
+  source-byte- and work-bounded exact-cohort replay, CLI, payload exclusion, context-gap, tamper,
+  and synthetic controls pass. The Biohub readiness profile now binds this implemented capability
+  across 51 exact local anchors; no endpoint, estimand, population, safety,
+  clinical-comparability, synthesis, or treatment approval is made.
 - Added source-bound structural-array presence sidecars as a non-mutating v2 refinement of the v1
   ClinicalTrials.gov inventory. Exact v1 replay now precedes pointer-level preservation of absent,
   null, empty, and non-empty states across all ten nested arrays used by the posted-outcome parser;

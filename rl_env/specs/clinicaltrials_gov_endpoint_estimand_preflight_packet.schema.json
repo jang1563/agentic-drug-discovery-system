@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_endpoint_estimand_preflight_packet.schema.json",
+  "title": "ClinicalTrials.gov endpoint/estimand review preflight packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "integrity_sha256", "packet"],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-endpoint-estimand-preflight-packet.v1"
+    },
+    "integrity_sha256": { "$ref": "#/$defs/sha256" },
+    "packet": { "$ref": "#/$defs/packet" }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nctId": { "type": "string", "pattern": "^NCT[0-9]{8}$" },
+    "nonNegativeInteger": { "type": "integer", "minimum": 0 },
+    "sidecarBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nct_id", "inventory_sha256", "sidecar_sha256"],
+      "properties": {
+        "nct_id": { "$ref": "#/$defs/nctId" },
+        "inventory_sha256": { "$ref": "#/$defs/sha256" },
+        "sidecar_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nct_id",
+        "source_receipt_id",
+        "source_version",
+        "source_locator",
+        "source_retrieved_at",
+        "registry_version",
+        "inventory_sha256",
+        "sidecar_sha256",
+        "source_content_hash_sha256"
+      ],
+      "properties": {
+        "nct_id": { "$ref": "#/$defs/nctId" },
+        "source_receipt_id": { "$ref": "#/$defs/nonEmptyString" },
+        "source_version": { "$ref": "#/$defs/nonEmptyString" },
+        "source_locator": {
+          "type": "string",
+          "pattern": "^https://clinicaltrials\\.gov/api/v2/studies/NCT[0-9]{8}$"
+        },
+        "source_retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "registry_version": {
+          "type": "string",
+          "format": "date"
+        },
+        "inventory_sha256": { "$ref": "#/$defs/sha256" },
+        "sidecar_sha256": { "$ref": "#/$defs/sha256" },
+        "source_content_hash_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "estimandDimensions": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "treatment_condition" },
+        { "const": "population" },
+        { "const": "variable" },
+        { "const": "intercurrent_event_strategy" },
+        { "const": "population_level_summary" }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "blockerCode": {
+      "type": "string",
+      "pattern": "^(left|right)\\.((endpoint_field\\.(title|time_frame|outcome_type|reporting_status|parameter_type|unit_of_measure|population_description_sha256)\\.missing)|(outcome_analyses\\.(absent|present_null|present_empty))|(analysis_group_ids\\.(absent|present_null|present_empty))|(protocol_link\\.(unmatched|ambiguous_exact_candidates)))$"
+    },
+    "contextGapCode": {
+      "type": "string",
+      "pattern": "^(left|right)\\.endpoint_field\\.dispersion_type\\.missing$"
+    },
+    "pairPreflight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pair_id",
+        "left_endpoint_candidate_id",
+        "right_endpoint_candidate_id",
+        "left_nct_id",
+        "right_nct_id",
+        "left_source_record_sha256",
+        "right_source_record_sha256",
+        "mechanical_status",
+        "blocker_codes",
+        "context_gap_codes",
+        "review_route",
+        "review_state",
+        "required_estimand_dimensions",
+        "unresolved_estimand_dimensions",
+        "automatic_exclusion_performed",
+        "reviewer_approval_performed",
+        "endpoint_identity_approved",
+        "endpoint_family_assigned",
+        "estimand_equivalence_approved",
+        "clinical_comparability_approved",
+        "safety_comparability_approved"
+      ],
+      "properties": {
+        "pair_id": { "$ref": "#/$defs/nonEmptyString" },
+        "left_endpoint_candidate_id": { "$ref": "#/$defs/nonEmptyString" },
+        "right_endpoint_candidate_id": { "$ref": "#/$defs/nonEmptyString" },
+        "left_nct_id": { "$ref": "#/$defs/nctId" },
+        "right_nct_id": { "$ref": "#/$defs/nctId" },
+        "left_source_record_sha256": { "$ref": "#/$defs/sha256" },
+        "right_source_record_sha256": { "$ref": "#/$defs/sha256" },
+        "mechanical_status": {
+          "enum": [
+            "incomplete_source_fields",
+            "all_mechanical_fields_equal",
+            "mixed_mechanical_fields"
+          ]
+        },
+        "blocker_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/blockerCode" }
+        },
+        "context_gap_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 2,
+          "items": { "$ref": "#/$defs/contextGapCode" }
+        },
+        "review_route": {
+          "enum": [
+            "source_completion_required",
+            "endpoint_identity_reconciliation_required",
+            "ready_for_endpoint_estimand_review"
+          ]
+        },
+        "review_state": {
+          "enum": [
+            "pending_source_completion",
+            "pending_identity_reconciliation",
+            "pending_human_review"
+          ]
+        },
+        "required_estimand_dimensions": { "$ref": "#/$defs/estimandDimensions" },
+        "unresolved_estimand_dimensions": { "$ref": "#/$defs/estimandDimensions" },
+        "automatic_exclusion_performed": { "const": false },
+        "reviewer_approval_performed": { "const": false },
+        "endpoint_identity_approved": { "const": false },
+        "endpoint_family_assigned": { "const": false },
+        "estimand_equivalence_approved": { "const": false },
+        "clinical_comparability_approved": { "const": false },
+        "safety_comparability_approved": { "const": false }
+      }
+    },
+    "blockerCount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["blocker_code", "pair_count"],
+      "properties": {
+        "blocker_code": { "$ref": "#/$defs/blockerCode" },
+        "pair_count": { "type": "integer", "minimum": 1, "maximum": 100000 }
+      }
+    },
+    "contextGapCount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context_gap_code", "pair_count"],
+      "properties": {
+        "context_gap_code": { "$ref": "#/$defs/contextGapCode" },
+        "pair_count": { "type": "integer", "minimum": 1, "maximum": 100000 }
+      }
+    },
+    "packet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packet_id",
+        "policy_id",
+        "spec_sha256",
+        "candidate_packet_id",
+        "candidate_packet_sha256",
+        "presence_report_id",
+        "presence_report_sha256",
+        "source_bindings",
+        "required_estimand_dimensions",
+        "pair_preflights",
+        "blocker_counts",
+        "context_gap_counts",
+        "pair_count",
+        "source_completion_required_pair_count",
+        "identity_reconciliation_required_pair_count",
+        "ready_for_endpoint_estimand_review_pair_count",
+        "missing_analysis_pair_count",
+        "incomplete_analysis_group_ids_pair_count",
+        "blocking_endpoint_field_pair_count",
+        "nonblocking_context_gap_pair_count",
+        "unresolved_protocol_link_pair_count",
+        "exact_input_bindings_verified",
+        "source_presence_provenance_retained",
+        "preregistered_dimensions_fixed",
+        "automatic_exclusion_performed",
+        "reviewer_approval_performed",
+        "endpoint_equivalence_approved",
+        "estimand_equivalence_approved",
+        "clinical_comparability_approved",
+        "safety_comparability_approved",
+        "benefit_risk_synthesis_performed",
+        "treatment_choice_inferred",
+        "limitations"
+      ],
+      "properties": {
+        "packet_id": { "$ref": "#/$defs/nonEmptyString" },
+        "policy_id": {
+          "const": "adds.preregistered-endpoint-estimand-review-preflight.v1"
+        },
+        "spec_sha256": { "$ref": "#/$defs/sha256" },
+        "candidate_packet_id": { "$ref": "#/$defs/nonEmptyString" },
+        "candidate_packet_sha256": { "$ref": "#/$defs/sha256" },
+        "presence_report_id": { "$ref": "#/$defs/nonEmptyString" },
+        "presence_report_sha256": { "$ref": "#/$defs/sha256" },
+        "source_bindings": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceBinding" }
+        },
+        "required_estimand_dimensions": { "$ref": "#/$defs/estimandDimensions" },
+        "pair_preflights": {
+          "type": "array",
+          "maxItems": 100000,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/pairPreflight" }
+        },
+        "blocker_counts": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/blockerCount" }
+        },
+        "context_gap_counts": {
+          "type": "array",
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/contextGapCount" }
+        },
+        "pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "source_completion_required_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "identity_reconciliation_required_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "ready_for_endpoint_estimand_review_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "missing_analysis_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "incomplete_analysis_group_ids_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "blocking_endpoint_field_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "nonblocking_context_gap_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "unresolved_protocol_link_pair_count": { "$ref": "#/$defs/nonNegativeInteger" },
+        "exact_input_bindings_verified": { "const": true },
+        "source_presence_provenance_retained": { "const": true },
+        "preregistered_dimensions_fixed": { "const": true },
+        "automatic_exclusion_performed": { "const": false },
+        "reviewer_approval_performed": { "const": false },
+        "endpoint_equivalence_approved": { "const": false },
+        "estimand_equivalence_approved": { "const": false },
+        "clinical_comparability_approved": { "const": false },
+        "safety_comparability_approved": { "const": false },
+        "benefit_risk_synthesis_performed": { "const": false },
+        "treatment_choice_inferred": { "const": false },
+        "limitations": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      }
+    }
+  }
+}

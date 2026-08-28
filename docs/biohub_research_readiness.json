@@ -136,7 +136,7 @@
     {
       "anchor_id": "execution-core",
       "path": "agentic_drug_discovery/execution.py",
-      "sha256": "881a6c2c1ee7f1c3e6acf8ee3b632f66211dc12c2e7fe7ae24581d81b75348a8",
+      "sha256": "3f9ff264760ba2232a2de5df9583b5ea5839b816969f8f50ab222b09fcfb772a",
       "kind": "implementation"
     },
     {
@@ -172,7 +172,7 @@
     {
       "anchor_id": "execution-tests",
       "path": "tests/test_execution.py",
-      "sha256": "5898cc2801924e87c45283709f1f3ea40ed501d31cf9a89060731bac74adf737",
+      "sha256": "02f65dde94f902c75d8875675f64ec948f3311db54111f83954cf127b39991ba",
       "kind": "test"
     },
     {
@@ -396,6 +396,36 @@
       "path": "docs/ra_olokizumab_mtx_ir_risk_of_bias_report.json",
       "sha256": "4e257c7f82f3322d066c5097c706bc7f0d319224c1a4ad08f40c960a29203cd7",
       "kind": "document"
+    },
+    {
+      "anchor_id": "endpoint-estimand-preflight-core",
+      "path": "agentic_drug_discovery/clinicaltrials_gov_endpoint_estimand_preflight.py",
+      "sha256": "1f7e987dd7714e4a8d74ffff645d69fe7894b7f39364a453d86bc1a118d29768",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "endpoint-estimand-preflight-tests",
+      "path": "tests/test_clinicaltrials_gov_endpoint_estimand_preflight.py",
+      "sha256": "ba65ad85f115d37137cbc8e35657a22f8f840ea356b613cc74d88b770b36fb67",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "endpoint-estimand-preflight-document",
+      "path": "docs/60_preregistered_endpoint_estimand_review_preflight.md",
+      "sha256": "90f4ed6b505930cd2173c684fbd268e35d7d67c6c97510cd8476fab33d0b45e6",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "ra-endpoint-estimand-preflight-packet",
+      "path": "docs/ra_olokizumab_mtx_ir_endpoint_estimand_preflight_packet.json",
+      "sha256": "e95e836704cd13931e0260fe02c81d39b320afac97e6a807914522261d9154b9",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "uc-endpoint-estimand-preflight-packet",
+      "path": "docs/uc_ozanimod_endpoint_estimand_preflight_packet.json",
+      "sha256": "525e50a83a6098ea95f0bce4f210a6dbe9a65b686d3b42dd18c213afe80ba0a1",
+      "kind": "document"
     }
   ],
   "maturity_ledger": [
@@ -461,6 +491,23 @@
       "limitations": [
         "The VOI score is a bounded workflow heuristic, not calibrated economic value of information.",
         "ADVANCE denotes evidence-workflow readiness, not therapeutic approval."
+      ]
+    },
+    {
+      "capability_id": "preregistered-endpoint-estimand-preflight",
+      "label": "Preregistered source-bound endpoint and estimand review preflight",
+      "maturity": "implemented_public",
+      "claim": "A fixed five-dimension preflight binds exact ClinicalTrials.gov candidate, presence, sidecar, inventory, and source identities; retains every pair; and routes source-completion, endpoint-identity, or human estimand review prerequisites without semantic approval.",
+      "evidence_anchor_ids": [
+        "endpoint-estimand-preflight-core",
+        "endpoint-estimand-preflight-tests",
+        "endpoint-estimand-preflight-document",
+        "ra-endpoint-estimand-preflight-packet",
+        "uc-endpoint-estimand-preflight-packet"
+      ],
+      "limitations": [
+        "The exact 2026-08-27 RA and UC packets expose payload-free pair routes and source hashes, while raw registry records, candidate graphs, sidecars, and source values remain external.",
+        "Review-ready means only structurally ready for human review; all five estimand dimensions remain unresolved and no endpoint equivalence, comparability, pooling, efficacy, safety, benefit-risk, or treatment choice is approved."
       ]
     },
     {
@@ -701,6 +748,7 @@
         "cross-disease-clinical-conformance",
         "uc-public-registry-contract-validation",
         "evidence-gap-voi",
+        "preregistered-endpoint-estimand-preflight",
         "cluster-superpopulation-calibration"
       ],
       "pilot_work_package_ids": [
@@ -1280,11 +1328,12 @@
     },
     {
       "gap_id": "gap-disease-breadth",
-      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice; ulcerative colitis and rheumatoid arthritis add real provider-level validation, and rheumatoid arthritis now adds a source-disjoint additive tensor, same-stratum replication, and project-internal outcome-specific bias assessment, but neither is an independently reviewed end-to-end disease slice or an estimable externally validated transport analysis.",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice. Ulcerative colitis and rheumatoid arthritis add real provider-level validation and exact cross-trial endpoint/estimand preflight, while rheumatoid arthritis also adds a source-disjoint additive tensor, same-stratum replication, and project-internal outcome-specific bias assessment. All preflight estimand dimensions remain unresolved, and neither disease is an independently reviewed end-to-end slice or an estimable externally validated transport analysis.",
       "status": "open",
       "closure_evidence_required": [
         "at least one independently reviewed non-synthetic immune or inflammatory disease slice",
-        "scientific-owner review of the olokizumab endpoint mapping and population strata",
+        "source-bound protocol and statistical-analysis-plan evidence for the five preregistered estimand dimensions",
+        "scientific-owner review of a bounded RA and UC endpoint-pair subset and the olokizumab population strata",
         "independent outcome-specific risk-of-bias adjudication or transport-compatible individual-level covariates",
         "a declared target population and preregistered transport model",
         "documented ambiguity, direction-reversal, and rejection cases"
@@ -1328,7 +1377,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Declare a target population and preregister an estimable transport model only after obtaining transport-compatible covariates; separately seek independent adjudication of the completed project-internal outcome-specific bias assessment."
+    "next_decision": "Compile source-bound protocol and statistical-analysis-plan evidence packets for a bounded RA and UC endpoint-pair subset, then obtain independent five-dimension human review; separately declare a target population and preregister an estimable transport model only after obtaining transport-compatible covariates."
   },
-  "integrity_sha256": "f79d45fc622939dbd543a55fe12c12d576fc3cc5f848a2a22d604b92429a39c9"
+  "integrity_sha256": "c5509af69578c6354937392fe9f0a7f4950ab414d2b3edfb7108985cbb4f6630"
 }

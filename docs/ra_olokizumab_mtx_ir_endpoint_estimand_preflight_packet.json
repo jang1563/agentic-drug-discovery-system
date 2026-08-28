@@ -1,0 +1,1401 @@
+{
+  "integrity_sha256": "5cbcbce0ea91616de8512fcb5e58b808577db383d7fffa89ba2d6adf9e4c82b3",
+  "packet": {
+    "automatic_exclusion_performed": false,
+    "benefit_risk_synthesis_performed": false,
+    "blocker_counts": [],
+    "blocking_endpoint_field_pair_count": 0,
+    "candidate_packet_id": "olokizumab-mtx-ir-cross-trial-candidates:2026-08-27",
+    "candidate_packet_sha256": "1b41194742a849f6435072c74461344cae9814d923cf996098fced91a4ba40a0",
+    "clinical_comparability_approved": false,
+    "context_gap_counts": [
+      {
+        "context_gap_code": "left.endpoint_field.dispersion_type.missing",
+        "pair_count": 28
+      },
+      {
+        "context_gap_code": "right.endpoint_field.dispersion_type.missing",
+        "pair_count": 30
+      }
+    ],
+    "endpoint_equivalence_approved": false,
+    "estimand_equivalence_approved": false,
+    "exact_input_bindings_verified": true,
+    "identity_reconciliation_required_pair_count": 0,
+    "incomplete_analysis_group_ids_pair_count": 0,
+    "limitations": [
+      "The preflight is valid only for the exact candidate packet, aggregate presence report, and source-bound sidecars identified by SHA-256.",
+      "Source-completion and identity-reconciliation routes are typed review blockers, not automatic endpoint-pair exclusion rules.",
+      "A ready route means only that fixed preflight prerequisites were observed; all five estimand dimensions still require independent human review.",
+      "No endpoint identity, family, ontology, estimand, population, analysis, risk-window, safety, or clinical comparability decision is approved.",
+      "No pooling, ranking, efficacy or safety inference, benefit-risk synthesis, regulatory conclusion, or treatment choice is performed."
+    ],
+    "missing_analysis_pair_count": 0,
+    "nonblocking_context_gap_pair_count": 34,
+    "packet_id": "olokizumab-mtx-ir-endpoint-estimand-preflight:2026-08-27",
+    "pair_count": 35,
+    "pair_preflights": [
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:0",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "b1a3eb599aa0db8ee03c83cc389c93f1c9f65e0ded562dd753180b7d8f26809b",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:0::NCT02760407:cross-trial-endpoint:0",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:0",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "863a3679acd7e1fa1ff977b95906a243702e4b8fc5fda8c5e15ff8a3e105e9ce",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:0",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "b1a3eb599aa0db8ee03c83cc389c93f1c9f65e0ded562dd753180b7d8f26809b",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:0::NCT02760407:cross-trial-endpoint:1",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:1",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "4c280cf0bd6146add705fd50744d9f71eb6be786b1680ce7dfd915127490c2a2",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:0",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "b1a3eb599aa0db8ee03c83cc389c93f1c9f65e0ded562dd753180b7d8f26809b",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:0::NCT02760407:cross-trial-endpoint:2",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:2",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "c8f1eb73334ff0b06aee0487ae37a382666f9a62bfd56b84bdcd207209aa2525",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:0",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "b1a3eb599aa0db8ee03c83cc389c93f1c9f65e0ded562dd753180b7d8f26809b",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:0::NCT02760407:cross-trial-endpoint:3",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:3",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "1d34dc25233b1d4675ad280a2e5747cd67651bf25276d41b66cd0d145b8ffad9",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:0",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "b1a3eb599aa0db8ee03c83cc389c93f1c9f65e0ded562dd753180b7d8f26809b",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:0::NCT02760407:cross-trial-endpoint:4",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:4",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "5db120ca9b59b8b941104ced8c588dcf5b658e01d4b0266b1fa7689e738ac02a",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:0",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "b1a3eb599aa0db8ee03c83cc389c93f1c9f65e0ded562dd753180b7d8f26809b",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:0::NCT02760407:cross-trial-endpoint:5",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:5",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "22c68fbbb81606515d2b07d846a1ef785dcb2a5f35fe6375aaecbfe5a6c2519d",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:0",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "b1a3eb599aa0db8ee03c83cc389c93f1c9f65e0ded562dd753180b7d8f26809b",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:0::NCT02760407:cross-trial-endpoint:6",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:6",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "0bfa8bf0296a6a81a82898b3b370b6bff14760b3977197940862c3788f590760",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:1",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "e3376a47800fbaace876ccd010c95ccfaab4be29cdfa4d191724db7b21bdde6f",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:1::NCT02760407:cross-trial-endpoint:0",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:0",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "863a3679acd7e1fa1ff977b95906a243702e4b8fc5fda8c5e15ff8a3e105e9ce",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:1",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "e3376a47800fbaace876ccd010c95ccfaab4be29cdfa4d191724db7b21bdde6f",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:1::NCT02760407:cross-trial-endpoint:1",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:1",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "4c280cf0bd6146add705fd50744d9f71eb6be786b1680ce7dfd915127490c2a2",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:1",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "e3376a47800fbaace876ccd010c95ccfaab4be29cdfa4d191724db7b21bdde6f",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:1::NCT02760407:cross-trial-endpoint:2",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:2",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "c8f1eb73334ff0b06aee0487ae37a382666f9a62bfd56b84bdcd207209aa2525",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:1",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "e3376a47800fbaace876ccd010c95ccfaab4be29cdfa4d191724db7b21bdde6f",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:1::NCT02760407:cross-trial-endpoint:3",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:3",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "1d34dc25233b1d4675ad280a2e5747cd67651bf25276d41b66cd0d145b8ffad9",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:1",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "e3376a47800fbaace876ccd010c95ccfaab4be29cdfa4d191724db7b21bdde6f",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:1::NCT02760407:cross-trial-endpoint:4",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:4",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "5db120ca9b59b8b941104ced8c588dcf5b658e01d4b0266b1fa7689e738ac02a",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:1",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "e3376a47800fbaace876ccd010c95ccfaab4be29cdfa4d191724db7b21bdde6f",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:1::NCT02760407:cross-trial-endpoint:5",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:5",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "22c68fbbb81606515d2b07d846a1ef785dcb2a5f35fe6375aaecbfe5a6c2519d",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:1",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "e3376a47800fbaace876ccd010c95ccfaab4be29cdfa4d191724db7b21bdde6f",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:1::NCT02760407:cross-trial-endpoint:6",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:6",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "0bfa8bf0296a6a81a82898b3b370b6bff14760b3977197940862c3788f590760",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:2",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "120cca2d821977fa9771062e27c1ca71e0409bd6d4db2013eacd6ba839561023",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:2::NCT02760407:cross-trial-endpoint:0",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:0",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "863a3679acd7e1fa1ff977b95906a243702e4b8fc5fda8c5e15ff8a3e105e9ce",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:2",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "120cca2d821977fa9771062e27c1ca71e0409bd6d4db2013eacd6ba839561023",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:2::NCT02760407:cross-trial-endpoint:1",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:1",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "4c280cf0bd6146add705fd50744d9f71eb6be786b1680ce7dfd915127490c2a2",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:2",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "120cca2d821977fa9771062e27c1ca71e0409bd6d4db2013eacd6ba839561023",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:2::NCT02760407:cross-trial-endpoint:2",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:2",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "c8f1eb73334ff0b06aee0487ae37a382666f9a62bfd56b84bdcd207209aa2525",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:2",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "120cca2d821977fa9771062e27c1ca71e0409bd6d4db2013eacd6ba839561023",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:2::NCT02760407:cross-trial-endpoint:3",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:3",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "1d34dc25233b1d4675ad280a2e5747cd67651bf25276d41b66cd0d145b8ffad9",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:2",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "120cca2d821977fa9771062e27c1ca71e0409bd6d4db2013eacd6ba839561023",
+        "mechanical_status": "mixed_mechanical_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:2::NCT02760407:cross-trial-endpoint:4",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:4",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "5db120ca9b59b8b941104ced8c588dcf5b658e01d4b0266b1fa7689e738ac02a",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:2",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "120cca2d821977fa9771062e27c1ca71e0409bd6d4db2013eacd6ba839561023",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:2::NCT02760407:cross-trial-endpoint:5",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:5",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "22c68fbbb81606515d2b07d846a1ef785dcb2a5f35fe6375aaecbfe5a6c2519d",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:2",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "120cca2d821977fa9771062e27c1ca71e0409bd6d4db2013eacd6ba839561023",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:2::NCT02760407:cross-trial-endpoint:6",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:6",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "0bfa8bf0296a6a81a82898b3b370b6bff14760b3977197940862c3788f590760",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:3",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "1bc2349ceef86e4d10456ba45b4c8fc09765dfdb9d9038f7a082db8c52a515ea",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:3::NCT02760407:cross-trial-endpoint:0",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:0",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "863a3679acd7e1fa1ff977b95906a243702e4b8fc5fda8c5e15ff8a3e105e9ce",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:3",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "1bc2349ceef86e4d10456ba45b4c8fc09765dfdb9d9038f7a082db8c52a515ea",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:3::NCT02760407:cross-trial-endpoint:1",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:1",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "4c280cf0bd6146add705fd50744d9f71eb6be786b1680ce7dfd915127490c2a2",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:3",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "1bc2349ceef86e4d10456ba45b4c8fc09765dfdb9d9038f7a082db8c52a515ea",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:3::NCT02760407:cross-trial-endpoint:2",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:2",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "c8f1eb73334ff0b06aee0487ae37a382666f9a62bfd56b84bdcd207209aa2525",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:3",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "1bc2349ceef86e4d10456ba45b4c8fc09765dfdb9d9038f7a082db8c52a515ea",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:3::NCT02760407:cross-trial-endpoint:3",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:3",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "1d34dc25233b1d4675ad280a2e5747cd67651bf25276d41b66cd0d145b8ffad9",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:3",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "1bc2349ceef86e4d10456ba45b4c8fc09765dfdb9d9038f7a082db8c52a515ea",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:3::NCT02760407:cross-trial-endpoint:4",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:4",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "5db120ca9b59b8b941104ced8c588dcf5b658e01d4b0266b1fa7689e738ac02a",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:3",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "1bc2349ceef86e4d10456ba45b4c8fc09765dfdb9d9038f7a082db8c52a515ea",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:3::NCT02760407:cross-trial-endpoint:5",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:5",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "22c68fbbb81606515d2b07d846a1ef785dcb2a5f35fe6375aaecbfe5a6c2519d",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:3",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "1bc2349ceef86e4d10456ba45b4c8fc09765dfdb9d9038f7a082db8c52a515ea",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:3::NCT02760407:cross-trial-endpoint:6",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:6",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "0bfa8bf0296a6a81a82898b3b370b6bff14760b3977197940862c3788f590760",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:4",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "8a92a2b63d4f5d34b8a8c39d6251c8b2158479e8f8e9f999c86c37439531acbd",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:4::NCT02760407:cross-trial-endpoint:0",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:0",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "863a3679acd7e1fa1ff977b95906a243702e4b8fc5fda8c5e15ff8a3e105e9ce",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:4",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "8a92a2b63d4f5d34b8a8c39d6251c8b2158479e8f8e9f999c86c37439531acbd",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:4::NCT02760407:cross-trial-endpoint:1",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:1",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "4c280cf0bd6146add705fd50744d9f71eb6be786b1680ce7dfd915127490c2a2",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:4",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "8a92a2b63d4f5d34b8a8c39d6251c8b2158479e8f8e9f999c86c37439531acbd",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:4::NCT02760407:cross-trial-endpoint:2",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:2",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "c8f1eb73334ff0b06aee0487ae37a382666f9a62bfd56b84bdcd207209aa2525",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:4",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "8a92a2b63d4f5d34b8a8c39d6251c8b2158479e8f8e9f999c86c37439531acbd",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:4::NCT02760407:cross-trial-endpoint:3",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:3",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "1d34dc25233b1d4675ad280a2e5747cd67651bf25276d41b66cd0d145b8ffad9",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:4",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "8a92a2b63d4f5d34b8a8c39d6251c8b2158479e8f8e9f999c86c37439531acbd",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:4::NCT02760407:cross-trial-endpoint:4",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:4",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "5db120ca9b59b8b941104ced8c588dcf5b658e01d4b0266b1fa7689e738ac02a",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:4",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "8a92a2b63d4f5d34b8a8c39d6251c8b2158479e8f8e9f999c86c37439531acbd",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:4::NCT02760407:cross-trial-endpoint:5",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:5",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "22c68fbbb81606515d2b07d846a1ef785dcb2a5f35fe6375aaecbfe5a6c2519d",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      },
+      {
+        "automatic_exclusion_performed": false,
+        "blocker_codes": [],
+        "clinical_comparability_approved": false,
+        "context_gap_codes": [
+          "left.endpoint_field.dispersion_type.missing",
+          "right.endpoint_field.dispersion_type.missing"
+        ],
+        "endpoint_family_assigned": false,
+        "endpoint_identity_approved": false,
+        "estimand_equivalence_approved": false,
+        "left_endpoint_candidate_id": "NCT02760368:cross-trial-endpoint:4",
+        "left_nct_id": "NCT02760368",
+        "left_source_record_sha256": "8a92a2b63d4f5d34b8a8c39d6251c8b2158479e8f8e9f999c86c37439531acbd",
+        "mechanical_status": "incomplete_source_fields",
+        "pair_id": "pair:NCT02760368:cross-trial-endpoint:4::NCT02760407:cross-trial-endpoint:6",
+        "required_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ],
+        "review_route": "ready_for_endpoint_estimand_review",
+        "review_state": "pending_human_review",
+        "reviewer_approval_performed": false,
+        "right_endpoint_candidate_id": "NCT02760407:cross-trial-endpoint:6",
+        "right_nct_id": "NCT02760407",
+        "right_source_record_sha256": "0bfa8bf0296a6a81a82898b3b370b6bff14760b3977197940862c3788f590760",
+        "safety_comparability_approved": false,
+        "unresolved_estimand_dimensions": [
+          "treatment_condition",
+          "population",
+          "variable",
+          "intercurrent_event_strategy",
+          "population_level_summary"
+        ]
+      }
+    ],
+    "policy_id": "adds.preregistered-endpoint-estimand-review-preflight.v1",
+    "preregistered_dimensions_fixed": true,
+    "presence_report_id": "olokizumab-mtx-ir-presence-resolution:2026-08-27",
+    "presence_report_sha256": "36fd6f0f3643f86912faeafc4d1fa7fa15f40dc2d4516706c68e23d25b1c86f6",
+    "ready_for_endpoint_estimand_review_pair_count": 35,
+    "required_estimand_dimensions": [
+      "treatment_condition",
+      "population",
+      "variable",
+      "intercurrent_event_strategy",
+      "population_level_summary"
+    ],
+    "reviewer_approval_performed": false,
+    "safety_comparability_approved": false,
+    "source_bindings": [
+      {
+        "inventory_sha256": "70e868c4c48fcbebccc40aea32d3eee0bb78a0fb873cad8b7c71432c61699f26",
+        "nct_id": "NCT02760368",
+        "registry_version": "2026-08-27",
+        "sidecar_sha256": "b5b50dfcf544e52e5852a700ba9b2d91a612d8868bd0f37d34580b9d89d58aaa",
+        "source_content_hash_sha256": "d1c5b7f19aa2f06f3247ba92ec2f09aa0bf39d7bd2aafd4e58646f4a561d31d1",
+        "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT02760368",
+        "source_receipt_id": "ctgov-nct02760368-2026-08-27",
+        "source_retrieved_at": "2026-08-27T23:40:58Z",
+        "source_version": "clinicaltrials-gov-NCT02760368-version-2026-08-27"
+      },
+      {
+        "inventory_sha256": "86af8409471348510201895a46fddd28fb6168cc9deab3871ccaa650f8ac55d9",
+        "nct_id": "NCT02760407",
+        "registry_version": "2026-08-27",
+        "sidecar_sha256": "0bbd84da1b3f46f38646ee23a03a9ab2556a6195f2bbbb0f343cfdbec82ef716",
+        "source_content_hash_sha256": "1adc07342f9a7e3b93c985769d151f89022032d8ffe794656985fb3c897d295d",
+        "source_locator": "https://clinicaltrials.gov/api/v2/studies/NCT02760407",
+        "source_receipt_id": "ctgov-nct02760407-2026-08-27",
+        "source_retrieved_at": "2026-08-27T23:40:58Z",
+        "source_version": "clinicaltrials-gov-NCT02760407-version-2026-08-27"
+      }
+    ],
+    "source_completion_required_pair_count": 0,
+    "source_presence_provenance_retained": true,
+    "spec_sha256": "2b05562d02d8df11309f2a7523dd9de6aa092a398e7892c6b43fdf7d731454bf",
+    "treatment_choice_inferred": false,
+    "unresolved_protocol_link_pair_count": 0
+  },
+  "schema_version": "adds.clinicaltrials-gov-endpoint-estimand-preflight-packet.v1"
+}
