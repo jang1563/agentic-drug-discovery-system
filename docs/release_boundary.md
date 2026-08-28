@@ -295,6 +295,15 @@ external. A review-ready route means only that required registry structure is av
 review; all five estimand dimensions remain unresolved, and no pair is automatically excluded or
 approved as identical, equivalent, comparable, poolable, efficacious, safe, or clinically useful.
 
+The estimand evidence-acquisition layer ships a fixed lexical page-cue policy, exact candidate and
+preflight fingerprints, complete registry-declared protocol/SAP metadata and hashes, payload-free
+page references, strict schemas/readers, synthetic tamper tests, and exact 2026-08-27 RA/UC
+packets. Raw registry records, protocol/SAP PDFs, extracted page text, excerpts, endpoint titles,
+semantic claims, contradiction adjudications, and reviewer decisions remain outside Git and
+Hugging Face. A `candidate_pages_found` state is retrieval coverage only; it does not establish
+evidence sufficiency or resolve any estimand dimension, endpoint pair, efficacy, safety,
+benefit-risk, regulatory, or treatment-choice question.
+
 The clinical cohort diagnostics layer ships implementation, strict manifest/report/summary
 schemas, deterministic readers and replay, documentation, tests, and one compiler-generated
 synthetic matched-policy report. Real manifests can disclose selected programs and policy

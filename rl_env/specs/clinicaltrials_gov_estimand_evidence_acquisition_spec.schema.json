@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/adds/clinicaltrials_gov_estimand_evidence_acquisition_spec.schema.json",
+  "title": "ClinicalTrials.gov estimand evidence-acquisition spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "packet_id",
+    "candidate_packet_sha256",
+    "preflight_packet_sha256",
+    "document_bindings",
+    "max_document_bytes",
+    "max_candidate_pages_per_dimension",
+    "required_estimand_dimensions",
+    "anchor_policy_id",
+    "policy_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "adds.clinicaltrials-gov-estimand-evidence-acquisition-spec.v1"
+    },
+    "packet_id": { "$ref": "#/$defs/nonEmptyString" },
+    "candidate_packet_sha256": { "$ref": "#/$defs/sha256" },
+    "preflight_packet_sha256": { "$ref": "#/$defs/sha256" },
+    "document_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/documentBinding" }
+    },
+    "max_document_bytes": { "type": "integer", "minimum": 1 },
+    "max_candidate_pages_per_dimension": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "required_estimand_dimensions": { "$ref": "#/$defs/estimandDimensions" },
+    "anchor_policy_id": { "const": "adds.estimand-page-cue-anchors.v1" },
+    "policy_id": { "const": "adds.source-bound-estimand-evidence-acquisition.v1" }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nctId": { "type": "string", "pattern": "^NCT[0-9]{8}$" },
+    "documentRoles": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": { "enum": ["protocol", "sap"] }
+    },
+    "documentBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document_id",
+        "nct_id",
+        "filename",
+        "document_roles",
+        "source_label",
+        "source_locator",
+        "source_document_date",
+        "source_upload_date",
+        "expected_size_bytes",
+        "source_content_sha256"
+      ],
+      "properties": {
+        "document_id": { "$ref": "#/$defs/nonEmptyString" },
+        "nct_id": { "$ref": "#/$defs/nctId" },
+        "filename": { "type": "string", "pattern": "^[^/]+\\.pdf$" },
+        "document_roles": { "$ref": "#/$defs/documentRoles" },
+        "source_label": { "$ref": "#/$defs/nonEmptyString" },
+        "source_locator": {
+          "type": "string",
+          "pattern": "^https://cdn\\.clinicaltrials\\.gov/large-docs/"
+        },
+        "source_document_date": { "type": "string", "format": "date" },
+        "source_upload_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}$"
+        },
+        "expected_size_bytes": { "type": "integer", "minimum": 1 },
+        "source_content_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "estimandDimensions": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "treatment_condition" },
+        { "const": "population" },
+        { "const": "variable" },
+        { "const": "intercurrent_event_strategy" },
+        { "const": "population_level_summary" }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "anchor_policy_id": "adds.estimand-page-cue-anchors.v1",
+  "candidate_packet_sha256": "990bb464523d4bf7cd2c9f1cc9d4a27d603cce9994cec4bb518f666b15e3cd17",
+  "document_bindings": [
+    {
+      "document_id": "NCT01647516:Prot_000.pdf",
+      "document_roles": [
+        "protocol"
+      ],
+      "expected_size_bytes": 872936,
+      "filename": "Prot_000.pdf",
+      "nct_id": "NCT01647516",
+      "source_content_sha256": "e8d22817a7019ded0b8998c9d8578e444ec91af75355592108b5a6b72f10cbc3",
+      "source_document_date": "2019-05-03",
+      "source_label": "Study Protocol",
+      "source_locator": "https://cdn.clinicaltrials.gov/large-docs/16/NCT01647516/Prot_000.pdf",
+      "source_upload_date": "2020-08-28T09:30"
+    },
+    {
+      "document_id": "NCT01647516:SAP_001.pdf",
+      "document_roles": [
+        "sap"
+      ],
+      "expected_size_bytes": 672972,
+      "filename": "SAP_001.pdf",
+      "nct_id": "NCT01647516",
+      "source_content_sha256": "6a646ff761268b9cc00b6762529f91d4ea93c7b39af5e4f2b152b46f52a2d47b",
+      "source_document_date": "2014-09-23",
+      "source_label": "Statistical Analysis Plan",
+      "source_locator": "https://cdn.clinicaltrials.gov/large-docs/16/NCT01647516/SAP_001.pdf",
+      "source_upload_date": "2020-08-28T09:32"
+    },
+    {
+      "document_id": "NCT02435992:Prot_000.pdf",
+      "document_roles": [
+        "protocol"
+      ],
+      "expected_size_bytes": 8976663,
+      "filename": "Prot_000.pdf",
+      "nct_id": "NCT02435992",
+      "source_content_sha256": "25fb525e264e73aa5ce0f5d0eda4830aee67a883cc4e09573ff76acd7fed3746",
+      "source_document_date": "2019-07-26",
+      "source_label": "Study Protocol",
+      "source_locator": "https://cdn.clinicaltrials.gov/large-docs/92/NCT02435992/Prot_000.pdf",
+      "source_upload_date": "2021-06-25T13:43"
+    },
+    {
+      "document_id": "NCT02435992:SAP_001.pdf",
+      "document_roles": [
+        "sap"
+      ],
+      "expected_size_bytes": 7714787,
+      "filename": "SAP_001.pdf",
+      "nct_id": "NCT02435992",
+      "source_content_sha256": "e40013524156e92f73046380c68ebd9d6bd4f1ce87eaddeca64afab819cfe4d0",
+      "source_document_date": "2019-06-18",
+      "source_label": "Statistical Analysis Plan",
+      "source_locator": "https://cdn.clinicaltrials.gov/large-docs/92/NCT02435992/SAP_001.pdf",
+      "source_upload_date": "2021-06-25T13:43"
+    }
+  ],
+  "max_candidate_pages_per_dimension": 5,
+  "max_document_bytes": 16777216,
+  "packet_id": "ozanimod-uc-estimand-evidence-acquisition:2026-08-27",
+  "policy_id": "adds.source-bound-estimand-evidence-acquisition.v1",
+  "preflight_packet_sha256": "0af8e92339cc2d1657695f1f7f7b1b6bd8229e9dc865101bc1cd6755e7356640",
+  "required_estimand_dimensions": [
+    "treatment_condition",
+    "population",
+    "variable",
+    "intercurrent_event_strategy",
+    "population_level_summary"
+  ],
+  "schema_version": "adds.clinicaltrials-gov-estimand-evidence-acquisition-spec.v1"
+}

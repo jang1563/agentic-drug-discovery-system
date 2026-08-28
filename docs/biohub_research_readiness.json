@@ -2,7 +2,7 @@
   "schema_version": "adds.biohub-research-readiness.v1",
   "profile_id": "biohub-translational-evidence-bridge-v1",
   "profile_status": "presentation_candidate_not_endorsed",
-  "assessment_date": "2026-08-20",
+  "assessment_date": "2026-08-27",
   "organization_context": {
     "name": "Chan Zuckerberg Biohub Network",
     "affiliation_claimed": false,
@@ -412,7 +412,7 @@
     {
       "anchor_id": "endpoint-estimand-preflight-document",
       "path": "docs/60_preregistered_endpoint_estimand_review_preflight.md",
-      "sha256": "90f4ed6b505930cd2173c684fbd268e35d7d67c6c97510cd8476fab33d0b45e6",
+      "sha256": "36ab368f5c0599b1a9fe61e2f83110b47bcca216060a4e1499fd2825983a9bd1",
       "kind": "document"
     },
     {
@@ -425,6 +425,36 @@
       "anchor_id": "uc-endpoint-estimand-preflight-packet",
       "path": "docs/uc_ozanimod_endpoint_estimand_preflight_packet.json",
       "sha256": "525e50a83a6098ea95f0bce4f210a6dbe9a65b686d3b42dd18c213afe80ba0a1",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "estimand-evidence-acquisition-core",
+      "path": "agentic_drug_discovery/clinicaltrials_gov_estimand_evidence_acquisition.py",
+      "sha256": "960f050b592d2f46cb15c040fe500bd53bc778aeb77c7f7594f349bc08c54d6f",
+      "kind": "implementation"
+    },
+    {
+      "anchor_id": "estimand-evidence-acquisition-tests",
+      "path": "tests/test_clinicaltrials_gov_estimand_evidence_acquisition.py",
+      "sha256": "3ec4531f2c2562b6646aa99888590d54803995e55df3014333807726b9483876",
+      "kind": "test"
+    },
+    {
+      "anchor_id": "estimand-evidence-acquisition-document",
+      "path": "docs/61_source_bound_estimand_evidence_acquisition.md",
+      "sha256": "0b4a57e0517d28b32090e420eaf51fe45be9cea1716a8b3ea535a0bef57b3894",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "ra-estimand-evidence-acquisition-packet",
+      "path": "docs/ra_olokizumab_mtx_ir_estimand_evidence_acquisition_packet.json",
+      "sha256": "6e397047064b2befe05ea3374f7174cdebaf23090b8a37c4114fda04e75e928f",
+      "kind": "document"
+    },
+    {
+      "anchor_id": "uc-estimand-evidence-acquisition-packet",
+      "path": "docs/uc_ozanimod_estimand_evidence_acquisition_packet.json",
+      "sha256": "2c24dd179edcca4abfebbf89f8a5c92a5398ce28aacc481dc8ec8720d8b3f7fb",
       "kind": "document"
     }
   ],
@@ -524,6 +554,23 @@
       "limitations": [
         "The public artifacts do not contain a real independently curated outcome board.",
         "Synthetic validation does not establish clinical utility or policy superiority."
+      ]
+    },
+    {
+      "capability_id": "source-bound-estimand-evidence-acquisition",
+      "label": "Source-bound protocol/SAP evidence acquisition",
+      "maturity": "implemented_public",
+      "claim": "A fail-closed compiler verifies the complete ClinicalTrials.gov-declared protocol/SAP inventory and exact PDF bytes, then normalizes preflight-ready endpoint pairs into bounded payload-free page cues for all five estimand dimensions without semantic approval.",
+      "evidence_anchor_ids": [
+        "estimand-evidence-acquisition-core",
+        "estimand-evidence-acquisition-tests",
+        "estimand-evidence-acquisition-document",
+        "ra-estimand-evidence-acquisition-packet",
+        "uc-estimand-evidence-acquisition-packet"
+      ],
+      "limitations": [
+        "The exact RA/UC packets expose document metadata, hashes, page identities, page-text hashes, and lexical anchor IDs, while registry bytes, PDFs, page text, excerpts, and semantic claims remain external.",
+        "Candidate-page coverage does not establish evidence sufficiency or resolve any endpoint identity, estimand dimension, comparability, pooling, efficacy, safety, benefit-risk, regulatory, or treatment-choice question."
       ]
     },
     {
@@ -749,6 +796,7 @@
         "uc-public-registry-contract-validation",
         "evidence-gap-voi",
         "preregistered-endpoint-estimand-preflight",
+        "source-bound-estimand-evidence-acquisition",
         "cluster-superpopulation-calibration"
       ],
       "pilot_work_package_ids": [
@@ -1328,11 +1376,11 @@
     },
     {
       "gap_id": "gap-disease-breadth",
-      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice. Ulcerative colitis and rheumatoid arthritis add real provider-level validation and exact cross-trial endpoint/estimand preflight, while rheumatoid arthritis also adds a source-disjoint additive tensor, same-stratum replication, and project-internal outcome-specific bias assessment. All preflight estimand dimensions remain unresolved, and neither disease is an independently reviewed end-to-end slice or an estimable externally validated transport analysis.",
+      "gap": "Only sickle-cell disease has a continuous public eight-stage vertical slice. Ulcerative colitis and rheumatoid arthritis add real provider-level validation, exact cross-trial endpoint/estimand preflight, and source-bound protocol/SAP page-cue acquisition, while rheumatoid arthritis also adds a source-disjoint additive tensor, same-stratum replication, and project-internal outcome-specific bias assessment. All estimand dimensions remain semantically unresolved, and neither disease is an independently reviewed end-to-end slice or an estimable externally validated transport analysis.",
       "status": "open",
       "closure_evidence_required": [
         "at least one independently reviewed non-synthetic immune or inflammatory disease slice",
-        "source-bound protocol and statistical-analysis-plan evidence for the five preregistered estimand dimensions",
+        "reviewer-adjudicated protocol and statistical-analysis-plan claims and contradictions for the five preregistered estimand dimensions",
         "scientific-owner review of a bounded RA and UC endpoint-pair subset and the olokizumab population strata",
         "independent outcome-specific risk-of-bias adjudication or transport-compatible individual-level covariates",
         "a declared target population and preregistered transport model",
@@ -1377,7 +1425,7 @@
     "presentation_readiness": "ready_with_boundaries",
     "pilot_readiness": "ready_for_joint_scoping_not_execution",
     "public_release_status": "candidate_not_merged_or_uploaded",
-    "next_decision": "Compile source-bound protocol and statistical-analysis-plan evidence packets for a bounded RA and UC endpoint-pair subset, then obtain independent five-dimension human review; separately declare a target population and preregister an estimable transport model only after obtaining transport-compatible covariates."
+    "next_decision": "Compile contradiction-aware claims from the exact RA and UC protocol/SAP page queues, then obtain independent five-dimension human review; separately declare a target population and preregister an estimable transport model only after obtaining transport-compatible covariates."
   },
-  "integrity_sha256": "c5509af69578c6354937392fe9f0a7f4950ab414d2b3edfb7108985cbb4f6630"
+  "integrity_sha256": "fcf5eb7140f9ae8f39060da0fbad5d2975c477fcee2249e8ea2bb4c18486efa6"
 }

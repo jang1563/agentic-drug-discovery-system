@@ -30,7 +30,10 @@ unit-weighted from cluster-balanced functionals under informative cluster size,
 with aggregate influence diagnostics and fixed-profile conditional calibration. This candidate is
 not approved, merged, or uploaded. A preregistered ClinicalTrials.gov endpoint/estimand preflight
 now converts exact structural-presence evidence into typed source-completion, identity, and review
-routes while leaving all five estimand dimensions unresolved. No real independently curated
+routes while leaving all five estimand dimensions unresolved. A source-bound acquisition stage now
+verifies six registry-declared protocol/SAP documents and compiles payload-free page cues for the
+21 unique endpoints in the 49 review-ready pairs; lexical retrieval coverage is not semantic
+evidence sufficiency. No real independently curated
 clinical outcome result is claimed.
 Seven of eight planned atlases still do not have standalone public data, and
 the demonstrated continuous multi-stage program currently covers one
@@ -274,6 +277,7 @@ evidence hashes:
 - Same-stratum RA MTX-IR replication: `docs/48_ra_olokizumab_mtx_ir_same_stratum_replication.md`
 - Presence-preserving structural-array analysis: `docs/59_presence_preserving_structural_arrays.md`
 - Preregistered endpoint/estimand review preflight: `docs/60_preregistered_endpoint_estimand_review_preflight.md`
+- Source-bound estimand evidence acquisition: `docs/61_source_bound_estimand_evidence_acquisition.md`
 
 ```bash
 adds-research-readiness validate \
@@ -1031,6 +1035,11 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `docs/ra_olokizumab_mtx_ir_endpoint_estimand_preflight_packet.json` | Machines + reviewers | Payload-free RA pair routes, context gaps, source hashes, and five unresolved estimand dimensions. |
 | `docs/uc_ozanimod_endpoint_estimand_preflight_spec.json` | Machines + reviewers | Exact 2026-08-27 UC candidate, presence, sidecar, and pair-bound review policy. |
 | `docs/uc_ozanimod_endpoint_estimand_preflight_packet.json` | Machines + reviewers | Payload-free UC source-completion and review-ready routes with no automatic exclusion or approval. |
+| `docs/61_source_bound_estimand_evidence_acquisition.md` | Humans + agents | Exact six-document acquisition contract, five-dimension page-cue policy, RA/UC results, and semantic nonapproval boundary. |
+| `docs/ra_olokizumab_mtx_ir_estimand_evidence_acquisition_spec.json` | Machines + reviewers | Exact RA candidate/preflight fingerprints and two combined protocol/SAP byte bindings. |
+| `docs/ra_olokizumab_mtx_ir_estimand_evidence_acquisition_packet.json` | Machines + reviewers | Payload-free RA document provenance, 60 endpoint-dimension evidence records, and 300 bounded page cues. |
+| `docs/uc_ozanimod_estimand_evidence_acquisition_spec.json` | Machines + reviewers | Exact UC candidate/preflight fingerprints and four separate protocol/SAP byte bindings. |
+| `docs/uc_ozanimod_estimand_evidence_acquisition_packet.json` | Machines + reviewers | Payload-free UC provenance, 45 evidence records, 209 page cues, and unchanged blocking of 96 pairs. |
 | `docs/23_clinical_portfolio_endpoint_mapping.md` | Humans + agents | Multi-bundle preflight, approved ontology identity, exact endpoint bindings, mapping ledger, synthesis dependency, and release limitations. |
 | `docs/24_policy_replanning_and_resume.md` | Humans + agents | Typed non-advance observations, bounded replan rules, hash-bound checkpoints, deterministic resume, and release boundaries. |
 | `docs/25_cutoff_safe_policy_evaluation.md` | Humans + agents | Cutoff-safe cached packets, role-neutral pair sealing, external label commitments, policy scoring, and claim boundaries. |
@@ -1062,6 +1071,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `agentic_drug_discovery/clinicaltrials_gov_harmonization_structure.py` | Developers + agents | Exact candidate/diagnostic binding, trial-global and endpoint-local pair partitions, aggregate-only profiles, source-presence non-identifiability, strict replay, and fixed nonclaims. |
 | `agentic_drug_discovery/clinicaltrials_gov_structural_presence.py` | Developers + agents | Exact v1 replay, ten-role absent/null/empty/nonempty sidecars, aggregate pairwise source-presence resolution, and fixed payload/nonclaim boundaries. |
 | `agentic_drug_discovery/clinicaltrials_gov_endpoint_estimand_preflight.py` | Developers + agents | Exact candidate/presence/sidecar binding, fixed five-dimension pair preflight, typed blockers and context gaps, strict replay, and no automatic exclusion or semantic approval. |
+| `agentic_drug_discovery/clinicaltrials_gov_estimand_evidence_acquisition.py` | Developers + agents | Complete registry-declared protocol/SAP verification, bounded five-dimension lexical page cues, normalized pair references, strict replay, and no excerpts or semantic approval. |
 | `agentic_drug_discovery/clinical_portfolio.py` | Developers + agents | Atomic exact-set verification and payload-free extraction for multiple ClinicalTrials.gov jobs and bundles. |
 | `agentic_drug_discovery/clinical_endpoint_mapping.py` | Developers + agents | Strict reviewer-approved mapping parser, exact ledger compiler, fingerprints, and continuity recompilation. |
 | `agentic_drug_discovery/clinical_synthesis.py` | Developers + agents | Deterministic reviewed-selection compiler for source-disjoint, non-pooled trial-level benefit-risk records. |
@@ -1136,6 +1146,8 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `rl_env/specs/clinicaltrials_gov_harmonization_structure_report.schema.json` | Machines + reviewers | JSON Schema for aggregate trial profiles, structural cause partitions, source-presence limits, integrity, and fixed nonclaims. |
 | `rl_env/specs/clinicaltrials_gov_endpoint_estimand_preflight_spec.schema.json` | Machines + reviewers | JSON Schema for exact candidate, aggregate presence, sidecar, pair-bound, and fixed five-dimension preregistration; the adjacent example is synthetic. |
 | `rl_env/specs/clinicaltrials_gov_endpoint_estimand_preflight_packet.schema.json` | Machines + reviewers | JSON Schema for source identities, every pair route, blocker/context-gap counts, unresolved estimand dimensions, integrity, and fixed nonapprovals. |
+| `rl_env/specs/clinicaltrials_gov_estimand_evidence_acquisition_spec.schema.json` | Machines + reviewers | JSON Schema for exact candidate/preflight fingerprints, complete protocol/SAP metadata and hashes, page bound, and fixed anchor policy; the adjacent example is synthetic. |
+| `rl_env/specs/clinicaltrials_gov_estimand_evidence_acquisition_packet.schema.json` | Machines + reviewers | JSON Schema for verified source documents, payload-free ranked page cues, endpoint-dimension and pair references, counts, integrity, and fixed nonapprovals. |
 | `rl_env/specs/clinicaltrials_gov_portfolio_job.schema.json` | Machines + reviewers | JSON Schema for the exact set of single-trial jobs, receipts, and mapping-bound identities. |
 | `rl_env/specs/policy_checkpoint.schema.json` | Machines + reviewers | JSON Schema for hash-bound policy checkpoints, typed pending plans, observations, directives, and replan history. |
 | `rl_env/specs/sealed_evaluation_board.schema.json` | Machines + reviewers | JSON Schema for cutoff-safe role-neutral observations and cached policy-visible packets. |
@@ -1179,6 +1191,7 @@ system or full trajectory atlas described in the roadmap. Honest status:
 | `tests/test_clinicaltrials_gov_harmonization_robustness.py` | Users + CI | Exact RA/UC rates, order-independent replay, source overlap/hash rejection, strict schemas/readers, public artifact identity, CLI, and payload exclusion. |
 | `tests/test_clinicaltrials_gov_harmonization_structure.py` | Users + CI | Trial-global/local cause separation, diagnostic refinement, source-presence limits, strict schemas/readers, exact RA/UC artifacts, CLI, and tamper controls. |
 | `tests/test_clinicaltrials_gov_endpoint_estimand_preflight.py` | Users + CI | Absent-analysis, null-group-ID, missing-field, nonblocking-dispersion, identity-route, exact public artifact/source binding, source-byte-bounded cohort replay, strict schema/reader, payload, and CLI controls. |
+| `tests/test_clinicaltrials_gov_estimand_evidence_acquisition.py` | Users + CI | Complete document-inventory binding, PDF byte tamper rejection, preflight-block preservation, bounded lexical cues, strict schemas/readers, exact public artifacts, payload exclusion, and deterministic replay. |
 | `tests/test_clinical_outcome_evaluation.py` | Users + evaluators + CI | Cutoff leakage, source novelty, package/policy/roster binding, attrition, Brier/calibration math, paired comparisons, strict schemas/readers, and atomic outcome CLI coverage. |
 | `tests/test_clinical_outcome_uncertainty.py` | Users + evaluators + CI | CR1 math, paired covariance, fixed strata, chronology, known-overlap closure, small/dominant/zero-variance cluster states, strict readers, privacy, and atomic CLI coverage. |
 | `tests/test_clinical_outcome_design_simulation.py` | Users + evaluators + CI | Analytic truths, exact seeded replay, ICC undercoverage stress, floor/dominance/attrition states, strict bounds/readers, privacy, schemas, and atomic simulation CLI coverage. |

@@ -293,7 +293,7 @@ def compile_preflight(
     )
     if failures:
         raise ValueError(f"endpoint/estimand preflight replay failed: {failures}")
-    return preflight_spec, preflight
+    return preflight_spec, preflight, candidate
 
 
 def main() -> int:
@@ -331,7 +331,7 @@ def main() -> int:
     args = parser.parse_args()
     source_paths = _unique_assignments(args.study, "study")
     source_hashes = _unique_assignments(args.source_sha256, "source-sha256")
-    spec, packet = compile_preflight(
+    spec, packet, _candidate = compile_preflight(
         cohort_id=args.cohort_id,
         registry_version=args.registry_version,
         retrieved_at=args.retrieved_at,

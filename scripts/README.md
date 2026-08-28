@@ -16,6 +16,11 @@ Script groups:
 - `audit/compile_olokizumab_mtx_ir_risk_of_bias.py`: replays the reviewed two-trial Week-12
   ACR20 risk-of-bias spec and report from exact external ClinicalTrials.gov JSON and official
   protocol/SAP PDF bytes; source payloads remain outside Git.
+- `audit/compile_clinicaltrials_gov_endpoint_estimand_preflight.py`: rebuilds an exact cohort's
+  candidate graph, structural-presence resolution, and five-dimension review preflight.
+- `audit/compile_clinicaltrials_gov_estimand_evidence_acquisition.py`: verifies every
+  registry-declared protocol/SAP byte stream and compiles bounded payload-free page cues for
+  preflight-ready endpoint pairs without semantic approval.
 - `adds-pinned-ingestion` is installed from `agentic_drug_discovery.ingestion_cli`. It captures
   immutable raw source bundles outside Git, verifies reviewer-selected CDC MMWR evidence with
   `extract-cdc-mmwr`, verifies NCBI PubMed treatment-gap evidence with `extract-ncbi-pubmed`, and

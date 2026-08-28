@@ -1,0 +1,31 @@
+{
+  "schema_version": "adds.clinicaltrials-gov-estimand-evidence-acquisition-spec.v1",
+  "packet_id": "synthetic-estimand-evidence-acquisition:v1",
+  "candidate_packet_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "preflight_packet_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "document_bindings": [
+    {
+      "document_id": "NCT00000001:Prot_SAP_000.pdf",
+      "nct_id": "NCT00000001",
+      "filename": "Prot_SAP_000.pdf",
+      "document_roles": ["protocol", "sap"],
+      "source_label": "Synthetic protocol and statistical analysis plan",
+      "source_locator": "https://cdn.clinicaltrials.gov/large-docs/01/NCT00000001/Prot_SAP_000.pdf",
+      "source_document_date": "2025-01-01",
+      "source_upload_date": "2025-01-02T12:30",
+      "expected_size_bytes": 4096,
+      "source_content_sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+    }
+  ],
+  "max_document_bytes": 1048576,
+  "max_candidate_pages_per_dimension": 5,
+  "required_estimand_dimensions": [
+    "treatment_condition",
+    "population",
+    "variable",
+    "intercurrent_event_strategy",
+    "population_level_summary"
+  ],
+  "anchor_policy_id": "adds.estimand-page-cue-anchors.v1",
+  "policy_id": "adds.source-bound-estimand-evidence-acquisition.v1"
+}

@@ -4,6 +4,16 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- Added exact-source estimand evidence acquisition over all six registry-declared RA/UC
+  protocol/SAP documents (21,372,435 bytes; 693 pages). The compiler verifies registry inventory,
+  NCT/document identity, roles, dates, upload times, byte sizes, PDF hashes, parsing, and page
+  bounds before normalizing the 49 preflight-ready pairs to 21 unique endpoints and 105 fixed
+  endpoint-dimension records. Public packets contain 509 bounded page cues with document/page and
+  normalized-page hashes plus lexical anchor IDs, but no PDF text or excerpts. All records have
+  lexical retrieval coverage; evidence sufficiency and contradictions remain unassessed, all
+  semantic approval flags remain false, and the 96 UC source-blocked pairs remain blocked. Strict
+  schemas/readers, exact public artifact hashes, PDF/registry tamper rejection, synthetic replay,
+  release-boundary, and Hugging Face mirror coverage are included.
 - Added a preregistered endpoint/estimand review preflight over exact ClinicalTrials.gov candidate,
   aggregate presence, and source-bound sidecar fingerprints. Every pair retains source-record
   hashes, typed source/identity blockers, nonblocking context gaps, one deterministic route, and
@@ -14,7 +24,7 @@ All notable public-surface changes to this repository will be documented here.
   hashes are kept temporally distinct from the prior 2026-08-25 snapshots. Strict schemas/readers,
   source-byte- and work-bounded exact-cohort replay, CLI, payload exclusion, context-gap, tamper,
   and synthetic controls pass. The Biohub readiness profile now binds this implemented capability
-  across 51 exact local anchors; no endpoint, estimand, population, safety,
+  across 56 exact local anchors; no endpoint, estimand, population, safety,
   clinical-comparability, synthesis, or treatment approval is made.
 - Added source-bound structural-array presence sidecars as a non-mutating v2 refinement of the v1
   ClinicalTrials.gov inventory. Exact v1 replay now precedes pointer-level preservation of absent,

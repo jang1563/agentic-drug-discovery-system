@@ -42,11 +42,11 @@ class ResearchReadinessTests(unittest.TestCase):
 
         self.assertEqual(summary["profile_id"], RESEARCH_READINESS_PROFILE_ID)
         self.assertEqual(summary["official_source_count"], 4)
-        self.assertEqual(summary["evidence_anchor_count"], 51)
+        self.assertEqual(summary["evidence_anchor_count"], 56)
         self.assertEqual(
             summary["maturity_counts"],
             {
-                "implemented_public": 10,
+                "implemented_public": 11,
                 "proposed_pilot": 1,
                 "synthetic_validated": 3,
             },
@@ -69,6 +69,10 @@ class ResearchReadinessTests(unittest.TestCase):
         )
         self.assertIn(
             "preregistered-endpoint-estimand-preflight",
+            {item["capability_id"] for item in profile["maturity_ledger"]},
+        )
+        self.assertIn(
+            "source-bound-estimand-evidence-acquisition",
             {item["capability_id"] for item in profile["maturity_ledger"]},
         )
         self.assertIn(

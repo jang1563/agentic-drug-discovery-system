@@ -1,0 +1,49 @@
+{
+  "anchor_policy_id": "adds.estimand-page-cue-anchors.v1",
+  "candidate_packet_sha256": "1b41194742a849f6435072c74461344cae9814d923cf996098fced91a4ba40a0",
+  "document_bindings": [
+    {
+      "document_id": "NCT02760368:Prot_SAP_000.pdf",
+      "document_roles": [
+        "protocol",
+        "sap"
+      ],
+      "expected_size_bytes": 1887599,
+      "filename": "Prot_SAP_000.pdf",
+      "nct_id": "NCT02760368",
+      "source_content_sha256": "f44519001749ffe648c79e6d2e66474e9f2779025b2085726def415ef899a2e7",
+      "source_document_date": "2018-03-30",
+      "source_label": "Study Protocol and Statistical Analysis Plan",
+      "source_locator": "https://cdn.clinicaltrials.gov/large-docs/68/NCT02760368/Prot_SAP_000.pdf",
+      "source_upload_date": "2020-05-29T04:45"
+    },
+    {
+      "document_id": "NCT02760407:Prot_SAP_000.pdf",
+      "document_roles": [
+        "protocol",
+        "sap"
+      ],
+      "expected_size_bytes": 1247478,
+      "filename": "Prot_SAP_000.pdf",
+      "nct_id": "NCT02760407",
+      "source_content_sha256": "1b9287681119f071323663b32533fa5eff0195da50bece3fb5e057d71b11cd35",
+      "source_document_date": "2018-05-28",
+      "source_label": "Study Protocol and Statistical Analysis Plan",
+      "source_locator": "https://cdn.clinicaltrials.gov/large-docs/07/NCT02760407/Prot_SAP_000.pdf",
+      "source_upload_date": "2020-11-02T07:30"
+    }
+  ],
+  "max_candidate_pages_per_dimension": 5,
+  "max_document_bytes": 16777216,
+  "packet_id": "olokizumab-mtx-ir-estimand-evidence-acquisition:2026-08-27",
+  "policy_id": "adds.source-bound-estimand-evidence-acquisition.v1",
+  "preflight_packet_sha256": "5cbcbce0ea91616de8512fcb5e58b808577db383d7fffa89ba2d6adf9e4c82b3",
+  "required_estimand_dimensions": [
+    "treatment_condition",
+    "population",
+    "variable",
+    "intercurrent_event_strategy",
+    "population_level_summary"
+  ],
+  "schema_version": "adds.clinicaltrials-gov-estimand-evidence-acquisition-spec.v1"
+}

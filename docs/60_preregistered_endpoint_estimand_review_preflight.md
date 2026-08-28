@@ -119,7 +119,8 @@ The 35 RA and 14 UC review-ready pairs are not 49 equivalent pairs. No human rev
 endpoint identity, treatment condition, population, variable, intercurrent-event strategy,
 population-level summary, safety window, and clinical comparability all remain unresolved.
 
-The next research priority is an evidence-acquisition packet that binds registry records to exact
-protocol and statistical-analysis-plan sections for those five dimensions. That stage should
-extract reviewable claims and contradictions while preserving a hard separation between machine
-evidence assembly and human approval.
+The next evidence-acquisition stage is now implemented in
+`docs/61_source_bound_estimand_evidence_acquisition.md`. It binds all six registry-declared
+protocol/SAP documents and compiles payload-free page cues for the five dimensions while preserving
+the same hard separation between machine evidence assembly and human approval. Contradiction-aware
+claim extraction remains the next research step.
