@@ -4,6 +4,14 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- `ctdbench` 0.3.0: added `ctdbench probe`, an out-of-sample metadata probe that fits a
+  majority-label lookup per released column on `train` and scores it on `test`; added
+  `load_provenance()`; `load_gold` now returns the decisive `advance` / `stop` rows by default
+  (`decisive_only=True`) because `verify` has six test rows. The probe found that the v1.0
+  dataset tables shipped `label_source`, a column that recovers the test labels at balanced
+  accuracy 0.94; dataset v1.1 moves `label_source` and `regulatory_signal` to a separate
+  `provenance` config and corrects the card. Trials, labels, and splits are unchanged.
+
 ## 0.3.0.dev2 - 2026-07-31
 
 - Extended the strict ClinicalTrials.gov harmonization boundary for source-preserving registry
