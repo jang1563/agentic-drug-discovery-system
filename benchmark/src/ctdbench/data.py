@@ -8,7 +8,7 @@ import os
 import pyarrow.parquet as pq
 
 REPO_ID = "jang1563/clinical-trial-decision-benchmark"
-DEFAULT_REVISION = "f2ce03ed9aa3ff1db69003f82eb7f9247580b5fa"
+DEFAULT_REVISION = "a3869c1bf76f99b3873e1f23c09796c3f6c757b5"
 SPLITS = ("train", "test", "full")
 CONFIGS = {"default": "data", "v2": "v2"}
 PROVENANCE_FILE = "provenance/provenance.parquet"
