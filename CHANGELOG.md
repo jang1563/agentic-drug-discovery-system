@@ -4,6 +4,12 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- `ctdbench.events`: deterministic, event-anchored label signals (structured primary-endpoint
+  significance with a non-superiority guard, two-arm statistics, termination class, later
+  higher-phase trials of the same investigational drug, Drugs@FDA first approval after the trial
+  gated by label indications, keyword endpoint direction) and a documented composition rule with
+  tiers and a conflict flag; `benchmark/scripts/build_event_labels.py` runs the pipeline from
+  public APIs. No LLM is involved.
 - `ctdbench` 0.3.0: added `ctdbench probe`, an out-of-sample metadata probe that fits a
   majority-label lookup per released column on `train` and scores it on `test`; added
   `load_provenance()`; `load_gold` now returns the decisive `advance` / `stop` rows by default
