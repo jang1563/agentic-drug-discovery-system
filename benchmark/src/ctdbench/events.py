@@ -299,6 +299,38 @@ def approx_year_from_application(app):
     return 2026
 
 
+def e4_no_progression(meta, hits_by_drug, exclude_drugs=(), window_years=4, has_significant_result=False):
+    """CTOD-style negative progression signal: an investigational drug (not approved before the trial),
+    phase 1–3, whose trial completed at least ``window_years`` before the snapshot, with no later
+    interventional trial of the same drug in the same condition at the same or a higher phase and no
+    approval after the trial. Not applied when the trial itself reports a significant primary result."""
+    out = {"e4_no_progression": False, "e4_n_later_same_or_higher": None, "e4_no_progression_eligible": False}
+    pcd = meta.get("primary_completion_date")
+    own = meta.get("phase_rank")
+    snapshot_date = (meta.get("snapshot") or "")[:10] or None
+    if not (pcd and snapshot_date and own is not None and 1 <= own < 4 and meta.get("drug_interventions")):
+        return out
+    if int(snapshot_date[:4]) - int(pcd[:4]) < window_years or has_significant_result:
+        return out
+    investigational = [d for d in meta["drug_interventions"] if d not in set(exclude_drugs)]
+    if not investigational:
+        return out
+    cond_tok = _cond_tokens(meta.get("conditions"))
+    n = 0
+    for drug in investigational:
+        q, _ = drug_query_name(drug)
+        for h in hits_by_drug.get(q or "", []):
+            if h["nct_id"] == meta["nct_id"] or (h.get("status") or "") in ("WITHDRAWN", "NOT_YET_RECRUITING"):
+                continue
+            sd = _date(h.get("start_date"))
+            hr = phase_rank(h.get("phases"))
+            if pcd and sd and sd > pcd and sd <= snapshot_date and hr is not None and own <= hr < 4 \
+                    and (cond_tok & _cond_tokens(h.get("conditions"))):
+                n += 1
+    out.update({"e4_no_progression_eligible": True, "e4_n_later_same_or_higher": n, "e4_no_progression": n == 0})
+    return out
+
+
 # --- E5: Drugs@FDA approval events ---------------------------------------------------------------
 def build_drugsfda_index(records):
     """Map lower-cased generic/brand/substance names to approval facts."""
@@ -587,4 +619,6 @@ def compose(meta, e1, e2, e3, e4, e5, e6=None):
         return "verify", "tier1a", reasons + ["trial-internal failure but a forward event exists"], conflict
     if sig_unresolved:
         return "verify", "tier1b", reasons + ["significant separation, direction unresolved"], conflict
+    if e4.get("e4_no_progression") and not e5.get("e5_first_approval_after_trial"):
+        return "stop", "tier1a", reasons + ["no program progression within the window (E4-)"], conflict
     return None, None, reasons, conflict

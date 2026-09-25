@@ -46,3 +46,16 @@ def test_hub_load_accepts_explicit_revision(monkeypatch):
 
     data.load_records("train", revision="release-2026-07")
     assert call["revision"] == "release-2026-07"
+
+
+def test_v2_config_maps_to_v2_paths(monkeypatch):
+    call = {}
+
+    def fake_download(**kwargs):
+        call.update(kwargs)
+        return "/tmp/v2.parquet"
+
+    monkeypatch.setitem(sys.modules, "huggingface_hub", SimpleNamespace(hf_hub_download=fake_download))
+    monkeypatch.setattr(data, "_rows_from_parquet", lambda path: [])
+    data.load_records("test", config="v2")
+    assert call["filename"] == "v2/test.parquet"

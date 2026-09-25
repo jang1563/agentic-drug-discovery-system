@@ -128,3 +128,17 @@ def test_compose_paths():
     e1 = events.e1_primary_significance(st)
     e2 = events.e2_raw_stats(st)
     assert events.compose(m, e1, e2, e3, e4, e5)[0] is None
+
+
+def test_e4_no_progression_requires_window_and_absence_of_later_trials():
+    m = events.trial_meta(_study(pcd="2017-06-01"))  # snapshot 2026-09-25 -> 9 years
+    hits = {"drugx": []}
+    out = events.e4_no_progression(m, hits)
+    assert out["e4_no_progression_eligible"] and out["e4_no_progression"] is True
+    later = {"drugx": [{"nct_id": "NCT00000009", "phases": ["PHASE2"], "start_date": "2019-01-01", "status": "COMPLETED",
+                        "study_type": "INTERVENTIONAL", "conditions": ["Multiple Myeloma"]}]}
+    assert events.e4_no_progression(m, later)["e4_no_progression"] is False
+    recent = events.trial_meta(_study(pcd="2025-01-01"))
+    assert events.e4_no_progression(recent, hits)["e4_no_progression_eligible"] is False
+    assert events.e4_no_progression(m, hits, has_significant_result=True)["e4_no_progression_eligible"] is False
+    assert events.e4_no_progression(m, hits, exclude_drugs=["Drugx"])["e4_no_progression_eligible"] is False

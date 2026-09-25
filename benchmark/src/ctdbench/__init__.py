@@ -6,11 +6,12 @@
     print(evaluate(preds, gold))                    # balanced accuracy, macro-F1, coverage, ...
 """
 from .evaluate import DECISION_LABELS, evaluate, risk_coverage
-from .data import DEFAULT_REVISION, DECISIVE_LABELS, REPO_ID, SPLITS, load_gold, load_provenance, load_records
+from .data import CONFIGS, DEFAULT_REVISION, DECISIVE_LABELS, REPO_ID, SPLITS, load_events, load_gold, load_provenance, load_records
 from .probe import format_markdown, probe_columns
 
 __version__ = "0.3.0"
 __all__ = [
+    "CONFIGS",
     "DECISION_LABELS",
     "DECISIVE_LABELS",
     "DEFAULT_REVISION",
@@ -21,6 +22,7 @@ __all__ = [
     "load_records",
     "load_gold",
     "load_provenance",
+    "load_events",
     "probe_columns",
     "format_markdown",
 ]

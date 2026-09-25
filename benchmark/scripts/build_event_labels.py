@@ -191,6 +191,8 @@ def stage_compose(a):
         e5 = events.e5_regulatory(m, idx)
         e5.update(events.e5_indication_gate(m, e5, labels))
         e4 = events.e4_phase_progression(m, hits, exclude_drugs=e5["e5_approved_before_trial"])
+        e4.update(events.e4_no_progression(m, hits, exclude_drugs=e5["e5_approved_before_trial"],
+                                           has_significant_result=bool(e1["e1_any_sig"])))
         e6 = events.e6_keyword_direction(st, m["drug_interventions"])
         label, tier, reasons, conflict = events.compose(m, e1, e2, e3, e4, e5, e6)
         rows.append({**{k: m[k] for k in ("nct_id", "status", "start_date", "primary_completion_date", "phase_rank", "snapshot")},
@@ -198,6 +200,8 @@ def stage_compose(a):
                      "e4_n_hits": e4["e4_n_hits"], "e4_searchable": e4["e4_searchable"],
                      "e4_later_higher_same_condition": ",".join(e4["e4_later_higher_same_condition"]),
                      "e4_later_higher_same_condition_loose_n": len(e4["e4_later_higher_same_condition_loose"]),
+                     "e4_no_progression": e4["e4_no_progression"], "e4_no_progression_eligible": e4["e4_no_progression_eligible"],
+                     "e4_n_later_same_or_higher": e4["e4_n_later_same_or_higher"],
                      "e5_drugs_matched_n": len(e5["e5_drugs_matched"]),
                      "e5_first_approval_after_trial": ",".join(e5["e5_first_approval_after_trial"]),
                      "e5_indication_match": ",".join(e5.get("e5_indication_match", [])),
