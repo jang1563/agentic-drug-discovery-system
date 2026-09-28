@@ -1,8 +1,8 @@
 # ctdbench
 
-A small, pip-installable runner and scorer for the **clinical-trial decision benchmark** — a construct-audited,
-source-derived-label benchmark with abstention analysis that frames trial evaluation as a *decision* (`advance` / `stop` /
-`verify`, or abstain) rather than an outcome probability.
+A small, pip-installable runner, scorer, and metadata probe for the **clinical-trial decision benchmark**, a
+source-derived-label benchmark with abstention that frames trial evaluation as a *decision* (`advance` / `stop`,
+or abstain) rather than an outcome probability.
 
 Dataset: https://huggingface.co/datasets/jang1563/clinical-trial-decision-benchmark
 
@@ -30,7 +30,7 @@ is therefore not a supported installation path.
 ```python
 from ctdbench import load_gold, evaluate
 
-gold  = load_gold(split="test")                    # pinned Hub revision; see DEFAULT_REVISION
+gold  = load_gold(split="test")                    # decisive advance/stop rows at the pinned revision
 preds = {nct: my_agent(nct) for nct in gold}       # your model's decision; omit a key to abstain
 print(evaluate(preds, gold))
 # {'n_gold': ..., 'n_scored': ..., 'coverage': ...,
@@ -53,14 +53,36 @@ The classes are imbalanced (~60% `stop`), so compare the all-class balanced
 score with `trivial_floor_balanced_accuracy`. Unsupported decision labels fail
 closed instead of being silently scored as arbitrary errors.
 
+`load_gold` returns only the decisive `advance` / `stop` rows by default
+(`decisive_only=True`), because `verify` has six test rows and one row moves a
+three-class balanced score by several points. Pass `decisive_only=False` to keep
+`verify`. A `verify` prediction on a decisive row counts as an abstention.
+
+`load_provenance()` returns `{nct_id: {"label_source", "regulatory_signal"}}`
+from the v1.1 `provenance/provenance.parquet` file (or from the v1.0 tables at
+that revision). It documents how each label was derived and must not be used as
+a model input: a lookup on `label_source` alone recovers the v1.0 test labels at
+balanced accuracy 0.94.
+
 For a selective policy that emits confidences, `risk_coverage(preds, gold, confidences)` returns the
 risk–coverage curve.
+
+## Metadata probe
+
+`probe_columns(train_rows, test_rows)` fits a majority-label lookup per column on
+`train` (one key per value, or per train-quartile bin for numeric and identifier
+columns) and scores it on `test` with `evaluate`, reporting three-class and
+decisive balanced accuracy plus a label-permutation p-value. A column that scores
+far above the floor is a shortcut. The dataset card publishes the table for the
+released columns; `ctdbench probe` reproduces it.
 
 ## CLI
 
 ```bash
 ctdbench info --split test
 ctdbench evaluate --predictions my_preds.json --split test
+ctdbench evaluate --predictions my_preds.json --split test --include-verify
+ctdbench probe --permutations 2000
 # offline, against a local Parquet dir:
 ctdbench --local-dir ./data evaluate --predictions my_preds.json --split test
 ```
