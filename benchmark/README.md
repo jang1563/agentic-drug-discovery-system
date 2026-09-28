@@ -88,9 +88,10 @@ endpoint-direction rule (E6). `compose()` turns the signals into
 runs the whole pipeline from the public APIs with caching; the dataset card
 documents the schema and its limitations.
 
-The released v2 gold loads with `config="v2"`; only drug trials with phase 1–3
-carry a label, and all other trials are abstained. `load_events()` returns the
-per-trial signal values.
+The released v2 gold (a draft on the dataset card) loads with `config="v2"`.
+Only drug or biological interventional trials with a declared phase 1–3 carry
+a decisive label; non-drug and phase 4 trials are abstained. `load_events()`
+returns the per-trial signal values.
 
 ```python
 from ctdbench import load_events, load_gold

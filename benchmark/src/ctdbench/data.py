@@ -37,8 +37,9 @@ def load_records(split="test", local_dir=None, revision=DEFAULT_REVISION, config
     """Return one record dict per trial from a pinned Hub revision or local directory.
 
     ``config`` selects the gold: ``"default"`` is the v1.1 source-derived label set (``data/``),
-    ``"v2"`` the event-anchored label set (``v2/``, drug trials with phase 1–3; other trials are
-    abstained). A ``local_dir`` is read as-is, whatever config it holds.
+    ``"v2"`` the event-anchored label set (``v2/``, drug or biological trials with a declared
+    phase 1–3; non-drug and phase 4 trials are abstained). A ``local_dir`` is read as-is, whatever
+    config it holds.
     """
     if split not in SPLITS:
         raise ValueError(f"split must be one of {SPLITS}, got {split!r}")
