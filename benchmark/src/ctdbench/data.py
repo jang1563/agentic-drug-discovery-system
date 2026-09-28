@@ -25,6 +25,14 @@ def _rows_from_parquet(path):
     return [{c: data[c][i] for c in cols} for i in range(n)]
 
 
+def _hub_download(filename, revision):
+    try:
+        from huggingface_hub import hf_hub_download
+    except ImportError as e:
+        raise ImportError("pip install 'ctdbench[hf]' to load from the Hub, or pass local_dir=") from e
+    return hf_hub_download(repo_id=REPO_ID, filename=filename, repo_type="dataset", revision=revision)
+
+
 def load_records(split="test", local_dir=None, revision=DEFAULT_REVISION, config="default"):
     """Return one record dict per trial from a pinned Hub revision or local directory.
 
@@ -39,16 +47,7 @@ def load_records(split="test", local_dir=None, revision=DEFAULT_REVISION, config
     if local_dir:
         path = os.path.join(local_dir, f"{split}.parquet")
     else:
-        try:
-            from huggingface_hub import hf_hub_download
-        except ImportError as e:
-            raise ImportError("pip install 'ctdbench[hf]' to load from the Hub, or pass local_dir=") from e
-        path = hf_hub_download(
-            repo_id=REPO_ID,
-            filename=f"{CONFIGS[config]}/{split}.parquet",
-            repo_type="dataset",
-            revision=revision,
-        )
+        path = _hub_download(f"{CONFIGS[config]}/{split}.parquet", revision)
     return _rows_from_parquet(path)
 
 
@@ -83,9 +82,7 @@ def load_events(local_dir=None, revision=DEFAULT_REVISION):
     if local_dir:
         path = os.path.join(local_dir, "events.parquet")
     else:
-        from huggingface_hub import hf_hub_download
-
-        path = hf_hub_download(repo_id=REPO_ID, filename=V2_EVENTS_FILE, repo_type="dataset", revision=revision)
+        path = _hub_download(V2_EVENTS_FILE, revision)
     return {r["nct_id"]: r for r in _rows_from_parquet(path)}
 
 
@@ -96,27 +93,23 @@ def load_provenance(local_dir=None, revision=DEFAULT_REVISION, config="default")
     scoring tables, because ``label_source`` encodes the labeling rule and recovers the label
     almost exactly. They document how each label was derived and must not be given to a model.
     For the v1.0 revision, which still carried the columns inside the data tables, the values are
-    read from ``full.parquet`` instead.
+    read from ``full.parquet`` instead. With ``config="v2"`` the full row of ``v2/provenance.parquet``
+    is returned per trial.
     """
+    if config not in CONFIGS:
+        raise ValueError(f"config must be one of {tuple(CONFIGS)}, got {config!r}")
     if config == "v2":
-        if local_dir:
-            path = os.path.join(local_dir, "provenance.parquet")
-        else:
-            from huggingface_hub import hf_hub_download
-
-            path = hf_hub_download(repo_id=REPO_ID, filename=V2_PROVENANCE_FILE, repo_type="dataset", revision=revision)
+        path = os.path.join(local_dir, "provenance.parquet") if local_dir else _hub_download(V2_PROVENANCE_FILE, revision)
         return {r["nct_id"]: r for r in _rows_from_parquet(path)}
     if local_dir:
         path = os.path.join(local_dir, PROVENANCE_FILE)
         if not os.path.exists(path):
             path = None
     else:
-        from huggingface_hub import hf_hub_download
-
         try:
-            path = hf_hub_download(
-                repo_id=REPO_ID, filename=PROVENANCE_FILE, repo_type="dataset", revision=revision
-            )
+            path = _hub_download(PROVENANCE_FILE, revision)
+        except ImportError:
+            raise
         except Exception:  # noqa: BLE001 - v1.0 revisions have no provenance file
             path = None
     if path:

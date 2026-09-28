@@ -4,12 +4,16 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
-- `ctdbench.events`: deterministic, event-anchored label signals (structured primary-endpoint
-  significance with a non-superiority guard, two-arm statistics, termination class, later
-  higher-phase trials of the same investigational drug, Drugs@FDA first approval after the trial
-  gated by label indications, keyword endpoint direction) and a documented composition rule with
-  tiers and a conflict flag; `benchmark/scripts/build_event_labels.py` runs the pipeline from
-  public APIs. No LLM is involved.
+- `ctdbench` 0.4.0: `ctdbench.events` derives deterministic, event-anchored label signals
+  (structured primary-endpoint significance with a non-superiority guard, two-arm statistics,
+  termination class, later higher-phase trials of the same investigational drug, no progression
+  within four years, Drugs@FDA first approval after the trial gated by label indications, keyword
+  endpoint direction) and a documented composition rule with tiers and a conflict flag;
+  `benchmark/scripts/build_event_labels.py` runs the pipeline from public APIs. No LLM is
+  involved. `load_records`, `load_gold`, `load_provenance` and the CLI take `config="v2"` /
+  `--config v2` for the event-anchored gold, and `load_events()` returns the per-trial signal
+  values. `DEFAULT_REVISION` moves to dataset commit `a3869c1b`, which adds the `v2/` files; the
+  v1.1 `data/` and `provenance/` files are byte-identical to `f2ce03ed`.
 - `ctdbench` 0.3.0: added `ctdbench probe`, an out-of-sample metadata probe that fits a
   majority-label lookup per released column on `train` and scores it on `test`; added
   `load_provenance()`; `load_gold` now returns the decisive `advance` / `stop` rows by default

@@ -9,7 +9,7 @@ from .evaluate import DECISION_LABELS, evaluate, risk_coverage
 from .data import CONFIGS, DEFAULT_REVISION, DECISIVE_LABELS, REPO_ID, SPLITS, load_events, load_gold, load_provenance, load_records
 from .probe import format_markdown, probe_columns
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __all__ = [
     "CONFIGS",
     "DECISION_LABELS",
