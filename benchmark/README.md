@@ -76,6 +76,34 @@ decisive balanced accuracy plus a label-permutation p-value. A column that score
 far above the floor is a shortcut. The dataset card publishes the table for the
 released columns; `ctdbench probe` reproduces it.
 
+## Event-anchored labels (v2, no LLM)
+
+`ctdbench.events` derives labels from public records only: ClinicalTrials.gov
+structured primary-endpoint analyses and arm statistics (E1, E2), registry
+status (E3), later higher-phase trials of the same investigational drug (E4),
+Drugs@FDA first-approval events gated by label indications (E5), and a keyword
+endpoint-direction rule (E6). `compose()` turns the signals into
+`advance` / `stop` / `verify` / abstain with a tier (`tier1a` external event,
+`tier1b` trial-internal) and a conflict flag. `scripts/build_event_labels.py`
+runs the whole pipeline from the public APIs with caching; the dataset card
+documents the schema and its limitations.
+
+The released v2 gold (a draft on the dataset card) loads with `config="v2"`.
+Only drug or biological interventional trials with a declared phase 1–3 carry
+a decisive label; non-drug and phase 4 trials are abstained. `load_events()`
+returns the per-trial signal values.
+
+```python
+from ctdbench import load_events, load_gold
+
+gold_v2 = load_gold(split="test", config="v2")
+signals = load_events()
+```
+
+```bash
+ctdbench --config v2 evaluate --predictions my_preds.json --split test
+```
+
 ## CLI
 
 ```bash

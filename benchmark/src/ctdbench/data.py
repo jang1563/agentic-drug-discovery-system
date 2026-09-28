@@ -8,9 +8,12 @@ import os
 import pyarrow.parquet as pq
 
 REPO_ID = "jang1563/clinical-trial-decision-benchmark"
-DEFAULT_REVISION = "f2ce03ed9aa3ff1db69003f82eb7f9247580b5fa"
+DEFAULT_REVISION = "a3869c1bf76f99b3873e1f23c09796c3f6c757b5"
 SPLITS = ("train", "test", "full")
+CONFIGS = {"default": "data", "v2": "v2"}
 PROVENANCE_FILE = "provenance/provenance.parquet"
+V2_PROVENANCE_FILE = "v2/provenance.parquet"
+V2_EVENTS_FILE = "v2/events.parquet"
 DECISIVE_LABELS = ("advance", "stop")
 
 
@@ -22,23 +25,30 @@ def _rows_from_parquet(path):
     return [{c: data[c][i] for c in cols} for i in range(n)]
 
 
-def load_records(split="test", local_dir=None, revision=DEFAULT_REVISION):
-    """Return one record dict per trial from a pinned Hub revision or local directory."""
+def _hub_download(filename, revision):
+    try:
+        from huggingface_hub import hf_hub_download
+    except ImportError as e:
+        raise ImportError("pip install 'ctdbench[hf]' to load from the Hub, or pass local_dir=") from e
+    return hf_hub_download(repo_id=REPO_ID, filename=filename, repo_type="dataset", revision=revision)
+
+
+def load_records(split="test", local_dir=None, revision=DEFAULT_REVISION, config="default"):
+    """Return one record dict per trial from a pinned Hub revision or local directory.
+
+    ``config`` selects the gold: ``"default"`` is the v1.1 source-derived label set (``data/``),
+    ``"v2"`` the event-anchored label set (``v2/``, drug or biological trials with a declared
+    phase 1–3; non-drug and phase 4 trials are abstained). A ``local_dir`` is read as-is, whatever
+    config it holds.
+    """
     if split not in SPLITS:
         raise ValueError(f"split must be one of {SPLITS}, got {split!r}")
+    if config not in CONFIGS:
+        raise ValueError(f"config must be one of {tuple(CONFIGS)}, got {config!r}")
     if local_dir:
         path = os.path.join(local_dir, f"{split}.parquet")
     else:
-        try:
-            from huggingface_hub import hf_hub_download
-        except ImportError as e:
-            raise ImportError("pip install 'ctdbench[hf]' to load from the Hub, or pass local_dir=") from e
-        path = hf_hub_download(
-            repo_id=REPO_ID,
-            filename=f"data/{split}.parquet",
-            repo_type="dataset",
-            revision=revision,
-        )
+        path = _hub_download(f"{CONFIGS[config]}/{split}.parquet", revision)
     return _rows_from_parquet(path)
 
 
@@ -49,6 +59,7 @@ def load_gold(
     label_field="label",
     revision=DEFAULT_REVISION,
     decisive_only=True,
+    config="default",
 ):
     """Return ``{nct_id: label}`` for the confidently-labelled trials (abstained rows dropped).
 
@@ -57,7 +68,7 @@ def load_gold(
     labels, as the dataset card recommends; pass ``decisive_only=False`` to keep ``verify``.
     """
     gold = {}
-    for r in load_records(split, local_dir=local_dir, revision=revision):
+    for r in load_records(split, local_dir=local_dir, revision=revision, config=config):
         lab = r.get(label_field)
         if r.get("abstained") is True or lab in (None, "", "null"):
             continue
@@ -67,26 +78,39 @@ def load_gold(
     return gold
 
 
-def load_provenance(local_dir=None, revision=DEFAULT_REVISION):
+def load_events(local_dir=None, revision=DEFAULT_REVISION):
+    """Return ``{nct_id: {signal columns}}`` from the v2 ``events`` config (E1–E6 signal values)."""
+    if local_dir:
+        path = os.path.join(local_dir, "events.parquet")
+    else:
+        path = _hub_download(V2_EVENTS_FILE, revision)
+    return {r["nct_id"]: r for r in _rows_from_parquet(path)}
+
+
+def load_provenance(local_dir=None, revision=DEFAULT_REVISION, config="default"):
     """Return ``{nct_id: {"label_source": ..., "regulatory_signal": ...}}`` for all trials.
 
     From v1.1 these columns live in ``provenance/provenance.parquet`` and are not part of the
     scoring tables, because ``label_source`` encodes the labeling rule and recovers the label
     almost exactly. They document how each label was derived and must not be given to a model.
     For the v1.0 revision, which still carried the columns inside the data tables, the values are
-    read from ``full.parquet`` instead.
+    read from ``full.parquet`` instead. With ``config="v2"`` the full row of ``v2/provenance.parquet``
+    is returned per trial.
     """
+    if config not in CONFIGS:
+        raise ValueError(f"config must be one of {tuple(CONFIGS)}, got {config!r}")
+    if config == "v2":
+        path = os.path.join(local_dir, "provenance.parquet") if local_dir else _hub_download(V2_PROVENANCE_FILE, revision)
+        return {r["nct_id"]: r for r in _rows_from_parquet(path)}
     if local_dir:
         path = os.path.join(local_dir, PROVENANCE_FILE)
         if not os.path.exists(path):
             path = None
     else:
-        from huggingface_hub import hf_hub_download
-
         try:
-            path = hf_hub_download(
-                repo_id=REPO_ID, filename=PROVENANCE_FILE, repo_type="dataset", revision=revision
-            )
+            path = _hub_download(PROVENANCE_FILE, revision)
+        except ImportError:
+            raise
         except Exception:  # noqa: BLE001 - v1.0 revisions have no provenance file
             path = None
     if path:

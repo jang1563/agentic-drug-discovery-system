@@ -15,14 +15,14 @@ def _cmd_evaluate(a):
         sys.exit("predictions file must be a JSON object {nct_id: decision}")
     gold = load_gold(
         split=a.split, local_dir=a.local_dir, revision=a.revision,
-        decisive_only=not a.include_verify,
+        decisive_only=not a.include_verify, config=a.config,
     )
     result = evaluate(preds, gold)
     print(json.dumps(result, indent=2))
 
 
 def _cmd_info(a):
-    recs = load_records(split=a.split, local_dir=a.local_dir, revision=a.revision)
+    recs = load_records(split=a.split, local_dir=a.local_dir, revision=a.revision, config=a.config)
     from collections import Counter
     labels = Counter(r.get("label") for r in recs)
     abstained = sum(1 for r in recs if r.get("abstained") is True)
@@ -36,8 +36,8 @@ def _cmd_info(a):
 
 
 def _cmd_probe(a):
-    train = load_records(split="train", local_dir=a.local_dir, revision=a.revision)
-    test = load_records(split="test", local_dir=a.local_dir, revision=a.revision)
+    train = load_records(split="train", local_dir=a.local_dir, revision=a.revision, config=a.config)
+    test = load_records(split="test", local_dir=a.local_dir, revision=a.revision, config=a.config)
     report = probe_columns(train, test, permutations=a.permutations, seed=a.seed)
     if a.format == "json":
         print(json.dumps(report, indent=2))
@@ -48,6 +48,8 @@ def _cmd_probe(a):
 def main(argv=None):
     p = argparse.ArgumentParser(prog="ctdbench", description="Clinical-trial decision benchmark runner.")
     p.add_argument("--local-dir", default=None, help="load splits from a local Parquet dir instead of the Hub")
+    p.add_argument("--config", default="default", choices=("default", "v2"),
+                   help="gold to load: default = v1.1 source-derived labels, v2 = event-anchored labels")
     p.add_argument(
         "--revision",
         default=DEFAULT_REVISION,
