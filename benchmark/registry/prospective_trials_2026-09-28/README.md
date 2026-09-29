@@ -38,3 +38,9 @@ files = sorted(os.path.relpath(p, root) for p in glob.glob(f"{root}/**/*", recur
 lines = [f"{f}:{hashlib.sha256(open(os.path.join(root, f), 'rb').read()).hexdigest()}" for f in files]
 print(hashlib.sha256("\n".join(lines).encode()).hexdigest())
 ```
+
+## Amendments
+
+- `AMENDMENT_2026-09-29.md`, recorded before any outcome exists, fixes how an answer and its stated confidence
+  become an AUROC score. The decision sets the side and the confidence the order within it. The frozen snapshot's
+  mapping is reported alongside. Nothing else changes.
