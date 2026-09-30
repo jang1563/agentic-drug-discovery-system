@@ -4,6 +4,11 @@ All notable public-surface changes to this repository will be documented here.
 
 ## Unreleased
 
+- `ctdbench` 0.5.0: scoring conventions from the decide-at-cutoff study.
+  - `discrimination()` reports AUROC with decision-first ranking (`rank_score`). The older stated-probability AUROC (`auroc_stated`), the Brier score and the number of forced answers stated with confidence below 0.5 are reported next to it.
+  - `evidence_value()` returns the paired balanced-accuracy difference between a model's evidence run and its own title-only run, with a bootstrap interval.
+  - `ctdbench.features` reads 23 structured facts from a decide-at-cutoff evidence packet (schema in the module docstring). It ships a frozen logistic baseline fitted on the v2 `train` split: balanced accuracy 0.589 and AUROC 0.645 on the 80 decisive `test` trials.
+  - The CLI accepts `{nct_id: {decision, confidence}}` predictions, adds `--title-only`, and adds `ctdbench baseline`.
 - `ctdbench` 0.4.0: `ctdbench.events` derives deterministic, event-anchored label signals
   (structured primary-endpoint significance with a non-superiority guard, two-arm statistics,
   termination class, later higher-phase trials of the same investigational drug, no progression

@@ -104,12 +104,43 @@ signals = load_events()
 ctdbench --config v2 evaluate --predictions my_preds.json --split test
 ```
 
+## Scoring conventions (0.5.0)
+
+Three findings shape how a model should be reported. They come from a decide-at-cutoff study of seven models on the
+v2 trials and on a separate cohort of 631 trials completed 2023–2025.
+
+- **The title alone is a strong forecast.**
+  - From the trial id and title only, frontier models reach balanced accuracy 0.65–0.78.
+  - Most of that is forecasting from what a model knows about the drug, sponsor and indication, not memory of the outcome.
+  - Across five models whose training cutoffs fall inside 2024–2025, title-only accuracy changed at the model's own cutoff by −0.05 to +0.07 relative to models with later cutoffs, none significant.
+  - Report the same model's title-only run next to its evidence run. The difference is the evidence value.
+- **Stated confidences are not always coherent.**
+  - Under a forced choice some models give a confidence below 0.5 for their own answer, meaning "a weak guess".
+  - AUROC therefore ranks decision first and uses the confidence only within a decision (`rank_score`).
+  - `auroc_stated` gives the older convention, confidence for `advance` and 1 − confidence for `stop`. The two differ only when a confidence is below 0.5.
+- **A transparent structured baseline sits close to the models.** `ctdbench baseline` applies a frozen logistic regression to 23 facts read from an evidence packet.
+  - Facts used: design, sponsor, prior trials of the drug and their posted results, approval status and literature count.
+  - It was fitted on the 186 decisive trials of the v2 `train` split.
+  - On the 80 decisive `test` trials it scores balanced accuracy 0.589 and AUROC 0.645. On the separate 2023–2025 cohort it scores 0.645 and 0.701 out of time.
+  - The packet schema is documented in `ctdbench.features`. The benchmark's own packets are not released yet.
+
+```python
+from ctdbench import discrimination, evidence_value
+
+report = discrimination(decisions, gold, confidences)   # auroc, auroc_stated, brier, n_confidence_below_half
+gain = evidence_value(decisions, title_only_decisions, gold)  # paired balanced-accuracy difference, 95% CI
+```
+
 ## CLI
 
 ```bash
 ctdbench info --split test
 ctdbench evaluate --predictions my_preds.json --split test
 ctdbench evaluate --predictions my_preds.json --split test --include-verify
+# predictions as {nct_id: {"decision": ..., "confidence": ...}} add a discrimination block;
+# --title-only adds the paired evidence value against the same model's title-only run
+ctdbench --config v2 evaluate --predictions packet.json --title-only title.json --split test
+ctdbench baseline --packets packets.jsonl --out baseline.json
 ctdbench probe --permutations 2000
 # offline, against a local Parquet dir:
 ctdbench --local-dir ./data evaluate --predictions my_preds.json --split test
