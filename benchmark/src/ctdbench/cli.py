@@ -1,24 +1,60 @@
-"""Command-line interface: ``ctdbench evaluate`` and ``ctdbench info``."""
+"""Command-line interface: ``ctdbench evaluate``, ``baseline``, ``probe`` and ``info``."""
 import argparse
 import json
 import sys
 
 from .data import DEFAULT_REVISION, SPLITS, load_gold, load_records
-from .evaluate import evaluate
+from .evaluate import discrimination, evaluate, evidence_value
+from .features import baseline_decision
 from .probe import format_markdown, probe_columns
 
 
+def _read_predictions(path):
+    """Return ``(decisions, confidences)`` from a JSON file of ``{nct_id: decision}`` or
+    ``{nct_id: {"decision": ..., "confidence": ...}}`` (confidence optional)."""
+    with open(path) as f:
+        raw = json.load(f)
+    if not isinstance(raw, dict):
+        sys.exit("predictions file must be a JSON object keyed by nct_id")
+    decisions, confidences = {}, {}
+    for k, v in raw.items():
+        if isinstance(v, dict):
+            decisions[k] = v.get("decision")
+            if "confidence" in v:
+                confidences[k] = v["confidence"]
+        else:
+            decisions[k] = v
+    return decisions, confidences
+
+
 def _cmd_evaluate(a):
-    with open(a.predictions) as f:
-        preds = json.load(f)
-    if not isinstance(preds, dict):
-        sys.exit("predictions file must be a JSON object {nct_id: decision}")
+    preds, confs = _read_predictions(a.predictions)
     gold = load_gold(
         split=a.split, local_dir=a.local_dir, revision=a.revision,
         decisive_only=not a.include_verify, config=a.config,
     )
     result = evaluate(preds, gold)
+    if confs:
+        result["discrimination"] = discrimination(preds, gold, confs)
+    if a.title_only:
+        without, _ = _read_predictions(a.title_only)
+        result["evidence_value"] = evidence_value(preds, without, gold, bootstrap=a.bootstrap)
     print(json.dumps(result, indent=2))
+
+
+def _cmd_baseline(a):
+    out = {}
+    with open(a.packets) as f:
+        for line in f:
+            if line.strip():
+                packet = json.loads(line)
+                out[packet["nct_id"]] = baseline_decision(packet)
+    if a.out:
+        with open(a.out, "w") as f:
+            json.dump(out, f, indent=1)
+        print(f"wrote {len(out)} baseline decisions to {a.out}")
+    else:
+        print(json.dumps(out, indent=1))
 
 
 def _cmd_info(a):
@@ -58,13 +94,29 @@ def main(argv=None):
     sub = p.add_subparsers(dest="cmd", required=True)
 
     pe = sub.add_parser("evaluate", help="score a predictions file against a split")
-    pe.add_argument("--predictions", required=True, help="JSON {nct_id: advance|stop|verify}; omit/abstain to decline")
+    pe.add_argument(
+        "--predictions", required=True,
+        help="JSON {nct_id: advance|stop|verify} or {nct_id: {decision, confidence}}; omit/abstain to decline",
+    )
     pe.add_argument("--split", default="test", choices=SPLITS)
     pe.add_argument(
         "--include-verify", action="store_true",
         help="keep the small verify class in the gold set (default: decisive advance/stop only)",
     )
+    pe.add_argument(
+        "--title-only", default=None, metavar="PATH",
+        help="the same model's predictions from the trial id and title alone; adds the paired evidence value",
+    )
+    pe.add_argument("--bootstrap", type=int, default=2000, help="resamples for the evidence-value interval")
     pe.set_defaults(func=_cmd_evaluate)
+
+    pb = sub.add_parser(
+        "baseline",
+        help="decisions of the frozen structured-feature baseline for a JSONL file of evidence packets",
+    )
+    pb.add_argument("--packets", required=True, help="JSONL, one packet per line (schema: ctdbench.features)")
+    pb.add_argument("--out", default=None, help="write {nct_id: {decision, confidence}} here instead of stdout")
+    pb.set_defaults(func=_cmd_baseline)
 
     pp = sub.add_parser(
         "probe",
